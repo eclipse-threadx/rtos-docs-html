@@ -1066,6 +1066,18 @@ status = fx_directory_attributes_set(&amp;my_media, "mydir", FX_READ_ONLY);
 <li>
 <p><strong>FX_CALLER_ERROR</strong> (0x20) Caller is not a thread.</p>
 </li>
+<li>
+<p><strong>FX_INVALID_NAME</strong>* (0x0C) New directory name is invalid.</p>
+</li>
+<li>
+<p><strong>FX_WRITE_PROTECT</strong>* (0x23) Specified media is write protected.</p>
+</li>
+<li>
+<p><strong>FX_ALREADY_CREATED</strong>* (0x0B) Specified directory was already created.</p>
+</li>
+<li>
+<p><strong>FX_INVALID_PATH</strong>* (0x0D) Path is invalid.</p>
+</li>
 </ul>
 </div>
 </div>
@@ -9624,7 +9636,7 @@ length = fx_unicode_short_name_get_extended(&amp;ram_disk,
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-02-07 08:25:21 UTC
+Last updated 2025-11-25 21:23:30 UTC
 </div>
 </div>
 </body>
