@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GHSA-8m9v-jvjp-gmxq: Inadequate bounds check and potential underflow in _ux_host_class_hid_report_descriptor_get() :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/usbx/main/security/ghsa-8m9v-jvjp-gmxq.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article security-advisory">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="usbx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">USBX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">USBX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">USBX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-usbx.html">Overview of USBX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-3.html">Ch. 3 - Functional components of USBX device stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-supplemental-2.html">Ch. 2 - USBX device class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-device-stack-supplemental-7.html">Ch. 7 - USBX device class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-6.html">Ch. 6 - USBX CDC-ECM class usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-supplemental-2.html">Ch. 2 - USBX Host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">USBX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">USBX</a></li>
+    <li><a href="ghsa-8m9v-jvjp-gmxq.html">GHSA-8m9v-jvjp-gmxq: Inadequate bounds check and potential underflow in _ux_host_class_hid_report_descriptor_get()</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/usbx/modules/ROOT/pages/security/ghsa-8m9v-jvjp-gmxq.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">GHSA-8m9v-jvjp-gmxq: Inadequate bounds check and potential underflow in _ux_host_class_hid_report_descriptor_get()</h1>
+<div id="preamble">
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">GHSA ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/eclipse-threadx/usbx/security/advisories/GHSA-8m9v-jvjp-gmxq">GHSA‑8m9v‑jvjp‑gmxq</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CVE ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2025‑55096</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Severity</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Low</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CWE</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://cwe.mitre.org/data/definitions/191.html">CWE-191</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Published</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025‑10‑17</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Last updated</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025‑10‑17</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_affected_packages"><a class="anchor" href="#_affected_packages"></a>Affected packages</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 37.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Package</th>
+<th class="tableblock halign-left valign-top">Vulnerable versions</th>
+<th class="tableblock halign-left valign-top">Patched versions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USBX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8656; 6.4.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.4.3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>_ux_host_class_hid_report_descriptor_get()</code> retrieves and parses a HID report descriptor from a USB HID device. It iteratively calls <code>_ux_host_class_hid_report_item_analyse()</code> to parse individual HID items, adjusting the descriptor pointer and remaining length as it goes.</p>
+</div>
+<div class="paragraph">
+<p>A serious vulnerability exists in how this loop handles memory bounds:</p>
+</div>
+<div class="paragraph">
+<p>1\. Insufficient bounds check:</p>
+</div>
+<div class="paragraph">
+<p>The check:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>if (length &lt; item.ux_host_class_hid_item_report_length)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>verifies only one part of the read (the report_length), but not the full read length:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>descriptor += item.ux_host_class_hid_item_report_format;
+descriptor += item.ux_host_class_hid_item_report_length;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2\. Integer underflow:</p>
+</div>
+<div class="paragraph">
+<p>The line:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>length -= (ULONG)(item.ux_host_class_hid_item_report_length + item.ux_host_class_hid_item_report_format);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>assumes length is always greater than or equal to the total consumed size. If that’s not the case (e.g., length is 1, but the item reports a size of 16), length underflows and becomes a very large unsigned integer. The loop then continues indefinitely with a corrupted descriptor pointer, leading to out-of-bounds memory reads. This is possible because the length bounds check (see above [and below]) doesn&#8217;t account for item.ux_host_class_hid_item_report_format</p>
+</div>
+<div class="paragraph">
+<p>code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>UINT  _ux_host_class_hid_report_descriptor_get(UX_HOST_CLASS_HID *hid, ULONG length)
+
+{
+
+...
+
+    descriptor =  _ux_utility_memory_allocate(UX_SAFE_ALIGN, UX_CACHE_SAFE_MEMORY, length);
+
+...
+
+    transfer_request -&gt; ux_transfer_request_data_pointer =      descriptor;
+
+    transfer_request -&gt; ux_transfer_request_requested_length =  length;
+
+    transfer_request -&gt; ux_transfer_request_function =          UX_GET_DESCRIPTOR;
+
+    transfer_request -&gt; ux_transfer_request_type =              UX_REQUEST_IN | UX_REQUEST_TYPE_STANDARD | UX_REQUEST_TARGET_INTERFACE;
+
+...
+
+    status =  _ux_host_stack_transfer_request(transfer_request);
+
+...
+
+        /* Parse the report descriptor and build the report items.  */
+
+        while (length)
+
+        {
+
+...
+
+            _ux_host_class_hid_report_item_analyse(descriptor, &amp;item);
+
+...
+
+            descriptor +=  item.ux_host_class_hid_item_report_format;
+
+...
+
+            descriptor +=  item.ux_host_class_hid_item_report_length;
+
+
+
+            /* Verify that the report descriptor is not corrupted.  */
+
+            if (length &lt; item.ux_host_class_hid_item_report_length) &lt;-- this bounds check is insufficient
+
+            {
+
+
+
+                /* Return error status.  */
+
+                status = (UX_DESCRIPTOR_CORRUPTED);
+
+                break;
+
+            }
+
+
+
+            /* Adjust the length.  */
+
+            length -=  (ULONG)(item.ux_host_class_hid_item_report_length + item.ux_host_class_hid_item_report_format); &lt;-- length can underflow, at which point this loop goes off the rails
+
+        }
+
+...
+
+}
+
+#define UX_HOST_CLASS_HID_ITEM_TAG_LONG                         0xf0
+
+UINT  _ux_host_class_hid_report_item_analyse(UCHAR *descriptor, UX_HOST_CLASS_HID_ITEM *item)
+
+{
+
+UCHAR       item_byte;
+
+    /* Get the first byte from the descriptor.  */
+
+    item_byte =  *descriptor;
+
+....
+
+    if ((item_byte &amp; UX_HOST_CLASS_HID_ITEM_TAG_MASK) == UX_HOST_CLASS_HID_ITEM_TAG_LONG)
+
+    {
+
+        /* We have a long item, mark its format.  */
+
+        item -&gt; ux_host_class_hid_item_report_format =  UX_HOST_CLASS_HID_ITEM_TAG_LONG;
+
+
+
+        /* Set the type.  */
+
+        item -&gt; ux_host_class_hid_item_report_type =  (item_byte &gt;&gt; 2) &amp; 3;
+
+
+
+        /* Get its length (byte 1).  */
+
+        item -&gt; ux_host_class_hid_item_report_length =  (USHORT) *(descriptor + 1);
+
+
+
+        /* Then the tag (byte 2).  */
+
+        item -&gt; ux_host_class_hid_item_report_tag =  *(descriptor + 2);
+
+    }
+
+...
+
+    return(UX_SUCCESS);
+
+}</pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

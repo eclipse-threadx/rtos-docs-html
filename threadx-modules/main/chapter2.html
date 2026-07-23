@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx-modules/main/chapter2.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx-modules" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">ThreadX Modules</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">ThreadX Modules</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">ThreadX Modules documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX Modules user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Overview</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Module requirements</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Module Manager requirements</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Module APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Module Manager APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix.html">Appendix - Port-specific examples</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX Modules</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">ThreadX Modules</a></li>
+    <li>ThreadX Modules user guide</li>
+    <li><a href="chapter2.html">Ch. 2 - Module requirements</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/threadx-modules/modules/ROOT/pages/chapter2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<div id="preamble">
+<div class="sectionbody">
+<hr>
+<div class="paragraph">
+<p>title: Chapter 2 - Module Requirements
+description: This article is a description of the requirements for build a ThreadX Module.</p>
+</div>
+<hr>
+</div>
+</div>
+<h1 id="_chapter_2_module_requirements" class="sect0"><a class="anchor" href="#_chapter_2_module_requirements"></a>Chapter 2 - Module requirements</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>A ThreadX Module contains a preamble, which defines the basic characteristics of the module. The preamble is followed by the instruction area of the module. Modules may be executed in place or they may be loaded into the module memory area by the Module Manager prior to execution. The only requirement is that the preamble is always located at the first address of the module. Figure 2 illustrates a basic module layout.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top">Module Layout</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[module preamble]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[module instruction area]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[module RAM area]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Figure 2</strong> - Module Layout</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Modules must be built with the appropriate position independent code and data compiler/linker options. This enables execution of the module in any memory area.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When a Module thread is created, a second stack space is allocated for use when the thread is in the memory-protected kernel. The size of the thread&#8217;s kernel stack space is user-configurable using <strong>TXM_MODULE_KERNEL_STACK_SIZE</strong> in <strong><em>txm_module_port.h</em></strong>. This allows a smaller stack size to be used when creating a Module thread, as the stack specified by the user when calling <strong><em>tx_thread_create</em></strong> is only used in the module.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The top of a module thread stack contains the thread entry information structure (<strong>TXM_MODULE_THREAD_ENTRY_INFO</strong>), so the available stack size is decreased by the size of this structure. When creating a thread in a module, increase its stack size by at least this the size of this structure.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following steps are required for creating and building a ThreadX Module (each step is described in greater detail below).</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>All C files in a module must #define <strong>TXM_MODULE</strong> prior to including <strong><em>txm_module.h</em></strong>. This can be accomplished in the source file being compiled or as part of the project settings. Doing so remaps the ThreadX API calls to the module-specific version of the API that invokes the dispatch function in the resident Module Manager to perform the call to the actual API function.</p>
+</li>
+<li>
+<p>Each module must have a preamble at its first instruction area address which defines the characteristics and the resource needs of the module.</p>
+</li>
+<li>
+<p>Each module must link the preamble at the beginning of the module instruction area.</p>
+</li>
+<li>
+<p>Each module must link against a module library (<strong><em>txm.a</em></strong>), which contains module-specific functions used to interact with ThreadX.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_sources"><a class="anchor" href="#_module_sources"></a>Module sources</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX Modules have their own set of source files that are designed to be linked and located directly with the module source code. These files provide the bridge between the separate module and resident Module Manager. The Module files are as follows.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">File Name</th>
+<th class="tableblock halign-left valign-top">Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module.h</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Include file that defines module information.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_port.h</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Include file that defines port-specific module information.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_user.h</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines and values the user can customize.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_initialize.s [1][3]</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Calls intrinsic functions to startup module.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_preamble.{s/S/68}</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module preamble assembly file. This file defines various module-specific attributes and is linked with the module application code.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_application_request.c [1]</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module application request function sends an application-specific request to the resident code.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_callback_request_thread_entry.c&nbsp;[1]</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module callback thread that is responsible for processing callbacks requested by the module, including timers and notification callbacks.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_</strong>.c [1][2]*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The standard ThreadX API services, these call the kernel dispatcher.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_object_allocate.c [1]</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module function to allocate memory for module objects located in the manager memory pool.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_object_deallocate.c [1]</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module function to deallocate memory for module objects located in the manager memory pool.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_object_pointer_get.c [1]</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module function to retrieve a pointer to a system object.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_object_pointer_get_extended.c [1]</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module function to retrieve a pointer to a system object, name length safety.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_thread_shell_entry.c [1]</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module thread entry function.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>txm_module_thread_system_suspend.c [1]</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module function to suspend a thread.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>[1]</strong> Located in library <strong><em>txm.a</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p><strong>[2]</strong> These files have the same name as the ThreadX API files, with <strong>txm_</strong> prefix instead of <strong>tx_</strong> prefix.</p>
+</div>
+<div class="paragraph">
+<p><strong>[3]</strong> The <strong>txm_module_initialize.s</strong> file is only for ports using ARM tools.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_preamble"><a class="anchor" href="#_module_preamble"></a>Module preamble</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Module Preamble defines characteristics and resources of the module. Information such as the initial thread entry function and the initial memory area associated with the thread are defined in the preamble. Port-specific preamble examples are in the <a href="appendix.html" class="xref page">appendix</a>. Figure 3 shows an example ThreadX module preamble for a generic target (the lines starting with * are values typically modified by the application):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">    AREA Init, CODE, READONLY
+
+    /* Define public symbols. */
+    EXPORT __txm_module_preamble
+
+    /* Define application-specific start/stop entry points for the module. */
+    IMPORT demo_module_start
+
+    /* Define common external references. */
+    IMPORT _txm_module_thread_shell_entry
+    IMPORT _txm_module_callback_request_thread_entry
+    IMPORT |Image$$ER_RO$$Length|
+    IMPORT |Image$$ER_RW$$Length|
+
+__txm_module_preamble
+    DCD     0x4D4F4455                                  ; Module ID
+    DCD     0x6                                         ; Module Major Version
+    DCD     0x1                                         ; Module Minor Version
+    DCD     32                                          ; Module Preamble Size in 32-bit words
+*   DCD     0x12345678                                  ; Module ID (application defined)
+*   DCD     0x01000001                                  ; Module Properties where:
+                                                        ; Bits 31-24: Compiler ID
+                                                        ;   0 -&gt; IAR
+                                                        ;   1 -&gt; ARM
+                                                        ;   2 -&gt; GNU
+                                                        ;   Bits 23-1: Reserved
+                                                        ;   Bit 0: 0 -&gt; Privileged mode execution (no MMU protection)
+                                                        ;          1 -&gt; User mode execution (MMU protection)
+    DCD     _txm_module_thread_shell_entry - . + .      ; Module Shell Entry Point
+*   DCD     demo_module_start - . + .                   ; Module Start Thread Entry Point
+    DCD     0                                           ; Module Stop Thread Entry Point
+*   DCD     1                                           ; Module Start/Stop Thread Priority
+*   DCD     2048                                        ; Module Start/Stop Thread Stack Size
+    DCD     _txm_module_callback_request_thread_entry - . + . ; Module Callback Thread Entry
+    DCD     1                                            ; Module Callback Thread Priority
+    DCD     2048                                         ; Module Callback Thread Stack Size
+    DCD     |Image$$ER_RO$$Length|                       ; Module Code Size
+    DCD     |Image$$ER_RW$$Length|                       ; Module Data Size
+    DCD     0                                            ; Reserved 0
+    DCD     0                                            ; Reserved 1
+    DCD     0                                            ; Reserved 2
+    DCD     0                                            ; Reserved 3
+    DCD     0                                            ; Reserved 4
+    DCD     0                                            ; Reserved 5
+    DCD     0                                            ; Reserved 6
+    DCD     0                                            ; Reserved 7
+    DCD     0                                            ; Reserved 8
+    DCD     0                                            ; Reserved 9
+    DCD     0                                            ; Reserved 10
+    DCD     0                                            ; Reserved 11
+    DCD     0                                            ; Reserved 12
+    DCD     0                                            ; Reserved 13
+    DCD     0                                            ; Reserved 14
+    DCD     0                                            ; Reserved 15
+    END</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 3</strong></p>
+</div>
+<div class="paragraph">
+<p>In most cases, the developer only needs to define the module&#8217;s starting thread (offset 0x1C), module ID (offset 0x10), start/stop thread priority (offset 0x24), and start/stop thread stack size (offset 0x28). The demonstration above is set up such that the starting thread of the module is <strong><em>demo_module_start</em></strong>, the module ID is <strong><em>0x12345678</em></strong>, and the starting thread has a priority of <strong><em>1</em></strong>, and a stack size of <strong><em>2048</em></strong> bytes.</p>
+</div>
+<div class="paragraph">
+<p>Some applications may optionally define a stopping thread, which is executed as the Module Manager stops the module. In addition, some applications might utilize the Module Properties field, defined as follows.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_properties_bit_map"><a class="anchor" href="#_module_properties_bit_map"></a>Module properties bit map</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The table below shows an example of the properties bit map. Port-specific properties bitmaps are in the <a href="appendix.html" class="xref page">appendix</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Bit</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0<br>
+1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Privileged mode execution<br>
+User mode execution</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0<br>
+1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No MPU protection<br>
+MPU protection (must have user mode selected)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0<br>
+1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disable shared/external memory access<br>
+Enable shared/external memory access</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[23-3]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reserved</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[31-24]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><br>
+0x01<br>
+0x02<br>
+0x03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Compiler ID</strong><br>
+IAR<br>
+ARM<br>
+GNU</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_linker_control_file"><a class="anchor" href="#_module_linker_control_file"></a>Module linker control file</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When building a module, the module preamble must be placed before any other code section. A module must be built with position-independent code and data sections. Port-specific example linker files are in the <a href="appendix.html" class="xref page">appendix</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_threadx_library"><a class="anchor" href="#_module_threadx_library"></a>Module ThreadX library</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each module must link against a special, module-centric ThreadX library. This library provides access to ThreadX services in the resident code. Most of the access is accomplished via the <strong><em>txm</em></strong>.c_* files. The following is an example of the module access call for the ThreadX API function <strong><em>tx_thread_relinquish</em></strong> (in <strong><em>*txm_thread_relinquish.c*</em></strong>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">(_txm_module_kernel_call_dispatcher)(TXM_THREAD_RELINQUISH_CALL, 0, 0, 0);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, the function pointer supplied by the Module Manager is used to call the Module Manager dispatch function with the ID associated with the <strong><em>tx_thread_relinquish</em></strong> service. This service takes no parameters.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_example"><a class="anchor" href="#_module_example"></a>Module example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following is an example of the standard ThreadX demonstration in the form of a module. The main differences between the standard ThreadX demonstration and the module demonstration are.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Replacement of <strong><em>tx_api.h</em></strong> with <strong><em>txm_module.h</em></strong></p>
+</li>
+<li>
+<p>Addition of <strong>#define TXM_MODULE</strong> prior to <strong><em>txm_module.h</em></strong></p>
+</li>
+<li>
+<p>Replacement of <strong><em>main</em></strong> and <strong>tx_application_define</strong> with <strong><em>demo_module_start</em></strong></p>
+</li>
+<li>
+<p>Declaring <em>pointers</em> to ThreadX objects rather than the objects themselves.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Specify that this is a module! */
+#define TXM_MODULE
+
+/* Include the ThreadX module header. */
+#include "txm_module.h"
+
+/* Define constants. */
+#define DEMO_STACK_SIZE         1024
+#define DEMO_BYTE_POOL_SIZE     9120
+#define DEMO_BLOCK_POOL_SIZE    100
+#define DEMO_QUEUE_SIZE         100
+
+/* Define the pool space in the bss section of the module. ULONG is used to
+   get word alignment. */
+
+ULONG                   demo_module_pool_space[DEMO_BYTE_POOL_SIZE / 4];
+
+/* Define the ThreadX object control block pointers. */
+
+TX_THREAD               *thread_0;
+TX_THREAD               *thread_1;
+TX_THREAD               *thread_2;
+TX_THREAD               *thread_3;
+TX_THREAD               *thread_4;
+TX_THREAD               *thread_5;
+TX_THREAD               *thread_6;
+TX_THREAD               *thread_7;
+TX_QUEUE                *queue_0;
+TX_SEMAPHORE            *semaphore_0;
+TX_MUTEX                *mutex_0;
+TX_EVENT_FLAGS_GROUP    *event_flags_0;
+TX_BYTE_POOL            *byte_pool_0;
+TX_BLOCK_POOL           *block_pool_0;
+
+
+/* Define the counters used in the demo application. */
+ULONG       thread_0_counter;
+ULONG       thread_1_counter;
+ULONG       thread_1_messages_sent;
+ULONG       thread_2_counter;
+ULONG       thread_2_messages_received;
+ULONG       thread_3_counter;
+ULONG       thread_4_counter;
+ULONG       thread_5_counter;
+ULONG       thread_6_counter;
+ULONG       thread_7_counter;
+ULONG       semaphore_0_puts;
+ULONG       event_0_sets;
+ULONG       queue_0_sends;
+
+/* Define thread prototypes. */
+
+void    thread_0_entry(ULONG thread_input);
+void    thread_1_entry(ULONG thread_input);
+void    thread_2_entry(ULONG thread_input);
+void    thread_3_and_4_entry(ULONG thread_input);
+void    thread_5_entry(ULONG thread_input);
+void    thread_6_and_7_entry(ULONG thread_input);
+
+/* Define notify functions. */
+
+void semaphore_0_notify(TX_SEMAPHORE *semaphore_ptr)
+{
+    if (semaphore_ptr == semaphore_0)
+        semaphore_0_puts++;
+}
+
+
+void event_0_notify(TX_EVENT_FLAGS_GROUP *event_flag_group_ptr)
+{
+    if (event_flag_group_ptr == event_flags_0)
+        event_0_sets++;
+}
+
+
+void queue_0_notify(TX_QUEUE *queue_ptr)
+{
+    if (queue_ptr == queue_0)
+        queue_0_sends++;
+}
+
+/* Define the module start function. */
+void demo_module_start(ULONG id)
+{
+    CHAR *pointer;
+
+    /* Allocate all the objects. In memory protection mode,
+        modules cannot allocate control blocks within their
+        own memory area so they cannot corrupt the resident
+        portion of ThreadX by corrupting the control block(s). */
+    txm_module_object_allocate(&amp;thread_0, sizeof(TX_THREAD));
+    txm_module_object_allocate(&amp;thread_1, sizeof(TX_THREAD));
+    txm_module_object_allocate(&amp;thread_2, sizeof(TX_THREAD));
+    txm_module_object_allocate(&amp;thread_3, sizeof(TX_THREAD));
+    txm_module_object_allocate(&amp;thread_4, sizeof(TX_THREAD));
+    txm_module_object_allocate(&amp;thread_5, sizeof(TX_THREAD));
+    txm_module_object_allocate(&amp;thread_6, sizeof(TX_THREAD));
+    txm_module_object_allocate(&amp;thread_7, sizeof(TX_THREAD));
+    txm_module_object_allocate(&amp;queue_0, sizeof(TX_QUEUE));
+    txm_module_object_allocate(&amp;semaphore_0, sizeof(TX_SEMAPHORE));
+    txm_module_object_allocate(&amp;mutex_0, sizeof(TX_MUTEX));
+    txm_module_object_allocate(&amp;event_flags_0, sizeof(TX_EVENT_FLAGS_GROUP));
+    txm_module_object_allocate(&amp;byte_pool_0, sizeof(TX_BYTE_POOL));
+    txm_module_object_allocate(&amp;block_pool_0, sizeof(TX_BLOCK_POOL));
+
+    /* Create a byte memory pool from which to allocate the thread stacks. */
+    tx_byte_pool_create(byte_pool_0, "module byte pool 0",
+        demo_module_pool_space, DEMO_BYTE_POOL_SIZE);
+
+    /* Allocate the stack for thread 0. */
+    tx_byte_allocate(byte_pool_0, (VOID **) &amp;pointer,
+        DEMO_STACK_SIZE, TX_NO_WAIT);
+
+    /* Create thread 0. */
+    tx_thread_create(thread_0, "module thread 0", thread_0_entry, 0,
+        pointer, DEMO_STACK_SIZE,
+        1, 1, TX_NO_TIME_SLICE, TX_AUTO_START);
+
+    /* Allocate the stack for thread 1. */
+    tx_byte_allocate(byte_pool_0, (VOID **) &amp;pointer,
+        DEMO_STACK_SIZE, TX_NO_WAIT);
+
+    /* Create threads 1 and 2. These threads pass information through
+        a ThreadX message queue. It is also interesting to note that
+        these threads have a time slice. */
+    tx_thread_create(thread_1, "module thread 1", thread_1_entry, 1,
+        pointer, DEMO_STACK_SIZE,
+        16, 16, 4, TX_AUTO_START);
+
+    /* Allocate the stack and create thread 2. */
+    tx_byte_allocate(byte_pool_0, (VOID **) &amp;pointer,
+        DEMO_STACK_SIZE, TX_NO_WAIT);
+    tx_thread_create(thread_2, "module thread 2", thread_2_entry, 2,
+        pointer, DEMO_STACK_SIZE,
+        16, 16, 4, TX_AUTO_START);
+
+    /* Allocate the stack for thread 3. */
+    tx_byte_allocate(byte_pool_0, (VOID **) &amp;pointer,
+        DEMO_STACK_SIZE, TX_NO_WAIT);
+
+    /* Create threads 3 and 4. These threads compete for a ThreadX
+        counting semaphore. An interesting thing here is that both threads
+        share the same instruction area. */
+    tx_thread_create(thread_3, "module thread 3",
+        thread_3_and_4_entry, 3,
+        pointer, DEMO_STACK_SIZE,
+        8, 8, TX_NO_TIME_SLICE, TX_AUTO_START);
+
+    /* Allocate the stack and create thread 4. */
+    tx_byte_allocate(byte_pool_0, (VOID **) &amp;pointer,
+        DEMO_STACK_SIZE, TX_NO_WAIT);
+    tx_thread_create(thread_4, "module thread 4",
+        thread_3_and_4_entry, 4,
+        pointer, DEMO_STACK_SIZE,
+        8, 8, TX_NO_TIME_SLICE, TX_AUTO_START);
+
+    /* Allocate the stack for thread 5. */
+    tx_byte_allocate(byte_pool_0, (VOID **) &amp;pointer,
+        DEMO_STACK_SIZE, TX_NO_WAIT);
+
+    /* Create thread 5. This thread simply pends on an event flag which
+        will be set by thread 0. */
+    tx_thread_create(thread_5, "module thread 5", thread_5_entry, 5,
+        pointer, DEMO_STACK_SIZE,
+        4, 4, TX_NO_TIME_SLICE, TX_AUTO_START);
+
+    /* Allocate the stack for thread 6. */
+    tx_byte_allocate(byte_pool_0, (VOID **) &amp;pointer,
+        DEMO_STACK_SIZE, TX_NO_WAIT);
+
+    /* Create threads 6 and 7. These threads compete for a ThreadX mutex. */
+    tx_thread_create(thread_6, "module thread 6",
+        thread_6_and_7_entry, 6,
+        pointer, DEMO_STACK_SIZE,
+        8, 8, TX_NO_TIME_SLICE, TX_AUTO_START);
+
+    /* Allocate the stack and create thread 7. */
+    tx_byte_allocate(byte_pool_0, (VOID **) &amp;pointer,
+        DEMO_STACK_SIZE, TX_NO_WAIT);
+    tx_thread_create(thread_7, "module thread 7",
+        thread_6_and_7_entry, 7,
+        pointer, DEMO_STACK_SIZE,
+        8, 8, TX_NO_TIME_SLICE, TX_AUTO_START);
+
+    /* Allocate the message queue. */
+    tx_byte_allocate(byte_pool_0, (VOID **) &amp;pointer,
+        DEMO_QUEUE_SIZE*sizeof(ULONG), TX_NO_WAIT);
+
+    /* Create the message queue shared by threads 1 and 2. */
+    tx_queue_create(queue_0, "module queue 0", TX_1_ULONG, pointer,
+        DEMO_QUEUE_SIZE*sizeof(ULONG));
+
+    /* Register queue send callback. */
+    tx_queue_send_notify(queue_0, queue_0_notify);
+
+    /* Create the semaphore used by threads 3 and 4. */
+    tx_semaphore_create(semaphore_0, "module semaphore 0", 1);
+
+    /* Register semaphore put callback. */
+    tx_semaphore_put_notify(semaphore_0, semaphore_0_notify);
+
+    /* Create the event flags group used by threads 1 and 5. */
+    tx_event_flags_create(event_flags_0, "module event flags 0");
+
+    /* Register event flag set callback. */
+    tx_event_flags_set_notify(event_flags_0, event_0_notify);
+
+    /* Create the mutex used by thread 6 and 7 without priority
+        inheritance. */
+    tx_mutex_create(mutex_0, "module mutex 0", TX_NO_INHERIT);
+
+    /* Allocate the memory for a small block pool. */
+    tx_byte_allocate(byte_pool_0, (VOID **) &amp;pointer,
+        DEMO_BLOCK_POOL_SIZE, TX_NO_WAIT);
+
+    /* Create a block memory pool. */
+    tx_block_pool_create(block_pool_0, "module block pool 0",
+        sizeof(ULONG), pointer, DEMO_BLOCK_POOL_SIZE);
+
+    /* Allocate a block. */
+    tx_block_allocate(block_pool_0, (VOID **) &amp;pointer,
+        TX_NO_WAIT);
+
+    /* Release the block back to the pool. */
+    tx_block_release(pointer);
+
+}
+
+/* Define all the threads. */
+
+void thread_0_entry(ULONG thread_input)
+{
+    UINT status;
+
+    /* This thread simply sits in while-forever-sleep loop. */
+    while(1)
+    {
+        /* Increment the thread counter. */
+        thread_0_counter++;
+
+        /* Sleep for 10 ticks. */
+        tx_thread_sleep(10);
+
+        /* Set event flag 0 to wake up thread 5. */
+        status = tx_event_flags_set(event_flags_0, 0x1, TX_OR);
+
+        /* Check status. */
+        if (status != TX_SUCCESS)
+            break;
+    }
+}
+
+void thread_1_entry(ULONG thread_input)
+{
+    UINT status;
+
+    /* This thread simply sends messages to a queue shared by
+       thread 2. */
+    while(1)
+    {
+        /* Increment the thread counter. */
+        thread_1_counter++;
+
+        /* Send message to queue 0. */
+        status = tx_queue_send(queue_0, &amp;thread_1_messages_sent,
+            TX_WAIT_FOREVER);
+
+        /* Check completion status. */
+        if (status != TX_SUCCESS)
+            break;
+
+        /* Increment the message sent. */
+        thread_1_messages_sent++;
+    }
+}
+
+void thread_2_entry(ULONG thread_input)
+{
+    ULONG received_message;
+    UINT status;
+
+    /* This thread retrieves messages placed on the queue by thread 1. */
+    while(1)
+    {
+        /* Increment the thread counter. */
+        thread_2_counter++;
+
+        /* Retrieve a message from the queue. */
+        status = tx_queue_receive(queue_0, &amp;received_message, TX_WAIT_FOREVER);
+
+        /* Check completion status and make sure the message is what
+           we expected. */
+        if ((status != TX_SUCCESS) || (received_message != thread_2_messages_received))
+            break;
+
+        /* Otherwise, all is okay. Increment the received message count. */
+        thread_2_messages_received++;
+    }
+}
+
+void thread_3_and_4_entry(ULONG thread_input)
+{
+    UINT status;
+
+    /* This function is executed from thread 3 and thread 4. As the loop
+       below shows, these function compete for ownership of semaphore_0. */
+    while(1)
+    {
+        /* Increment the thread counter. */
+        if (thread_input == 3)
+            thread_3_counter++;
+        else
+            thread_4_counter++;
+
+        /* Get the semaphore with suspension. */
+        status = tx_semaphore_get(semaphore_0, TX_WAIT_FOREVER);
+
+        /* Check status. */
+        if (status != TX_SUCCESS)
+            break;
+
+        /* Sleep for 2 ticks to hold the semaphore. */
+        tx_thread_sleep(2);
+
+        /* Release the semaphore. */
+        status = tx_semaphore_put(semaphore_0);
+
+        /* Check status. */
+        if (status != TX_SUCCESS)
+            break;
+    }
+}
+
+void thread_5_entry(ULONG thread_input)
+{
+    UINT status;
+    ULONG actual_flags;
+
+    /* This thread simply waits for an event in a forever loop. */
+    while(1)
+    {
+        /* Increment the thread counter. */
+        thread_5_counter++;
+
+        /* Wait for event flag 0. */
+        status = tx_event_flags_get(event_flags_0, 0x1, TX_OR_CLEAR,
+                                        &amp;actual_flags, TX_WAIT_FOREVER);
+
+        /* Check status. */
+        if ((status != TX_SUCCESS) || (actual_flags != 0x1))
+            break;
+    }
+}
+
+void thread_6_and_7_entry(ULONG thread_input)
+{
+    UINT status;
+
+    /* This function is executed from thread 6 and thread 7. As the loop
+       below shows, these function compete for ownership of mutex_0. */
+    while(1)
+    {
+        /* Increment the thread counter. */
+        if (thread_input == 6)
+            thread_6_counter++;
+        else
+            thread_7_counter++;
+
+        /* Get the mutex with suspension. */
+        status = tx_mutex_get(mutex_0, TX_WAIT_FOREVER);
+
+        /* Check status. */
+        if (status != TX_SUCCESS)
+            break;
+
+        /* Get the mutex again with suspension. This shows that an
+           owning thread may retrieve the mutex it owns multiple times. */
+        status = tx_mutex_get(mutex_0, TX_WAIT_FOREVER);
+
+        /* Check status. */
+        if (status != TX_SUCCESS)
+            break;
+
+        /* Sleep for 2 ticks to hold the mutex. */
+        tx_thread_sleep(2);
+
+        /* Release the mutex. */
+        status = tx_mutex_put(mutex_0);
+
+        /* Check status. */
+        if (status != TX_SUCCESS)
+            break;
+
+        /* Release the mutex again. This will actually release ownership
+           since it was obtained twice. */
+        status = tx_mutex_put(mutex_0);
+
+        /* Check status. */
+        if (status != TX_SUCCESS)
+            break;
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_modules"><a class="anchor" href="#_building_modules"></a>Building Modules</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Building a module is dependent on the tool chain being used. See <a href="appendix.html" class="xref page">appendix</a> for port-specific examples. Common activities to all ports include the following.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Building a module library</p>
+</li>
+<li>
+<p>Building the module application</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Each module is required to have a <strong>txm_module_preamble</strong> (setup specifically for the module) and the module library (for example, <strong><em>txm.a</em></strong>).</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

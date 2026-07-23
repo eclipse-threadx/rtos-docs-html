@@ -1,0 +1,3969 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 3 - Description of NetX Duo DNS Client Services :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-dns/chapter3.html">
+    <meta name="description" content="This chapter contains a description of all NetX Duo DNS services (listed below) in alphabetic order.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo DNS client user guide</li>
+    <li><a href="chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-dns/chapter3.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 3 - Description of NetX Duo DNS Client Services</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of all NetX Duo DNS services (listed below) in alphabetic order.</p>
+</div>
+<div class="paragraph">
+<p>In the <strong>Return Values</strong> section in the following API descriptions, values in <strong>BOLD</strong> are not affected by the <strong>NX_DISABLE_ERROR_CHECKING</strong> define that is used to disable API error checking, while non-bold values are completely disabled.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_authority_zone_start_get"><a class="anchor" href="#_nx_dns_authority_zone_start_get"></a>nx_dns_authority_zone_start_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Look up the start of the zone of authority for the input host</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_authority_zone_start_get (
+    NX_DNS *dns_ptr, UCHAR *host_name,
+    VOID *record_buffer,
+    UINT buffer_size,
+    UINT *record_count,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>If <strong>NX_DNS_ENABLE_EXTENDED_RR_TYPES</strong> is defined, this service sends a query of type SOA with the specified domain name to obtain the start of the zone of authority for the input domain name. The DNS Client copies the SOA record(s) returned in the DNS Server response into the <em>record_buffer</em> memory location.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <em>record_buffer</em> must be 4-byte aligned to receive the data.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In NetX Duo DNS Client, the SOA record type, NX_DNS_SOA_ENTRY, is saved as seven 4 byte parameters, totaling 28 bytes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>nx_dns_soa_host_mname_ptr</em>: Pointer to primary source of data for this zone.</p>
+</li>
+<li>
+<p><em>nx_dns_soa_host_rname_ptr</em>: Pointer to mailbox responsible for this zone</p>
+</li>
+<li>
+<p><em>nx_dns_soa_serial</em>: Zone version number</p>
+</li>
+<li>
+<p><em>nx_dns_soa_refresh</em>: Refresh interval</p>
+</li>
+<li>
+<p><em>nx_dns_soa_retry</em>: Interval between SOA query retries</p>
+</li>
+<li>
+<p><em>nx_dns_soa_expire</em>: Time duration when SOA expires</p>
+</li>
+<li>
+<p><em>nx_dns_soa_minmum</em>: Minimum TTL field in SOA hostname DNS reply messages</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The storage of a two SOA records is shown below. The SOA records containing fixed length data are entered starting at the top of the buffer. The pointers MNAME and RNAME point to the variable length data (host names) which are stored at the bottom of the buffer. Additional SOA records are entered after the first record ("additional SOA records&#8230;&#8203;") and their variable length data is stored above the last entry&#8217;s variable length data ("additional SOA variable length data"):</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/image4.png" alt="The storage of a two SOA records">
+</div>
+</div>
+<div class="paragraph">
+<p>If the input <em>record_buffer</em> cannot hold all the SOA data in the server reply, the the <em>record_buffer</em> holds as many records as will fit and returns the number of records in the buffer.</p>
+</div>
+<div class="paragraph">
+<p>With the number of SOA records returned in <em>*record_count,</em> the application can parse the data from <em>record_buffer</em> and extract the start of zone authority host name strings.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters"><a class="anchor" href="#_input_parameters"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS Client.</p>
+</li>
+<li>
+<p><em>host_name</em>: Pointer to host name to obtain SOA data for</p>
+</li>
+<li>
+<p><em>record_buffer</em>: Pointer to location to extract SOA data into</p>
+</li>
+<li>
+<p><em>buffer_size</em>: Size of buffer to hold SOA data</p>
+</li>
+<li>
+<p><em>record_count</em>: Pointer to the number of SOA records retrieved</p>
+</li>
+<li>
+<p><em>wait_option</em>: Wait option to receive DNS Server response</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully obtained SOA data</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) Client server list is empty</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) No valid DNS response received</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from"><a class="anchor" href="#_allowed_from"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UCHAR  record_buffer[50];
+UINT   record_count;
+NX_DNS_SOA_ENTRY *nx_dns_soa_entry_ptr;
+
+/* Request the start of authority zone(s) for the specified host. */
+status =  nx_dns_authority_zone_start_get(&amp;client_dns, (UCHAR *)"www.my_example.com",
+										  record _buffer, sizeof(record_buffer),
+										  &amp;record_count, 500);
+
+/* Check for DNS query error. */
+if (status != NX_SUCCESS)
+{
+         error_counter++;
+}
+else
+{
+	/* If status is NX_SUCCESS a DNS query was successfully completed and SOA data
+	   is returned in soa_buffer. */
+
+	/* Set a local pointer to the SOA buffer. */
+	nx_dns_soa_entry_ptr = (NX_DNS_SOA_ENTRY *) record_buffer;
+
+	printf("------------------------------------------------------\n");
+	printf("Test SOA: \n");
+	printf("serial = %d\n", nx_dns_soa_entry_ptr -&gt; nx_dns_soa_serial );
+	printf("refresh = %d\n", nx_dns_soa_entry_ptr -&gt; nx_dns_soa_refresh );
+	printf("retry = %d\n", nx_dns_soa_entry_ptr -&gt; nx_dns_soa_retry );
+	printf("expire = %d\n", nx_dns_soa_entry_ptr -&gt; nx_dns_soa_expire );
+	printf("minmum = %d\n", nx_dns_soa_entry_ptr -&gt; nx_dns_soa_minmum );
+
+	if(nx_dns_soa_entry_ptr -&gt; nx_dns_soa_host_mname_ptr)
+	{
+		printf("host mname = %s\n",
+			   nx_dns_soa_entry_ptr -&gt; nx_dns_soa_host_mname_ptr);
+	}
+	else
+	{
+		printf("host mame is not set\n");
+	}
+
+	if(nx_dns_soa_entry_ptr -&gt; nx_dns_soa_host_rname_ptr)
+	{
+		printf("host rname = %s\n",
+			   nx_dns_soa_entry_ptr -&gt; nx_dns_soa_host_rname_ptr);
+	}
+	else
+	{
+
+		printf("host rname is not set\n");
+	}
+}
+
+[Output]
+----------------------------------------------------
+Test SOA:
+serial = 2012111212
+refresh = 7200
+retry = 1800
+expire = 1209600
+minmum = 300
+host mname = ns1.www.my_example.com
+host rname = dns-admin.www.my_example.com</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_cache_initialize"><a class="anchor" href="#_nx_dns_cache_initialize"></a>nx_dns_cache_initialize</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initialize the DNS Cache</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_cache_initialize(
+    NX_DNS *dns_ptr,
+    VOID *cache_ptr,
+    UINT cache_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates and initializes a DNS Cache.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_2"><a class="anchor" href="#_input_parameters_2"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block.</p>
+</li>
+<li>
+<p><em>cache_ptr</em>: Pointer to DNS Cache.</p>
+</li>
+<li>
+<p><em>cache_size</em>: Size of DNS Cache, in bytes.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) DNS Cache successfully initialized</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non pointer input</p>
+</li>
+<li>
+<p>NX_DNS_CACHE_ERROR (0xB7) Invalid Cache pointer.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid DNS pointer.</p>
+</li>
+<li>
+<p>NX_DNS_ERROR (0xA0) Cache is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_2"><a class="anchor" href="#_allowed_from_2"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Initialize the DNS Cache.  */
+status =  nx_dns_cache_initialize(&amp;my_dns, &amp;dns_cache, 2048);
+
+/* If status is NX_SUCCESS DNS Cache was successfully initialized.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_cache_notify_clear"><a class="anchor" href="#_nx_dns_cache_notify_clear"></a>nx_dns_cache_notify_clear</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clear the DNS Cache full notify function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_cache_notify_clear(NX_DNS *dns_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This service clears the cache full notify function.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_3"><a class="anchor" href="#_input_parameters_3"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) DNS cache notify successfully set</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non-pointer input</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid DNS pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_3"><a class="anchor" href="#_allowed_from_3"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Clear the DNS Cache full notify function. */
+status =  nx_dns_cache_notify_clear(&amp;my_dns);
+
+/* If status is NX_SUCCESS DNS Cache full notify function was successfully cleared. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_cache_notify_set"><a class="anchor" href="#_nx_dns_cache_notify_set"></a>nx_dns_cache_notify_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the DNS Cache full notify function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_cache_notify_set(
+    NX_DNS *dns_ptr,
+    VOID (*cache_full_notify_cb)(NX_DNS *dns_ptr));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the cache full notify function.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_4"><a class="anchor" href="#_input_parameters_4"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block.</p>
+</li>
+<li>
+<p><em>cache_full_notify_cb</em>: The callback function to be invoked when cache become full.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) DNS cache notify successfully set</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non-pointer input</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid DNS pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_4"><a class="anchor" href="#_allowed_from_4"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Set the DNS Cache full notify function. */
+status =  nx_dns_cache_notify_set(&amp;my_dns, cache_full_notify_cb);
+
+/* If status is NX_SUCCESS DNS Cache full notify function was successfully set. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_cname_get"><a class="anchor" href="#_nx_dns_cname_get"></a>nx_dns_cname_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Look up the canonical name for the input hostname</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_cname_get(
+    NX_DNS *dns_ptr,
+    UCHAR *host_name,
+    UCHAR *record_buffer,
+    UINT buffer_size,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>If <strong>NX_DNS_ENABLE_EXTENDED_RR_TYPES</strong> is defined in <em>nxd_dns.h</em>, this service sends a query of type CNAME with the specified domain name to obtain the canonical domain name. The DNS Client copies the CNAME string returned in the DNS Server response into the <em>record_buffer</em> memory location.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_5"><a class="anchor" href="#_input_parameters_5"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS Client.</p>
+</li>
+<li>
+<p><em>host_name</em>: Pointer to host name to obtain CNAME data for</p>
+</li>
+<li>
+<p><em>record_buffer</em>: Pointer to location to extract CNAME data into</p>
+</li>
+<li>
+<p><em>buffer_size</em>: Size of buffer to hold CNAME data</p>
+</li>
+<li>
+<p><em>wait_option</em>: Wait option to receive DNS Server response</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully obtained CNAME data</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) Client server list is empty</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) No valid DNS response received</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non-pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_5"><a class="anchor" href="#_allowed_from_5"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">CHAR            record _buffer[50];
+
+/* Request the canonical name for the specified host. */
+status =  nx_dns_cname_get(&amp;client_dns, (UCHAR *)"www.my_example.com ",
+                                   record_buffer, sizeof(record_buffer), 500);
+
+/* Check for DNS query error. */
+if (status != NX_SUCCESS)
+{
+    error_counter++;
+}
+else
+{
+/* If status is NX_SUCCESS a DNS query was successfully completed and
+   the canonical host name is returned in record_buffer. */
+
+    printf("------------------------------------------------------\n");
+    printf("Test CNAME: %s\n", record_buffer);
+}
+
+[Output]
+----------------------------------------------------
+Test CNAME: my_example.com</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_create"><a class="anchor" href="#_nx_dns_create"></a>nx_dns_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create a DNS Client instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_create(
+    NX_DNS *dns_ptr,
+    NX_IP *ip_ptr,
+    CHAR *domain_name);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates a DNS Client instance for the previously created IP instance.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The application must ensure that the packet payload of the packet pool used by the DNS Client is large enough for the maximum 512 byte DNS message, plus UDP, IP and Ethernet headers. If the DNS Client creates its own packet pool, this is defined by <strong>NX_DNS_PACKET_PAYLOAD</strong> and <strong>NX_DNS_PACKET_POOL_SIZE</strong>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If the DNS Client application prefers to supply a previously created packet pool, the payload for IPv4 DNS Client should be 512 bytes for the maximum DNS plus 20 bytes for the IP header, 8 bytes for the UDP header and 14 bytes for the Ethernet header. For IPv6 the only difference is the IP header is 40 bytes, therefore the packet needs to accommodate the IPv6 header of 40 bytes.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_6"><a class="anchor" href="#_input_parameters_6"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS Client.</p>
+</li>
+<li>
+<p><em>ip_ptr</em>: Pointer to previously created IP instance.</p>
+</li>
+<li>
+<p><em>domain_name</em>: Pointer to domain name for DNS instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful DNS create</p>
+</li>
+<li>
+<p><strong>NX_DNS_ERROR</strong> (0xA0) DNS create error</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_6"><a class="anchor" href="#_allowed_from_6"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_6"><a class="anchor" href="#_example_6"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Create a DNS Client instance. */
+status =  nx_dns_create(&amp;my_dns, &amp;my_ip, "My DNS");
+
+/* If status is NX_SUCCESS a DNS Client instance was successfully
+   created. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_delete"><a class="anchor" href="#_nx_dns_delete"></a>nx_dns_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete a DNS Client instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_delete(NX_DNS *dns_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes a previously created DNS Client instance and frees up its resources.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If NX_DNS_CLIENT_USER_CREATE_PACKET_POOL is defined and the DNS Client was assigned a user defined packet pool, it is up to the application to delete the DNS Client packet pool if it no longer needs it.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_7"><a class="anchor" href="#_input_parameters_7"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to previously created DNS Client instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_7"><a class="anchor" href="#_return_values_7"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful DNS Client delete.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS Client pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_7"><a class="anchor" href="#_allowed_from_7"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_7"><a class="anchor" href="#_example_7"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Delete a DNS Client instance. */
+status =  nx_dns_delete(&amp;my_dns);
+
+/* If status is NX_SUCCESS the DNS Client instance was successfully
+   deleted. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_domain_name_server_get"><a class="anchor" href="#_nx_dns_domain_name_server_get"></a>nx_dns_domain_name_server_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Look up the authoritative name servers for the input domain zone</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_domain_name_server_get(
+    NX_DNS *dns_ptr,
+    UCHAR *host_name,
+    VOID *record_buffer,
+    UINT buffer_size,
+    UINT *record_count,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>If NX_DNS_ENABLE_EXTENDED_RR_TYPES is defined, this service sends a query of type NS with the specified domain name to obtain the name servers for the input domain name. The DNS Client copies the NS record(s) returned in the DNS Server response into the <em>record_buffer</em> memory location.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <em>record_buffer</em> must be 4-byte aligned to receive the data.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In NetX Duo DNS Client the NS data type, NX_DNS_NS_ENTRY, is saved as two 4-byte parameters:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>nx_dns_ns_ipv4_address</em>: Name server&#8217;s IPv4 address</p>
+</li>
+<li>
+<p><em>nx_dns_ns_hostname_ptr</em>: Pointer to the name server&#8217;s hostname</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The buffer shown below contains four NX_DNS_NS_ENTRY records. The pointer to host name string in each entry points to the corresponding host name string in the bottom half of the buffer:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/image5.png" alt="Contains four NX_DNS_NS_ENTRY records">
+</div>
+</div>
+<div class="paragraph">
+<p>If the input <em>record_buffer</em> cannot hold all the NS data in the server reply, the the <em>record_buffer</em> holds as many records as will fit and returns the number of records in the buffer.</p>
+</div>
+<div class="paragraph">
+<p>With the number of NS records returned in <em>*record_count,</em> the application can parse the IP address and host name of each record in the <em>record_buffer</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_8"><a class="anchor" href="#_input_parameters_8"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS Client.</p>
+</li>
+<li>
+<p><em>host_name</em>: Pointer to host name to obtain NS data for</p>
+</li>
+<li>
+<p><em>record_buffer</em>: Pointer to location to extract NS data into</p>
+</li>
+<li>
+<p><em>buffer_size</em>: Size of buffer to hold NS data</p>
+</li>
+<li>
+<p><em>record_count</em>: Pointer to the number of NS records retrieved</p>
+</li>
+<li>
+<p><em>wait_option</em>: Wait option to receive DNS Server response</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_8"><a class="anchor" href="#_return_values_8"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully obtained NS data</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) Client server list is empty</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) No valid DNS response received</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non-pointer input</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_8"><a class="anchor" href="#_allowed_from_8"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">#define RECORD_COUNT    10
+
+ULONG  record_buffer[50];
+UINT   record_count;
+NX_DNS_NS_ENTRY  *nx_dns_ns_entry_ptr[RECORD_COUNT];
+
+/* Request the name server(s) for the specified host. */
+status =  nx_dns_domain_name_server_get(&amp;client_dns, (UCHAR *)" www.my_example.com ",
+									    record_buffer, sizeof(record_buffer),
+									    &amp;record_count, 500);
+
+/* Check for DNS query error. */
+if (status != NX_SUCCESS)
+{
+    error_counter++;
+}
+
+else
+{
+/* If status is NX_SUCCESS a DNS query was successfully completed and NS data
+   is returned in record_buffer. */
+
+    printf("------------------------------------------------------\n");
+    printf("Test NS: ");
+    printf("record_count = %d \n", record_count);
+
+    /* Get the name server. */
+    for(i =0; i&lt; record_count; i++)
+    {
+        nx_dns_ns_entry_ptr[i] = (NX_DNS_NS_ENTRY *)
+							   (record_buffer + i * sizeof(NX_DNS_NS_ENTRY));
+
+        printf("record %d: IP address: %d.%d.%d.%d\n", i,
+                      nx_dns_ns_entry_ptr[i] -&gt; nx_dns_ns_ipv4_address  &gt;&gt; 24,
+                      nx_dns_ns_entry_ptr[i] -&gt; nx_dns_ns_ipv4_address &gt;&gt; 16 &amp; 0xFF,
+                      nx_dns_ns_entry_ptr[i] -&gt; nx_dns_ns_ipv4_address &gt;&gt; 8 &amp; 0xFF,
+                     nx_dns_ns_entry_ptr[i] -&gt; nx_dns_ns_ipv4_address &amp; 0xFF);
+        if(nx_dns_ns_entry_ptr[i] -&gt; nx_dns_ns_hostname_ptr)
+        {
+            printf("hostname = %s\n",
+                    nx_dns_ns_entry_ptr[i] -&gt; nx_dns_ns_hostname_ptr);
+                }
+        else
+            printf("hostname is not set\n");
+    }
+}
+
+[Output]
+------------------------------------------------------
+Test NS: record_count = 4
+record 0: IP address: 192.2.2.10
+hostname = ns2.www.my_example.com
+record 1: IP address: 192.2.2.11
+hostname = ns1.www.my_example.com
+record 2: IP address: 192.2.2.12
+hostname = ns3.www.my_example.com
+record 3: IP address: 192.2.2.13
+hostname = ns4.www.my_example.com</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_domain_mail_exchange_get"><a class="anchor" href="#_nx_dns_domain_mail_exchange_get"></a>nx_dns_domain_mail_exchange_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Look up the mail exchange(s) for the input host name</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_domain_mail_exchange_get(
+    NX_DNS *dns_ptr,
+    UCHAR *host_name,
+    VOID *record_buffer,
+    UINT buffer_size,
+    UINT *record_count,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>If <strong>NX_DNS_ENABLE_EXTENDED_RR_TYPES</strong> is defined, this service sends a query of type MX with the specified domain name to obtain the mail exchange for the input domain name. The DNS Client copies the MX record(s) returned in the DNS Server response into the <em>record_buffer</em> memory location.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <em>record_buffer</em> must be 4-byte aligned to receive the data.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In NetX Duo DNS Client, the mail exchange record type, NX_DNS_MAIL_EXCHANGE_ENTRY, is saved as four parameters, totaling 12 bytes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>nx_dns_mx_ipv4_address</em>: Mail exchange IPv4 address 4 bytes</p>
+</li>
+<li>
+<p><em>nx_dns_mx_preference</em>: Preference 2 bytes</p>
+</li>
+<li>
+<p><em>nx_dns_mx_reserved0</em>: Reserved 2 bytes</p>
+</li>
+<li>
+<p><em>nx_dns_mx_hostname_ptr</em>: Pointer to mail exchange server host name 4 bytes</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A buffer containing four MX records is shown below. Each record contains the fixed length data from the list above. The pointer to the mail exchange server host name points to the corresponding host name at the bottom of the buffer.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/image6.png" alt="A buffer containing four MX records">
+</div>
+</div>
+<div class="paragraph">
+<p>If the input <em>record_buffer</em> cannot hold all the MX data in the server reply, the the <em>record_buffer</em> holds as many records as will fit and returns the number of records in the buffer.</p>
+</div>
+<div class="paragraph">
+<p>With the number of MX records returned in <em>*record_count,</em> the application can parse the MX parameters, including the mail host name of each record in the <em>record_buffer</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_9"><a class="anchor" href="#_input_parameters_9"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS Client.</p>
+</li>
+<li>
+<p><em>host_name</em>: Pointer to host name to obtain MX data for</p>
+</li>
+<li>
+<p><em>record_buffer</em>: Pointer to location to extract MX data into</p>
+</li>
+<li>
+<p><em>buffer_size</em>: Size of buffer to hold MX data</p>
+</li>
+<li>
+<p><em>record_count</em>: Pointer to the number of MX records retrieved</p>
+</li>
+<li>
+<p><em>wait_option</em>: Wait option to receive DNS Server response</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_9"><a class="anchor" href="#_return_values_9"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully obtained MX data</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) Client server list is empty</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) No valid DNS response received</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non-pointer input</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_9"><a class="anchor" href="#_allowed_from_9"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">#define MAX_RECORD_COUNT 10
+
+ULONG  record_buffer[50];
+UINT   record_count;
+NX_DNS_MX_ENTRY  *nx_dns_mx_entry_ptr[MAX_RECORD_COUNT];
+
+/* Request the mail exchange data for the specified host. */
+status =  nx_dns_domain_mail_exchange_get(&amp;client_dns, (UCHAR *)" www.my_example.com ",
+ 										  record_buffer, sizeof(record_buffer),
+										  &amp;record_count, 500);
+
+/* Check for DNS query error. */
+if (status != NX_SUCCESS)
+{
+    error_counter++;
+}
+
+else
+{
+/* If status is NX_SUCCESS a DNS query was successfully completed and MX
+   data is returned in record_buffer. */
+
+    printf("------------------------------------------------------\n");
+    printf("Test MX: ");
+    printf("record_count = %d \n", record_count);
+
+
+    /* Get the mail exchange. */
+    for(i =0; i&lt; record_count; i++)
+    {
+        nx_dns_mx_entry_ptr[i] = (NX_DNS_MX_ENTRY *)
+			   (record_buffer + i * sizeof(NX_DNS_MX_ENTRY));
+
+        printf("record %d: IP address: %d.%d.%d.%d\n", i,
+        	nx_dns_mx_entry_ptr[i] -&gt; nx_dns_mx_ipv4_address &gt;&gt; 24,
+			nx_dns_mx_entry_ptr[i] -&gt; nx_dns_mx_ipv4_address &gt;&gt; 16 &amp; 0xFF,
+        	nx_dns_mx_entry_ptr[i] -&gt; nx_dns_mx_ipv4_address &gt;&gt; 8 &amp; 0xFF,
+			nx_dns_mx_entry_ptr[i] -&gt; nx_dns_mx_ipv4_address &amp; 0xFF);
+
+        printf("preference = %d \n ",
+			nx_dns_mx_entry_ptr[i] -&gt; nx_dns_mx_preference);
+
+		if(nx_dns_mx_entry_ptr[i] -&gt; nx_dns_mx_hostname_ptr)
+        	printf("hostname = %s\n",
+					nx_dns_mx_entry_ptr[i] -&gt; nx_dns_mx_hostname_ptr);
+		else
+        	printf("hostname is not set\n");
+}
+
+
+[Output]
+
+-----------------------------------------------------
+Test MX: record_count = 5
+record 0: IP address: 192.2.2.10
+preference = 40
+hostname = alt3.aspmx.l.www.my_example.com
+record 1: IP address: 192.2.2.11
+preference = 50
+hostname = alt4.aspmx.l.www.my_example.com
+record 2: IP address: 192.2.2.12
+preference = 10
+hostname = aspmx.l.www.my_example.com
+record 3: IP address: 192.2.2.13
+preference = 20
+hostname = alt1.aspmx.l.www.my_example.com
+record 4: IP address: 192.2.2.14
+preference = 30
+hostname = alt2.aspmx.l.www.my_example.com</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_domain_service_get"><a class="anchor" href="#_nx_dns_domain_service_get"></a>nx_dns_domain_service_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Look up the service(s) provided by the input host name</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_domain_service_get (
+    NX_DNS *dns_ptr,
+    UCHAR *host_name,
+    VOID *record_buffer,
+    UINT buffer_size,
+    UINT *record_count,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>If <strong>NX_DNS_ENABLE_EXTENDED_RR_TYPES</strong> is defined, this service sends a query of type SRV with the specified domain name to look up the service(s) and their port number associated with the specified domain. The DNS Client copies the SRV record(s) returned in the DNS Server response into the <em>record_buffer</em> memory location.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <em>record_buffer</em> must be 4-byte aligned to receive the data.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In NetX Duo DNS Client, the service record type, <strong>NX_DNS_SRV_ENTRY</strong>, is saved as six parameters, totaling 16 bytes. This enables variable length SRV data to be stored in a memory efficient manner:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Server IPv4 address</em>: nx_dns_srv_ipv4_address 4 bytes</p>
+</li>
+<li>
+<p><em>Server priority</em>: nx_dns_srv_priority 2 bytes</p>
+</li>
+<li>
+<p><em>Server weight</em>: nx_dns_srv_weight 2 bytes</p>
+</li>
+<li>
+<p><em>Service port number</em>: nx_dns_srv_port_number 2 bytes</p>
+</li>
+<li>
+<p><em>Reserved for 4-byte alignment</em>: nx_dns_srv_reserved0 2 bytes</p>
+</li>
+<li>
+<p><em>Pointer to server host name</em>: *nx_dns_srv_hostname_ptr 4 bytes</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Four SRV records are stored in the supplied buffer. Each NX_DNS_SRV_ENTRY record contains a pointer, <em>nx_dns_srv_hostname_ptr</em>, that points to the corresponding host name string in the bottom of the record buffer:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/image7.png" alt="Four SRV records">
+</div>
+</div>
+<div class="paragraph">
+<p>If the input <em>record_buffer</em> cannot hold all the SRV data in the server reply, the the <em>record_buffer</em> holds as many records as will fit and returns the number of records in the buffer.</p>
+</div>
+<div class="paragraph">
+<p>With the number of SRV records returned in <em>*record_count,</em> the application can parse the SRV parameters, including the server host name of each record in the <em>record_buffer</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_10"><a class="anchor" href="#_input_parameters_10"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS Client.</p>
+</li>
+<li>
+<p><em>host_name</em>: Pointer to host name to obtain SRV data for</p>
+</li>
+<li>
+<p><em>record_buffer</em>: Pointer to location to extract SRV data into</p>
+</li>
+<li>
+<p><em>buffer_size</em>: Size of buffer to hold SRV data</p>
+</li>
+<li>
+<p><em>record_count</em>: Pointer to the number of SRV records retrieved</p>
+</li>
+<li>
+<p><em>wait_option</em>: Wait option to receive DNS Server response</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_10"><a class="anchor" href="#_return_values_10"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully obtained SRV data</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) Client server list is empty</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) No valid DNS response received</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non pointer parameter.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_10"><a class="anchor" href="#_allowed_from_10"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">#define MAX_RECORD_COUNT  10
+
+UCHAR  record_buffer[50];
+UINT   record_count;
+NX_DNS_SRV_ENTRY *nx_dns_srv_entry_ptr[MAX_RECORD_COUNT];
+
+/* Request the service(s) provided by the specified host. */
+status =  nx_dns_domain_service_get(&amp;client_dns, (UCHAR *)"www.my_example.com ",
+								    record_buffer, sizeof(record_buffer),
+								    &amp;record_count, 500);
+
+/* Check for DNS query error. */
+if (status != NX_SUCCESS)
+{
+    error_counter++;
+}
+
+else
+{
+	/* If status is NX_SUCCESS a DNS query was successfully completed and SRV data
+	   is returned in record_buffer. */
+
+		printf("------------------------------------------------------\n");
+		printf("Test SRV: ");
+		printf("record_count = %d \n", record_count);
+
+
+		/* Get the location of services. */
+		for(i =0; i&lt; record_count; i++)
+		{
+			nx_dns_srv_entry_ptr[i] = (NX_DNS_SRV_ENTRY *)
+									(record_buffer + i * sizeof(NX_DNS_SRV_ENTRY));
+
+			printf("record %d: IP address: %d.%d.%d.%d\n", i,
+					nx_dns_srv_entry_ptr[i] -&gt; nx_dns_srv_ipv4_address &gt;&gt; 24,
+					nx_dns_srv_entry_ptr[i] -&gt; nx_dns_srv_ipv4_address &gt;&gt; 16 &amp; 0xFF,
+					nx_dns_srv_entry_ptr[i] -&gt; nx_dns_srv_ipv4_address &gt;&gt; 8 &amp; 0xFF,
+					nx_dns_srv_entry_ptr[i] -&gt; nx_dns_srv_ipv4_address &amp; 0xFF);
+
+		   printf("port number = %d\n",
+				   nx_dns_srv_entry_ptr[i] -&gt; nx_dns_srv_port_number );
+		   printf("priority = %d\n", nx_dns_srv_entry_ptr[i] -&gt; nx_dns_srv_priority );
+		   printf("weight = %d\n", nx_dns_srv_entry_ptr[i] -&gt; nx_dns_srv_weight );
+
+		   if(nx_dns_srv_entry_ptr[i] -&gt; nx_dns_srv_hostname_ptr)
+		   {
+				printf("hostname = %s\n",
+						nx_dns_srv_entry_ptr[i] -&gt; nx_dns_srv_hostname_ptr);
+			}
+		   else
+				printf("hostname is not set\n");
+		}
+}
+
+[Output]
+----------------------------------------------------
+Test SRV: record_count = 3
+record 0: IP address: 192.2.2.10
+port number = 5222
+priority = 20
+weight = 0
+hostname = alt4.xmpp.l.www.my_example.com
+record 1: IP address: 192.2.2.11
+port number = 5222
+priority = 5
+weight = 0
+hostname = xmpp.l.www.my_example.com
+record 2: IP address: 192.2.2.12
+port number = 5222
+priority = 20
+weight = 0
+hostname = alt1.xmpp.l.www.my_example.com</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_get_serverlist_size"><a class="anchor" href="#_nx_dns_get_serverlist_size"></a>nx_dns_get_serverlist_size</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Return the size of the DNS Client&#8217;s Server list</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_get_serverlist_size (
+    NX_DNS *dns_ptr,
+    UINT *size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This service returns the number of valid DNS Servers (both IPv4 and IPv6) in the Client list.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_11"><a class="anchor" href="#_input_parameters_11"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block</p>
+</li>
+<li>
+<p><em>size</em>: Returns the number of servers in the list</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_11"><a class="anchor" href="#_return_values_11"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) DNS Server list size successfully returned</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_11"><a class="anchor" href="#_allowed_from_11"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_11"><a class="anchor" href="#_example_11"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT my_listsize;
+
+/* Get the number of non null DNS Servers in the Client list. */
+status =  nx_dns_get_serverlist_size (&amp;my_dns, 5, &amp;my_listsize);
+
+/* If status is NX_SUCCESS the size of the DNS Server list was successfully
+   returned. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_info_by_name_get"><a class="anchor" href="#_nx_dns_info_by_name_get"></a>nx_dns_info_by_name_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Return ip address and port of DNS server by host name</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_info_by_name_get(
+    NX_DNS *dns_ptr,
+    UCHAR *host_name,
+    ULONG *host_address_ptr,
+    USHORT *host_port_ptr,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>This service returns the Server IP and port (service record) based on the input host name by DNS query. If a service record is not found, this routine returns a zero IP address in the input address pointer and a non-zero error status return to signal an error.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_12"><a class="anchor" href="#_input_parameters_12"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block</p>
+</li>
+<li>
+<p><em>host_name</em>: Pointer to host name buffer</p>
+</li>
+<li>
+<p><em>host_address_ptr</em>: Pointer to address to return</p>
+</li>
+<li>
+<p><em>host_port_ptr</em>: Pointer to port to return</p>
+</li>
+<li>
+<p><em>wait_option</em>: Wait option for the DNS response</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_12"><a class="anchor" href="#_return_values_12"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) DNS Server record successfully returned</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) No DNS Server registered with Client to send query on hostname</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) DNS query failed; no response from any DNS servers in Client list or no service record is available for the input hostname.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_12"><a class="anchor" href="#_allowed_from_12"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_12"><a class="anchor" href="#_example_12"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">ULONG ip_address
+USHORT port;
+
+/* Attempt to resolve the IP address and ports for this host name. */
+status =  nx_dns_info_by_name_get(&amp;my_dns, "www.abc1234.com", &amp;ip_address, &amp;port, 200);
+
+/* If status is NX_SUCCESS the DNS query was successful and the IP address and
+   report for the hostname are returned. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_ipv4_address_by_name_get"><a class="anchor" href="#_nx_dns_ipv4_address_by_name_get"></a>nx_dns_ipv4_address_by_name_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Look up the IPv4 address for the input host name</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ dns_ipv4_address_by_name_get (
+    NX_DNS *dns_ptr,
+    UCHAR *host_name_ptr,
+    VOID *buffer,
+    UINT buffer_size,
+    UINT *record_count,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends a query of Type A with the specified host name to obtain the IP addresses for the input host name. The DNS Client copies the IPv4 address from the A record(s) returned in the DNS Server response into the <em>record_buffer</em> memory location.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <em>record_buffer</em> must be 4-byte aligned to receive the data.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Multiple IPv4 addresses are stored in the 4-byte aligned buffer as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/image8.png" alt="multiple address 4-byte aligned buffer">
+</div>
+</div>
+<div class="paragraph">
+<p>If the supplied buffer cannot hold all the IP address data, the remaining A records are not stored in <em>record_buffer</em>. This enables the application to retrieve one, some or all of the available IP address data in the server reply.</p>
+</div>
+<div class="paragraph">
+<p>With the number of A records returned in <em>*record_count</em> the application can parse the IPv4 address data from the <em>record_buffer</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_13"><a class="anchor" href="#_input_parameters_13"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS Client.</p>
+</li>
+<li>
+<p><em>host_name_ptr</em>: Pointer to host name to obtain IPv4 address</p>
+</li>
+<li>
+<p><em>buffer</em>: Pointer to location to extract IPv4 data into</p>
+</li>
+<li>
+<p><em>buffer_size</em>: Size of buffer to hold IPv4 data</p>
+</li>
+<li>
+<p><em>wait_option</em>: Wait option to receive DNS Server response</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_13"><a class="anchor" href="#_return_values_13"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully obtained IPv4 data</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) Client server list is empty</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) No valid DNS response received</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non pointer parameter.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_13"><a class="anchor" href="#_allowed_from_13"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_13"><a class="anchor" href="#_example_13"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">#define MAX_RECORD_COUNT  20
+
+ULONG           record_buffer[50];
+UINT            record_count;
+ULONG           *ipv4_address_ptr[MAX_RECORD_COUNT];
+
+/* Request the IPv4 address for the specified host. */
+status =  nx_dns_ipv4_address_by_name_get(&amp;client_dns,
+                                          (UCHAR *)"www.my_example.com",
+                                           record_buffer,
+                                           sizeof(record_buffer),&amp;record_count,
+                                           500);
+
+/* Check for DNS query error. */
+if (status != NX_SUCCESS)
+{
+        error_counter++;
+}
+        else
+{
+	/* If status is NX_SUCCESS a DNS query was successfully completed the IPv4
+  	   address(es) is returned in record_buffer. */
+
+
+			printf("------------------------------------------------------\n");
+			printf("Test A: ");
+			printf("record_count = %d \n", record_count);
+
+
+		   /* Get the IPv4 addresses of host. */
+		   for(i =0; i&lt; record_count; i++)
+		   {
+				ipv4_address_ptr[i] = (ULONG *)(record_buffer + i * sizeof(ULONG));
+				printf("record %d: IP address: %d.%d.%d.%d\n", i,
+					*ipv4_address_ptr[i] &gt;&gt; 24,
+					*ipv4_address_ptr[i] &gt;&gt; 16 &amp; 0xFF,
+					*ipv4_address_ptr[i] &gt;&gt; 8 &amp; 0xFF,
+					*ipv4_address_ptr[i] &amp; 0xFF);
+			}
+
+}
+
+[Output]
+
+------------------------------------------------------
+Test A: record_count = 5
+record 0: IP address: 192.2.2.10
+record 1: IP address: 192.2.2.11
+record 2: IP address: 192.2.2.12
+record 3: IP address: 192.2.2.13
+record 4: IP address: 192.2.2.14</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_dns_ipv6_address_by_name_get"><a class="anchor" href="#_nxd_dns_ipv6_address_by_name_get"></a>nxd_dns_ipv6_address_by_name_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Look up the IPv6 address for the input host name</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_14"><a class="anchor" href="#_prototype_14"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nxd_ dns_ipv6_address_by_name_get(
+    NX_DNS *dns_ptr,
+    UCHAR *host_name_ptr,
+     VOID *buffer,
+    UINT buffer_size,
+    UINT *record_count,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_14"><a class="anchor" href="#_description_14"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends a query of type AAAA with the specified domain name to obtain the IP addresses for the input domain name. The DNS Client copies the IPv6 address from the AAAA record(s) returned in the DNS Server response into the <em>record_buffer</em> memory location.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <em>record_buffer</em> must be 4-byte aligned to receive the data.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The format of IPv6 addresses stored in the 4-byte aligned buffer is shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/image9.png" alt="IPv6 format 4-byte aligned buffer">
+</div>
+</div>
+<div class="paragraph">
+<p>If the input <em>record_buffer</em> cannot hold all the AAAA data in the server reply, the the <em>record_buffer</em> holds as many records as will fit and returns the number of records in the buffer.</p>
+</div>
+<div class="paragraph">
+<p>With the number of AAAA records returned in <em>*record_count,</em> the application can parse the IPv6 addresses from each record in the <em>record_buffer</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_14"><a class="anchor" href="#_input_parameters_14"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS Client.</p>
+</li>
+<li>
+<p><em>host_name_ptr</em>: Pointer to host name to obtain IPv6 address</p>
+</li>
+<li>
+<p><em>buffer</em>: Pointer to location to extract IPv6 data into</p>
+</li>
+<li>
+<p><em>buffer_size</em>: Size of buffer to hold IPv6 data</p>
+</li>
+<li>
+<p><em>wait_option</em>: Wait option to receive DNS Server response</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_14"><a class="anchor" href="#_return_values_14"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully obtained IPv6 data</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) Client server list is empty</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) No valid DNS response received</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non pointer parameter.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_14"><a class="anchor" href="#_allowed_from_14"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_14"><a class="anchor" href="#_example_14"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">#define 	 MAX_RECORD_COUNT  20
+
+ULONG           record_buffer[50];
+UINT            record_count;
+NXD_ADDRESS    *ipv6_address_ptr[MAX_RECORD_COUNT];
+
+/* Request the IPv4 address for the specified host. */
+status =  nxd_dns_ipv6_address_by_name_get(&amp;client_dns,
+                                           (UCHAR *)"www.my_example.com",
+                                           record__buffer,
+                                           sizeof(record_buffer),
+                                           &amp;record_count, 500);
+
+/* Check for DNS query error. */
+if (status != NX_SUCCESS)
+{
+        error_counter++;
+}
+        else
+{
+/* If status is NX_SUCCESS a DNS query was successfully completed the IPv6
+	address(es) is (are) returned in record_buffer. */
+
+    printf("------------------------------------------------------\n");
+    printf("Test AAAA: ");
+    printf("record_count = %d \n", record_count);
+
+    /* Get the IPv6 addresses of host. */
+    for(i =0; i&lt; record_count; i++)
+    {
+
+        ipv6_address_ptr[i] =
+            (NX_DNS_IPV6_ADDRESS *)(record_buffer + i * sizeof(NX_DNS_IPV6_ADDRESS));
+
+        printf("record %d: IP address: %x:%x:%x:%x:%x:%x:%x:%x\n", i,
+                ipv6_address_ptr[i] -&gt; ipv6_address[0]  &gt;&gt;16 &amp; 0xFFFF,
+                ipv6_address_ptr[i] -&gt; ipv6_address[0]  &amp; 0xFFFF,
+                ipv6_address_ptr[i] -&gt; ipv6_address[1]  &gt;&gt;16 &amp; 0xFFFF,
+                ipv6_address_ptr[i] -&gt; ipv6_address[1]  &amp; 0xFFFF,
+                ipv6_address_ptr[i] -&gt; ipv6_address[2]  &gt;&gt;16 &amp; 0xFFFF,
+                ipv6_address_ptr[i] -&gt; ipv6_address[2]  &amp; 0xFFFF,
+                ipv6_address_ptr[i] -&gt; ipv6_address[3]  &gt;&gt;16 &amp; 0xFFFF,
+                ipv6_address_ptr[i] -&gt; ipv6_address[3]  &amp; 0xFFFF);
+            }
+}
+
+
+[Output]
+------------------------------------------------------
+Test AAAA: record_count = 1
+record 0: IP address: 2001:0db8:0000:f101: 0000: 0000: 0000:01003</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_host_by_address_get"><a class="anchor" href="#_nx_dns_host_by_address_get"></a>nx_dns_host_by_address_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Look up a host name from an IP address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_15"><a class="anchor" href="#_prototype_15"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_host_by_address_get(
+    NX_DNS *dns_ptr,
+    ULONG ip_address,
+    ULONG *host_name_ptr,
+    ULONG max_host_name_size,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_15"><a class="anchor" href="#_description_15"></a>Description</h3>
+<div class="paragraph">
+<p>This service requests name resolution of the supplied IP address from one or more DNS Servers previously specified by the application. If successful, the NULL-terminated host name is returned in the string specified by <em>host_name_ptr</em>. This is a wrapper function for <em>nxd_dns_host_by_address_get</em> service and does not accept IPv6 addresses.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_15"><a class="anchor" href="#_input_parameters_15"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to previously created DNS instance.</p>
+</li>
+<li>
+<p><em>ip_address</em>: IP address to resolve into a name</p>
+</li>
+<li>
+<p><em>host_name_ptr</em>: Pointer to destination area for host name</p>
+</li>
+<li>
+<p><em>max_host_name_size</em>: Size of destination area for host name</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait in timer ticks for a DNS server response after each DNS query and query retry. The wait options are defined as follows:</p>
+<div class="paragraph">
+<p>timeout value (0x00000001-0xFFFFFFFE) TX_WAIT_FOREVER (0xFFFFFFFF)</p>
+</div>
+<div class="paragraph">
+<p>Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a DNS server responds to the request.</p>
+</div>
+<div class="paragraph">
+<p>Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the DNS resolution.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_15"><a class="anchor" href="#_return_values_15"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful DNS resolution</p>
+</li>
+<li>
+<p><strong>NX_DNS_TIMEOUT</strong> (0xA2) Timed out on obtaining DNS mutex</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) No DNS Server address specified</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) Received no response to query</p>
+</li>
+<li>
+<p><strong>NX_DNS_BAD_ADDRESS_ERROR</strong> (0xA4) Null input address</p>
+</li>
+<li>
+<p><strong>NX_DNS_INVALID_ADDRESS_TYPE</strong> (0xB2) Index points to invalid address type (e.g. IPv6)</p>
+</li>
+<li>
+<p><strong>NX_DNS_PARAM_ERROR</strong> (0xA8) Invalid non pointer input</p>
+</li>
+<li>
+<p><strong>NX_DNS_IPV6_NOT_SUPPORTED</strong> (0xB3) Cannot process record with IPv6 disabled</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_15"><a class="anchor" href="#_allowed_from_15"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+<div class="paragraph">
+<p><strong>Example</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">#define BUFFER_SIZE   200
+
+UCHAR	resolved_name[200];
+
+/* Get the name associated with IP address 192.2.2.10.  */
+status =  nx_dns_host_by_address_get(&amp;my_dns, IP_ADDRESS(192.2.2.10),
+									 &amp;resolved_name[0], BUFFER_SIZE, 450);
+
+/* If status is NX_SUCCESS the name associated with the IP address
+   can be found in the resolved_name variable.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_dns_host_by_address_get"><a class="anchor" href="#_nxd_dns_host_by_address_get"></a>nxd_dns_host_by_address_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Look up a host name from the IP address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_16"><a class="anchor" href="#_prototype_16"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nxd_dns_host_by_address_get(
+    NX_DNS *dns_ptr,
+    NXD_ADDRESS ip_address,
+    ULONG *host_name_ptr,
+    ULONG max_host_name_size,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_16"><a class="anchor" href="#_description_16"></a>Description</h3>
+<div class="paragraph">
+<p>This service requests name resolution of the IPv6 or IPv4 address in the <em>ip_address</em> input argument from one or more DNS Servers previously specified by the application. If successful, the NULL-terminated host name is returned in the string specified by <em>host_name_ptr</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_16"><a class="anchor" href="#_input_parameters_16"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to previously created DNS instance.</p>
+</li>
+<li>
+<p><em>ip_address</em>: IP address to resolve into a name</p>
+</li>
+<li>
+<p><em>host_name_ptr</em>: Pointer to destination area for host name</p>
+</li>
+<li>
+<p><em>max_host_name_size</em>: Size of destination area for host name</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait in timer ticks for a DNS server response after each DNS query and query retry. The wait options are defined as follows:</p>
+<div class="paragraph">
+<p>timeout value (0x00000001 through 0xFFFFFFFE) TX_WAIT_FOREVER (0xFFFFFFFF)</p>
+</div>
+<div class="paragraph">
+<p>Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a DNS server responds to the request.</p>
+</div>
+<div class="paragraph">
+<p>Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the DNS resolution.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_16"><a class="anchor" href="#_return_values_16"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful DNS resolution</p>
+</li>
+<li>
+<p><strong>NX_DNS_TIMEOUT</strong> (0xA2) Timed out on obtaining DNS mutex</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) No DNS Server address specified</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) Received no response to query</p>
+</li>
+<li>
+<p><strong>NX_DNS_BAD_ADDRESS_ERROR</strong> (0xA4) Null input address</p>
+</li>
+<li>
+<p><strong>NX_DNS_IPV6_NOT_SUPPORTED</strong> (0xB3) Cannot process record with IPv6 disabled</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_16"><a class="anchor" href="#_allowed_from_16"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+<div class="paragraph">
+<p><strong>Example</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UCHAR	resolved_name[200];
+NXD_ADDRESS host_address;
+
+host_address.nxd_ip_version = NX_IP_VERSION_V6;
+host_address.nxd_ip_address.v6[0] = 0x20010db8;
+host_address.nxd_ip_address.v6[1] = 0x0;
+host_address.nxd_ip_address.v6[2] = 0xf101;
+host_address.nxd_ip-address.v6[3] = 0x108;
+
+/* Get the name associated with the input host_address. */
+status =  nxd_dns_host_by_address_get(&amp;my_dns, &amp;host_address,
+									  resolved_name, sizeof(resolved_name), 4000);
+
+/* Check for DNS query error. */
+if (status != NX_SUCCESS)
+{
+     error_counter++;
+}
+else
+{
+     printf("------------------------------------------------------\n");
+     printf("Test PTR: %s\n", record_buffer);
+}
+
+/* If status is NX_SUCCESS the name associated with the IP address
+   can be found in the resolved_name variable. */
+
+
+[Output]
+
+ ------------------------------------------------------
+ Test PTR: my_example.net</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_host_by_name_get"><a class="anchor" href="#_nx_dns_host_by_name_get"></a>nx_dns_host_by_name_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Look up an IP address from the host name</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_17"><a class="anchor" href="#_prototype_17"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_host_by_name_get(
+    NX_DNS *dns_ptr,
+    UCHAR *host_name,
+    ULONG *host_address_ptr,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_17"><a class="anchor" href="#_description_17"></a>Description</h3>
+<div class="paragraph">
+<p>This service requests name resolution of the supplied name from one or more DNS Servers previously specified by the application. If successful, the associated IP address is returned in the destination pointed to by host_address_ptr. This is a wrapper function for the <em>nxd_dns_host_by_name_get</em> service, and is limited to IPv4 address input.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_17"><a class="anchor" href="#_input_parameters_17"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to previously created DNS instance.</p>
+</li>
+<li>
+<p><em>host_name</em>: Pointer to host name</p>
+</li>
+<li>
+<p><em>host_address_ptr</em>: DNS Server IP address returned</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the DNS resolution. The wait options are defined as follows:</p>
+<div class="paragraph">
+<p>timeout value (0x00000001 through 0xFFFFFFFE) TX_WAIT_FOREVER (0xFFFFFFFF)</p>
+</div>
+<div class="paragraph">
+<p>Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a DNS server responds to the request.</p>
+</div>
+<div class="paragraph">
+<p>Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the DNS resolution.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_17"><a class="anchor" href="#_return_values_17"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful DNS resolution.</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) No DNS Server address specified</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) Received no response to query</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non pointer input</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_17"><a class="anchor" href="#_allowed_from_17"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+<div class="paragraph">
+<p><strong>Example</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">ULONG host_address;
+
+/* Get the IP address for the name "www.my_example.com". */
+   status =  nx_dns_host_by_name_get(&amp;my_dns, "www.my_example.com", &amp;host_address, 4000);
+
+/* Check for DNS query error. */
+if (status != NX_SUCCESS)
+{
+    error_counter++;
+}
+
+else
+{
+
+	/* If status is NX_SUCCESS the IP address for "www.my_example.com" can be found
+		in the "ip_address" variable. */
+
+    printf("------------------------------------------------------\n");
+    printf("Test A: \n");
+    printf("IP address: %d.%d.%d.%d\n",
+    host_address &gt;&gt; 24,
+    host_address &gt;&gt; 16 &amp; 0xFF,
+    host_address &gt;&gt; 8 &amp; 0xFF,
+    host_address &amp; 0xFF);
+}
+
+[Output]
+ ------------------------------------------------------
+Test A:
+IP address: 192.2.2.10</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_dns_host_by_name_get"><a class="anchor" href="#_nxd_dns_host_by_name_get"></a>nxd_dns_host_by_name_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lookup an IP address from the host name</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_18"><a class="anchor" href="#_prototype_18"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nxd_dns_host_by_name_get(
+    NX_DNS *dns_ptr, ULONG *host_name,
+    NXD_ADDRESS *host_address_ptr,
+    ULONG wait_option,
+    UINT lookup_type);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_18"><a class="anchor" href="#_description_18"></a>Description</h3>
+<div class="paragraph">
+<p>This service requests name resolution of the supplied IP address from one or more DNS Servers previously specified by the application. If successful, the associated IP address is returned in an NXD_ADDRESS pointed to by <em>host_address_ptr</em>. If the caller specifically sets the lookup_type input to NX_IP_VERSION_V6, this service will send out query for a host IPv6 address (AAAA record). If the caller specifically sets the lookup_type input to NX_IP_VERSION_V4, this service will send out query for a host IPv4 address (A record).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_18"><a class="anchor" href="#_input_parameters_18"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to previously created DNS Client instance.</p>
+</li>
+<li>
+<p><em>host_name</em>: Pointer to host name to find an IP address of</p>
+</li>
+<li>
+<p><em>host_address_ptr</em>: Pointer to destination for NXD_ADDRESS containing the IP address</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait in timer ticks for the DNS Server response for each query transmission and retransmission. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>timeout value (0x00000001 through 0xFFFFFFFE) TX_WAIT_FOREVER (0xFFFFFFFF)</p>
+</li>
+<li>
+<p>Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a DNS Server responds to the request.</p>
+</li>
+<li>
+<p>Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the DNS resolution.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>lookup_type</em>: Indicate type of lookup (A vs AAAA).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_18"><a class="anchor" href="#_return_values_18"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful DNS resolution.</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) No DNS Server address specified</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) Received no response to query</p>
+</li>
+<li>
+<p><strong>NX_DNS_BAD_ADDRESS_ERROR</strong> (0xA4) Null input address</p>
+</li>
+<li>
+<p><strong>NX_DNS_IPV6_NOT_SUPPORTED</strong> (0xB3) Cannot process record with IPv6 disabled</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_18"><a class="anchor" href="#_allowed_from_18"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+<div class="paragraph">
+<p><strong>Example</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">NXD_ADDRESS host_ipduo_address;
+
+/* Create an AAAA query to obtain the IPv6 address for the host "www.my_example.com". */
+status =  nxd_dns_host_by_name_get(&amp;my_dns, "www.my_example.com",
+                                   &amp;host_ipduo_address, 4000,
+                                   NX_IP_VERSION_V6);
+
+if (status != NX_SUCCESS)
+{
+        error_counter++;
+}
+else
+{
+/* If status is NX_SUCCESS the IP address for "www.my_example.com" can be
+   found in the "ip_address" variable. */
+
+    printf("------------------------------------------------------\n");
+    printf("Test AAAA: \n");
+
+    printf("IP address: %x:%x:%x:%x:%x:%x:%x:%x\n",
+           host_ipduo_address.nxd_ip_address.v6[0]  &gt;&gt;16 &amp; 0xFFFF,
+           host_ipduo_address.nxd_ip_address.v6[0]  &amp; 0xFFFF,
+           host_ipduo_address.nxd_ip_address.v6[1]  &gt;&gt;16 &amp; 0xFFFF,
+           host_ipduo_address.nxd_ip_address.v6[1]  &amp; 0xFFFF,
+           host_ipduo_address.nxd_ip_address.v6[2]  &gt;&gt;16 &amp; 0xFFFF,
+           host_ipduo_address.nxd_ip_address.v6[2]  &amp; 0xFFFF,
+           host_ipduo_address.nxd_ip_address.v6[3]  &gt;&gt;16 &amp; 0xFFFF,
+           host_ipduo_address.nxd_ip_address.v6[3]  &amp; 0xFFFF);
+}
+
+[Output]
+
+------------------------------------------------------
+Test AAAA:
+IP address: 2607:f8b0:4007:800:0:0:0:1008</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Another example of using this time service, this time using IPv4 addresses and A record types, is shown below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Create a query to obtain the IPv4 address for the host "www.my_example.com". */
+status =  nxd_dns_host_by_name_get(&amp;my_dns, "www.my_example.com", &amp;ip_address, 4000,
+								   NX_IP_VERSION_V4);
+
+/* Check for DNS query error. */
+if (status != NX_SUCCESS)
+{
+    error_counter++;
+}
+else
+{
+/* If status is NX_SUCCESS the IP address for "www.my_example.com" can be
+   found in the "ip_address" variable. */
+
+     printf("------------------------------------------------------\n");
+     printf("Test A: \n");
+     printf("IP address: %d.%d.%d.%d\n",
+			host_ipduo_address.nxd_ip_address.v4 &gt;&gt; 24,
+            host_ipduo_address.nxd_ip_address.v4 &gt;&gt; 16 &amp; 0xFF,
+            host_ipduo_address.nxd_ip_address.v4 &gt;&gt; 8 &amp; 0xFF,
+            host_ipduo_address.nxd_ip_address.v4 &amp; 0xFF);
+ }
+
+[Output]
+
+------------------------------------------------------
+Test A:
+IP address: 192.2.2.10</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_host_text_get"><a class="anchor" href="#_nx_dns_host_text_get"></a>nx_dns_host_text_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Look up the text string for the input domain name</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_19"><a class="anchor" href="#_prototype_19"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_host_text_get(
+    NX_DNS *dns_ptr,
+    UCHAR *host_name,
+    UCHAR *record_buffer,
+    UINT buffer_size,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_19"><a class="anchor" href="#_description_19"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends a query of type TXT with the specified domain name and buffer to obtain the arbitrary string data.</p>
+</div>
+<div class="paragraph">
+<p>The DNS Client copies the text string in the TXT record in the DNS Server response into the <em>record_buffer</em> memory location.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The record_buffer does not need to be 4-byte aligned to receive the data.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_19"><a class="anchor" href="#_input_parameters_19"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS Client.</p>
+</li>
+<li>
+<p><em>host_name</em>: Pointer to name of host to search on</p>
+</li>
+<li>
+<p><em>record_buffer</em>: Pointer to location to extract TXT data into</p>
+</li>
+<li>
+<p><em>buffer_size</em>: Size of buffer to hold TXT data</p>
+</li>
+<li>
+<p><em>wait_option</em>: Wait option to receive DNS Server response</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_19"><a class="anchor" href="#_return_values_19"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully TXT string obtained</p>
+</li>
+<li>
+<p><strong>NX_DNS_NO_SERVER</strong> (0xA1) Client server list is empty</p>
+</li>
+<li>
+<p><strong>NX_DNS_QUERY_FAILED</strong> (0xA3) No valid DNS response received</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+<li>
+<p>NX_DNS_PARAM_ERROR (0xA8) Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_19"><a class="anchor" href="#_allowed_from_19"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+<div class="paragraph">
+<p><strong>Example</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">CHAR            record_buffer[50];
+
+/* Request the text string for the specified host. */
+status =  nx_dns_host_text_get(&amp;client_dns, (UCHAR *)"www.my_example.com",
+							   record_buffer,
+							   sizeof(record_buffer), 500);
+
+
+/* Check for DNS query error. */
+if (status != NX_SUCCESS)
+{
+     error_counter++;
+}
+else
+{
+	/* If status is NX_SUCCESS a DNS query was successfully completed and the
+   	   text string is returned in record_buffer. */
+
+     printf("------------------------------------------------------\n");
+     printf("Test TXT:\n %s\n", record_buffer);
+}
+
+
+[Output]
+
+------------------------------------------------------
+Test TXT:
+v=spf1 include:_www.my_example.com ip4:192.2.2.10/31 ip4:192.2.2.11/31 ~all</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_packet_pool_set"><a class="anchor" href="#_nx_dns_packet_pool_set"></a>nx_dns_packet_pool_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the DNS Client packet pool</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_20"><a class="anchor" href="#_prototype_20"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_packet_pool_set(
+    NX_DNS *dns_ptr,
+    NX_PACKET_POOL *pool_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_20"><a class="anchor" href="#_description_20"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets a previously created packet pool as the DNS Client packet pool. The DNS Client will use this packet pool to send DNS queries, so the packet payload should not be less than <strong>NX_DNS_PACKET_PAYLOAD</strong> which includes the Ethernet, IP and UDP headers and is defined in <strong><em>nxd_dns.h</em></strong>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><em>W</em>hen the DNS Client is deleted, the packet pool is not deleted with it and it is the responsibility of the application to delete the packet pool when it no longer needs it.</p>
+</div>
+<div class="paragraph">
+<p>This service is only available if the configuration option NX_DNS_CLIENT_USER_CREATE_PACKET_POOL is defined in <strong><em>nxd_dns.h</em></strong></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_20"><a class="anchor" href="#_input_parameters_20"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to previously created DNS Client instance.</p>
+</li>
+<li>
+<p><em>pool_ptr</em>: Pointer to previously created packet pool</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_20"><a class="anchor" href="#_return_values_20"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful completion.</p>
+</li>
+<li>
+<p><strong>NX_NOT_ENABLED</strong> (0x14) Client not configured for this option</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS Client pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_20"><a class="anchor" href="#_allowed_from_20"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_15"><a class="anchor" href="#_example_15"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">NXD_DNS my_dns;
+NX_PACKET_POOL client_pool;
+NX_IP *ip_ptr;
+
+
+/* Create the DNS Client. */
+status =  nx_dns_create(&amp;my_dns, ip_ptr, "My DNS Client");
+
+/* Create a packet pool for the DNS Client. */
+status =  nx_packet_pool_create(&amp;client_pool, "DNS Client Packet Pool",
+								NX_DNS_PACKET_PAYLOAD, free_mem_pointer,
+								NX_DNS_PACKET_POOL_SIZE);
+
+/* Set the DNS Client packet pool. */
+status =  nx_dns_packet_pool_set(&amp;my_dns, &amp;client_pool);
+
+/* If status is NX_SUCCESS the DNS Client packet pool was successfully set. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_server_add"><a class="anchor" href="#_nx_dns_server_add"></a>nx_dns_server_add</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add DNS Server IP Address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_21"><a class="anchor" href="#_prototype_21"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_server_add(
+    NX_DNS *dns_ptr,
+    ULONG server_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_21"><a class="anchor" href="#_description_21"></a>Description</h3>
+<div class="paragraph">
+<p>This service adds an IPv4 DNS Server to the server list.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_21"><a class="anchor" href="#_input_parameters_21"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block.</p>
+</li>
+<li>
+<p><em>server_address</em>: IP address of DNS Server</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_21"><a class="anchor" href="#_return_values_21"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully added</p>
+</li>
+<li>
+<p><strong>NX_DNS_DUPLICATE_ENTRY</strong><br>
+<strong>NX_NO_MORE_ENTRIES</strong> (0x17) No more DNS Servers Allowed (list is full)</p>
+</li>
+<li>
+<p><strong>NX_DNS_PARAM_ERROR</strong> (0xA8) Invalid non pointer input</p>
+</li>
+<li>
+<p><strong>NX_DNS_IPV6_NOT_SUPPORTED</strong> (0xB3) Cannot process record with IPv6 disabled</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+<li>
+<p>NX_DNS_BAD_ADDRESS_ERROR (0xA4) Null server address input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_21"><a class="anchor" href="#_allowed_from_21"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_16"><a class="anchor" href="#_example_16"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Add a DNS Server at IP address 202.2.2.13. */
+status =  nx_dns_server_add(&amp;my_dns, IP_ADDRESS(202,2,2,13));
+
+/* If status is NX_SUCCESS a DNS Server was successfully added. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_dns_server_add"><a class="anchor" href="#_nxd_dns_server_add"></a>nxd_dns_server_add</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add DNS Server to the Client list</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_22"><a class="anchor" href="#_prototype_22"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nxd_dns_server_add(
+    NX_DNS *dns_ptr,
+    NXD_ADDRESS *server_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_22"><a class="anchor" href="#_description_22"></a>Description</h3>
+<div class="paragraph">
+<p>This service adds the IP address of a DNS server to the DNS Client server list. The server_address may be either an IPv4 or IPv6 address. If the Client wishes to be able to access the same server by either its IPv4 address or IPv6 address it should add both IP addresses as entries to the server list.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_22"><a class="anchor" href="#_input_parameters_22"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block.</p>
+</li>
+<li>
+<p><em>server_address</em>: Pointer to the NXD_ADDRESS containing the server IP address of DNS Server.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_22"><a class="anchor" href="#_return_values_22"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully added</p>
+</li>
+<li>
+<p><strong>NX_DNS_DUPLICATE_ENTRY</strong><br>
+<strong>NX_NO_MORE_ENTRIES</strong> (0x17) No more DNS Servers allowed (list is full)</p>
+</li>
+<li>
+<p><strong>NX_DNS_IPV6_NOT_SUPPORTED</strong> (0xB3) Cannot process record with IPv6 disabled</p>
+</li>
+<li>
+<p><strong>NX_DNS_PARAM_ERROR</strong> (0xA8) Invalid non pointer input</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+<li>
+<p>NX_DNS_BAD_ADDRESS_ERROR (0xA4) Null server address input</p>
+</li>
+<li>
+<p>NX_DNS_INVALID_ADDRESS_TYPE (0xB2) Index points to invalid address type (e.g. IPv6)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_22"><a class="anchor" href="#_allowed_from_22"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_17"><a class="anchor" href="#_example_17"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">NXD_ADDRESS server_address;
+
+server_address.nxd_ip_version = NX_IP_VERSION_V6;
+server_address.nxd_ip_address.v6[0] = 0x20010db8;
+server_address.nxd_ip_address.v6[1] = 0x0;
+server_address.nxd_ip_address.v6[2] = 0xf101;
+server_address.nxd_ip-address.v6[3] = 0x108;
+
+
+/* Add a DNS Server with the IP address pointed to by the server_address input. */
+status =  nxd_dns_server_add(&amp;my_dns, &amp;server_address);
+
+/* If status is NX_SUCCESS a DNS Server was successfully added. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_server_get"><a class="anchor" href="#_nx_dns_server_get"></a>nx_dns_server_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Return an IPv4 DNS Server from the Client list</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_23"><a class="anchor" href="#_prototype_23"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_server_get(
+    NX_DNS *dns_ptr,
+    UINT index,
+    ULONG *dns_server_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_23"><a class="anchor" href="#_description_23"></a>Description</h3>
+<div class="paragraph">
+<p>This service returns the IPv4 DNS Server address from the server list at the specified index.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The index is zero based. If the input index exceeds the size of the DNS Client list, an IPv6 address is found at that index or a null address is found at the specified index, an error is returned. The <strong><em>nx_dns_get_serverlist_size</em></strong> service may be called first obtain the number of DNS servers in the Client list.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service does only supports IPv4 addresses. It calls the <em>nxd_dns_server_get</em> service which supports both IPv4 and IPv6 addresses.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_23"><a class="anchor" href="#_input_parameters_23"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block</p>
+</li>
+<li>
+<p><em>index</em>: Index into DNS Client&#8217;s list of servers</p>
+</li>
+<li>
+<p><em>dns_server_address</em>: Pointer to IP address of DNS Server</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_23"><a class="anchor" href="#_return_values_23"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful server returned</p>
+</li>
+<li>
+<p><strong>NX_DNS_SERVER_NOT_FOUND</strong> (0xA9) Index points to empty slot</p>
+</li>
+<li>
+<p><strong>NX_DNS_BAD_ADDRESS_ERROR</strong> (0xA4) Index points to Null address</p>
+</li>
+<li>
+<p><strong>NX_DNS_INVALID_ADDRESS_TYPE</strong> (0xB2) Index points to invalid address type (e.g. IPv6)</p>
+</li>
+<li>
+<p><strong>NX_DNS_PARAM_ERROR</strong> (0xA8) Invalid non-pointer input</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_23"><a class="anchor" href="#_allowed_from_23"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_18"><a class="anchor" href="#_example_18"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">ULONG my_server_address;
+
+/* Get the DNS Server at index 5 (zero based) into the Client list. */
+status =  nx_dns_server_get(&amp;my_dns, 5, &amp;my_server_address);
+
+/* If status is NX_SUCCESS a DNS Server was successfully
+   returned. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_dns_server_get"><a class="anchor" href="#_nxd_dns_server_get"></a>nxd_dns_server_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Return a DNS Server from the Client list</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_24"><a class="anchor" href="#_prototype_24"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nxd_dns_server_get(
+    NX_DNS *dns_ptr,
+    UINT index,
+    NXD_ADDRESS *dns_server_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_24"><a class="anchor" href="#_description_24"></a>Description</h3>
+<div class="paragraph">
+<p>This service returns the DNS Server IP address from the server list at the specified index.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The index is zero based. If the input index exceeds the size of the DNS Client list, or a null address is found at the specified index, an error is returned. The <em>nx_dns_get_serverlist_size</em> service may be called first to obtain the number of DNS servers in the server list.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service supports IPv4 and IPv6 addresses.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_24"><a class="anchor" href="#_input_parameters_24"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block</p>
+</li>
+<li>
+<p><em>index</em>: Index into DNS Client&#8217;s list of servers</p>
+</li>
+<li>
+<p><em>dns_server_address</em>: Pointer to IP address of DNS Server</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_24"><a class="anchor" href="#_return_values_24"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully returned server IP address</p>
+</li>
+<li>
+<p><strong>NX_DNS_SERVER_NOT_FOUND</strong> (0xA9) Index points to empty slot</p>
+</li>
+<li>
+<p><strong>NX_DNS_BAD_ADDRESS_ERROR</strong> (0xA4) Index points to null server address</p>
+</li>
+<li>
+<p><strong>NX_DNS_INVALID_ADDRESS_TYPE</strong> (0xB2) Index points to invalid address type (e.g. IPv6)</p>
+</li>
+<li>
+<p><strong>NX_DNS_PARAM_ERROR</strong> (0xA8) Invalid non pointer input</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_24"><a class="anchor" href="#_allowed_from_24"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_19"><a class="anchor" href="#_example_19"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">NXD_ADDRESS my_server_address;
+
+/* Get the DNS Server at index 5 (zero based) into the Client list. */
+status =  nxd_dns_server_get(&amp;my_dns, 5, &amp;my_server_address);
+
+/* If status is NX_SUCCESS a DNS Server was successfully
+   returned. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_server_remove"><a class="anchor" href="#_nx_dns_server_remove"></a>nx_dns_server_remove</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Remove an IPv4 DNS Server from the Client list</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_25"><a class="anchor" href="#_prototype_25"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_server_remove(
+    NX_DNS *dns_ptr,
+    ULONG server_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_25"><a class="anchor" href="#_description_25"></a>Description</h3>
+<div class="paragraph">
+<p>This service removes an IPv4 DNS Server from the Client list. It is a wrapper function for <em>nxd_dns_server_remove</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_25"><a class="anchor" href="#_input_parameters_25"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block.</p>
+</li>
+<li>
+<p><em>server_address</em>: IP address of DNS Server.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_25"><a class="anchor" href="#_return_values_25"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) DNS Server successfully removed</p>
+</li>
+<li>
+<p><strong>NX_DNS_SERVER_NOT_FOUND</strong> (0xA9) Server not in Client list</p>
+</li>
+<li>
+<p><strong>NX_DNS_BAD_ADDRESS_ERROR</strong> (0xA4) Null server address input</p>
+</li>
+<li>
+<p><strong>NX_DNS_IPV6_NOT_SUPPORTED</strong> (0xB3) Cannot process record with IPv6 disabled</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_25"><a class="anchor" href="#_allowed_from_25"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_20"><a class="anchor" href="#_example_20"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Remove the DNS Server at IP address is 202.2.2.13.  */
+status =  nx_dns_server_remove(&amp;my_dns, IP_ADDRESS(202,2,2,13));
+
+/* If status is NX_SUCCESS a DNS Server was successfully
+   removed.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_dns_server_remove"><a class="anchor" href="#_nxd_dns_server_remove"></a>nxd_dns_server_remove</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Remove a DNS Server from the Client list</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_26"><a class="anchor" href="#_prototype_26"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nxd_dns_server_remove(
+    NX_DNS *dns_ptr,
+    NXD_ADDRESS *server_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_26"><a class="anchor" href="#_description_26"></a>Description</h3>
+<div class="paragraph">
+<p>This service removes a DNS Server of the specified IP address from the Client list. The input IP address accepts both IPv4 and IPv6 addresses. After the server is removed, the remaining servers move down one index in the list to fill the vacated slot.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_26"><a class="anchor" href="#_input_parameters_26"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block.</p>
+</li>
+<li>
+<p><em>server_address</em>: Pointer to DNS Server NXD_ADDRESS data containing server IP address.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_26"><a class="anchor" href="#_return_values_26"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) DNS Server successfully removed</p>
+</li>
+<li>
+<p><strong>NX_DNS_SERVER_NOT_FOUND</strong> (0xA9) Server not in Client list</p>
+</li>
+<li>
+<p><strong>NX_DNS_BAD_ADDRESS_ERROR</strong> (0xA4) Null server address input</p>
+</li>
+<li>
+<p><strong>NX_DNS_IPV6_NOT_SUPPORTED</strong> (0xB3) Cannot process record with IPv6 disabled</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+<li>
+<p>NX_DNS_INVALID_ADDRESS_TYPE (0xB2) Index points to invalid address type (e.g. IPv6)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_26"><a class="anchor" href="#_allowed_from_26"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_21"><a class="anchor" href="#_example_21"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">NXD_ADDRESS server_address;
+
+server_address.nxd_ip_version = NX_IP_VERSION_V6;
+server_address.nxd_ip_address.v6[0] = 0x20010db8;
+server_address.nxd_ip_address.v6[1] = 0x0;
+server_address.nxd_ip_address.v6[2] = 0xf101;
+server_address.nxd_ip-address.v6[3] = 0x108;
+
+
+/* Remove the DNS Server at the specified IP address from the Client list. */
+status =  nxd_dns_server_remove(&amp;my_dns,&amp;server_ADDRESS);
+
+/* If status is NX_SUCCESS a DNS Server was successfully removed. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dns_server_remove_all"><a class="anchor" href="#_nx_dns_server_remove_all"></a>nx_dns_server_remove_all</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Remove all DNS Servers from the Client list</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_27"><a class="anchor" href="#_prototype_27"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dns_server_remove_all(NX_DNS *dns_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_27"><a class="anchor" href="#_description_27"></a>Description</h3>
+<div class="paragraph">
+<p>This service removes all DNS Servers from the Client list.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_27"><a class="anchor" href="#_input_parameters_27"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dns_ptr</em>: Pointer to DNS control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_27"><a class="anchor" href="#_return_values_27"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) DNS Servers successfully removed</p>
+</li>
+<li>
+<p><strong>NX_DNS_ERROR</strong> (0xA0) Unable to obtain protection mutex</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid IP or DNS pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_27"><a class="anchor" href="#_allowed_from_27"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_22"><a class="anchor" href="#_example_22"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Remove all DNS Servers from the Client list. */
+status =  nx_dns_server_remove_all(&amp;my_dns);
+
+/* If status is NX_SUCCESS all DNS Servers were successfully removed. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

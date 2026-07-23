@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 1 - Introduction to NetX Duo :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/chapter1.html">
+    <meta name="description" content="This chapter contains an introduction to NetX Duo and a description of its applications and benefits.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">NetX Duo</a></li>
+    <li>NetX Duo user guide</li>
+    <li><a href="chapter1.html">Ch. 1 - Introduction to NetX Duo</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/netx-duo/modules/ROOT/pages/chapter1.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 1 - Introduction to NetX Duo</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo is a high-performance real time implementation of the TCP/IP standards designed exclusively for embedded ThreadX-based applications. This chapter contains an introduction to NetX Duo and a description of its applications and benefits.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_unique_features"><a class="anchor" href="#_netx_duo_unique_features"></a>NetX Duo Unique Features</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Unlike other TCP/IP implementations, NetX Duo is designed to be versatile&#8212;&#8203;easily scaling from small micro-controller-based applications to those that use powerful RISC and DSP processors. This is in sharp contrast to public domain or other commercial implementations originally intended for workstation environments but then squeezed into embedded designs.</p>
+</div>
+<div class="sect2">
+<h3 id="_piconet_architecture"><a class="anchor" href="#_piconet_architecture"></a>Piconet Architecture</h3>
+<div class="paragraph">
+<p>Underlying the superior scalability and performance of NetX Duo is <em>Piconet</em>, a software architecture especially designed for embedded systems. Piconet architecture maximizes scalability by implementing NetX Duo services as a C library. In this way, only those services used by the application are brought into the final runtime image. Hence, the actual size of NetX Duo is determined by the application. For most applications, the instruction image requirements of NetX Duo ranges between 5 KBytes and 30 KBytes in size. With IPv6 and ICMPv6 enabled for IPv6 address configuration and neighbor discovery protocols, NetX Duo ranges in size from 30 kbytes to 45 kbytes.</p>
+</div>
+<div class="paragraph">
+<p>NetX Duo achieves superior network performance by layering internal component function calls only when it is necessary. In addition, much of NetX Duo processing is done directly in-line, resulting in outstanding performance advantages over the workstation network software used in embedded designs in the past.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zero_copy_implementation"><a class="anchor" href="#_zero_copy_implementation"></a>Zero-copy Implementation</h3>
+<div class="paragraph">
+<p>NetX Duo provides a packet-based, zero-copy implementation of TCP/IP. Zero copy means that data in the application&#8217;s packet buffer are never copied inside NetX Duo. This greatly improves performance and frees up valuable processor cycles to the application, which is important in embedded applications.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_udp_fast_path_technology"><a class="anchor" href="#_udp_fast_path_technology"></a>UDP Fast Path Technology</h3>
+<div class="paragraph">
+<p>With <em>UDP Fast Path Technology</em>, NetX Duo provides the fastest possible UDP processing. On the sending side, UDP processing&#8212;&#8203;including the optional UDP checksum&#8212;&#8203;is contained within the <em>*nx_udp_socket_send*</em> service. No additional function calls are made until the packet is ready to be sent via the internal NetX Duo IP send routine. This routine is also flat (that is, its function call nesting is minimal) so the packet is quickly dispatched to the application&#8217;s network driver. When the UDP packet is received, the NetX Duo packet-receive processing places the packet directly on the appropriate UDP socket&#8217;s receive queue or gives it to the first thread suspended waiting for a receive packet from the UDP socket&#8217;s receive queue. No additional ThreadX context switches are necessary.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ansi_c_source_code"><a class="anchor" href="#_ansi_c_source_code"></a>ANSI C Source Code</h3>
+<div class="paragraph">
+<p>NetX Duo is written completely in ANSI C and is portable immediately to virtually any processor architecture that has an ANSI C compiler and ThreadX support.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_not_a_black_box"><a class="anchor" href="#_not_a_black_box"></a>Not A Black Box</h3>
+<div class="paragraph">
+<p>Most distributions of NetX Duo include the complete C source code. This eliminates the "black-box" problems that occur with many commercial network stacks. By using NetX Duo, applications developers can see exactly what the network stack is doing&#8212;&#8203;there are no mysteries!</p>
+</div>
+<div class="paragraph">
+<p>Having the source code also allows for application-specific modifications. Although not recommended, it is beneficial to have the ability to modify the network stack if it is required.</p>
+</div>
+<div class="paragraph">
+<p>These features are especially comforting to developers accustomed to working with in-house or public domain network stacks. They expect to have source code and the ability to modify it. NetX Duo is the ultimate network software for such developers.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bsd_compatible_socket_api"><a class="anchor" href="#_bsd_compatible_socket_api"></a>BSD-Compatible Socket API</h3>
+<div class="paragraph">
+<p>For legacy applications, NetX Duo also provides a BSD-compatible socket interface that makes calls to the high-performance NetX Duo API underneath. This helps in migrating existing network application code to NetX Duo.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rfcs_supported_by_netx_duo"><a class="anchor" href="#_rfcs_supported_by_netx_duo"></a>RFCs Supported by NetX Duo</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo support of RFCs describing basic network protocols includes but is not limited to the following network protocols. NetX Duo follows all general recommendations and basic requirements within the constraints of a real-time operating system with small memory footprint and efficient execution.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>RFC</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 1112</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Host Extensions for IP Multicasting (IGMPv1)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 1122</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requirements for Internet Hosts - Communication Layers</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 2236</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internet Group Management Protocol, Version 2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 768</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User Datagram Protocol (UDP)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 791</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internet Protocol (IP)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 792</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internet Control Message Protocol (ICMP)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 793</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Transmission Control Protocol (TCP)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 826</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ethernet Address Resolution Protocol (ARP)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 903</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reverse Address Resolution Protocol (RARP)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 5681</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TCP Congestion Control</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Below are the IPv6-related RFCs supported by NetX Duo.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>RFC</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 1981</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path MTU Discovery for Internet Protocol v6 (IPv6)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 2460</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internet Protocol v6 (IPv6) Specification</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 2464</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Transmission of IPv6 Packets over Ethernet Networks</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 4291</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internet Protocol v6 (IPv6) Addressing Architecture</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 4443</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internet Control Message Protocol (ICMPv6) for Internet Protocol v6 (IPv6) Specification</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 4861</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Neighbor Discovery for IP v6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC 4862</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IPv6 Stateless Address Auto Configuration</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_embedded_network_applications"><a class="anchor" href="#_embedded_network_applications"></a>Embedded Network Applications</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Embedded network applications are applications that need network access and execute on microprocessors hidden inside products such as cellular phones, communication equipment, automotive engines, laser printers, medical devices, and so forth. Such applications almost always have some memory and performance constraints. Another distinction of embedded network applications is that their software and hardware have a dedicated purpose.</p>
+</div>
+<div class="paragraph">
+<p>Network software that must perform its processing within an exact period of time is called <em>real-time</em> <em>network</em> software, and when time constraints are imposed on network applications, they are classified as real-time applications. Embedded network applications are almost always real time because of their inherent interaction with the external world.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_benefits"><a class="anchor" href="#_netx_duo_benefits"></a>NetX Duo Benefits</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The primary benefits of using NetX Duo for embedded applications are high-speed Internet connectivity and small memory requirements. NetX Duo is also integrated with the high performance, multitasking ThreadX real-time operating system.</p>
+</div>
+<div class="sect2">
+<h3 id="_improved_responsiveness"><a class="anchor" href="#_improved_responsiveness"></a>Improved Responsiveness</h3>
+<div class="paragraph">
+<p>The high-performance NetX Duo protocol stack enables embedded network applications to respond faster than ever before. This is especially important for embedded applications that either have a significant volume of network traffic or stringent processing requirements on a single packet.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_software_maintenance"><a class="anchor" href="#_software_maintenance"></a>Software Maintenance</h3>
+<div class="paragraph">
+<p>Using NetX Duo allows developers to easily partition the network aspects of their embedded application. This partitioning makes the entire development process easy and significantly enhances future software maintenance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_increased_throughput"><a class="anchor" href="#_increased_throughput"></a>Increased Throughput</h3>
+<div class="paragraph">
+<p>NetX Duo provides the highest-performance networking available, which is achieved by minimal packet processing overhead. This also enables increased throughput.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_processor_isolation"><a class="anchor" href="#_processor_isolation"></a>Processor Isolation</h3>
+<div class="paragraph">
+<p>NetX Duo provides a robust, processor-independent interface between the application and the underlying processor and network hardware. This allows developers to concentrate on the network aspects of the application rather than spending extra time dealing with hardware issues directly affecting networking.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ease_of_use"><a class="anchor" href="#_ease_of_use"></a>Ease of Use</h3>
+<div class="paragraph">
+<p>NetX Duo is designed with the application developer in mind. The NetX Duo architecture and service call interface are easy to understand. As a result, NetX Duo developers can quickly use its advanced features.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_improve_time_to_market"><a class="anchor" href="#_improve_time_to_market"></a>Improve Time to Market</h3>
+<div class="paragraph">
+<p>The powerful features of NetX Duo accelerate the software development process. NetX Duo abstracts most processor and network hardware issues, thereby removing these concerns from a majority of application network-specific areas. This, coupled with the ease-of-use and advanced feature set, result in a faster time to market!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_protecting_the_software_investment"><a class="anchor" href="#_protecting_the_software_investment"></a>Protecting the Software Investment</h3>
+<div class="paragraph">
+<p>NetX Duo is written exclusively in ANSI C and is fully integrated with the ThreadX real-time operating system. This means NetX Duo applications are instantly portable to all ThreadX supported processors. Better still, a new processor architecture can be supported with ThreadX in a matter of weeks. As a result, using NetX Duo ensures the application&#8217;s migration path and protects the original development investment.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ipv6_ready_logo_certification"><a class="anchor" href="#_ipv6_ready_logo_certification"></a>IPv6 Ready Logo Certification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo "IPv6 Ready" certification was obtained through the "IPv6 Core Protocol (Phase 2) Self Test" package available from the IPv6 Ready Organization. Refer to the following IPv6-Ready project websites for more information on the test platform and test cases:https://www.ipv6ready.org/[<strong><a href="https://www.ipv6ready.org/" class="bare">https://www.ipv6ready.org/</a></strong>]</p>
+</div>
+<div class="paragraph">
+<p>The Phase 2 IPv6 Core Protocol Self Test Suite validates that an IPv6 stack observes the requirements set forth in the following RFCs with extensive testing:<br>
+Section 1: RFC 2460<br>
+Section 2: RFC 4861<br>
+Section 3: RFC 4862<br>
+Section 4: RFC 1981<br>
+Section 5: RFC 4443</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ixanvl_test"><a class="anchor" href="#_ixanvl_test"></a>IxANVL Test</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo is tested with IxANVL from IXIA. IxANVL is the industry standard for automated network and protocol validation. More information about IxANVL can be found at: <a href="https://www.ipv6ready.org/"><strong>https://www.ixiacom.com/products/ixanvl</strong></a></p>
+</div>
+<div class="paragraph">
+<p>In particular the following NetX Duo modules are tested with IxANVL:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Module</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Standard</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC791 &lt;/br&gt; RFC1122 &lt;/br&gt; RFC894</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ICMP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC792 &lt;/br&gt; RFC1122 &lt;/br&gt; RFC1812</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UDP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC768 &lt;/br&gt; RFC1122</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TCP-Core</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC793 &lt;/br&gt; RFC1122 &lt;/br&gt; RFC2460</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TCP-Advanced</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC1981&lt;/br&gt;RFC2001&lt;/br&gt;RFC2385&lt;/br&gt;RFC2463&lt;/br&gt;RFC813&lt;/br&gt;RFC896</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TCP-Performance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFC793&lt;/br&gt;RFC1323&lt;/br&gt;RFC2018</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_safety_certifications"><a class="anchor" href="#_safety_certifications"></a>Safety Certifications</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_tüv_certification"><a class="anchor" href="#_tüv_certification"></a>TÜV Certification</h3>
+<div class="paragraph">
+<p>NetX Duo has been certified by SGS-TÜV Saar for use in safety-critical systems, according to IEC-61508 SIL 4. The certification confirms that NetX Duo can be used in the development of safety-related software for the highest safety integrity levels of IEC-61508 for the "Functional Safety of electrical, electronic, and programmable electronic safety-related systems." SGS-TUV Saar, formed through a joint venture of Germany&#8217;s SGS-Group and TUV Saarland, has become the leading accredited, independent company for testing, auditing, verifying, and certifying embedded software for safety-related systems worldwide.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/sgs-tuv-saar-logo.png" alt="Diagram of SGS-TÜV Saar certification logo.">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>IEC 61508 up to SIL 4</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ul_certification"><a class="anchor" href="#_ul_certification"></a>UL Certification</h3>
+<div class="paragraph">
+<p>NetX Duo has been certified by UL for compliance with UL 60730-1 Annex H, CSA E60730-1 Annex H, IEC 60730-1 Annex H, UL 60335-1 Annex R, IEC 60335-1 Annex R, and UL 1998 safety standards for software in programmable components. Along with IEC/UL 60730-1, which has requirements for "Controls Using Software" in its Annex H, the IEC 60335-1 standard describes the requirements for "Programmable Electronic Circuits" in its Annex R. IEC 60730 Annex H and IEC 60335-1 Annex R address the safety of MCU hardware and software used in appliances such as washing machines, dishwashers, dryers, refrigerators, freezers, and ovens.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/c-ru-us-logo.png" alt="Diagram of UL certification logo.">
+</div>
+</div>
+<div class="paragraph">
+<p><em>UL/IEC 60730, UL/IEC 60335, UL 1998</em></p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

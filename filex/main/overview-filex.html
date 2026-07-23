@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Overview of FileX :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/filex/main/overview-filex.html">
+    <meta name="description" content="FileX is a high-performance, file allocation table (FAT)-compatible file system that's fully integrated with ThreadX and available for all supported processors. Like ThreadX, FileX is designed to have a small footprint and high performance, making it ideal for today's deeply embedded applications that require file management operations. FileX supports most physical media, including RAM, USBX, SD CARD, and NAND/NOR flash memories via LevelX.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="filex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">FileX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">FileX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">FileX documentation</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="overview-filex.html">Overview of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">FileX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - I/O drivers for FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - FileX fault tolerant module</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - FileX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - FileX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">FileX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">FileX</a></li>
+    <li><a href="overview-filex.html">Overview of FileX</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/filex/modules/ROOT/pages/overview-filex.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Overview of FileX</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>FileX embedded file system is Eclipse ThreadX&#8217;s advanced, industrial grade solution for Eclipse Foundation FAT file formats, designed specifically for deeply embedded, real-time, and IoT applications. FileX supports all of Eclipse Foundation&#8217;s file formats, including FAT12, FAT16, and FAT32. FileX also offers optional fault tolerance and FLASH wear leveling via an add-on product called <a href="../../levelx/main/index.html" class="xref page">LevelX</a>. All of this combined with a small footprint, fast execution, and superior ease-of-use, make FileX the ideal choice for the most demanding embedded IoT applications.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_protocols"><a class="anchor" href="#_api_protocols"></a>API protocols</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_media_services"><a class="anchor" href="#_media_services"></a>Media Services</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>FAT 12/16/32 support</p>
+</li>
+<li>
+<p>Minimal 6KB FLASH, 2.5KB RAM</p>
+</li>
+<li>
+<p>Complete media access services</p>
+</li>
+<li>
+<p>Unlimited number of media instance</p>
+</li>
+<li>
+<p>Simple read/write logical sector driver interface</p>
+</li>
+<li>
+<p>Multiple partition support</p>
+</li>
+<li>
+<p>Logical sector cache</p>
+</li>
+<li>
+<p>FAT entry cache</p>
+</li>
+<li>
+<p>Optional fault tolerance support</p>
+</li>
+<li>
+<p>Deferred Secondary FAT update</p>
+</li>
+<li>
+<p>System-level Trace via TraceX</p>
+</li>
+<li>
+<p>Intuitive media access APIs, including:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>fx_media_open</p>
+</li>
+<li>
+<p>fx_media_close</p>
+</li>
+<li>
+<p>fx_media_format</p>
+</li>
+<li>
+<p>fx_media_space_available</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_services"><a class="anchor" href="#_directory_services"></a>Directory Services</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Up to 256 byte paths</p>
+</li>
+<li>
+<p>Long and 8.3 directory names supported</p>
+</li>
+<li>
+<p>Directory create &amp; delete</p>
+</li>
+<li>
+<p>Directory navigation and traversal</p>
+</li>
+<li>
+<p>Directory attributes management</p>
+</li>
+<li>
+<p>System-level Trace via TraceX</p>
+</li>
+<li>
+<p>Intuitive directory access APIs, including:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>fx_directory_create</p>
+</li>
+<li>
+<p>fx_directory_delete</p>
+</li>
+<li>
+<p>fx_directory_attributes_set</p>
+</li>
+<li>
+<p>fx_directory_attributes_read</p>
+</li>
+<li>
+<p>fx_directory_first_entry_find</p>
+</li>
+<li>
+<p>fx_directory_next_entry_find</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_services"><a class="anchor" href="#_file_services"></a>File Services</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Minimal 3.3KB FLASH</p>
+</li>
+<li>
+<p>Unlimited open files</p>
+</li>
+<li>
+<p>Read-only files can be opened multiple times</p>
+</li>
+<li>
+<p>Long and 8.3 directory names supported</p>
+</li>
+<li>
+<p>Contiguous file support</p>
+</li>
+<li>
+<p>Fast seek logic</p>
+</li>
+<li>
+<p>Pre-allocation of clusters</p>
+</li>
+<li>
+<p>File create, delete, and rename</p>
+</li>
+<li>
+<p>File read, write, and see</p>
+</li>
+<li>
+<p>File attributes management</p>
+</li>
+<li>
+<p>System-level Trace via TraceX</p>
+</li>
+<li>
+<p>Intuitive file access APIs, including:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>fx_file_create</p>
+</li>
+<li>
+<p>fx_file_delete</p>
+</li>
+<li>
+<p>fx_file_attributes_set</p>
+</li>
+<li>
+<p>fx_file_attributes_read</p>
+</li>
+<li>
+<p>fx_file_read</p>
+</li>
+<li>
+<p>fx_file_seek</p>
+</li>
+<li>
+<p>fx_file_write</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_advanced_technology"><a class="anchor" href="#_advanced_technology"></a>Advanced technology</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FileX is advanced technology, including the following.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>FAT 12/16/32 support</p>
+</li>
+<li>
+<p>Multiple partition support</p>
+</li>
+<li>
+<p>Automatic scaling</p>
+</li>
+<li>
+<p>Endian neutral</p>
+</li>
+<li>
+<p>Long file name and 8.3 support</p>
+</li>
+<li>
+<p>Optional fault tolerance support</p>
+</li>
+<li>
+<p>Logical sector cache</p>
+</li>
+<li>
+<p>FAT entry cache</p>
+</li>
+<li>
+<p>Pre-allocation of clusters</p>
+</li>
+<li>
+<p>Contiguous file support</p>
+</li>
+<li>
+<p>Optional performance metrics</p>
+</li>
+<li>
+<p>TraceX system analysis support</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nornand_wear_leveling_levelx"><a class="anchor" href="#_nornand_wear_leveling_levelx"></a>NOR/NAND Wear Leveling (LevelX)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>LevelX is Eclipse Foundation&#8217;s NOR/NAND FLASH wear leveling product. LevelX can be used in conjunction with FileX or as a stand-alone, direct read/write FLASH sector library for the application.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

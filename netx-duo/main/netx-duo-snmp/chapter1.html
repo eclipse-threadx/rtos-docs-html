@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 1 - Introduction to NetX Duo SNMP :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-snmp/chapter1.html">
+    <meta name="description" content="The NetX Duo SNMP implementation is that of an SNMP Agent. An agent is responsible for responding to SNMP Manager's commands and sending event driven traps.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo SNMP user guide</li>
+    <li><a href="chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-snmp/chapter1.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 1 - Introduction to NetX Duo SNMP</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Simple Network Management Protocol (SNMP) is a protocol designed for managing devices on the internet. SNMP is a protocol that utilizes the connectionless User Datagram Protocol (UDP) services to perform its management function. The NetX Duo SNMP implementation is that of an SNMP Agent. An agent is responsible for responding to SNMP Manager&#8217;s commands and sending event driven traps.</p>
+</div>
+<div class="paragraph">
+<p>NetX Duo SNMP supports both IPv4 and IPv6 communication with SNMP Managers. NetX SNMP applications should compile and run in NetX Duo SNMP. However, the developer is encouraged to port existing SNMP applications to using the equivalent "duo" services. For example, when sending SNMP trap messages, the following 'duo' services should replace their NetX equivalent:</p>
+</div>
+<div class="paragraph">
+<p><em>nxd_snmp_object_trap_send</em></p>
+</div>
+<div class="paragraph">
+<p><em>nxd_snmp_object_trapv2_send</em></p>
+</div>
+<div class="paragraph">
+<p><em>nxd_snmp_object_trapv3_send</em></p>
+</div>
+<div class="paragraph">
+<p>For more details, see <strong>Description of SNMP Agent Services</strong> elsewhere in this User Guide for more details.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_snmp_agent_requirements"><a class="anchor" href="#_netx_duo_snmp_agent_requirements"></a>NetX Duo SNMP Agent Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The NetX Duo SNMP package requires that an IP instance has already been created. In addition, UDP must be enabled on that same IP instance.</p>
+</div>
+<div class="paragraph">
+<p>The NetX Duo SNMP Agent has several additional requirements. First, it requires access to port 161 for handling all SNMP manager requests. It also requires access to port 162 for sending trap messages to the Manager.</p>
+</div>
+<div class="paragraph">
+<p>To use NetX Duo SNMP Agent with over IPv6 and to obtain IPv6 objects, IPv6 must be enabled in NetX Duo. See the <strong><em>NetX Duo User Guide</em></strong> for details on enabling the IP instance for IPv6 services.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_snmp_constraints"><a class="anchor" href="#_netx_duo_snmp_constraints"></a>NetX Duo SNMP Constraints</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The NetX Duo SNMP protocol implements SNMP Version 1, 2, and 3. The SNMPv3 implementation supports MD5 and SHA authentication, and DES encryption. This version of the NetX Duo SNMP Agent has the following constraints:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>One SNMP Agent per NetX Duo IP Instance</p>
+</li>
+<li>
+<p>No support for RMON</p>
+</li>
+<li>
+<p>SNMP v3 Inform messages are not supported</p>
+</li>
+<li>
+<p>OPAQUE and NSAP data types are not supported</p>
+</li>
+<li>
+<p>IPv6 addresses are defined as octet strings, and format checking is left to the application.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_snmp_object_names"><a class="anchor" href="#_snmp_object_names"></a>SNMP Object Names</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The SNMP protocol is designed to manage devices on the internet. To accomplish this, each SNMP managed device has a set of objects that are defined by the Structure of Management Information (SMI) as defined by RFC 1155. The structure is a hierarchical tree type of structure that looks like the following:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/image3.png" alt="Diagram of the Structure of Management Information.">
+</div>
+</div>
+<div class="paragraph">
+<p>Each node in the tree is an object. The "dod" object in the tree is identified by the notation 1.3.6, while the "internet" object in the tree is identified by the notation 1.3.6.1. All SNMP object names begin with the notation 1.3.6.</p>
+</div>
+<div class="paragraph">
+<p>An SNMP Manager uses this object notation to specify what object in the device it wishes to get or set. The NetX Duo SNMP Agent interprets such manager requests and provides mechanisms for the application to perform the requested operation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_snmp_manager_requests"><a class="anchor" href="#_snmp_manager_requests"></a>SNMP Manager Requests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The SNMP has a simple mechanism for managing devices. There is a set of standard SNMP commands that are issued by the SNMP Manager to the SNMP device on <em>port 161</em>. The following shows some of the basic SNMP Manager commands:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">SNMP Command</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Get the specified object</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GETNEXT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Get the next logical object after the specified object ID</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GETBULK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Get the multiple logical objects after the specified object ID</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Set the specified object</em></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>These commands are encoded in the Abstract Syntax Notation One (ASN.1) format and reside in the payload of the UDP packet sent by the SNMP Manager. The NetX Duo SNMP Agent processes the request and then calls the corresponding handling routine specified in the <strong><em>nx_snmp_agent_create</em></strong> call.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_snmp_agent_traps"><a class="anchor" href="#_netx_duo_snmp_agent_traps"></a>NetX Duo SNMP Agent Traps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The NetX Duo SNMP Agent provides the ability to also alert an SNMP Manager of events asynchronously. This is done via an SNMP trap command. There is a unique API for each version of SNMP for sending traps to an SNMP Manager. By default, the traps are sent to the SNMP Manager on port 162.</p>
+</div>
+<div class="paragraph">
+<p>The NetX Duo SNMP Agent provides separate security keys for SNMPv3 trap messages. To do so, the SNMP application must create a separate set of keys from those applied to responses to Manager requests. Trap security enables the SNMP Agent to use the same or different passwords for authentication and privacy. For more information on creating security keys, see <strong>NetX Duo SNMP Authentication and Encryption</strong> in the next section.</p>
+</div>
+<div class="paragraph">
+<p>A list of standard SNMP trap variables is enumerated at the top of <em>nxd_snmp.h:</em></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Variables</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">#define NX_SNMP_TRAP_COLDSTART</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">#define NX_SNMP_TRAP_WARMSTART</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">#define NX_SNMP_TRAP_LINKDOWN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">#define NX_SNMP_TRAP_LINKUP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">#define NX_SNMP_TRAP_AUTHENTICATE_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">#define NX_SNMP_TRAP_EGPNEIGHBORLOSS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">#define NX_SNMP_TRAP_ENTERPRISESPECIFIC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>To include these variables in the trap message, the trap_type input argument in <em>nx_snmp_agent_trapv2_send</em> (SNMPv2) or <em>nx_snmp_agent_trapv3_send</em> (SNMPv3) is set to the enumerated value of these variables. An example is shown below for SNMPv2 to notify the SNMP Manager of a cold start event:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT trap_type = NX_SNMP_TRAP_COLDSTART;
+
+status = nx_snmp_agent_trapv2_send(&amp;my_agent, MIB_IP_ADDRESS,
+                                  (UCHAR *)"public", trap_type,
+                                  tx_time_get(), NX_NULL);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To include proprietary variables in the trap message, the trap_type input argument is set to NX_SNMP_TRAP_CUSTOM and the trap list input argument contains the proprietary data. Note that the trap message will contain as the system up time (1.3.6.1.6.3.1.1.4.1.0). An example is shown below for SNMPv2:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">NX_SNMP_TRAP_OBJECT trap_list[3];
+NX_SNMP_OBJECT_DATA trap_data0;
+
+    /* Load the data into the OBJECT. */
+    nx_snmp_object_id_get((void*)"1.3.6.1.4.1.7428.1.3.2.0", &amp;trap_data0);
+
+    /* Update the Trap Object with the object and OID. */
+    trap_list[0].nx_snmp_object_string_ptr = (UCHAR *)"1.3.6.1.6.3.1.1.4.0";
+    trap_list[0].nx_snmp_object_data  = &amp;trap_data0;
+
+    /* Null terminate the trap list. */
+    trap_list[1].nx_snmp_object_string_ptr = NX_NULL;
+
+    status = nx_snmp_agent_trapv2_send(&amp;my_agent, MIB_IP_ADDRESS,
+                                      (UCHAR *)"trapduo",
+                                      NX_SNMP_TRAP_CUSTOM,
+                                      tx_time_get(), trap_list);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_snmp_authentication_and_encryption"><a class="anchor" href="#_netx_duo_snmp_authentication_and_encryption"></a>NetX Duo SNMP Authentication and Encryption</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are two flavors of authentication, namely <em>basic</em> and <em>digest</em>. Basic authentication is equivalent to a simple plain text <em>username</em> authentication found in many protocols. In SNMP basic authentication, the user simply verifies that the supplied username is valid for performing SNMP operations. Basic authentication is the only option for SNMP versions 1 and 2.</p>
+</div>
+<div class="paragraph">
+<p>The main disadvantage of basic authentication is the username is transmitted in plain text. The SNMPv3 digest authentication addresses this problem by never transmitting the username in plain text. Instead, an algorithm is used to derive a 96-bit 'digest' from the username, context engine, and other information. The NetX Duo SNMP Agent supports both MD5 and SHA digest algorithms.</p>
+</div>
+<div class="paragraph">
+<p>To enable authentication, the SNMP Agent must set its Context Engine ID using the <em>nx_snmp_agent_context_engine_set</em> service. The Context Engine ID is used in the creation of the authentication key.</p>
+</div>
+<div class="paragraph">
+<p>Encryption of SNMPv3 data is available using the DES algorithm. Encryption requires that authentication be enabled (one cannot encrypt data without setting the authentication parameters).</p>
+</div>
+<div class="paragraph">
+<p>To create authentication and privacy keys, the following API are used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  _nx_snmp_agent_md5_key_create(NX_SNMP_AGENT *agent_ptr,
+                                    UCHAR *password, NX_SNMP_SECURITY_KEY
+                                   *destination_key)
+
+UINT  _nx_snmp_agent_sha_key_create(NX_SNMP_AGENT *agent_ptr,
+                                    UCHAR *password, NX_SNMP_SECURITY_KEY
+                                   *destination_key)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, the SNMP agent must be configured to use these keys. To register a key with the SNMP agent, the following API are used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  _nx_snmp_agent_authenticate_key_use(NX_SNMP_AGENT *agent_ptr,
+                                          NX_SNMP_SECURITY_KEY *key)
+
+UINT  _nx_snmp_agent_privacy_key_use(NX_SNMP_AGENT *agent_ptr,
+                                    NX_SNMP_SECURITY_KEY *key)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Separate keys can be created for trap messages. To apply keys for trap messages the following API are available:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  _nx_snmp_agent_auth_trap_key_use(NX_SNMP_AGENT *agent_ptr,
+                                       NX_SNMP_SECURITY_KEY *key)
+
+UINT  _nx_snmp_agent_priv_trap_key_use(NX_SNMP_AGENT *agent_ptr,
+                                       NX_SNMP_SECURITY_KEY *key)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To disable authentication or encryption for response messages and sending traps, use these services with the key pointer input set to NULL.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_snmp_community_strings"><a class="anchor" href="#_netx_duo_snmp_community_strings"></a>NetX Duo SNMP Community Strings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The NetX Duo SNMP Agent supports both public and private community strings. The public string is set with the <em>nx_snmp_agent _public_string_set</em> service. The NetX Duo SNMP Agent private string is set using the <em>nx_snmp_agent_private_string_set</em> service.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_snmp_username_callback"><a class="anchor" href="#_netx_duo_snmp_username_callback"></a>NetX Duo SNMP Username Callback</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The NetX Duo SNMP Agent package allows the application to specify (via the <strong><em>nx_snmp_agent_create</em></strong> call) a username callback  that is called at the beginning of handling each SNMP Client request.</p>
+</div>
+<div class="paragraph">
+<p>The callback routine provides the NetX Duo SNMP Agent with the username. If the supplied username is valid or if no username check is necessary for the responding to the request, the username callback should return the value of <strong>NX_SUCCESS</strong>. Otherwise, the routine should return <strong>NX_SNMP_ERROR</strong> to indicate the specified username is invalid.</p>
+</div>
+<div class="paragraph">
+<p>The format of the application username callback routine is defined below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_snmp_agent_username_process(NX_SNMP_AGENT *agent_ptr,
+                                    UCHAR *username);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The input parameters are defined as follows:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>agent_ptr</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to calling SNMP agent</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">username</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Destination for the pointer to the required username</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For SNMPv1 and SNMPv2/v2C sessions, the application will want to examine the community string on an incoming SNMP request to determine if the SNMP request has a valid community string. There are several services for the SNMP application to do this.</p>
+</div>
+<div class="paragraph">
+<p>The SNMP application can inquire if the current SNMP Manager request is a GET (e.g. GET, GETNEXT, or GETBULK) or SET type of request using this service:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_snmp_agent_request_get_type_test(NX_SNMP_AGENT *agent_ptr,
+                                         UINT *is_get_type);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the request is a GET type, the application will want to compare the input community string to the SNMP Agent&#8217;s public string:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_snmp_agent_public_string_test(NX_SNMP_AGENT *agent_ptr,
+                                      UCHAR *username,
+                                      UINT *is_public);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Similarly if the request is a SET type, the application will want to compare the input community string to the SNMP Agent&#8217;s private string:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_snmp_agent_private_string_test(NX_SNMP_AGENT *agent_ptr,
+                                       UCHAR *username,
+                                       UINT *is_private);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The is_public and is_private return values indicate respectively if the input community string is a valid public or private community string.</p>
+</div>
+<div class="paragraph">
+<p>The return value of the username callback routine indicates if the username is valid. The value <strong>NX_SUCCESS</strong> is returned if the username is valid, or <strong>NX_SNMP_ERROR</strong> if the username is invalid.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_snmp_agent_get_callback"><a class="anchor" href="#_netx_duo_snmp_agent_get_callback"></a>NetX Duo SNMP Agent GET Callback</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The application must set a callback routine for handling GET object requests from the SNMP Manager. The callback retrieves the value of the object specified in the request.</p>
+</div>
+<div class="paragraph">
+<p>The application GET request callback routine is defined below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_snmp_agent_get_process(NX_SNMP_AGENT *agent_ptr,
+                               UCHAR *object_requested,
+                               NX_SNMP_OBJECT_DATA *object_data);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The input parameters are defined as follows:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>agent_ptr</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to calling SNMP agent</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object_requested</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ASCII string representing the object ID the GET operation is for.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object_data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data structure to hold the value retrieved by the callback. This can be set with a series of NetX Duo SNMP API&#8217;s described below.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>For octet strings, the object must be assigned the length so that the internal function knows how long the length is since the callback itself does not have a length argument:</em>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">object_data -&gt; nx_snmp_object_octet_string_size = mib2_mib[i].length;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since the type of data is not known to the GET callback, there is no need to check the data type. Length will not have any effect on numeric types or strings which are null delimited.</p>
+</div>
+<div class="paragraph">
+<p>Then call the internal function:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">status = mib2_mib[i].object_get_callback)
+                   (mib2_mib[i].object_value_ptr, object_data);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the callback function cannot find the requested object, the
+<strong>NX_SNMP_ERROR_NOSUCHNAME</strong> error code should be returned. If any
+other error is detected, the <strong>NX_SNMP_ERROR</strong> should be returned.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_snmp_agent_getnext_callback"><a class="anchor" href="#_netx_duo_snmp_agent_getnext_callback"></a>NetX Duo SNMP Agent GETNEXT Callback</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The application must also set the callback routine for GETNEXT object requests from the SNMP Manager. The GETNEXT callback retrieves the value of the next object specified by the request.</p>
+</div>
+<div class="paragraph">
+<p>The application GETNEXT request callback routine is defined below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_snmp_agent_getnext_process(NX_SNMP_AGENT *agent_ptr,
+                                   UCHAR *object_requested,
+                                   NX_SNMP_OBJECT_DATA *object_data);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The input parameters are defined as follows:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>agent_ptr</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to calling SNMP agent</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object_requested</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ASCII string representing the object ID the GETNEXT operation is for.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object_data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data structure to hold the value retrieved by the callback. This can be set with a series of NetX Duo SNMP APIs described below.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Same as is true for GET callbacks, objects with octet string data must be assigned the length so that the internal function knows how long the length is since the callback itself does not have a length argument:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">object_data -&gt; nx_snmp_object_octet_string_size = mib2_mib[i].length;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since the type of data is not known to the GET callback, there is no need to check the data type. Length will not have any effect on numeric types or strings which are null delimited.</p>
+</div>
+<div class="paragraph">
+<p>Then call the internal function:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">status = mib2_mib[i].object_get_callback)
+                   (mib2_mib[i].object_value_ptr, object_data);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the callback function cannot find the requested object, the <strong>NX_SNMP_ERROR_NOSUCHNAME</strong> error code should be returned. If any other error is detected, the <strong>NX_SNMP_ERROR</strong> should be returned.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_snmp_agent_set_callback"><a class="anchor" href="#_netx_duo_snmp_agent_set_callback"></a>NetX Duo SNMP Agent SET Callback</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The application should set the callback routine for handling SET object requests from the SNMP Manager. The SET callback sets the value of the object specified by the request.</p>
+</div>
+<div class="paragraph">
+<p>The application SET request callback routine is defined below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_snmp_agent_set_process(NX_SNMP_AGENT *agent_ptr,
+                               UCHAR *object_requested,
+                               NX_SNMP_OBJECT_DATA *object_data);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The input parameters are defined as follows:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>agent_ptr</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to calling SNMP agent</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object_requested</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ASCII string representing the object ID the SET operation is for.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object_data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data structure that contains the new value for the specified object. The actual operation can be done using the NetX Duo SNMP API&#8217;s described below.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Note that for octet strings, the SET callback should update the MIB table with the length of the data since the SNMP Agent has parsed the data and knows the type and length:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">if (object_data -&gt; nx_snmp_object_data_type ==
+                           NX_SNMP_ANS1_OCTET_STRING)
+{
+    mib2_mib[i].length =
+        object_data -&gt; nx_snmp_object_octet_string_size;
+}
+
+object_data -&gt; nx_snmp_object_octet_string_size =
+                                 mib2_mib[i].length;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the callback function cannot find the requested object, the <strong>NX_SNMP_ERROR_NOSUCHNAME</strong> error code should be returned.</p>
+</div>
+<div class="paragraph">
+<p>If the NetX Duo SNMP host has created private community strings, and the SNMP sender of the SET request does not have the matching private string, it may return an <strong>NX_SNMP_ERROR_NOACCESS</strong> error. If any other error is detected, the <strong>NX_SNMP_ERROR</strong> should be returned.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>Although NetX Duo SNMP Agent supplies an SNMP MIB database with the distribution, it is primarily for testing and development purposes. The developer will likely require a proprietary MIB database for a professional SNMP application.</em>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_changing_snmp_version_at_run_time"><a class="anchor" href="#_changing_snmp_version_at_run_time"></a>Changing SNMP Version at Run Time</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The SNMP Agent host can change SNMP version for each of the three versions at run time using the <em>nx_snmp_agent_set_version</em> service. The SNMP Agent is by default enabled for all three versions when the SNMP Agent is created in <em>nx_snmp_agent_create</em>. However, the application can limit that to a subset of all versions.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>If the configuration options NX_SNMP_DISABLE_V1, NX_SNMP_DISABLE_V2 and/or NX_SNMP_DISABLE_V3 are defined, this function will have no effect enabling the effected versions.</em>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The SNMP Agent can retrieve the SNMP version of the latest SNMP packet received using the <em>nx_snmp_agent_get_current_version</em> service.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_snmpv3_discovery"><a class="anchor" href="#_snmpv3_discovery"></a>SNMPv3 Discovery</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The SNMP Agent, if enabled for SNMPv3, will respond to discovery requests from the SNMP Manager. Such a request contains security parameter data with null values for Authoritative Engine ID, user name, boot count and boot time. Authentication parameters are not applied to the DISCOVERY message. The variable binding list in the request is empty (contains zero items). The SNMP agent responds with a zero boot time and count, and the variable binding list containing 1 item, <em>usmStatsUnknownEngineIDs</em>, which is the count of requests received with an unknown (null) engine ID. On the subsequent GETNEXT request from the Browser/Manager, the boot data and security parameters are filled in only if security is enabled. If so it will also send a NotInTime data update in the PDU. The security parameters, e.g. authentication prove the identity of the Agent to the Manager.</p>
+</div>
+<div class="paragraph">
+<p>More detailed information on SNMPv3 authentication is available in RFC 3414 "User-based Security Model (USM) for version 3 of the Simple Network Management Protocol (SNMPv3)".</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_snmp_rfcs"><a class="anchor" href="#_netx_duo_snmp_rfcs"></a>NetX Duo SNMP RFCs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo SNMP is compliant with RFC1155, RFC1157, RFC1215, RFC1901, RFC1905, RFC1906, RFC1907, RFC1908, RFC2571, RFC2572, RFC2574, RFC2575, RFC 3414 and related RFCs.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

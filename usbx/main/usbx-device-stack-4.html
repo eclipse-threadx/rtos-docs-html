@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Description of USBX Device Services :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/usbx/main/usbx-device-stack-4.html">
+    <meta name="description" content="Learn about the USBX Device Services.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="usbx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">USBX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">USBX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">USBX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-usbx.html">Overview of USBX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-3.html">Ch. 3 - Functional components of USBX device stack</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-2.html">Ch. 2 - USBX device class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-7.html">Ch. 7 - USBX device class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-6.html">Ch. 6 - USBX CDC-ECM class usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-2.html">Ch. 2 - USBX Host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">USBX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">USBX</a></li>
+    <li>USBX device stack user guide</li>
+    <li><a href="usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/usbx/modules/ROOT/pages/usbx-device-stack-4.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Description of USBX Device Services</h1>
+<h3 id="_ux_device_stack_alternate_setting_get" class="discrete">ux_device_stack_alternate_setting_get</h3>
+<div class="paragraph">
+<p>Get current alternate setting for an interface value</p>
+</div>
+<h3 id="_prototype" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_alternate_setting_get(ULONG interface_value);</code></pre>
+</div>
+</div>
+<h3 id="_description" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is used by the USB host to obtain the current alternate setting for a specific interface value. It is called by the controller driver when a <strong>GET_INTERFACE</strong> request is received, to start data stage of the control transfer in background, and return immediately.</p>
+</div>
+<h3 id="_input_parameter" class="discrete">Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Interface_value</em>: Interface value for which the current alternate setting is queried</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_values" class="discrete">Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) Wrong interface value.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG interface_value;
+UINT status;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_alternate_setting_get(interface_value);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_alternate_setting_set" class="discrete">ux_device_stack_alternate_setting_set</h3>
+<div class="paragraph">
+<p>Set current alternate setting for an interface value</p>
+</div>
+<h3 id="_prototype_2" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_alternate_setting_set(
+    ULONG interface_value,
+    ULONG alternate_setting_value);</code></pre>
+</div>
+</div>
+<h3 id="_description_2" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is used by the USB host to set the current alternate setting for a specific interface value. It is called by the controller driver when a <strong>SET_INTERFACE</strong> request is received. When the <strong>SET_INTERFACE</strong> is completed, the values of the alternate settings are applied to the class.</p>
+</div>
+<div class="paragraph">
+<p>The device stack will issue a <strong>UX_SLAVE_CLASS_COMMAND_CHANGE</strong> to the class that owns this interface to reflect the change of alternate setting.</p>
+</div>
+<div class="paragraph">
+<p>The function starts status stage of the control transfer in background, and return immediately.</p>
+</div>
+<h3 id="_parameters" class="discrete">Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>interface_value</em>: Interface value for which the current alternate setting is set.</p>
+</li>
+<li>
+<p><em>alternate_setting_value</em>: The new alternate setting value.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_values_2" class="discrete">Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed.</p>
+</li>
+<li>
+<p><strong>UX_INTERFACE_HANDLE_UNKNOWN</strong> (0x52) No interface attached.</p>
+</li>
+<li>
+<p><strong>UX_FUNCTION_NOT_SUPPORTED</strong> (0x54) Device is not configured.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) Wrong interface value.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_2" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG interface_value;
+
+ULONG alternate_setting_value;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_alternate_setting_set(interface_value, alternate_setting_value);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_class_register" class="discrete">ux_device_stack_class_register</h3>
+<div class="paragraph">
+<p>Register a new USB device class</p>
+</div>
+<h3 id="_prototype_3" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_class_register(
+    UCHAR *class_name,
+    UINT (*class_entry_function)(struct UX_SLAVE_CLASS_COMMAND_STRUCT *),
+    ULONG configuration_number,
+    ULONG interface_number,
+    VOID *parameter);</code></pre>
+</div>
+</div>
+<h3 id="_description_3" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is used by the application to register a new USB device class. This registration starts a class container and not an instance of the class and returns immediately. A class should have an active thread and be attached to a specific interface.</p>
+</div>
+<div class="paragraph">
+<p>Some classes expect a parameter or parameter list. For instance, the device storage class would expect the geometry of the storage device it is trying to emulate. The parameter field is therefore dependent on the class requirement and can be a value or a pointer to a structure filled with the class values.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The C string of class_name must be NULL-terminated and the length of it (without the NULL-terminator itself) must be no larger than <strong>UX_MAX_CLASS_NAME_LENGTH</strong>.
+</td>
+</tr>
+</table>
+</div>
+<h3 id="_parameters_2" class="discrete">Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>class_name</em>: Class Name</p>
+</li>
+<li>
+<p><em>class_entry_function</em>: The entry function of the class.</p>
+</li>
+<li>
+<p><em>configuration_number</em>: The configuration number this class is attached to.</p>
+</li>
+<li>
+<p><em>interface_number</em>: The interface number this class is attached to.</p>
+</li>
+<li>
+<p><em>parameter</em>: A pointer to a class specific parameter list.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_values_3" class="discrete">Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The class was registered</p>
+</li>
+<li>
+<p><strong>UX_MEMORY_INSUFFICIENT</strong> (0x12) No entries left in class table.</p>
+</li>
+<li>
+<p><strong>UX_THREAD_ERROR</strong> (0x16) Cannot create a class thread.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_3" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates this service. */
+
+/* Initialize the device storage class. The class is connected with interface 1 */
+status = ux_device_stack_class_register(_ux_system_slave_class_storage_name ux_device_class_storage_entry,
+    1, 1, (VOID *)&amp;parameter);</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_class_unregister" class="discrete">ux_device_stack_class_unregister</h3>
+<div class="paragraph">
+<p>Unregister a USB device class</p>
+</div>
+<h3 id="_prototype_4" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_class_unregister(
+    UCHAR *class_name,
+    UINT (*class_entry_function)(struct UX_SLAVE_CLASS_COMMAND_STRUCT*));</code></pre>
+</div>
+</div>
+<h3 id="_description_4" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is used by the application to unregister a USB device class and returns immediately.</p>
+</div>
+<div class="paragraph">
+<p>The device stack will issue a <strong>UX_SLAVE_CLASS_COMMAND_UNINITIALIZE</strong> to the class to uninitialized.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The C string of class_name must be NULL-terminated and the
+length of it (without the NULL-terminator itself) must be no larger than <strong>UX_MAX_CLASS_NAME_LENGTH</strong>.
+</td>
+</tr>
+</table>
+</div>
+<h3 id="_parameters_3" class="discrete">Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>class_name</em>: Class Name</p>
+</li>
+<li>
+<p><em>class_entry_function</em>: The entry function of the class.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_values_4" class="discrete">Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The class was unregistered.</p>
+</li>
+<li>
+<p><strong>UX_NO_CLASS_MATCH</strong> (0x57) The class isn&#8217;t registered.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_4" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* The following example illustrates this service. */
+
+/* Unitialize the device storage class. */
+status = ux_device_stack_class_unregister(_ux_system_slave_class_storage_name, ux_device_class_storage_entry);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_configuration_get" class="discrete">ux_device_stack_configuration_get</h3>
+<div class="paragraph">
+<p>Get the current configuration</p>
+</div>
+<h3 id="_prototype_5" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_configuration_get(VOID);</code></pre>
+</div>
+</div>
+<h3 id="_description_5" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is used by the host to obtain the current configuration running in the device. It is called by the controller driver when a GET_CONFIGURATION request is received.  It starts data stage of the control transfer in background, and returns immediately.</p>
+</div>
+<h3 id="_input_parameter_2" class="discrete">Input Parameter</h3>
+<div class="paragraph">
+<p>None</p>
+</div>
+<h3 id="_return_value" class="discrete">Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_5" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_configuration_get();
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_configuration_set" class="discrete">ux_device_stack_configuration_set</h3>
+<div class="paragraph">
+<p>Set the current configuration</p>
+</div>
+<h3 id="_prototype_6" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_configuration_set(ULONG configuration_value);</code></pre>
+</div>
+</div>
+<h3 id="_description_6" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is used by the host to set the current configuration running in the device. Upon reception of this command, the USB device stack will activate the alternate setting 0 of each interface connected to this configuration.</p>
+</div>
+<div class="paragraph">
+<p>The function issues protocol error or starts status stage of the control transfer in background, and return immediately.</p>
+</div>
+<h3 id="_input_parameter_3" class="discrete">Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>configuration_value</em>: The configuration value selected by the host.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_value_2" class="discrete">Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The configuration was successfully set.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_6" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG configuration_value;
+UINT status;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_configuration_set(configuration_value);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_descriptor_send" class="discrete">ux_device_stack_descriptor_send</h3>
+<div class="paragraph">
+<p>Send a descriptor to the host</p>
+</div>
+<h3 id="_prototype_7" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_descriptor_send(
+    ULONG descriptor_type,
+    ULONG request_index,
+    ULONG host_length);</code></pre>
+</div>
+</div>
+<h3 id="_description_7" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is used by the device side to return a descriptor to the host. This descriptor can be a device descriptor, a configuration descriptor or a string descriptor.</p>
+</div>
+<div class="paragraph">
+<p>The function issues protocol error or starts data stage of the control transfer in background, and return immediately.</p>
+</div>
+<h3 id="_parameters_4" class="discrete">Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>descriptor_type</em>: The type of the descriptor. Must be one of the following values.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_DEVICE_DESCRIPTOR_ITEM</strong></p>
+</li>
+<li>
+<p><strong>UX_CONFIGURATION_DESCRIPTOR_ITEM</strong></p>
+</li>
+<li>
+<p><strong>UX_STRING_DESCRIPTOR_ITEM</strong></p>
+</li>
+<li>
+<p><strong>UX_DEVICE_QUALIFIER_DESCRIPTOR_ITEM</strong></p>
+</li>
+<li>
+<p><strong>UX_OTHER_SPEED_DESCRIPTOR_ITEM</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>request_index</em>: The index of the descriptor.</p>
+</li>
+<li>
+<p><em>host_length</em>: The length required by the host.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_values_5" class="discrete">Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) The transfer was not completed.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_7" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG descriptor_type;
+ULONG request_index;
+ULONG host_length;
+UINT status;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_descriptor_send(descriptor_type, request_index, host_length);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_disconnect" class="discrete">ux_device_stack_disconnect</h3>
+<div class="paragraph">
+<p>Disconnect device stack</p>
+</div>
+<h3 id="_prototype_8" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_disconnect(VOID);</code></pre>
+</div>
+</div>
+<h3 id="_description_8" class="discrete">Description</h3>
+<div class="paragraph">
+<p>The VBUS manager calls this function when there is a device disconnection. The device stack will inform all classes registered to this device and will thereafter release all the device resources, and return immediately.</p>
+</div>
+<h3 id="_input_parameter_4" class="discrete">Input Parameter</h3>
+<div class="paragraph">
+<p>None</p>
+</div>
+<h3 id="_return_value_3" class="discrete">Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The device was disconnected.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_8" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_disconnect();
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_endpoint_stall" class="discrete">ux_device_stack_endpoint_stall</h3>
+<div class="paragraph">
+<p>Request endpoint Stall condition</p>
+</div>
+<h3 id="_prototype_9" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_endpoint_stall(UX_SLAVE_ENDPOINT*endpoint);</code></pre>
+</div>
+</div>
+<h3 id="_description_9" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is called by the USB device class when an endpoint should return a Stall condition to the host.</p>
+</div>
+<div class="paragraph">
+<p>The function calls device controller driver to stall the endpoint, and return immediately.</p>
+</div>
+<h3 id="_input_parameter_5" class="discrete">Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>endpoint</em>: The endpoint on which the Stall condition is requested.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_value_4" class="discrete">Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) The device is in an invalid state.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_9" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_endpoint_stall(endpoint);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_host_wakeup" class="discrete">ux_device_stack_host_wakeup</h3>
+<div class="paragraph">
+<p>Wake up the host</p>
+</div>
+<h3 id="_prototype_10" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_host_wakeup(VOID);</code></pre>
+</div>
+</div>
+<h3 id="_description_10" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is called when the device wants to wake up the host. This command is only valid when the device is in suspend mode. It is up to the device application to decide when it wants to wake up the USB host. For instance, a USB modem can wake up a host when it detects a RING signal on the telephone line.</p>
+</div>
+<div class="paragraph">
+<p>The function calls device controller driver to issue the wakeup signal, and return immediately.</p>
+</div>
+<h3 id="_input_parameter_6" class="discrete">Input Parameter</h3>
+<div class="paragraph">
+<p>None</p>
+</div>
+<h3 id="_return_values_6" class="discrete">Return values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The call was successful.</p>
+</li>
+<li>
+<p><strong>UX_FUNCTION_NOT_SUPPORTED</strong> (0x54) The call failed (the device was probably not in the suspended mode).</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) The call failed.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_10" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_host_wakeup();
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_initialize" class="discrete">ux_device_stack_initialize</h3>
+<div class="paragraph">
+<p>Initialize USB device stack</p>
+</div>
+<h3 id="_prototype_11" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_initialize(
+    UCHAR *device_framework_high_speed,
+    ULONG device_framework_length_high_speed,
+    UCHAR *device_framework_full_speed,
+    ULONG device_framework_length_full_speed,
+    UCHAR *string_framework,
+    ULONG string_framework_length,
+    UCHAR *language_id_framework,
+    ULONG language_id_framework_length),
+    UINT (*ux_system_slave_change_function)(ULONG)));</code></pre>
+</div>
+</div>
+<h3 id="_description_11" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is called by the application to initialize the USB device stack. It does not initialize any classes or any controllers. This should be done with separate function calls. This call mainly provides the stack with the device framework for the USB function. It supports both high and full speeds with the possibility to have completely separate device framework for each speed. String framework and multiple languages are supported.</p>
+</div>
+<h3 id="_parameters_5" class="discrete">Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>device_framework_high_speed</em>: Pointer to the high speed framework.</p>
+</li>
+<li>
+<p><em>device_framework_length_high_speed</em>: Length of the high speed framework.</p>
+</li>
+<li>
+<p><em>device_framework_full_speed</em>: Pointer to the full speed framework.</p>
+</li>
+<li>
+<p><em>device_framework_length_full_speed</em>: Length of the full speed framework.</p>
+</li>
+<li>
+<p><em>string_framework</em>: Pointer to string framework.</p>
+</li>
+<li>
+<p><em>string_framework_length</em>: Length of string framework.</p>
+</li>
+<li>
+<p><em>language_id_framework</em>: Pointer to string language framework.</p>
+</li>
+<li>
+<p><em>language_id_framework_length</em>: Length of the string language framework.</p>
+</li>
+<li>
+<p><em>ux_system_slave_change_function</em>: Function to be called when the device state changes.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_values_7" class="discrete">Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_MEMORY_INSUFFICIENT</strong> (0x12) Not enough memory to initialize the stack.</p>
+</li>
+<li>
+<p><strong>UX_DESCRIPTOR_CORRUPTED</strong> (0x42) The descriptor is invalid.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_11" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Example of a device framework */
+
+#define DEVICE_FRAMEWORK_LENGTH_FULL_SPEED 50
+
+UCHAR device_framework_full_speed[] = {
+    /* Device descriptor */
+    0x12, 0x01, 0x10, 0x01, 0x00, 0x00, 0x00, 0x08,
+    0xec, 0x08, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x01,
+
+    /* Configuration descriptor */
+    0x09, 0x02, 0x20, 0x00, 0x01, 0x01, 0x00, 0xc0,
+    0x32,
+
+    /* Interface descriptor */
+    0x09, 0x04, 0x00, 0x00, 0x02, 0x08, 0x06, 0x50,
+    0x00,
+
+    /* Endpoint descriptor (Bulk Out) */
+    0x07, 0x05, 0x01, 0x02, 0x40, 0x00, 0x00,
+
+    /* Endpoint descriptor (Bulk In) */
+    0x07, 0x05, 0x82, 0x02, 0x40, 0x00, 0x00
+};
+
+#define DEVICE_FRAMEWORK_LENGTH_HIGH_SPEED 60
+
+UCHAR device_framework_high_speed[] = {
+    /* Device descriptor */
+    0x12, 0x01, 0x00, 0x02, 0x00, 0x00, 0x00, 0x40,
+    0x0a, 0x07, 0x25, 0x40, 0x01, 0x00, 0x01, 0x02,
+    0x03, 0x01,
+
+    /* Device qualifier descriptor */
+    0x0a, 0x06, 0x00, 0x02, 0x00, 0x00, 0x00, 0x40,
+    0x01, 0x00,
+
+    /* Configuration descriptor */
+    0x09, 0x02, 0x20, 0x00, 0x01, 0x01, 0x00, 0xc0,
+    0x32,
+
+    /* Interface descriptor */
+    0x09, 0x04, 0x00, 0x00, 0x02, 0x08, 0x06, 0x50,
+    0x00,
+
+    /* Endpoint descriptor (Bulk Out) */
+    0x07, 0x05, 0x01, 0x02, 0x00, 0x02, 0x00,
+
+    /* Endpoint descriptor (Bulk In) */
+    0x07, 0x05, 0x82, 0x02, 0x00, 0x02, 0x00
+};
+
+/* String Device Framework:
+    Byte 0 and 1: Word containing the language ID: 0x0904 for US
+    Byte 2 : Byte containing the index of the descriptor
+    Byte 3 : Byte containing the length of the descriptor string */
+
+#define STRING_FRAMEWORK_LENGTH 38 UCHAR string_framework[] = {
+    /* Manufacturer string descriptor: Index 1 */
+    0x09, 0x04, 0x01, 0x0c,
+    0x45, 0x78, 0x70, 0x72,0x65, 0x73, 0x20, 0x4c,
+    0x6f, 0x67, 0x69, 0x63,
+
+    /* Product string descriptor: Index 2 */
+    0x09, 0x04, 0x02, 0x0c,
+    0x4D, 0x4C, 0x36, 0x39, 0x36, 0x35, 0x30, 0x30,
+    0x20, 0x53, 0x44, 0x4B,
+
+    /* Serial Number string descriptor: Index 3 */
+    0x09, 0x04, 0x03, 0x04,
+    0x30, 0x30, 0x30, 0x31
+};
+
+/* Multiple languages are supported on the device, to add a language besides English,
+  the Unicode language code must be appended to the language_id_framework array
+  and the length adjusted accordingly. */
+
+#define LANGUAGE_ID_FRAMEWORK_LENGTH 2
+
+UCHAR language_id_framework[] = {
+    /* English. */
+    0x09, 0x04
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The application can request a call back when the controller changes its state. The two main states for the controller are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_DEVICE_SUSPENDED</strong></p>
+</li>
+<li>
+<p><strong>UX_DEVICE_RESUMED</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If the application does not need Suspend/Resume signals, it would supply a UX_NULL function.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The code below is required for installing the device portion of USBX.
+    There is no call back for device status change in this example. */
+status = ux_device_stack_initialize(&amp;device_framework_high_speed,
+    DEVICE_FRAMEWORK_LENGTH_HIGH_SPEED, &amp;device_framework_full_speed,
+    DEVICE_FRAMEWORK_LENGTH_FULL_SPEED, &amp;string_framework,
+    STRING_FRAMEWORK_LENGTH, &amp;language_id_framework,
+    LANGUAGE_ID_FRAMEWORK_LENGTH, UX_NULL);
+
+/* If status equals UX_SUCCESS, initialization was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_interface_delete" class="discrete">ux_device_stack_interface_delete</h3>
+<div class="paragraph">
+<p>Delete a stack interface</p>
+</div>
+<h3 id="_prototype_12" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_interface_delete(UX_SLAVE_INTERFACE*interface);</code></pre>
+</div>
+</div>
+<h3 id="_description_12" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is called when an interface should be removed. An interface is either removed when a device is extracted, or following a bus reset, or when there is a new alternate setting.</p>
+</div>
+<h3 id="_input_parameter_7" class="discrete">Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>interface</em>: Pointer to the interface to remove.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_value_5" class="discrete">Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_12" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_interface_delete(interface);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_interface_get" class="discrete">ux_device_stack_interface_get</h3>
+<div class="paragraph">
+<p>Get the current interface value</p>
+</div>
+<h3 id="_prototype_13" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_interface_get(UINT interface_value);</code></pre>
+</div>
+</div>
+<h3 id="_description_13" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is called when the host queries the current interface. The device returns the current interface value by transfer in background and returns immediately.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This function is deprecated. It is available for legacy software, but new software should use the <strong><em>ux_device_stack_alternate_setting_get</em></strong> function instead.
+</td>
+</tr>
+</table>
+</div>
+<h3 id="_input_parameter_8" class="discrete">Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>interface_value</em>: Interface value to return.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_values_8" class="discrete">Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) No interface exists.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_13" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG interface_value;
+
+UINT status;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_interface_get(interface_value);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_interface_set" class="discrete">ux_device_stack_interface_set</h3>
+<div class="paragraph">
+<p>Change the alternate setting of the interface</p>
+</div>
+<h3 id="_prototype_14" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_interface_set(
+    UCHAR *device_framework,
+    ULONG device_framework_length,
+    ULONG alternate_setting_value);</code></pre>
+</div>
+</div>
+<h3 id="_description_14" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is called when the host requests a change of the alternate setting for the interface.</p>
+</div>
+<div class="paragraph">
+<p>This function starts status stage of the control transfer in background, and return immediately.</p>
+</div>
+<h3 id="_parameters_6" class="discrete">Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>device_framework</em>: Address of the device framework for this interface.</p>
+</li>
+<li>
+<p><em>device_framework_length</em>: Length of the device framework.</p>
+</li>
+<li>
+<p><em>alternate_setting_value</em>: Alternate setting value to be used by this interface.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_values_9" class="discrete">Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) No interface exists.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_14" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UCHAR * device_framework
+ULONG device_framework_length;
+ULONG alternate_setting_value;
+UINT status;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_interface_set(device_framework,
+    device_framework_length, alternate_setting_value);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_interface_start" class="discrete">ux_device_stack_interface_start</h3>
+<div class="paragraph">
+<p>Start search for a class to own an interface instance</p>
+</div>
+<h3 id="_prototype_15" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_interface_start(UX_SLAVE_INTERFACE*interface);</code></pre>
+</div>
+</div>
+<h3 id="_description_15" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is called when an interface has been selected by the host and the device stack needs to search for a device class to own this interface instance.</p>
+</div>
+<div class="paragraph">
+<p>The device stack will issue a <strong>UX_SLAVE_CLASS_COMMAND_QUERY</strong> to the class that owns this interface to check if class match.</p>
+</div>
+<div class="paragraph">
+<p>This function is not blocking and returns immediately.</p>
+</div>
+<h3 id="_input_parameter_9" class="discrete">Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>interface</em>: Pointer to the interface created.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_values_10" class="discrete">Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_NO_CLASS_MATCH</strong> (0x57) No class exists for this interface.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_15" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates this service. */
+status = ux_device_stack_interface_start(interface);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_transfer_request" class="discrete">ux_device_stack_transfer_request</h3>
+<div class="paragraph">
+<p>Request to transfer data to the host</p>
+</div>
+<h3 id="_prototype_16" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_transfer_request(
+    UX_SLAVE_TRANSFER *transfer_request,
+    ULONG slave_length,
+    ULONG host_length);</code></pre>
+</div>
+</div>
+<h3 id="_description_16" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is called when a class or the stack wants to transfer data to the host. The host always polls the device but the device can prepare data in advance.</p>
+</div>
+<div class="paragraph">
+<p>This function starts transfer in background and return immediately if endpoint is in normal state. If non-control endpoint is halted, when function is invoked, it waits the halt state to be cleared to continue starting transfer.</p>
+</div>
+<h3 id="_parameters_7" class="discrete">Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>transfer_request</em>: Pointer to the transfer request.</p>
+</li>
+<li>
+<p><em>slave_length</em>: Length the device wants to return.</p>
+</li>
+<li>
+<p><em>host_length</em>: Length the host has requested.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_values_11" class="discrete">Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_TRANSFER_NOT_READY</strong> (0x25) The device is in an invalid state; it must be <strong>ATTACHED</strong>, <strong>CONFIGURED</strong>, or <strong>ADDRESSED</strong>.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) Transport error.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_16" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates how to transfer more data than an application requests. */
+while(total_length) {
+    /* How much can we send in this transfer? */
+    if (total_length &gt; UX_SLAVE_CLASS_STORAGE_BUFFER_SIZE)
+        transfer_length = UX_SLAVE_CLASS_STORAGE_BUFFER_SIZE;
+    else
+        transfer_length = total_length;
+
+   /* Copy the Storage Buffer into the transfer request memory. */
+   ux_utility_memory_copy(transfer_request -&gt;  ux_slave_transfer_request_data_pointer,
+       media_memory, transfer_length);
+
+   /* Send the data payload back to the caller. */
+   status = ux_device_transfer_request(transfer_request,
+       transfer_length, transfer_length);
+
+   /* If status equals UX_SUCCESS, the operation was successful. */
+
+   /* Update the buffer address.  */
+    media_memory += transfer_length;
+
+   /* Update the length to remain. */
+    total_length -= transfer_length;
+}</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_transfer_abort" class="discrete">ux_device_stack_transfer_abort</h3>
+<div class="paragraph">
+<p>Cancel a transfer request</p>
+</div>
+<h3 id="_prototype_17" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_transfer_abort(
+    UX_SLAVE_TRANSFER *transfer_request,
+    ULONG completion_code);</code></pre>
+</div>
+</div>
+<h3 id="_description_17" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to cancel a transfer request or when the stack needs to abort a transfer request associated with an endpoint, and return immediately.</p>
+</div>
+<h3 id="_parameters_8" class="discrete">Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>transfer_request</em>: Pointer to the transfer request.</p>
+</li>
+<li>
+<p><em>completion_code</em>: Error code to be returned to the class waiting for this transfer request to complete.</p>
+</li>
+</ul>
+</div>
+<h3 id="_return_value_6" class="discrete">Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+</ul>
+</div>
+<h3 id="_example_17" class="discrete">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates how to abort a transfer when a
+    bus reset has been detected on the bus. */
+status = ux_device_stack_transfer_abort(transfer_request, UX_TRANSFER_BUS_RESET);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+<h3 id="_ux_device_stack_uninitialize" class="discrete">ux_device_stack_uninitialize</h3>
+<div class="paragraph">
+<p>Unitialize stack</p>
+</div>
+<h3 id="_prototype_18" class="discrete">Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_stack_uninitialize();</code></pre>
+</div>
+</div>
+<h3 id="_description_18" class="discrete">Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to unitialize the USBX device stack&#8201;&#8212;&#8201;all device stack resources are freed, and return immediately. This should be called after all classes have been unregistered via ux_device_stack_class_unregister.</p>
+</div>
+<h3 id="_parameters_9" class="discrete">Parameters</h3>
+<div class="paragraph">
+<p>None</p>
+</div>
+<h3 id="_return_value_7" class="discrete">Return Value</h3>
+<div class="paragraph">
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GHSA-467v-6j75-3j7g: Eclipse ThreadX FileX RAM disk driver buffer overflow vulnerability :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/filex/main/security/ghsa-467v-6j75-3j7g.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article security-advisory">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="filex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">FileX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">FileX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">FileX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-filex.html">Overview of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">FileX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - I/O drivers for FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter6.html">Ch. 6 - FileX fault tolerant module</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - FileX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - FileX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">FileX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">FileX</a></li>
+    <li><a href="ghsa-467v-6j75-3j7g.html">GHSA-467v-6j75-3j7g: Eclipse ThreadX FileX RAM disk driver buffer overflow vulnerability</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/filex/modules/ROOT/pages/security/ghsa-467v-6j75-3j7g.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">GHSA-467v-6j75-3j7g: Eclipse ThreadX FileX RAM disk driver buffer overflow vulnerability</h1>
+<div id="preamble">
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">GHSA ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/eclipse-threadx/filex/security/advisories/GHSA-467v-6j75-3j7g">GHSA‑467v‑6j75‑3j7g</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CVE ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2025‑55089</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Severity</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Critical</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CWE</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://cwe.mitre.org/data/definitions/119.html">CWE-119</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Published</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025‑10‑16</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Last updated</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025‑10‑16</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_affected_packages"><a class="anchor" href="#_affected_packages"></a>Affected packages</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 37.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Package</th>
+<th class="tableblock halign-left valign-top">Vulnerable versions</th>
+<th class="tableblock halign-left valign-top">Patched versions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FileX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8656; 6.4.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.4.2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h3>
+<div class="paragraph">
+<p>A buffer overflow vulnerability exists in the FileX RAM disk driver functionality of Eclipse ThreadX FileX git commit 1b85eb2. A specially crafted set of network packets can lead to code execution. An attacker can send a sequence of requests to trigger this vulnerability.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_confirmed_vulnerable_versions"><a class="anchor" href="#_confirmed_vulnerable_versions"></a>Confirmed Vulnerable Versions</h3>
+<div class="paragraph">
+<p>The versions below were either tested or verified to be vulnerable by Talos or confirmed to be vulnerable by the vendor.</p>
+</div>
+<div class="paragraph">
+<p>Eclipse ThreadX FileX git commit 1b85eb2</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_product_urls"><a class="anchor" href="#_product_urls"></a>Product URLs</h3>
+<div class="paragraph">
+<p>Eclipse ThreadX FileX - <a href="https://github.com/eclipse-threadx/filex">https://github.com/eclipse-threadx/filex</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_details"><a class="anchor" href="#_details"></a>Details</h3>
+<div class="paragraph">
+<p>FileX is a high-performance, FAT-compatible file system is seamlessly integrated with the Eclipse ThreadX RTOS and is available for all supported processors. Similar to Eclipse ThreadX RTOS, FileX is designed to be compact and efficient, making it perfect for modern deeply embedded applications that need file management capabilities. FileX supports a variety of physical media, including RAM, Eclipse ThreadX USBX, SD CARD, and NAND/NOR flash memories through Eclipse ThreadX LevelX.</p>
+</div>
+<div class="paragraph">
+<p>The NetXDuo http server sample implementation is used to demonstrate this vulnerability. However, this vulnerability affects any application using the RAM disk driver with a vulnerable configuration. The initial values for configuring the RAM disk driver are copied from that sample code provided in the NetXDuo repository <a href="https://github.com/eclipse-threadx/netxduo/blob/master/samples/demo_netxduo_https.c" class="bare">https://github.com/eclipse-threadx/netxduo/blob/master/samples/demo_netxduo_https.c</a>.</p>
+</div>
+<div class="paragraph">
+<p>The RAM disk driver is initialized during application start up with a call to the function <code>fx_media_format</code>. Below is an example of this initialization:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>fx_media_format(&amp;ram_disk,
+                _fx_ram_driver,               // Driver entry
+                demo.ram_disk_memory,              // RAM disk memory pointer   /*[1] size 4096*/
+                media_memory,              // Media buffer pointer
+                sizeof(media_memory),      // Media buffer size
+                "MY_RAM_DISK",                // Volume Name
+                1,                            // Number of FATs
+                32,                           // Directory Entries
+                0,                            // Hidden sectors
+                256,                          // Total sectors  /*[2]*/
+                512,                          // Sector size    /*[3]*/
+                8,                            // Sectors per cluster
+                1,                            // Heads
+                1);                           // Sectors per track</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Total sectors (<code>[2]</code>) multiplied by Sector size (<code>[3]</code>) equals 131,072 which is much larger than 4096 bytes allocated for the size of the RAM disk memory pointer at <code>[1]</code>. There are no checks performed to ensure that the RAM disk driver is configured properly, which leads to the vulnerability described below.</p>
+</div>
+<div class="paragraph">
+<p>When receiving a PUT request, the NetXDuo http server implementation will create and write the specified file and it&#8217;s contents to the filesystem using the FileX API <code>fx_file_write</code>.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>File: nx_web_http_server.c
+4213: VOID  _nx_web_http_server_put_process(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr)
+4214: {
+...
+4481:         /* Write the content found in this packet.  */
+4482:         status =  fx_file_write(&amp;(server_ptr -&gt; nx_web_http_server_file), (packet_ptr -&gt; nx_packet_prepend_ptr + offset),
+4483:                                 ((ULONG)(packet_ptr -&gt; nx_packet_append_ptr - packet_ptr -&gt; nx_packet_prepend_ptr) - offset));</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After a series of intermediate functions, the RAM disk driver function <code>_fx_ram_driver</code> is called with a <code>WRITE</code> request, which corresponds to the switch case below.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>File: fx_ram_driver.c
+224:     case FX_DRIVER_WRITE:
+225:     {
+226:
+227:         /* Calculate the RAM disk sector offset. Note the RAM disk memory is pointed to by
+228:            the fx_media_driver_info pointer, which is supplied by the application in the
+229:            call to fx_media_open.  */
+230:         destination_buffer =  ((UCHAR *)media_ptr -&gt; fx_media_driver_info) +   /*[4]*/
+231:             ((media_ptr -&gt; fx_media_driver_logical_sector +
+232:               media_ptr -&gt; fx_media_hidden_sectors) *
+233:              media_ptr -&gt; fx_media_bytes_per_sector);
+234:
+235:         /* Copy the source to the RAM sector.  */
+236:         _fx_utility_memory_copy(media_ptr -&gt; fx_media_driver_buffer, destination_buffer,   /*[5]*/
+237:                                 media_ptr -&gt; fx_media_driver_sectors *
+238:                                 media_ptr -&gt; fx_media_bytes_per_sector);
+239:
+240:         /* Successful driver request.  */
+241:         media_ptr -&gt; fx_media_driver_status =  FX_SUCCESS;
+242:         break;
+243:     }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At <code>[4]</code> a pointer to the memory location that should be written to is calculated. The pointer <code>media_ptr &#8594; fx_media_driver_info</code> points to the buffer corresponding to the RAM disk which was provided when the application was initialized at <code>[1]</code>. The value for <code>media_ptr &#8594; fx_media_driver_logical_sector</code> will be incremented until the value provided in the initialization <code>[2]</code>. The value for <code>media_ptr &#8594; fx_media_bytes_per_sector</code> is the Sector size provided during initialization at <code>[3]</code>. The issue is that there is no validation performed to ensure that the calculation above at <code>[4]</code> will not result in the pointer <code>destination_buffer</code> pointing outside the bounds of the provided RAM disk buffer.</p>
+</div>
+<div class="paragraph">
+<p>As you can see below, the function <code>fx_utility_memory_copy</code> at <code>[5]</code> is simply a wrapper for the libc <code>memcpy</code> function. The result is that user supplied data via an HTTP PUT request will overflow the RAM disk buffer. This buffer overflow could overwrite a function pointer in another object leading to code execution.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>File: fx_utility_memory_copy.c
+82: VOID  _fx_utility_memory_copy(UCHAR *source_ptr, UCHAR *dest_ptr, ULONG size)
+83: {
+84:
+85:     /* Copy the memory.  */
+86:     memcpy(dest_ptr, source_ptr, size); /* Use case of memcpy is verified. */
+87: }</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_crash_information"><a class="anchor" href="#_crash_information"></a>Crash Information</h3>
+<div class="literalblock">
+<div class="content">
+<pre>Program received signal SIGSEGV, Segmentation fault.
+0x41414141 in ?? ()
+(gdb) i r
+eax            0x5657c000          1448591360
+ecx            0x1a                26
+edx            0xffffd0f2          -12046
+ebx            0x5657c000          1448591360
+esp            0xffffd0dc          0xffffd0dc
+ebp            0xffffd118          0xffffd118
+esi            0x1                 1
+edi            0x5657c428          1448592424
+eip            0x41414141          0x41414141
+eflags         0x10287             [ CF PF SF IF RF ]
+cs             0x23                35
+ss             0x2b                43
+ds             0x2b                43
+es             0x2b                43
+fs             0x0                 0
+gs             0x63                99
+k0             0x0                 0
+k1             0x0                 0
+k2             0x0                 0
+k3             0x0                 0
+k4             0x0                 0
+k5             0x0                 0
+k6             0x0                 0
+k7             0x0                 0
+(gdb) bt
+#0  0x41414141 in ?? ()
+#1  0x5657667a in server_request_callback (server_ptr=0x5657c428 &lt;my_server&gt;, request_type=1,
+    resource=0x5657c434 &lt;my_server+12&gt; "/test.txt", packet_ptr=0x565881a0)
+    at nx_web_http_server/ramdisk_driver_overflow/http_server_app.c:122
+#2  0x56570364 in _nx_web_http_server_get_process (server_ptr=0x5657c428 &lt;my_server&gt;, request_type=1,
+    packet_ptr=0x565881a0) at netxduo/addons/web/nx_web_http_server.c:3892
+#3  0x5656e10d in _nx_web_http_server_receive_data (tcpserver_ptr=0x5657c660 &lt;my_server+568&gt;,
+    session_ptr=0xffffd2a0) at netxduo/addons/web/nx_web_http_server.c:3242
+#4  0x5655a188 in _nx_tcpserver_start (server_ptr=0x5657c660 &lt;my_server+568&gt;, port=8080, listen_queue_size=4)
+    at nx_tcp_shims.c:970
+#5  0x5656edc2 in _nx_web_http_server_start (http_server_ptr=0x5657c428 &lt;my_server&gt;)
+    at netxduo/addons/web/nx_web_http_server.c:2087
+#6  0x5656ed6c in _nxe_web_http_server_start (http_server_ptr=0x5657c428 &lt;my_server&gt;)
+    at netxduo/addons/web/nx_web_http_server.c:2029
+#7  0x565765cc in https_server_thread_entry (thread_input=0)
+    at nx_web_http_server/ramdisk_driver_overflow/http_server_app.c:235
+#8  0x5655a533 in _txe_thread_create (thread_ptr=0x5657cd28 &lt;server_thread&gt;,
+    name_ptr=0x565772f2 "HTTP Server thread", entry_function=0x565761c0 &lt;https_server_thread_entry&gt;,
+    entry_input=0, stack_start=0x5658cca0, stack_size=4096, priority=4, preempt_threshold=4, time_slice=0,
+    auto_start=1, thread_control_block_size=212) at tx_shims.c:146
+#9  0x565761aa in tx_application_define (first_unused_memory=0x565881a0)
+    at nx_web_http_server/ramdisk_driver_overflow/http_server_app.c:103
+#10 0x5655a4aa in _tx_initialize_kernel_enter () at tx_shims.c:75
+#11 0x56576096 in main () at nx_web_http_server/ramdisk_driver_overflow/http_server_app.c:52
+(gdb)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mitigation"><a class="anchor" href="#_mitigation"></a>Mitigation</h3>
+<div class="paragraph">
+<p>Developers should ensure that the provided values for total sectors multiplied by sector size are less than the size of the buffer provided for the ram disk memory when initializing the ramdisk with the call to <code>fx_media_format</code>. In reference to the call above <code>fx_media_format</code> ensure that <code>[2]</code>*<code>[3]</code> &lt; <code>sizeof([1])</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_credit"><a class="anchor" href="#_credit"></a>Credit</h3>
+<div class="paragraph">
+<p>Discovered by Kelly Patterson of Cisco Talos.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://talosintelligence.com/vulnerability_reports/" class="bare">https://talosintelligence.com/vulnerability_reports/</a></p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

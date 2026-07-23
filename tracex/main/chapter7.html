@@ -1,0 +1,3333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 7 - FileX trace events :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/tracex/main/chapter7.html">
+    <meta name="description" content="This chapter contains a description of the FileX events.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="tracex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">TraceX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">TraceX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">TraceX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-tracex.html">Overview of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">TraceX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - TraceX performance analysis</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Generating trace buffers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - ThreadX trace events</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter7.html">Ch. 7 - FileX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter8.html">Ch. 8 - NetX Duo trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter9.html">Ch. 9 - USBX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter10.html">Ch. 10 - Customer user events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter11.html">Ch. 11 - Format of event trace buffer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - Sample tx_port.h</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - The tx_trace.h File</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - DOS command-line utilities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - Dumping and trace buffer</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">TraceX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">TraceX</a></li>
+    <li>TraceX user guide</li>
+    <li><a href="chapter7.html">Ch. 7 - FileX trace events</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/tracex/modules/ROOT/pages/chapter7.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 7 - FileX trace events</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of the FileX events.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_list_of_events_and_icons"><a class="anchor" href="#_list_of_events_and_icons"></a>List of Events and Icons</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>The following is a list of FileX events displayed by TraceX.</strong></p>
+</div>
+<div class="paragraph">
+<p>The following describes each event:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Icon</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Meaning</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image1.png" alt="Internal Logical Sector Cache Miss icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal Logical Sector Cache Miss</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image2.png" alt="Internal Directory Cache Miss icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal Directory Cache Miss</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image3.png" alt="Internal Media Flush icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal Media Flush</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image4.png" alt="Internal Directory Entry Read icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal Directory Entry Read</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image5.png" alt="Internal Directory Entry Write icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal Directory Entry Write</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image6.png" alt="Internal I / O Driver Read icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal I/O Driver Read</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image7.png" alt="Internal I / O Driver Write icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal I/O Driver Write</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image8.png" alt="Internal I / O Driver Flush icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal I/O Driver Flush</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image9.png" alt="Internal I / O Driver Abort icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal I/O Driver Abort</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image10.png" alt="Internal I / O Driver Initialize icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal I/O Driver Initialize</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image11.png" alt="Internal I / O Driver Boot Read icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal I/O Driver Boot Read</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image12.png" alt="Internal I / O Driver Release Sectors icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal I/O Driver Release Sectors</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image13.png" alt="Internal I / O Driver Boot Write icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal I/O Driver Boot Write</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image14.png" alt="Internal I / O Driver Driver Un-initialize icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal I / O Driver Driver Un-initialize</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image15.png" alt="Directory Attributes Read icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Attributes Read</strong> (<em>fx_directory_attributes_read</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image16.png" alt="Directory Attributes Set icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Attributes Set</strong> (<em>fx_directory_attributes_set</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image17.png" alt="Directory Create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Create</strong> (<em>fx_directory_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image18.png" alt="Directory Default Get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Default Get</strong> (<em>fx_directory_default_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image19.png" alt="Directory Default Set icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Default Set</strong> (<em>fx_directory_default_set</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image20.png" alt="Directory Delete icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Delete</strong> (<em>fx_directory_delete</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image21.png" alt="Directory First Entry Find icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory First Entry Find</strong> (<em>fx_directory_first_entry_find</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image22.png" alt="Directory First Full Entry Find icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory First Full Entry Find</strong> (<em>fx_directory_first_full_entry_find</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image23.png" alt="Directory Information Get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Information Get</strong> (<em>fx_directory_information_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image24.png" alt="Directory Local Path Clear icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Local Path Clear</strong> (<em>fx_directory_local_path_clear</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image25.png" alt="Directory Local Path Get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Local Path Get</strong> (<em>fx_directory_local_path_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image26.png" alt="Directory Local Path Restore icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Local Path Restore</strong> (<em>fx_directory_local_path_restore</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image27.png" alt="Directory Local Path Set icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Local Path Set</strong> (<em>fx_directory_local_path_set</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image28.png" alt="Directory Long Name Get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Long Name Get</strong> (<em>fx_directory_long_name_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image29.png" alt="Directory Name Test icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Name Test</strong> (<em>fx_directory_name_test</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image30.png" alt="Directory Next Entry Find icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Next Entry Find</strong> (<em>fx_directory_next_entry_find</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image31.png" alt="Directory Next Full Entry Find icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Next Full Entry Find</strong> (<em>fx_directory_next_full_entry_find</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image32.png" alt="Directory Rename icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Rename</strong> (<em>fx_directory_rename</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image33.png" alt="Directory Short Name Get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Directory Short Name Get</strong> (<em>fx_directory_short_name_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image34.png" alt="File Allocate icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Allocate</strong> (<em>fx_file_allocate</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image35.png" alt="File Attributes Read icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Attributes Read</strong> (<em>fx_file_attributes_read</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image36.png" alt="File Attributes Set icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Attributes Set</strong> (<em>fx_file_attributes_set</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image37.png" alt="File Best Effort Allocate icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Best Effort Allocate</strong> (<em>fx_file_best_effort_allocate</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image38.png" alt="File Close icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Close</strong> (<em>fx_file_close</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image39.png" alt="File Create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Create</strong> (<em>fx_file_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image40.png" alt="File Date Time Set icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Date Time Set</strong> (<em>fx_file_date_time_set</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image41.png" alt="File Delete icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Delete</strong> (<em>fx_file_delete</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image42.png" alt="File Open icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Open</strong> (<em>fx_file_open</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image43.png" alt="File Read icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Read</strong> (<em>fx_file_read</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image44.png" alt="File Relative Seek icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Relative Seek</strong> (<em>fx_file_relative_seek</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image45.png" alt="File Rename icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Rename</strong> (<em>fx_file_rename</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image46.png" alt="File Seek icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Seek</strong> (<em>fx_file_seek</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image47.png" alt="File Truncate icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Truncate</strong> (<em>fx_file_truncate</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image48.png" alt="File Truncate Release icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Truncate Release</strong> (<em>fx_file_truncate_release</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image49.png" alt="File Write icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>File Write</strong> (<em>fx_file_write</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image50.png" alt="Media Abort icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Abort</strong> (<em>fx_media_abort</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image51.png" alt="Media Cache Invalidate icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Cache Invalidate</strong> (<em>fx_media_cache_invalidate</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image52.png" alt="Media Check icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Check</strong> (<em>fx_media_check</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image53.png" alt="*Media Close icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Close</strong> (<em>fx_media_close</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image54.png" alt="Media Flush icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Flush</strong> (<em>fx_media_flush</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image55.png" alt="Media Format icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Format</strong> (<em>fx_media_format</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image56.png" alt="Media Open icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Open</strong> (<em>fx_media_open</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image57.png" alt="Media Read icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Read</strong> (<em>fx_media_read</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image58.png" alt="Media Space Available icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Space Available</strong> (<em>fx_media_space_available</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image59.png" alt="Media Volume Get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Volume Get</strong> (<em>fx_media_volume_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image60.png" alt="Media Volume Set icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Volume Set</strong> (<em>fx_media_volume_set</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image61.png" alt="Media Write icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Media Write</strong> (<em>fx_media_write</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image62.png" alt="System Date Get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>System Date Get</strong> (<em>fx_system_date_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image63.png" alt="System Date Set icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>System Date Set</strong> (<em>fx_system_date_set</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image64.png" alt="System Initialize icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>System Initialize</strong> (<em>fx_system_initialize</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image65.png" alt="System Time Get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>System Time Get</strong> (<em>fx_system_time_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image66.png" alt="System Time Set icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>System Time Set</strong> (<em>fx_system_time_set</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image67.png" alt="Unicode Directory Create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Unicode Directory Create</strong> (<em>fx_unicode_directory_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image68.png" alt="Unicode Directory Rename icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Unicode Directory Rename</strong> (<em>fx_unicode_directory_rename</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image69.png" alt="Unicode File Create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Unicode File Create</strong> (<em>fx_unicode_file_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image70.png" alt="Unicode File Rename icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Unicode File Rename</strong> (<em>fx_unicode_file_rename</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image71.png" alt="Unicode Length Get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Unicode Length Get</strong> (<em>fx_unicode_length_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image72.png" alt="Unicode Name Get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Unicode Name Get</strong> (<em>fx_unicode_name_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/fx-events/image73.png" alt="Unicode Short Name Get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Unicode Short Name Get</strong> (<em>fx_unicode_short_name_get</em>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_event_descriptions"><a class="anchor" href="#_event_descriptions"></a>Event Descriptions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following describes each individual event.</p>
+</div>
+<div class="sect2">
+<h3 id="_internal_logical_sector_cache_miss"><a class="anchor" href="#_internal_logical_sector_cache_miss"></a>Internal Logical Sector Cache Miss</h3>
+<div class="sect3">
+<h4 id="_internal_logical_sector_cache_miss_2"><a class="anchor" href="#_internal_logical_sector_cache_miss_2"></a>Internal logical sector cache miss</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image1.png" alt="Internal logical sector cache miss icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX logical sector cache miss.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Sector.</p>
+</li>
+<li>
+<p>Info Field 3: Total misses.</p>
+</li>
+<li>
+<p>Info Field 4: Cache size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_directory_cache_miss"><a class="anchor" href="#_internal_directory_cache_miss"></a>Internal Directory Cache Miss</h3>
+<div class="sect3">
+<h4 id="_internal_directory_cache_miss_2"><a class="anchor" href="#_internal_directory_cache_miss_2"></a>Internal directory cache miss</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image2.png" alt="Internal directory cache miss icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX directory cache miss.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Total misses.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_media_flush"><a class="anchor" href="#_internal_media_flush"></a>Internal Media Flush</h3>
+<div class="sect3">
+<h4 id="_internal_media_flush_2"><a class="anchor" href="#_internal_media_flush_2"></a>Internal media flush</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image3.png" alt="Internal media flush icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX media flush.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Number of dirty sectors.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_directory_entry_read"><a class="anchor" href="#_internal_directory_entry_read"></a>Internal Directory Entry Read</h3>
+<div class="sect3">
+<h4 id="_internal_directory_entry_read_2"><a class="anchor" href="#_internal_directory_entry_read_2"></a>Internal directory entry read</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image4.png" alt="Internal directory entry read icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX directory entry read event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_directory_entry_write"><a class="anchor" href="#_internal_directory_entry_write"></a>Internal Directory Entry Write</h3>
+<div class="sect3">
+<h4 id="_internal_directory_entry_write_2"><a class="anchor" href="#_internal_directory_entry_write_2"></a>Internal directory entry write</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image5.png" alt="Internal directory entry write icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX directory entry write event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_io_driver_read"><a class="anchor" href="#_internal_io_driver_read"></a>Internal I/O Driver Read</h3>
+<div class="sect3">
+<h4 id="_internal_io_driver_read_2"><a class="anchor" href="#_internal_io_driver_read_2"></a>Internal I/O driver read</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image6.png" alt="Internal I / O driver read icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX I/O driver read event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Sector.</p>
+</li>
+<li>
+<p>Info Field 3: Number of sectors.</p>
+</li>
+<li>
+<p>Info Field 4: Buffer pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_io_driver_write"><a class="anchor" href="#_internal_io_driver_write"></a>Internal I/O Driver Write</h3>
+<div class="sect3">
+<h4 id="_internal_io_driver_write_2"><a class="anchor" href="#_internal_io_driver_write_2"></a>Internal I/O driver write</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image7.png" alt="Internal I / O driver write icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX I/O driver write event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Sector.</p>
+</li>
+<li>
+<p>Info Field 3: Number of sectors.</p>
+</li>
+<li>
+<p>Info Field 4: Buffer pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_io_driver_flush"><a class="anchor" href="#_internal_io_driver_flush"></a>Internal I/O Driver Flush</h3>
+<div class="sect3">
+<h4 id="_internal_io_driver_flush_2"><a class="anchor" href="#_internal_io_driver_flush_2"></a>Internal I/O driver flush</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image8.png" alt="Internal I / O driver flush icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX I/O driver flush event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_io_driver_abort"><a class="anchor" href="#_internal_io_driver_abort"></a>Internal I/O Driver Abort</h3>
+<div class="sect3">
+<h4 id="_internal_io_driver_abort_2"><a class="anchor" href="#_internal_io_driver_abort_2"></a>Internal I/O driver abort</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image9.png" alt="Internal I / O driver abort icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX I/O driver abort event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_io_driver_initialize"><a class="anchor" href="#_internal_io_driver_initialize"></a>Internal I/O Driver Initialize</h3>
+<div class="sect3">
+<h4 id="_internal_io_driver_initialize_2"><a class="anchor" href="#_internal_io_driver_initialize_2"></a>Internal I/O driver initialize</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image10.png" alt="Internal I / O driver initialize icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX I/O driver initialize event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_io_driver_boot_sector_read"><a class="anchor" href="#_internal_io_driver_boot_sector_read"></a>Internal I/O Driver Boot Sector Read</h3>
+<div class="sect3">
+<h4 id="_internal_io_driver_boot_sector_read_2"><a class="anchor" href="#_internal_io_driver_boot_sector_read_2"></a>Internal I/O driver boot sector read</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image11.png" alt="Internal I / O driver boot sector read icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX I/O driver boot sector read event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Buffer pointer.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_io_driver_release_sectors"><a class="anchor" href="#_internal_io_driver_release_sectors"></a>Internal I/O Driver Release Sectors</h3>
+<div class="sect3">
+<h4 id="_internal_io_driver_release_sectors_2"><a class="anchor" href="#_internal_io_driver_release_sectors_2"></a>Internal I/O driver release sectors</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image12.png" alt="Internal I / O driver release sectors icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX I/O driver release sectors event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Sector.</p>
+</li>
+<li>
+<p>Info Field 3: Number of sectors.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_io_driver_boot_sector_write"><a class="anchor" href="#_internal_io_driver_boot_sector_write"></a>Internal I/O Driver Boot Sector Write</h3>
+<div class="sect3">
+<h4 id="_internal_io_driver_boot_sector_write_2"><a class="anchor" href="#_internal_io_driver_boot_sector_write_2"></a>Internal I/O driver boot sector write</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image13.png" alt="Internal I / O driver boot sector write icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX I/O driver boot sector write event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Buffer pointer.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_io_driver_un_initialize"><a class="anchor" href="#_internal_io_driver_un_initialize"></a>Internal I/O Driver Un-initialize</h3>
+<div class="sect3">
+<h4 id="_internal_io_driver_un_initialize_2"><a class="anchor" href="#_internal_io_driver_un_initialize_2"></a>Internal I/O driver un-initialize</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image14.png" alt="Internal I / O driver un-initialize icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents an internal FileX I/O driver un-initialize event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>&lt;/blockquote&gt;&lt;/td&gt;</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_attributes_read"><a class="anchor" href="#_directory_attributes_read"></a>Directory Attributes Read</h3>
+<div class="sect3">
+<h4 id="_fx_directory_attributes_read"><a class="anchor" href="#_fx_directory_attributes_read"></a>fx_directory_attributes_read</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image15.png" alt="Directory attributes read icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory attributes read event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to directory name.</p>
+</li>
+<li>
+<p>Info Field 3: Attributes bit map:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Read Only</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x01)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hidden</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x02)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x04)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Volume</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x08)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Directory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x10)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archive</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x20)</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_attributes_set"><a class="anchor" href="#_directory_attributes_set"></a>Directory Attributes Set</h3>
+<div class="sect3">
+<h4 id="_fx_directory_attributes_set"><a class="anchor" href="#_fx_directory_attributes_set"></a>fx_directory_attributes_set</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image16.png" alt="Attributes set icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory a directory attributes set event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to directory name.</p>
+</li>
+<li>
+<p>Info Field 3: Attributes bit map:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Read Only</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x01)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hidden</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x02)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x04)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archive</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x20)</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_create"><a class="anchor" href="#_directory_create"></a>Directory Create</h3>
+<div class="sect3">
+<h4 id="_fx_directory_create"><a class="anchor" href="#_fx_directory_create"></a>fx_directory_create</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image17.png" alt="Directory create icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory create event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to directory name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_default_get"><a class="anchor" href="#_directory_default_get"></a>Directory Default Get</h3>
+<div class="sect3">
+<h4 id="_fx_directory_default_get"><a class="anchor" href="#_fx_directory_default_get"></a>fx_directory_default_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image18.png" alt="Directory default get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory default set event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to return path name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_default_set"><a class="anchor" href="#_directory_default_set"></a>Directory Default Set</h3>
+<div class="sect3">
+<h4 id="_fx_directory_default_set"><a class="anchor" href="#_fx_directory_default_set"></a>fx_directory_default_set</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image19.png" alt="Directory default set icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory default set event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to new default path name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_delete"><a class="anchor" href="#_directory_delete"></a>Directory Delete</h3>
+<div class="sect3">
+<h4 id="_fx_directory_delete"><a class="anchor" href="#_fx_directory_delete"></a>fx_directory_delete</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image20.png" alt="Directory delete icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory delete event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to directory name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_first_entry_find"><a class="anchor" href="#_directory_first_entry_find"></a>Directory First Entry Find</h3>
+<div class="sect3">
+<h4 id="_fx_directory_first_entry_find"><a class="anchor" href="#_fx_directory_first_entry_find"></a>fx_directory_first_entry_find</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image21.png" alt="Directory first entry find icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory first entry find event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to directory name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_first_full_entry_find"><a class="anchor" href="#_directory_first_full_entry_find"></a>Directory First Full Entry Find</h3>
+<div class="sect3">
+<h4 id="_fx_directory_first_full_entry_find"><a class="anchor" href="#_fx_directory_first_full_entry_find"></a>fx_directory_first_full_entry_find</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image22.png" alt="Directory first full entry find icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory first full entry find event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to directory name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_information_get"><a class="anchor" href="#_directory_information_get"></a>Directory Information Get</h3>
+<div class="sect3">
+<h4 id="_fx_directory_information_get"><a class="anchor" href="#_fx_directory_information_get"></a>fx_directory_information_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image23.png" alt="Directory information get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory information get event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to directory name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_local_path_clear"><a class="anchor" href="#_directory_local_path_clear"></a>Directory Local Path Clear</h3>
+<div class="sect3">
+<h4 id="_fx_directory_local_path_clear"><a class="anchor" href="#_fx_directory_local_path_clear"></a>fx_directory_local_path_clear</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image24.png" alt="Directory local path clear icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory local path clear event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_local_path_get"><a class="anchor" href="#_directory_local_path_get"></a>Directory Local Path Get</h3>
+<div class="sect3">
+<h4 id="_fx_directory_local_path_get"><a class="anchor" href="#_fx_directory_local_path_get"></a>fx_directory_local_path_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image25.png" alt="Directory local path get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory local path get event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to return path name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_local_path_restore"><a class="anchor" href="#_directory_local_path_restore"></a>Directory Local Path Restore</h3>
+<div class="sect3">
+<h4 id="_fx_directory_local_path_restore"><a class="anchor" href="#_fx_directory_local_path_restore"></a>fx_directory_local_path_restore</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image26.png" alt="Directory local path restore icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory local path restore event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to local path structure.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_local_path_set"><a class="anchor" href="#_directory_local_path_set"></a>Directory Local Path Set</h3>
+<div class="sect3">
+<h4 id="_fx_directory_local_path_set"><a class="anchor" href="#_fx_directory_local_path_set"></a>fx_directory_local_path_set</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image27.png" alt="Directory local path set icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory local path set event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to local path structure.</p>
+</li>
+<li>
+<p>Info Field 3: Pointer to new path name.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_long_name_get"><a class="anchor" href="#_directory_long_name_get"></a>Directory Long Name Get</h3>
+<div class="sect3">
+<h4 id="_fx_directory_long_name_get"><a class="anchor" href="#_fx_directory_long_name_get"></a>fx_directory_long_name_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image28.png" alt="Directory long name get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory long name get event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to short file name.</p>
+</li>
+<li>
+<p>Info Field 3: Pointer to long file name.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_name_test"><a class="anchor" href="#_directory_name_test"></a>Directory Name Test</h3>
+<div class="sect3">
+<h4 id="_fx_directory_name_test"><a class="anchor" href="#_fx_directory_name_test"></a>fx_directory_name_test</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image29.png" alt="Directory name test icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory name test event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to directory name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_next_entry_find"><a class="anchor" href="#_directory_next_entry_find"></a>Directory Next Entry Find</h3>
+<div class="sect3">
+<h4 id="_fx_directory_next_entry_find"><a class="anchor" href="#_fx_directory_next_entry_find"></a>fx_directory_next_entry_find</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image30.png" alt="Directory next entry find icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory next entry find event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to directory name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_next_full_entry_find"><a class="anchor" href="#_directory_next_full_entry_find"></a>Directory Next Full Entry Find</h3>
+<div class="sect3">
+<h4 id="_fx_directory_next_full_entry_find"><a class="anchor" href="#_fx_directory_next_full_entry_find"></a>fx_directory_next_full_entry_find</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image31.png" alt="Directory next full entry find icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory next full entry find event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to directory name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_rename"><a class="anchor" href="#_directory_rename"></a>Directory Rename</h3>
+<div class="sect3">
+<h4 id="_fx_directory_rename_event"><a class="anchor" href="#_fx_directory_rename_event"></a>fx_directory_rename event</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image32.png" alt="Directory rename icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory rename event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to old directory name.</p>
+</li>
+<li>
+<p>Info Field 3: Pointer to new directory name.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_short_name_get"><a class="anchor" href="#_directory_short_name_get"></a>Directory Short Name Get</h3>
+<div class="sect3">
+<h4 id="_fx_directory_short_name_get"><a class="anchor" href="#_fx_directory_short_name_get"></a>fx_directory_short_name_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image33.png" alt="Directory short name get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a directory short name get event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to long file name.</p>
+</li>
+<li>
+<p>Info Field 3: Pointer to short file name.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_allocate"><a class="anchor" href="#_file_allocate"></a>File Allocate</h3>
+<div class="sect3">
+<h4 id="_fx_file_allocate"><a class="anchor" href="#_fx_file_allocate"></a>fx_file_allocate</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image34.png" alt="File allocate icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file allocate event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the file.</p>
+</li>
+<li>
+<p>Info Field 2: Requested size.</p>
+</li>
+<li>
+<p>Info Field 3: Current size.</p>
+</li>
+<li>
+<p>Info Field 4: New size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_attributes_read"><a class="anchor" href="#_file_attributes_read"></a>File Attributes Read</h3>
+<div class="sect3">
+<h4 id="_fx_file_attributes_read"><a class="anchor" href="#_fx_file_attributes_read"></a>fx_file_attributes_read</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image35.png" alt="File attributes read icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file attributes read event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Attributes bit map:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Read Only</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x01)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hidden</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x02)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x04)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Volume</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x08)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Directory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x10)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archive</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x20)</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_attributes_set"><a class="anchor" href="#_file_attributes_set"></a>File Attributes Set</h3>
+<div class="sect3">
+<h4 id="_fx_file_attributes_set"><a class="anchor" href="#_fx_file_attributes_set"></a>fx_file_attributes_set</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image36.png" alt="File attributes set icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file attributes set event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to file name.</p>
+</li>
+<li>
+<p>Info Field 3: Attributes bit map:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Read Only</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x01)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hidden</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x02)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x04)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archive</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x20)</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_best_effort_allocate"><a class="anchor" href="#_file_best_effort_allocate"></a>File Best Effort Allocate</h3>
+<div class="sect3">
+<h4 id="_fx_file_best_effort_allocate"><a class="anchor" href="#_fx_file_best_effort_allocate"></a>fx_file_best_effort_allocate</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image37.png" alt="File best effort allocate icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file best effort allocate event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the file.</p>
+</li>
+<li>
+<p>Info Field 2: Requested size.</p>
+</li>
+<li>
+<p>Info Field 3: Actual size allocated.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_close"><a class="anchor" href="#_file_close"></a>File Close</h3>
+<div class="sect3">
+<h4 id="_fx_file_close"><a class="anchor" href="#_fx_file_close"></a>fx_file_close</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image38.png" alt="File close icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file close event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the file.</p>
+</li>
+<li>
+<p>Info Field 2: File size.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_create"><a class="anchor" href="#_file_create"></a>File Create</h3>
+<div class="sect3">
+<h4 id="_fx_file_create"><a class="anchor" href="#_fx_file_create"></a>fx_file_create</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image39.png" alt="File create icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file create event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to file name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_date_time_set"><a class="anchor" href="#_file_date_time_set"></a>File Date Time Set</h3>
+<div class="sect3">
+<h4 id="_fx_file_date_time_set"><a class="anchor" href="#_fx_file_date_time_set"></a>fx_file_date_time_set</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image40.png" alt="File date time set icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file date/time set event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to file name.</p>
+</li>
+<li>
+<p>Info Field 3: Year.</p>
+</li>
+<li>
+<p>Info Field 4: Month.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_delete"><a class="anchor" href="#_file_delete"></a>File Delete</h3>
+<div class="sect3">
+<h4 id="_fx_file_delete"><a class="anchor" href="#_fx_file_delete"></a>fx_file_delete</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image41.png" alt="File delete icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file delete event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to file name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_open"><a class="anchor" href="#_file_open"></a>File Open</h3>
+<div class="sect3">
+<h4 id="_fx_file_open"><a class="anchor" href="#_fx_file_open"></a>fx_file_open</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image42.png" alt="File open icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file open event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to the file control block.</p>
+</li>
+<li>
+<p>Info Field 3: Pointer to file name.</p>
+</li>
+<li>
+<p>Info Field 4: Open type:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Open Type</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Open for Read</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x00)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Open for Write</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x01)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fast Open for Read</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x02)</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_read"><a class="anchor" href="#_file_read"></a>File Read</h3>
+<div class="sect3">
+<h4 id="_fx_file_read"><a class="anchor" href="#_fx_file_read"></a>fx_file_read</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image43.png" alt="File read icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file read event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the file.</p>
+</li>
+<li>
+<p>Info Field 2: Buffer pointer.</p>
+</li>
+<li>
+<p>Info Field 3: Request size.</p>
+</li>
+<li>
+<p>Info Field 4: Actual size read.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_relative_seek"><a class="anchor" href="#_file_relative_seek"></a>File Relative Seek</h3>
+<div class="sect3">
+<h4 id="_fx_file_relative_seek"><a class="anchor" href="#_fx_file_relative_seek"></a>fx_file_relative_seek</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image44.png" alt="File relative seek icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file relative seek event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the file.</p>
+</li>
+<li>
+<p>Info Field 2: Byte offset.</p>
+</li>
+<li>
+<p>Info Field 3: Seek from:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Event</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">From Beginning</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x00)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">From End</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x01)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Forward</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x02)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Backward</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x03)</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Info Field 4: Previous offset.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_rename"><a class="anchor" href="#_file_rename"></a>File Rename</h3>
+<div class="sect3">
+<h4 id="_fx_file_rename"><a class="anchor" href="#_fx_file_rename"></a>fx_file_rename</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image45.png" alt="File rename icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file rename event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to old file name.</p>
+</li>
+<li>
+<p>Info Field 3: Pointer to new file name.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_seek"><a class="anchor" href="#_file_seek"></a>File Seek</h3>
+<div class="sect3">
+<h4 id="_fx_file_seek"><a class="anchor" href="#_fx_file_seek"></a>fx_file_seek</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image46.png" alt="File seek icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file seek event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the file.</p>
+</li>
+<li>
+<p>Info Field 2: Byte offset.</p>
+</li>
+<li>
+<p>Info Field 3: Previous offset.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_truncate"><a class="anchor" href="#_file_truncate"></a>File Truncate</h3>
+<div class="sect3">
+<h4 id="_fx_file_truncate"><a class="anchor" href="#_fx_file_truncate"></a>fx_file_truncate</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image47.png" alt="File truncate icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file truncate event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the file.</p>
+</li>
+<li>
+<p>Info Field 2: Requested size.</p>
+</li>
+<li>
+<p>Info Field 3: Previous size.</p>
+</li>
+<li>
+<p>Info Field 4: New size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_truncate_release"><a class="anchor" href="#_file_truncate_release"></a>File Truncate Release</h3>
+<div class="sect3">
+<h4 id="_fx_file_truncate_release"><a class="anchor" href="#_fx_file_truncate_release"></a>fx_file_truncate_release</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image48.png" alt="File truncate release icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file truncate release event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the file.</p>
+</li>
+<li>
+<p>Info Field 2: Requested size.</p>
+</li>
+<li>
+<p>Info Field 3: Previous size.</p>
+</li>
+<li>
+<p>Info Field 4: New size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_write"><a class="anchor" href="#_file_write"></a>File Write</h3>
+<div class="sect3">
+<h4 id="_fx_file_write"><a class="anchor" href="#_fx_file_write"></a>fx_file_write</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image49.png" alt="File write icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a file write event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the file.</p>
+</li>
+<li>
+<p>Info Field 2: Buffer pointer.</p>
+</li>
+<li>
+<p>Info Field 3: Request size.</p>
+</li>
+<li>
+<p>Info Field 4: Actual size written.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_abort"><a class="anchor" href="#_media_abort"></a>Media Abort</h3>
+<div class="sect3">
+<h4 id="_fx_media_abort"><a class="anchor" href="#_fx_media_abort"></a>fx_media_abort</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image50.png" alt="Media abort icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media abort event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_cache_invalidate"><a class="anchor" href="#_media_cache_invalidate"></a>Media Cache Invalidate</h3>
+<div class="sect3">
+<h4 id="_fx_media_cache_invalidate"><a class="anchor" href="#_fx_media_cache_invalidate"></a>fx_media_cache_invalidate</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image51.png" alt="Media cache invalidate icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media cache invalidate event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_check"><a class="anchor" href="#_media_check"></a>Media Check</h3>
+<div class="sect3">
+<h4 id="_fx_media_check"><a class="anchor" href="#_fx_media_check"></a>fx_media_check</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image52.png" alt="Media check icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media check event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Scratch memory pointer.</p>
+</li>
+<li>
+<p>Info Field 3: Scratch memory size.</p>
+</li>
+<li>
+<p>Info Field 4: Errors bit map:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Error type</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FAT Chain Error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x01)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Directory Error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x02)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lost Cluster Error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x04)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">File Size Error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(0x08)</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_close"><a class="anchor" href="#_media_close"></a>Media Close</h3>
+<div class="sect3">
+<h4 id="_fx_media_close"><a class="anchor" href="#_fx_media_close"></a>fx_media_close</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image53.png" alt="Media Close icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media close event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_flush"><a class="anchor" href="#_media_flush"></a>Media Flush</h3>
+<div class="sect3">
+<h4 id="_fx_media_flush"><a class="anchor" href="#_fx_media_flush"></a>fx_media_flush</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image54.png" alt="Media flush icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media flush event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_format"><a class="anchor" href="#_media_format"></a>Media Format</h3>
+<div class="sect3">
+<h4 id="_fx_media_format"><a class="anchor" href="#_fx_media_format"></a>fx_media_format</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image55.png" alt="Media format icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media format event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Number of root entries.</p>
+</li>
+<li>
+<p>Info Field 3: Sectors.</p>
+</li>
+<li>
+<p>Info Field 4: Sectors per cluster.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_open"><a class="anchor" href="#_media_open"></a>Media Open</h3>
+<div class="sect3">
+<h4 id="_fx_media_open"><a class="anchor" href="#_fx_media_open"></a>fx_media_open</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image56.png" alt="Media open icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media open event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to media driver entry.</p>
+</li>
+<li>
+<p>Info Field 3: Memory pointer.</p>
+</li>
+<li>
+<p>Info Field 4: Memory size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_read_media_read"><a class="anchor" href="#_media_read_media_read"></a>Media Read Media Read</h3>
+<div class="sect3">
+<h4 id="_fx_media_read"><a class="anchor" href="#_fx_media_read"></a>fx_media_read</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image57.png" alt="Media read icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media read event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Logical sector.</p>
+</li>
+<li>
+<p>Info Field 3: Buffer pointer.</p>
+</li>
+<li>
+<p>Info Field 4: Bytes read.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_space_available"><a class="anchor" href="#_media_space_available"></a>Media Space Available</h3>
+<div class="sect3">
+<h4 id="_fx_media_space_available"><a class="anchor" href="#_fx_media_space_available"></a>fx_media_space_available</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image58.png" alt="Media space available icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media space available event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Available bytes pointer.</p>
+</li>
+<li>
+<p>Info Field 3: Number of free clusters.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_volume_get"><a class="anchor" href="#_media_volume_get"></a>Media Volume Get</h3>
+<div class="sect3">
+<h4 id="_fx_media_volume_get"><a class="anchor" href="#_fx_media_volume_get"></a>fx_media_volume_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image59.png" alt="Media volume get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media volume get event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to volume name.</p>
+</li>
+<li>
+<p>Info Field 3: Volume source.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_volume_set"><a class="anchor" href="#_media_volume_set"></a>Media Volume Set</h3>
+<div class="sect3">
+<h4 id="_fx_media_volume_set"><a class="anchor" href="#_fx_media_volume_set"></a>fx_media_volume_set</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image60.png" alt="Media volume set icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media volume set event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to volume name.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_write"><a class="anchor" href="#_media_write"></a>Media Write</h3>
+<div class="sect3">
+<h4 id="_fx_media_write"><a class="anchor" href="#_fx_media_write"></a>fx_media_write</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image61.png" alt="Media write icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a media write event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Logical sector.</p>
+</li>
+<li>
+<p>Info Field 3: Buffer pointer.</p>
+</li>
+<li>
+<p>Info Field 4: Bytes written.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_system_date_get"><a class="anchor" href="#_system_date_get"></a>System Date Get</h3>
+<div class="sect3">
+<h4 id="_fx_system_date_get"><a class="anchor" href="#_fx_system_date_get"></a>fx_system_date_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image62.png" alt="System date get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a system date get event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Year.</p>
+</li>
+<li>
+<p>Info Field 2: Month.</p>
+</li>
+<li>
+<p>Info Field 3: Day.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_system_date_set"><a class="anchor" href="#_system_date_set"></a>System Date Set</h3>
+<div class="sect3">
+<h4 id="_fx_system_date_set"><a class="anchor" href="#_fx_system_date_set"></a>fx_system_date_set</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image63.png" alt="System date set icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a system date set event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Year.</p>
+</li>
+<li>
+<p>Info Field 2: Month.</p>
+</li>
+<li>
+<p>Info Field 3: Day.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_system_initialize"><a class="anchor" href="#_system_initialize"></a>System Initialize</h3>
+<div class="sect3">
+<h4 id="_fx_system_initialize"><a class="anchor" href="#_fx_system_initialize"></a>fx_system_initialize</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image64.png" alt="System initialize icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a system initialize event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Not used.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_system_time_get"><a class="anchor" href="#_system_time_get"></a>System Time Get</h3>
+<div class="sect3">
+<h4 id="_fx_system_time_get"><a class="anchor" href="#_fx_system_time_get"></a>fx_system_time_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image65.png" alt="System time get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a system time get event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Hour.</p>
+</li>
+<li>
+<p>Info Field 2: Minute.</p>
+</li>
+<li>
+<p>Info Field 3: Second.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_system_time_set"><a class="anchor" href="#_system_time_set"></a>System Time Set</h3>
+<div class="sect3">
+<h4 id="_fx_system_time_set"><a class="anchor" href="#_fx_system_time_set"></a>fx_system_time_set</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image66.png" alt="System time set icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a system time set event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Hour.</p>
+</li>
+<li>
+<p>Info Field 2: Minute.</p>
+</li>
+<li>
+<p>Info Field 3: Second.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_unicode_directory_create"><a class="anchor" href="#_unicode_directory_create"></a>Unicode Directory Create</h3>
+<div class="sect3">
+<h4 id="_fx_unicode_directory_create"><a class="anchor" href="#_fx_unicode_directory_create"></a>fx_unicode_directory_create</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image67.png" alt="Unicode directory create icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a Unicode directory create event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to Unicode name.</p>
+</li>
+<li>
+<p>Info Field 3: Size of Unicode name.</p>
+</li>
+<li>
+<p>Info Field 4: Pointer to short name.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_unicode_directory_rename"><a class="anchor" href="#_unicode_directory_rename"></a>Unicode Directory Rename</h3>
+<div class="sect3">
+<h4 id="_fx_unicode_directory_rename"><a class="anchor" href="#_fx_unicode_directory_rename"></a>fx_unicode_directory_rename</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image68.png" alt="Unicode directory rename icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a Unicode directory rename event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to Unicode name.</p>
+</li>
+<li>
+<p>Info Field 3: Size of Unicode name.</p>
+</li>
+<li>
+<p>Info Field 4: Pointer to short name.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_unicode_file_create"><a class="anchor" href="#_unicode_file_create"></a>Unicode File Create</h3>
+<div class="sect3">
+<h4 id="_fx_unicode_file_create"><a class="anchor" href="#_fx_unicode_file_create"></a>fx_unicode_file_create</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image69.png" alt="Unicode file create icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a Unicode file create event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to the Unicode name.</p>
+</li>
+<li>
+<p>Info Field 3: Size of Unicode name.</p>
+</li>
+<li>
+<p>Info Field 4: Pointer to short name.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_unicode_file_rename"><a class="anchor" href="#_unicode_file_rename"></a>Unicode File Rename</h3>
+<div class="sect3">
+<h4 id="_fx_unicode_file_rename"><a class="anchor" href="#_fx_unicode_file_rename"></a>fx_unicode_file_rename</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image70.png" alt="Unicode file rename icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a Unicode file rename event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to Unicode name.</p>
+</li>
+<li>
+<p>Info Field 3: Size of Unicode name.</p>
+</li>
+<li>
+<p>Info Field 4: Pointer to short name.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_unicode_length_get"><a class="anchor" href="#_unicode_length_get"></a>Unicode Length Get</h3>
+<div class="sect3">
+<h4 id="_fx_unicode_length_get"><a class="anchor" href="#_fx_unicode_length_get"></a>fx_unicode_length_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image71.png" alt="Unicode length get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a Unicode length get event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the Unicode name.</p>
+</li>
+<li>
+<p>Info Field 2: Length.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_unicode_name_get"><a class="anchor" href="#_unicode_name_get"></a>Unicode Name Get</h3>
+<div class="sect3">
+<h4 id="_fx_unicode_name_get"><a class="anchor" href="#_fx_unicode_name_get"></a>fx_unicode_name_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image72.png" alt="Unicode name get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a Unicode name get event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Source short name.</p>
+</li>
+<li>
+<p>Info Field 3: Destination Unicode name pointer.</p>
+</li>
+<li>
+<p>Info Field 4: Destination Unicode name length.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_unicode_short_name_get"><a class="anchor" href="#_unicode_short_name_get"></a>Unicode Short Name Get</h3>
+<div class="sect3">
+<h4 id="_fx_unicode_short_name_get"><a class="anchor" href="#_fx_unicode_short_name_get"></a>fx_unicode_short_name_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/fx-events/image73.png" alt="Unicode short name get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents a Unicode short name get event.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the media.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to source Unicode name.</p>
+</li>
+<li>
+<p>Info Field 3: Length of Unicode name.</p>
+</li>
+<li>
+<p>Info Field 4: Pointer to short name.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 1 - Introduction to NetX Duo MQTT :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-mqtt/chapter1.html">
+    <meta name="description" content="The NetX Duo MQTT client package requires that NetX Duo (version 5.10 or later) be installed, properly configured, and the IP instance has been created.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo MQTT client user guide</li>
+    <li><a href="chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-mqtt/chapter1.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 1 - Introduction to NetX Duo MQTT</h1>
+<div class="sect1">
+<h2 id="_netx_duo_mqtt_requirements"><a class="anchor" href="#_netx_duo_mqtt_requirements"></a>NetX Duo MQTT Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The NetX Duo MQTT client package requires that NetX Duo (version 5.10 or later) be installed, properly configured, and the IP instance has been created. The TCP module must be enabled in the system. In addition, if TLS security is required, the NetX Duo Secure TLS module needs to be configured according to the security parameter required by the broker.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_mqtt_specification"><a class="anchor" href="#_netx_duo_mqtt_specification"></a>NetX Duo MQTT Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo MQTT client implement is compliant with OASIS MQTT Version 3.1.1 Oct 29<sup>th</sup> 2014. The specification can be found at:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://mqtt.org/" class="bare">http://mqtt.org/</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_mqtt_basic_operation"><a class="anchor" href="#_netx_duo_mqtt_basic_operation"></a>NetX Duo MQTT Basic Operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>MQTT (Message Queue Telemetry Transport) is based on publisher-subscriber model. A client can publish information to other clients through a broker. A client, if interested in a topic, can subscribe to the topic through the broker. A broker is responsible for delivering published messages to its clients who subscribe to the topic. In this publisher-subscriber model, multiple clients may publish data with the same topic. A client will receive a message it publishes if the client subscribes to the same topic.</p>
+</div>
+<div class="paragraph">
+<p>Depending on the use case, a client may choose one of the 3 QoS levels when publishing a message:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>QoS 0</strong>: The message is delivered at most once. Messages sent with QoS 0 may be lost.</p>
+</li>
+<li>
+<p><strong>QoS 1</strong>: The message is delivered at least once. Messages sent with QoS 1 may be delivered more than once.</p>
+</li>
+<li>
+<p><strong>QoS 2</strong>: The message is delivered exactly once. Messages sent with QoS 2 is guaranteed to be delivered, with no duplication.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This implementation of MQTT client does not support QoS level 2 messages.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Since QoS 1 and QoS 2 are guaranteed to be delivered, the broker keeps track the state of QoS 1 and QoS 2 messages sent to each client. This is particularly important for clients that expect QoS1 or QoS 2 messages. The client may be disconnected from the broker (for example when the client reboots, or the communication link is temporarily lost). The broker must store QoS 1 and QoS 2 messages so the messages can be delivered later once the client is reconnected to the broker. However, the client may choose not to receive any stale messages from the broker after reconnection. The client can do so by initiating the connection with the <em>clean_session</em> flag set to <strong><em>NX_TRUE</em></strong>. In this case, upon receiving the MQTT CONNECT message, the broker shall discard any session information associated with this client, including undelivered or unconfirmed QoS 1 or QoS 2 messages. If the <em>clean_session</em> flag is to <strong><em>NX_FALSE</em></strong>, the server shall resend the QoS 1 and QoS 2 messages. The MQTT Client also resends any un-acknowledged messages if <em>clean_session</em> is set to <strong><em>NX_TRUE</em>.</strong> This acknowledgment is different from the TCP layer ACK, although that happens as well. The MQTT client sends an acknowledgment to the broker.</p>
+</div>
+<div class="paragraph">
+<p>An application creates an MQTT client instance by calling <strong><em>nxd_mqtt_client_create()</em></strong>. Once the client is created, the application can connect to the broker by calling <strong><em>nxd_mqtt_client_connect()</em></strong>. After connecting to the broker, the client can subscribe to a topic by calling <strong><em>nxd_mqtt_client_subscribe()</em></strong>, or publish a topic by calling <strong><em>nxd_mqtt_client_publish()</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>Incoming MQTT messages are stored in the receive queue in the MQTT client instance. Application retrieves these message by calling <strong><em>nxd_mqtt_client_message_get()</em></strong>. If there are messages in the receive queue, the first message (e.g. the oldest) from the queue is returned to the caller. The topic string from the message is also returned.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The function <strong><em>nxd_mqtt_client_message_get()</em></strong> does not block if the MQTT client receive queue is empty. The function returns immediately with the return code <strong><em>NXD_MQTT_NO_MESSAGE</em></strong>. The application shall treat this return value as an indication that the receive queue is empty, not an error.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To avoid polling the receive queue for incoming messages, the application can register a callback function with the MQTT client by calling <strong><em>nxd_mqtt_client_receive_notify_set()</em></strong>. The callback function is declared as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">VOID (*receive_notify_callback)(NXD_MQTT_CLIENT *client_ptr,
+    UINT message_count);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As the MQTT client receives messages from the broker, it invokes the callback function if the function is set. The callback function passes the pointer to the client control block and a message count value. The message count value indicates the number of MQTT messages in the receive queue. Note that this callback function executes in the MQTT client thread context. Therefore, the callback function should not execute any procedures that may block the MQTT client thread. The callback function should trigger the application thread to call <strong><em>nxd_mqtt_client_message_get()</em></strong> to retrieve the messages.</p>
+</div>
+<div class="paragraph">
+<p>To disconnect and terminate the MQTT client service, the application shall use the service <strong><em>nxd_mqtt_client_disconnect()</em></strong> and <strong><em>nxd_mqtt_client_delete().</em></strong> Calling <strong><em>nxd_mqtt_client_disconnect()</em></strong> simply disconnects the TCP connection to the broker. It releases messages already received and stored in the receive queue. However, it does not release QoS level 1 messages in the transmit queue. QoS level 1 messages are retransmitted upon connection, assuming the <strong><em>clean_session</em></strong> flag is set to <strong><em>NX_FALSE.</em></strong></p>
+</div>
+<div class="paragraph">
+<p>The broker may also disconnect from the client. When the TCP connection between the client and the broker is terminated, the application can be notified by the disconnect notify function. To use the notification mechanism, application installs the disconnect notify function by calling <strong><em>nxd_mqtt_client_disconnect_notify_set</em>.</strong> Once a TCP disconnect is observed and the MQTT session has been created, the notification function is invoked.</p>
+</div>
+<div class="paragraph">
+<p>Calling <strong><em>nxd_mqtt_client_delete()</em></strong> releases all message blocks in the transmit queue and the receive queue. Unacknowledged QoS level 1 messages are also deleted.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_secure_mqtt_connection"><a class="anchor" href="#_secure_mqtt_connection"></a>Secure MQTT Connection</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The MQTT client makes a secure connection to the broker using the NetX Duo Secure TLS module. The default port number for MQTT with TLS security is 8883, defined in <strong><em>NXD_MQTT_TLS_PORT</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>To create a secure MQTT connection to the broker, a TLS session needs to be negotiated after a TCP connection is established, before MQTT CONNECT messages can be sent to the broker. The TLS session set up is accomplished by calling <strong><em>nxd_mqtt_client_secure_connect()</em></strong> and passing in a user-defined TLS setup callback function. During the MQTT connection phase, once the TCP connection is established, the client invokes the TLS setup callback function to start a proper TLS handshake process. After the TLS session is established, the client continues the MQTT CONNECT message over the secure channel.</p>
+</div>
+<div class="paragraph">
+<p>The user defined callback function takes five input values and is declared as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tls_Setup_callback(NXD_MQTT_CLIENT *client_ptr,
+    NX_SECURE_TLS_SESSION *session_ptr,
+    NX_SECURE_TLS_CERTIFICATE *certificate_ptr,
+    NX_SECURE_TLS_CERTIFICATE *trusted_certificate);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Below is a description of the input parameters:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>client_ptr</strong>: Pointer to the MQTT client control block.</p>
+</li>
+<li>
+<p><strong>session_ptr</strong>: Pointer to the TLS session control block.</p>
+</li>
+<li>
+<p><strong>certificate_ptr</strong>: Pointer to the certificate control block. The setup function configures this certificate before sending it to the broker.</p>
+</li>
+<li>
+<p><strong>trusted_certificate_ptr</strong>: Pointer to the trusted certificate. TLS setup function configures the trusted certificate to authenticate the server.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In the TLS setup function, the application is responsible for creating a TLS session, and configuring the session with a proper certificate. The following pseudo code outlines a typical TLS session start up procedure. The reader is referred to the NetX Duo Secure TLS User Guide for details on using TLS APIs.</p>
+</div>
+<div class="paragraph">
+<p>Below is an example TLS setup callback:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tls_setup_callback(NXD_MQTT_CLIENT *client_pt
+    NX_SECURE_TLS_SESSION *session_ptr,
+    NX_SECURE_TLS_CERTIFICATE *certificate_ptr,
+    NX_SECURE_TLS_CERTIFICATE *trusted_certificate_ptr)
+{
+    /* Initialize TLS module */
+    nx_secure_tls_initialize();
+
+    /* Create a TLS session */
+    nx_secure_tls_session_create(session_ptr, …);
+
+    /* Need to allocate space for the certificate coming in from the broker. */
+    memset(certificate_ptr), 0, sizeof(NX_SECURE_TLS_CERTIFICATE));
+
+    nx_secure_tls_remote_certificate_allocate(session_ptr, certificate_ptr);
+
+    /* Add a CA Certificate to our trusted store for verifying incoming server certificates. */
+    nx_secure_tls_certificate_initialize(
+        trusted_certificate_ptr,
+        ca_cert_der,
+        ca_cert_der_len, NULL, 0);
+    nx_secure_tls_trusted_certificate_add(session_ptr,
+        trusted_certificate));
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_known_limitations_of_the_netx_duo_mqtt_client"><a class="anchor" href="#_known_limitations_of_the_netx_duo_mqtt_client"></a>Known Limitations of the NetX Duo MQTT Client</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>NetX Duo MQTT does not support sending or receiving QoS level 2 messages.</p>
+</li>
+<li>
+<p>NetX Duo MQTT does not support chained-packets.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

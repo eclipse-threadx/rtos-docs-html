@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Release Model and Support Policy :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/home/main/releases-and-support.html">
+    <meta name="description" content="Eclipse ThreadX Release Model And Product Support Policy.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="home" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">Home</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Home</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="hardware-support.html">Hardware Support</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="releases-and-support.html">Releases and Support</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security-updates.html">Security Updates</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Home</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="releases-and-support.html">Releases and Support</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/home/modules/ROOT/pages/releases-and-support.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Release Model and Support Policy</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document applies for Eclipse ThreadX components including ThreadX, NetX Duo, FileX, GUIX, USBX and LevelX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_version_definitions"><a class="anchor" href="#_version_definitions"></a>Version definitions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Eclipse ThreadX releases generally follow the guidelines defined by <a href="https://semver.org/">Semantic Versioning</a>. Given an Eclipse ThreadX version number <strong>X.Y.Z.Bh</strong> (e.g. 6.5.0.202601a):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>X</strong> increases for a <strong>milestone release</strong>. Currently Eclipse ThreadX components stay at version <strong>6</strong>.</p>
+</li>
+<li>
+<p><strong>Y</strong> increases for a <strong>feature release</strong> when there is a major feature added (e.g. v6.<strong>5</strong>.0 introduced significant changes in RISC-V support).</p>
+</li>
+<li>
+<p><strong>Z</strong> increases for a <strong>maintenance release</strong> featuring minor fixes and improvements.</p>
+</li>
+<li>
+<p><strong>B</strong> is a <strong>build number</strong> indicating the quarter during which the release was published. In our example, this is Q1 of 2026 (202601)</p>
+</li>
+<li>
+<p><strong>h</strong> denotes a <strong>hotfix release</strong> identified by a letter. See more about those below.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Please note hotfix releases are component-specific.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_release_model_overview"><a class="anchor" href="#_release_model_overview"></a>Release model overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Eclipse ThreadX project adopted a predictable quarterly release model in September 2025. Since then, the project team has published a release every quarter.</p>
+</div>
+<div class="paragraph">
+<p>To avoid version number discrepancies, those quarterly releases ship new versions of every component, whether there have been actual code changes or not. Releases not shipping code changes mention this fact in their release notes.</p>
+</div>
+<div class="paragraph">
+<p>If the team must ship an urgent fix between quarterly releases, this will be done as a <em>hotfix</em> release. Hotfix releases will only include security fixes or address serious issues in the codebase preventing the building and testing of applications.</p>
+</div>
+<div class="sect2">
+<h3 id="_releases_and_repositories"><a class="anchor" href="#_releases_and_repositories"></a>Releases and repositories</h3>
+<div class="paragraph">
+<p>The ThreadX project uses a time-based release train built on trunk-based development, with quarterly versioned releases and no LTS branches.</p>
+</div>
+<div class="paragraph">
+<p>The <code>main</code> (or <code>master</code>) branch of the project repositories always contains the latest quarterly or hotfix release.</p>
+</div>
+<div class="paragraph">
+<p>During the quarter, pull requests will be merged into the <code>dev</code> branch. Developers can track that branch if they are willing to test new features and fixes ahead of the release.</p>
+</div>
+<div class="paragraph">
+<p>To perform a quarterly release, the project team simply merges <code>dev</code> into <code>main</code> (or <code>master</code>).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_roadmap"><a class="anchor" href="#_roadmap"></a>Roadmap</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Eclipse ThreadX project team relies on a <a href="https://github.com/orgs/eclipse-threadx/projects/2/views/2">publicly available GitHub project</a> to plan its work.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_support_policy"><a class="anchor" href="#_support_policy"></a>Support policy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Issues in the codebase are fixed on a best-effort basis. Pull requests fixing existing or new issues are gladly accepted.</p>
+</div>
+<div class="paragraph">
+<p>Security vulnerabilities disclosed confidentially to the project team will be processed in accordance to the <a href="https://www.eclipse.org/security/policy/">Eclipse Foundation&#8217;s security policy</a>. Concretely, this means that, once a candidate vulnerability has been confirmed, the project team will work to deliver a fix as soon as possible. Such fixes will be part of the next quarterly release or made available through a hotfix release depending on timing.</p>
+</div>
+<div class="paragraph">
+<p>Resolved vulnerabilities are disclosed immediately after a release containing those fixes is available.</p>
+</div>
+<div class="paragraph">
+<p>The ThreadX team aims to resolve newly confirmed vulnerabilities in no more than three months; this delay might be extended by the Project Leadership Chain together with the Eclipse Foundation Security team if appropriate.</p>
+</div>
+<div class="sect2">
+<h3 id="_other_notes"><a class="anchor" href="#_other_notes"></a>Other notes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Microsoft contributed only the Azure RTOS codebase v6.x to the Eclipse Foundation. Older ThreadX releases (v5.x and lower) sold by Express Logic were not made open source. Microsoft discontinued sales and support for those older releases. We strongly recommend users of ThreadX 5.x and lower to upgrade to the latest release of Eclipse ThreadX as soon as possible.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

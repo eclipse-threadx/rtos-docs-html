@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GHSA-v9jj-7qjg-h6g6: Integer wraparounds, under-allocations, and heap buffer overflows in Eclipse ThreadX xQueueCreate() and xQueueCreateSet() :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx/main/security/ghsa-v9jj-7qjg-h6g6.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article security-advisory">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">ThreadX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">ThreadX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">ThreadX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-threadx.html">Overview of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of ThreadX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - Device drivers for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter6.html">Ch. 6 - Demonstration system for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - ThreadX API services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - ThreadX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - ThreadX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX User Guide Addendum for ARMv8-M</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter1.html">Ch. 1 - Introduction to ThreadX for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter2.html">Ch. 2 - Installing ThreadX support for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter3.html">Ch. 3 - ThreadX APIs for ARMv8-M</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX SMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter1.html">Ch. 1 - Introduction to ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter2.html">Ch. 2 - Installation &amp; Use of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter3.html">Ch. 3 - Functional Components of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter4.html">Ch. 4 - Description of ThreadX SMP Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter5.html">Ch. 5 - Device Drivers for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter6.html">Ch. 6 - Demonstration System for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-a.html">App. A - ThreadX SMP API Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-b.html">App. B - ThreadX SMP Constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-c.html">App. C - ThreadX SMP Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-d.html">App. D - ASCII Character Codes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ThreadX SMP MISRA C compliance</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">ThreadX</a></li>
+    <li><a href="ghsa-v9jj-7qjg-h6g6.html">GHSA-v9jj-7qjg-h6g6: Integer wraparounds, under-allocations, and heap buffer overflows in Eclipse ThreadX xQueueCreate() and xQueueCreateSet()</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/threadx/modules/ROOT/pages/security/ghsa-v9jj-7qjg-h6g6.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">GHSA-v9jj-7qjg-h6g6: Integer wraparounds, under-allocations, and heap buffer overflows in Eclipse ThreadX xQueueCreate() and xQueueCreateSet()</h1>
+<div id="preamble">
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">GHSA ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-v9jj-7qjg-h6g6">GHSA‑v9jj‑7qjg‑h6g6</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CVE ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2024‑2212</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Severity</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CVSS score</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.3 (<code>CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:L</code>)</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CWE</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://cwe.mitre.org/data/definitions/122.html">CWE-122</a>, <a href="https://cwe.mitre.org/data/definitions/190.html">CWE-190</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Published</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024‑03‑26</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Last updated</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024‑03‑26</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_affected_packages"><a class="anchor" href="#_affected_packages"></a>Affected packages</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 37.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Package</th>
+<th class="tableblock halign-left valign-top">Vulnerable versions</th>
+<th class="tableblock halign-left valign-top">Patched versions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Eclipse ThreadX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt; 6.4.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.4.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_short_description"><a class="anchor" href="#_short_description"></a>Short description</h3>
+<div class="paragraph">
+<p>In Eclipse ThreadX before 6.4.0,  xQueueCreate() and xQueueCreateSet() functions from the FreeRTOS compatibility API (utility/rtos_compatibility_layers/FreeRTOS/tx_freertos.c) were missing parameter checks. This could lead to integer wraparound, under-allocations and heap buffer overflows.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_impact"><a class="anchor" href="#_impact"></a>Impact</h3>
+<div class="paragraph">
+<p>A researcher spotted the following in <a href="https://github.com/azure-rtos/threadx/blob/master/utility/rtos_compatibility_layers/FreeRTOS/tx_freertos.c#L1534-L1536" class="bare">https://github.com/azure-rtos/threadx/blob/master/utility/rtos_compatibility_layers/FreeRTOS/tx_freertos.c#L1534-L1536</a> and
+<a href="https://github.com/azure-rtos/threadx/blob/master/utility/rtos_compatibility_layers/FreeRTOS/tx_freertos.c#L2700-L2701" class="bare">https://github.com/azure-rtos/threadx/blob/master/utility/rtos_compatibility_layers/FreeRTOS/tx_freertos.c#L2700-L2701</a></p>
+</div>
+<div class="paragraph">
+<p>If an attacker can control <code>uxQueueLength</code> or <code>uxItemSize</code>, they can cause an integer wraparound thus causing <code>txfr_malloc()</code> to allocate a small amount of memory, exposing to subsequent heap buffer overflows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>QueueHandle_t xQueueCreate(UBaseType_t uxQueueLength, UBaseType_t uxItemSize)
+{
+    txfr_queue_t *p_queue;
+    void *p_mem;
+    size_t mem_size;
+    UINT ret;
+
+    configASSERT(uxQueueLength != 0u);
+    configASSERT(uxItemSize &gt;= sizeof(UINT));
+
+#if (TX_FREERTOS_AUTO_INIT == 1)
+    if(txfr_initialized != 1u) {
+        tx_freertos_auto_init();
+    }
+#endif
+
+    p_queue = txfr_malloc(sizeof(txfr_queue_t));
+    if(p_queue == NULL) {
+        return NULL;
+    }
+
+    mem_size = uxQueueLength*(uxItemSize);
+
+    p_mem = txfr_malloc(mem_size); // VULN: integer wraparound and under-allocation
+    if(p_mem == NULL) {
+        txfr_free(p_queue);
+        return NULL;
+    }
+
+    TX_MEMSET(p_mem, 0, mem_size);
+    TX_MEMSET(p_queue, 0, sizeof(*p_queue));
+    p_queue-&gt;allocated = 1u;
+    p_queue-&gt;p_mem = p_mem;
+    p_queue-&gt;id = TX_QUEUE_ID;
+
+    p_queue-&gt;p_write = (uint8_t *)p_mem;
+    p_queue-&gt;p_read = (uint8_t *)p_mem;
+    p_queue-&gt;msg_size = uxItemSize;
+    p_queue-&gt;queue_length = uxQueueLength;
+
+    ret = tx_semaphore_create(&amp;p_queue-&gt;read_sem, "", 0u);
+    if(ret != TX_SUCCESS) {
+        return NULL;
+    }
+
+    ret = tx_semaphore_create(&amp;p_queue-&gt;write_sem, "", uxQueueLength);
+    if(ret != TX_SUCCESS) {
+        return NULL;
+    }
+
+    return p_queue;
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If an attacker can control <code>uxEventQueueLength</code>, they can cause an integer wraparound thus causing <code>txfr_malloc()</code> to allocate a small amount of memory, exposing to subsequent heap buffer overflows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>QueueSetHandle_t xQueueCreateSet(const UBaseType_t uxEventQueueLength)
+{
+    txfr_queueset_t *p_set;
+    void *p_mem;
+    ULONG queue_size;
+    UINT ret;
+
+    configASSERT(uxEventQueueLength != 0u);
+
+#if (TX_FREERTOS_AUTO_INIT == 1)
+    if(txfr_initialized != 1u) {
+        tx_freertos_auto_init();
+    }
+#endif
+
+    p_set = txfr_malloc(sizeof(txfr_queueset_t));
+    if(p_set == NULL) {
+        return NULL;
+    }
+
+    queue_size = sizeof(void *) * uxEventQueueLength;
+    p_mem = txfr_malloc(queue_size); // VULN: integer wraparound and under-allocation
+    if(p_mem == NULL) {
+        txfr_free(p_set);
+        return NULL;
+    }
+
+    ret = tx_queue_create(&amp;p_set-&gt;queue, "", sizeof(void *) / sizeof(UINT), p_mem, queue_size);
+    if(ret != TX_SUCCESS) {
+        TX_FREERTOS_ASSERT_FAIL();
+        return NULL;
+    }
+
+    return p_set;
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The two functions are part of an external API to be used by user&#8217;s application. The values of those parameters passed to the vulnerable functions depend on the user&#8217;s code.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_patches"><a class="anchor" href="#_patches"></a>Patches</h3>
+<div class="paragraph">
+<p>Fix available in <a href="https://github.com/eclipse-threadx/threadx/commit/9f3e35d3dcacfac3eed6df8fb8cc6ed9a5a680d5" class="bare">https://github.com/eclipse-threadx/threadx/commit/9f3e35d3dcacfac3eed6df8fb8cc6ed9a5a680d5</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_workarounds"><a class="anchor" href="#_workarounds"></a>Workarounds</h3>
+<div class="paragraph">
+<p>Strict parameters checks in user code calling xQueueCreate() and xQueueCreateSet().</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_references"><a class="anchor" href="#_references"></a>References</h3>
+<div class="paragraph">
+<p>Pending</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 1: Introduction to ThreadX SMP :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx/main/threadx-smp/chapter1.html">
+    <meta name="description" content="This chapter contains an introduction to the product and a description of its applications and benefits.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">ThreadX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">ThreadX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">ThreadX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-threadx.html">Overview of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of ThreadX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - Device drivers for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter6.html">Ch. 6 - Demonstration system for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - ThreadX API services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - ThreadX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - ThreadX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX User Guide Addendum for ARMv8-M</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter1.html">Ch. 1 - Introduction to ThreadX for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter2.html">Ch. 2 - Installing ThreadX support for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter3.html">Ch. 3 - ThreadX APIs for ARMv8-M</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX SMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation &amp; Use of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional Components of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of ThreadX SMP Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Device Drivers for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - Demonstration System for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - ThreadX SMP API Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - ThreadX SMP Constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - ThreadX SMP Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII Character Codes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ThreadX SMP MISRA C compliance</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">ThreadX</a></li>
+    <li>ThreadX SMP user guide</li>
+    <li><a href="chapter1.html">Ch. 1 - Introduction to ThreadX SMP</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/threadx/modules/ROOT/pages/threadx-smp/chapter1.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 1: Introduction to ThreadX SMP</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX SMP is a high-performance real-time SMP kernel designed specifically for embedded applications. This chapter contains an introduction to the product and a description of its applications and benefits.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_threadx_smp_unique_features"><a class="anchor" href="#_threadx_smp_unique_features"></a>ThreadX SMP Unique Features</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX SMP brings Symmetric Multi-Processing (SMP) technology to embedded applications. ThreadX SMP application threads (of varying priority) that are "READY" to run are dynamically allocated to available processor cores during scheduling. This results in true SMP processing, including automatic load balancing of application thread execution across all available processor cores.</p>
+</div>
+<div class="paragraph">
+<p>Unlike other real-time kernels, ThreadX SMP is designed to be versatile&#8212;&#8203;easily scaling among small micro-controller-based applications through those that use powerful CISC, RISC, and DSP processors.</p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP is scalable based on its underlying architecture. Because ThreadX SMP services are implemented as a C library, only those services actually used by the application are brought into the run-time image. Hence, the actual size of ThreadX SMP is completely determined by the application. For most applications, the instruction image of ThreadX SMP ranges between 5 KBytes and 20 KBytes in size.</p>
+</div>
+<div class="sect2">
+<h3 id="_picokernel_architecture"><a class="anchor" href="#_picokernel_architecture"></a>Picokernel Architecture</h3>
+<div class="paragraph">
+<p>Instead of layering kernel functions on top of each other like traditional <em>microkernel</em> architectures, ThreadX SMP services plug directly into its core. This results in the fastest possible context switching and service call performance. We call this nonlayering design a <em>picokernel</em> architecture.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ansi_c_source_code"><a class="anchor" href="#_ansi_c_source_code"></a>ANSI C Source Code</h3>
+<div class="paragraph">
+<p>ThreadX SMP is written primarily in ANSI C. A small amount of assembly language is needed to tailor the kernel to the underlying target processor. This design makes it possible to port ThreadX SMP to a new processor family in a very short time&#8212;&#8203;usually within weeks!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_advanced_technology"><a class="anchor" href="#_advanced_technology"></a>Advanced Technology</h3>
+<div class="paragraph">
+<p>The following are highlights of the ThreadX SMP advanced technology:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Simple <em>picokernel</em> architecture</p>
+</li>
+<li>
+<p>Automatic load balancing</p>
+</li>
+<li>
+<p>Per-thread processor exclusion</p>
+</li>
+<li>
+<p>Automatic scaling (small footprint)</p>
+</li>
+<li>
+<p>Deterministic processing</p>
+</li>
+<li>
+<p>Fast real-time performance</p>
+</li>
+<li>
+<p>Preemptive and cooperative scheduling</p>
+</li>
+<li>
+<p>Flexible thread priority support (32-1024)</p>
+</li>
+<li>
+<p>Dynamic system object creation</p>
+</li>
+<li>
+<p>Unlimited number of system objects</p>
+</li>
+<li>
+<p>Optimized interrupt handling</p>
+</li>
+<li>
+<p>Preemption-threshold</p>
+</li>
+<li>
+<p>Priority inheritance</p>
+</li>
+<li>
+<p>Event-chaining</p>
+</li>
+<li>
+<p>Fast software timers</p>
+</li>
+<li>
+<p>Run-time memory management</p>
+</li>
+<li>
+<p>Run-time performance monitoring</p>
+</li>
+<li>
+<p>Run-time stack analysis</p>
+</li>
+<li>
+<p>Built-in system trace</p>
+</li>
+<li>
+<p>Vast processor support</p>
+</li>
+<li>
+<p>Vast development tool support</p>
+</li>
+<li>
+<p>Completely endian neutral</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_not_a_black_box"><a class="anchor" href="#_not_a_black_box"></a>Not A Black Box</h3>
+<div class="paragraph">
+<p>Most distributions of ThreadX SMP include the complete C source code as well as the processor specific assembly language. This eliminates the "black-box" problems that occur with many commercial kernels. With ThreadX SMP, application developers can see exactly what the kernel is doing&#8212;&#8203;there are no mysteries!</p>
+</div>
+<div class="paragraph">
+<p>The source code also allows for application specific modifications. Although not recommended, it is certainly beneficial to have the ability to modify the kernel if it is absolutely required.</p>
+</div>
+<div class="paragraph">
+<p>These features are especially comforting to developers accustomed to working with their own <em>inhouse kernels</em>. They expect to have source code and the ability to modify the kernel. ThreadX SMP is the ultimate kernel for such developers.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_rtos_standard"><a class="anchor" href="#_the_rtos_standard"></a>The RTOS Standard</h3>
+<div class="paragraph">
+<p>Because of its versatility, high-performance <em>picokernel</em> architecture, advanced technology, and demonstrated portability, ThreadX SMP is deployed in more than two-billion devices today. This effectively makes ThreadX SMP the RTOS standard for deeply embedded applications.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_safety_certifications"><a class="anchor" href="#_safety_certifications"></a>Safety Certifications</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_tüv_certification"><a class="anchor" href="#_tüv_certification"></a>TÜV Certification</h3>
+<div class="paragraph">
+<p>ThreadX SMP has been certified by SGS-TÜV Saar for use in safety-critical systems, according to IEC-61508 SIL 4. The certification confirms that ThreadX SMP can be used in the development of safety-related software for the highest safety integrity levels of IEC-61508 for the "Functional Safety of electrical, electronic, and programmable electronic safety-related systems." SGS-TUV Saar, formed through a joint venture of Germany&#8217;s SGS-Group and TUV Saarland, has become the leading accredited, independent company for testing, auditing, verifying, and certifying embedded software for safety-related systems worldwide.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/image2.png" alt="TÜV Certification">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>IEC 61508 up to SIL 4</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_misra_c_compliant"><a class="anchor" href="#_misra_c_compliant"></a>MISRA C Compliant</h3>
+<div class="paragraph">
+<p>MISRA C is a set of programming guidelines for critical systems using the C programming language. The original MISRA C guidelines were primarily targeted toward automotive applications; however, MISRA C is now widely recognized as being applicable to any safety critical application. ThreadX SMP is compliant with all "required" and "mandatory" rules of MISRA-C:2004 and MISRA C:2012. ThreadX SMP is also compliant with all but three "advisory" rules. Refer to the <strong><em>ThreadX_MISRA_Compliance.pdf</em></strong> document for more details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ul_certification"><a class="anchor" href="#_ul_certification"></a>UL Certification</h3>
+<div class="paragraph">
+<p>ThreadX SMP has been certified by UL for compliance with UL 60730-1 Annex H, CSA E607301 Annex H, IEC 60730-1 Annex H, UL 60335-1 Annex R, IEC 60335-1 Annex R, and UL 1998 safety standards for software in programmable components. Along with IEC/UL 60730-1, which has requirements for "Controls Using Software" in its Annex H, the IEC 60335-1 standard describes the requirements for "Programmable Electronic Circuits" in its Annex R. IEC 60730 Annex H and IEC 60335-1 Annex R address the safety of MCU hardware and software used in appliances such as washing machines, dishwashers, dryers, refrigerators, freezers, and ovens.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/image3.png" alt="UL Certification">
+</div>
+</div>
+<div class="paragraph">
+<p><em>UL/IEC 60730, UL/IEC 60335, UL 1998</em></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_embedded_applications"><a class="anchor" href="#_embedded_applications"></a>Embedded Applications</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Embedded applications execute on microprocessors buried within products such as wireless communication devices, automobile engines, laser printers, medical devices, etc. Another distinction of embedded applications is that their software and hardware have a dedicated purpose.</p>
+</div>
+<div class="sect2">
+<h3 id="_real_time_software"><a class="anchor" href="#_real_time_software"></a>Real-time Software</h3>
+<div class="paragraph">
+<p>When time constraints are imposed on the application software, it is called the <em>real-time</em> software. Basically, software that must perform its processing within an exact period of time is called <em>real-time</em> software. Embedded applications are almost always real-time because of their inherent interaction with external events.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_multitasking"><a class="anchor" href="#_multitasking"></a>Multitasking</h3>
+<div class="paragraph">
+<p>As mentioned, embedded applications have a dedicated purpose. To fulfill this purpose, the software must perform a variety of <em>tasks</em>. A task is a semi-independent portion of the application that carries out a specific duty. It is also the case that some tasks are more important than others. One of the major difficulties in an embedded application is the allocation of the processor between the various application tasks. This allocation of processing between competing tasks is the primary purpose of ThreadX SMP.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tasks_vs_threads"><a class="anchor" href="#_tasks_vs_threads"></a>Tasks vs. Threads</h3>
+<div class="paragraph">
+<p>Another distinction about tasks must be made. The term task is used in a variety of ways. It sometimes means a separately loadable program. In other instances, it may refer to an internal program segment.</p>
+</div>
+<div class="paragraph">
+<p>In contemporary operating system discussion, there are two terms that more or less replace the use of task: <em>process</em> and <em>thread</em>. A <em>process</em> is a completely independent program that has its own address space, while a <em>thread</em> is a semi-independent program segment that executes within a process. Threads share the same process address space. The overhead associated with thread management is minimal.</p>
+</div>
+<div class="paragraph">
+<p>Most embedded applications cannot afford the overhead (both memory and performance) associated with a full-blown process-oriented operating system. In addition, smaller microprocessors don&#8217;t have the hardware architecture to support a true process-oriented operating system. For these reasons, ThreadX SMP implements a thread model, which is both extremely efficient and practical for most real-time embedded applications.</p>
+</div>
+<div class="paragraph">
+<p>To avoid confusion, ThreadX SMP does not use the term <em>task</em>. Instead, the more descriptive and contemporary name <em>thread</em> is used.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_threadx_smp_benefits"><a class="anchor" href="#_threadx_smp_benefits"></a>ThreadX SMP Benefits</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using ThreadX SMP provides many benefits to embedded applications. Of course, the primary benefit rests in how embedded application threads are allocated processing time.</p>
+</div>
+<div class="sect2">
+<h3 id="_automatic_load_balancing"><a class="anchor" href="#_automatic_load_balancing"></a>Automatic Load Balancing</h3>
+<div class="paragraph">
+<p>ThreadX SMP provides automatic load balancing (thread execution across available cores), which makes utilizing multicore processors as easy as possible.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_improved_responsiveness"><a class="anchor" href="#_improved_responsiveness"></a>Improved Responsiveness</h3>
+<div class="paragraph">
+<p>Prior to real-time kernels like ThreadX SMP, most embedded applications allocated processing time with a simple control loop, usually from within the C <em>main</em> function. This approach is still used in very small or simple applications. However, in large or complex applications, it is not practical because the response time to any event is a function of the worst case processing time of one pass through the control loop.</p>
+</div>
+<div class="paragraph">
+<p>Making matters worse, the timing characteristics of the application change whenever modifications are made to the control loop. This makes the application inherently unstable and difficult to maintain and improve on.</p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP provides fast and deterministic response times to important external events. ThreadX SMP accomplishes this through its preemptive, priority-based scheduling algorithm, which allows a higher-priority thread to preempt an executing lower-priority thread. As a result, the worst-case response time approaches the time required to perform a context switch. This is not only deterministic, but it is also extremely fast.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_software_maintenance"><a class="anchor" href="#_software_maintenance"></a>Software Maintenance</h3>
+<div class="paragraph">
+<p>The ThreadX SMP kernel enables application developers to concentrate on specific requirements of their application threads without having to worry about changing the timing of other areas of the application. This feature also makes it much easier to repair or enhance an application that utilizes ThreadX SMP.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_increased_throughput"><a class="anchor" href="#_increased_throughput"></a>Increased Throughput</h3>
+<div class="paragraph">
+<p>A possible work-around to the control loop response time problem is to add more polling. This improves the responsiveness, but it still doesn&#8217;t guarantee a constant worst-case response time and does nothing to enhance future modification of the application. Also, the processor is now performing even more unnecessary processing because of the extra polling. All of this unnecessary processing reduces the overall throughput of the system.</p>
+</div>
+<div class="paragraph">
+<p>An interesting point regarding overhead is that many developers assume that multithreaded environments like ThreadX SMP increase overhead and have a negative impact on total system throughput. But in some cases, multithreading actually reduces overhead by eliminating all of the redundant polling that occurs in control loop environments. The overhead associated with multithreaded kernels is typically a function of the time required for context switching. If the context switch time is less than the polling process, ThreadX SMP provides a solution with the potential of less overhead and more throughput. This makes ThreadX SMP an obvious choice for applications that have any degree of complexity or size.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_processor_isolation"><a class="anchor" href="#_processor_isolation"></a>Processor Isolation</h3>
+<div class="paragraph">
+<p>ThreadX SMP provides a robust processor independent interface between the application and the underlying processor. This allows developers to concentrate on the application rather than spending a significant amount of time learning hardware details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dividing_the_application"><a class="anchor" href="#_dividing_the_application"></a>Dividing the Application</h3>
+<div class="paragraph">
+<p>In control loop-based applications, each developer must have an intimate knowledge of the entire application&#8217;s run-time behavior and requirements. This is because the processor allocation logic is dispersed throughout the entire application. As an application increases in size or complexity, it becomes impossible for all developers to remember the precise processing requirements of the entire application.</p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP frees each developer from the worries associated with processor allocation and allows them to concentrate on their specific piece of the embedded application. In addition, ThreadX SMP forces the application to be divided into clearly defined threads. By itself, this division of the application into threads makes development much simpler.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ease_of_use"><a class="anchor" href="#_ease_of_use"></a>Ease of Use</h3>
+<div class="paragraph">
+<p>ThreadX SMP is designed with the application developer in mind. The ThreadX SMP architecture and service call interface are designed to be easily understood. As a result, ThreadX SMP developers can quickly use its advanced features.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_improve_time_to_market"><a class="anchor" href="#_improve_time_to_market"></a>Improve Time-to-market</h3>
+<div class="paragraph">
+<p>All of the benefits of ThreadX SMP accelerate the software development process. ThreadX SMP takes care of most processor issues and the most common safety certifications, thereby removing this effort from the development schedule. All of this results in a faster time to market!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_protecting_the_software_investment"><a class="anchor" href="#_protecting_the_software_investment"></a>Protecting the Software Investment</h3>
+<div class="paragraph">
+<p>Because of its architecture, ThreadX SMP is easily ported to new processor and/or development tool environments. This, coupled with the fact that ThreadX SMP insulates applications from details of the underlying processors, makes ThreadX SMP applications highly portable. As a result, the application&#8217;s migration path is guaranteed, and the original development investment is protected.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

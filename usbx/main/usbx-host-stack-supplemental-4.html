@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 4: USBX Pictbridge implementation :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/usbx/main/usbx-host-stack-supplemental-4.html">
+    <meta name="description" content="UBSX supports the full Pictbridge implementation both on the host and the device. Pictbridge sits on top of USBX PIMA class on both sides.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="usbx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">USBX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">USBX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">USBX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-usbx.html">Overview of USBX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-3.html">Ch. 3 - Functional components of USBX device stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-2.html">Ch. 2 - USBX device class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-7.html">Ch. 7 - USBX device class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-6.html">Ch. 6 - USBX CDC-ECM class usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-2.html">Ch. 2 - USBX Host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">USBX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">USBX</a></li>
+    <li>USBX host stack supplemental</li>
+    <li><a href="usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/usbx/modules/ROOT/pages/usbx-host-stack-supplemental-4.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 4: USBX Pictbridge implementation</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>UBSX supports the full Pictbridge implementation both on the host and the device. Pictbridge sits on top of USBX PIMA class on both sides.</p>
+</div>
+<div class="paragraph">
+<p>The PictBridge standards allows the connection of a digital still camera or a smart phone directly to a printer without a PC, enabling direct printing to certain Pictbridge aware printers.</p>
+</div>
+<div class="paragraph">
+<p>When a camera or phone is connected to a printer, the printer is the USB host and the camera is the USB device. However, with Pictbridge, the camera will appear as being the host and commands are driven from the camera. The camera is the storage server, the printer the storage client. The camera is the print client and the printer is, of course, the print server.</p>
+</div>
+<div class="paragraph">
+<p>Pictbridge uses USB as a transport layer but relies on PTP (Picture Transfer Protocol) for the communication protocol.</p>
+</div>
+<div class="paragraph">
+<p>The following is a diagram of the commands/responses between the DPS client and the DPS server when a print job occurs.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/usbx-host-stack-supplemental/dps-client-server.png" alt="Diagram of the commands/responses between the D P S client and the D P S server when a print job occurs.">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pictbridge_client_implementation"><a class="anchor" href="#_pictbridge_client_implementation"></a>Pictbridge client implementation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Pictbridge on the client requires the USBX device stack and the PIMA class to be running first.</p>
+</div>
+<div class="paragraph">
+<p>A device framework describes the PIMA class in the following way.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UCHAR device_framework_full_speed[] =
+{
+    /* Device descriptor */
+       0x12, 0x01, 0x10, 0x01, 0x00, 0x00, 0x00, 0x20,
+       0xA9, 0x04, 0xB6, 0x30, 0x00, 0x00, 0x00, 0x00,
+       0x00, 0x01,
+    /* Configuration descriptor */
+       0x09, 0x02, 0x27, 0x00, 0x01, 0x01, 0x00, 0xc0, 0x32,
+    /* Interface descriptor */
+       0x09, 0x04, 0x00, 0x00, 0x03, 0x06, 0x01, 0x01, 0x00,
+    /* Endpoint descriptor (Bulk Out) */
+       0x07, 0x05, 0x01, 0x02, 0x40, 0x00, 0x00,
+    /* Endpoint descriptor (Bulk In) */
+       0x07, 0x05, 0x82, 0x02, 0x40, 0x00, 0x00,
+    /* Endpoint descriptor (Interrupt) */
+       0x07, 0x05, 0x83, 0x03, 0x08, 0x00, 0x60
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Pima class is using the ID field 0x06 and has its subclass is 0x01 for Still Image and the protocol is 0x01 for PIMA 15740.</p>
+</div>
+<div class="paragraph">
+<p>3 endpoints are defined in this class, 2 bulks for sending/receiving data and one interrupt for events.</p>
+</div>
+<div class="paragraph">
+<p>Unlike other USBX device implementations, the Pictbridge application does not need to define a class itself. Rather it invokes the function <strong><em>ux_pictbridge_dpsclient_start</em></strong>. An example is below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Initialize the Pictbridge string components. */
+ux_utility_memory_copy
+    (pictbridge.ux_pictbridge_dpslocal.ux_pictbridge_devinfo_vendor_name,
+    "Eclipse ThreadX",10);
+ux_utility_memory_copy
+    (pictbridge.ux_pictbridge_dpslocal.ux_pictbridge_devinfo_product_name,
+    "EL_Pictbridge_Camera",21);
+ux_utility_memory_copy
+    (pictbridge.ux_pictbridge_dpslocal.ux_pictbridge_devinfo_serial_no, "ABC_123",7);
+ux_utility_memory_copy
+    (pictbridge.ux_pictbridge_dpslocal.ux_pictbridge_devinfo_dpsversions,
+    "1.0 1.1",7);
+
+pictbridge.ux_pictbridge_dpslocal.
+    ux_pictbridge_devinfo_vendor_specific_version = 0x0100;
+
+/* Start the Pictbridge client. */
+status = ux_pictbridge_dpsclient_start(&amp;pictbridge);
+
+if(status != UX_SUCCESS)
+    return;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The parameters passed to the pictbridge client are as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">pictbridge.ux_pictbridge_dpslocal.ux_pictbridge_devinfo_vendor_name
+    : String of Vendor name pictbridge.ux_pictbridge_dpslocal.ux_pictbridge_devinfo_product_name
+    : String of product name pictbridge.ux_pictbridge_dpslocal.ux_pictbridge_devinfo_serial_no,
+    : String of serial number pictbridge.ux_pictbridge_dpslocal.ux_pictbridge_devinfo_dpsversions
+    : String of version pictbridge.ux_pictbridge_dpslocal. ux_pictbridge_devinfo_vendor_specific_version
+    : Value set to 0x0100;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The next step is for the device and the host to synchronize and be ready to exchange information.</p>
+</div>
+<div class="paragraph">
+<p>This is done by waiting on an event flag as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* We should wait for the host and the client to discover one another. */
+status = ux_utility_event_flags_get
+    (&amp;pictbridge.ux_pictbridge_event_flags_group,
+    UX_PICTBRIDGE_EVENT_FLAG_DISCOVERY,TX_AND_CLEAR, &amp;actual_flags,
+    UX_PICTBRIDGE_EVENT_TIMEOUT);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the state machine is in the <strong>DISCOVERY_COMPLETE</strong> state, the camera side (the DPS client) will gather information regarding the printer and its capabilities.</p>
+</div>
+<div class="paragraph">
+<p>If the DPS client is ready to accept a print job, its status will be set to <strong>UX_PICTBRIDGE_NEW_JOB_TRUE</strong>. It can be checked below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Check if the printer is ready for a print job. */
+if (pictbridge.ux_pictbridge_dpsclient.ux_pictbridge_devinfo_newjobok ==
+    UX_PICTBRIDGE_NEW_JOB_TRUE)
+
+    /* We can print something … */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next some print joib descriptors need to be filled as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* We can start a new job. Fill in the JobConfig and PrintInfo structures. */
+jobinfo = &amp;pictbridge.ux_pictbridge_jobinfo;
+
+/* Attach a printinfo structure to the job. */
+jobinfo -&gt;ux_pictbridge_jobinfo_printinfo_start = &amp;printinfo;
+
+/* Set the default values for print job. */
+jobinfo -&gt;ux_pictbridge_jobinfo_quality =
+    UX_PICTBRIDGE_QUALITIES_DEFAULT;
+jobinfo -&gt;ux_pictbridge_jobinfo_papersize =
+    UX_PICTBRIDGE_PAPER_SIZES_DEFAULT;
+jobinfo -&gt;ux_pictbridge_jobinfo_papertype =
+    UX_PICTBRIDGE_PAPER_TYPES_DEFAULT;
+jobinfo -&gt;ux_pictbridge_jobinfo_filetype =
+    UX_PICTBRIDGE_FILE_TYPES_DEFAULT;
+jobinfo -&gt;ux_pictbridge_jobinfo_dateprint =
+    UX_PICTBRIDGE_DATE_PRINTS_DEFAULT;
+jobinfo -&gt;ux_pictbridge_jobinfo_filenameprint =
+    UX_PICTBRIDGE_FILE_NAME_PRINTS_DEFAULT;
+jobinfo -&gt;ux_pictbridge_jobinfo_imageoptimize =
+    UX_PICTBRIDGE_IMAGE_OPTIMIZES_OFF;
+jobinfo -&gt;ux_pictbridge_jobinfo_layout =
+    UX_PICTBRIDGE_LAYOUTS_DEFAULT;
+jobinfo -&gt;ux_pictbridge_jobinfo_fixedsize =
+    UX_PICTBRIDGE_FIXED_SIZE_DEFAULT;
+jobinfo -&gt;ux_pictbridge_jobinfo_cropping =
+    UX_PICTBRIDGE_CROPPINGS_DEFAULT;
+
+/* Program the callback function for reading the object data. */
+jobinfo -&gt;ux_pictbridge_jobinfo_object_data_read =
+    ux_demo_object_data_copy;
+
+/* This is a demo, the fileID is hardwired (1 and 2 for scripts, 3 for photo to be printed. */
+
+printinfo.ux_pictbridge_printinfo_fileid =
+    UX_PICTBRIDGE_OBJECT_HANDLE_PRINT;
+
+ux_utility_memory_copy(printinfo.ux_pictbridge_printinfo_filename,
+    "Pictbridge demo file", 20);
+ux_utility_memory_copy(printinfo.ux_pictbridge_printinfo_date, "01/01/2008",
+    10);
+
+/* Fill in the object info to be printed. First get the pointer to the object container in the job info structure. */
+object = (UX_SLAVE_CLASS_PIMA_OBJECT *) jobinfo -&gt;
+    ux_pictbridge_jobinfo_object;
+
+/* Store the object format: JPEG picture. */
+object -&gt;ux_device_class_pima_object_format = UX_DEVICE_CLASS_PIMA_OFC_EXIF_JPEG;
+object -&gt;ux_device_class_pima_object_compressed_size = IMAGE_LEN; object -&gt;ux_device_class_pima_object_offset = 0;
+object -&gt;ux_device_class_pima_object_handle_id =
+    UX_PICTBRIDGE_OBJECT_HANDLE_PRINT;
+object -&gt;ux_device_class_pima_object_length = IMAGE_LEN;
+
+/* File name is in Unicode. */
+ux_utility_string_to_unicode("JPEG Image", object -&gt;
+    ux_device_class_pima_object_filename);
+
+/* And start the job. */
+status =ux_pictbridge_dpsclient_api_start_job(&amp;pictbridge);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Pictbridge client now has a print job to do and will fetch the image blocks at a time from the application through the callback defined in the field.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">jobinfo -&gt;ux_pictbridge_jobinfo_object_data_read</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The prototype of that function is defined as follows.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_pictbridge_jobinfo_object_data_read"><a class="anchor" href="#_ux_pictbridge_jobinfo_object_data_read"></a>ux_pictbridge_jobinfo_object_data_read</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Copying a block of data from user space for printing.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT **ux_pictbridge_jobinfo_object_data_read(
+    UX_PICTBRIDGE *pictbridge,
+    UCHAR *object_buffer,
+    ULONG object_offset,
+    ULONG object_length,
+    ULONG *actual_length)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when the DPS client needs to retrieve a data block to print to the target Pictbridge printer.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters"><a class="anchor" href="#_parameters"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>pictbridge</strong>: Pointer to the pictbridge class instance.</p>
+</li>
+<li>
+<p><strong>object_buffer</strong>: Pointer to object buffer</p>
+</li>
+<li>
+<p><strong>object_offset</strong>: Where we are starting to read the data block</p>
+</li>
+<li>
+<p><strong>object_length</strong>: Length to be returned</p>
+</li>
+<li>
+<p><strong>actual_length</strong>: Actual length returned</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value"><a class="anchor" href="#_return_value"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong>: (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong>: (0x01) The application could not retrieve data.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Copy the object data. */
+
+UINT ux_demo_object_data_copy(UX_PICTBRIDGE *pictbridge,UCHAR *object_buffer,
+    ULONG object_offset, ULONG object_length, ULONG *actual_length)
+{
+    /* Copy the demanded object data portion. */
+    ux_utility_memory_copy(object_buffer, image + object_offset,
+        object_length);
+
+    /* Update the actual length. */
+    *actual_length = object_length;
+
+    /* We have copied the requested data. Return OK. */
+    return(UX_SUCCESS);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pictbridge_host_implementation"><a class="anchor" href="#_pictbridge_host_implementation"></a>Pictbridge host implementation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The host implementation of Pictbridge is different from the client.</p>
+</div>
+<div class="paragraph">
+<p>The first thing to do in a Pictbridge host environment is to register the Pima class as the example below shows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">status = ux_host_stack_class_register(ux_system_host_class_pima_name,
+    ux_host_class_pima_entry);
+if(status != UX_SUCCESS)
+    return;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This class is the generic PTP layer sitting between the USB host stack and the Pictbridge layer.</p>
+</div>
+<div class="paragraph">
+<p>The next step is to initialize the Pictbridge default values for print services as follows.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Pictbridge field</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DpsVersion[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00010000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DpsVersion[1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00010001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DpsVersion[2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VendorSpecificVersion</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00010000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PrintServiceAvailable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x30010000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Qualities[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_QUALITIES_DEFAULT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Qualities[1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_QUALITIES_NORMAL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Qualities[2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_QUALITIES_DRAFT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Qualities[3]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_QUALITIES_FINE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PaperSizes[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_PAPER_SIZES_DEFAULT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PaperSizes[1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_PAPER_SIZES_4IX6I</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PaperSizes[2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_PAPER_SIZES_L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PaperSizes[3]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_PAPER_SIZES_2L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PaperSizes[4]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_PAPER_SIZES_LETTER</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PaperTypes[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_PAPER_TYPES_DEFAULT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PaperTypes[1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_PAPER_TYPES_PLAIN</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PaperTypes[2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_PAPER_TYPES_PHOTO</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FileTypes[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FILE_TYPES_DEFAULT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FileTypes[1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FILE_TYPES_EXIF_JPEG</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FileTypes[2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FILE_TYPES_JFIF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FileTypes[3]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FILE_TYPES_DPOF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DatePrints[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_DATE_PRINTS_DEFAULT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DatePrints[1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_DATE_PRINTS_OFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DatePrints[2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_DATE_PRINTS_ON</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FileNamePrints[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FILE_NAME_PRINTS_DEFAULT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FileNamePrints[1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FILE_NAME_PRINTS_OFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FileNamePrints[2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FILE_NAME_PRINTS_ON</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ImageOptimizes[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_IMAGE_OPTIMIZES_DEFAULT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ImageOptimizes[1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_IMAGE_OPTIMIZES_OFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ImageOptimizes[2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_IMAGE_OPTIMIZES_ON</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Layouts[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_LAYOUTS_DEFAULT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Layouts[1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_LAYOUTS_1_UP_BORDER</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Layouts[2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_LAYOUTS_INDEX_PRINT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Layouts[3]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_LAYOUTS_1_UP_BORDERLESS</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FixedSizes[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FIXED_SIZE_DEFAULT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FixedSizes[1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FIXED_SIZE_35IX5I</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FixedSizes[2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FIXED_SIZE_4IX6I</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FixedSizes[3]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FIXED_SIZE_5IX7I</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FixedSizes[4]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FIXED_SIZE_7CMX10CM</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FixedSizes[5]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FIXED_SIZE_LETTER</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FixedSizes[6]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_FIXED_SIZE_A4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Croppings[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_CROPPINGS_DEFAULT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Croppings[1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_CROPPINGS_OFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Croppings[2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_PICTBRIDGE_CROPPINGS_ON</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The state machine of the DPS host will be set to Idle and ready to accept a new print job.</p>
+</div>
+<div class="paragraph">
+<p>The host portion of Pictbridge can now be started as the example below shows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Activate the pictbridge dpshost. */
+
+status = ux_pictbridge_dpshost_start(&amp;pictbridge, pima);
+if (status != UX_SUCCESS)
+    return;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Pictbridge host function requires a callback when data is ready to be printed. This is accomplished by passing a function pointer in the pictbridge host structure as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Set a callback when an object is being received. */
+
+pictbridge.ux_pictbridge_application_object_data_write =
+    tx_demo_object_data_write;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This function has the following properties:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_pictbridge_application_object_data_write"><a class="anchor" href="#_ux_pictbridge_application_object_data_write"></a>ux_pictbridge_application_object_data_write</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Writing a block of data for printing.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT **ux_pictbridge_application_object_data_write(
+    UX_PICTBRIDGE *pictbridge,
+    UCHAR *object_buffer,
+    ULONG offset,
+    ULONG total_length,
+    ULONG length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when the DPS server needs to retrieve a data block from the DPS client to print to the local printer.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_2"><a class="anchor" href="#_parameters_2"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>pictbridge</strong>: Pointer to the pictbridge class instance.</p>
+</li>
+<li>
+<p><strong>object_buffer</strong>: Pointer to object buffer</p>
+</li>
+<li>
+<p><strong>object_offset</strong>: Where we are starting to read the data block</p>
+</li>
+<li>
+<p><strong>total_length</strong>: Entire length of object</p>
+</li>
+<li>
+<p><strong>length</strong>: Length of this buffer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_2"><a class="anchor" href="#_return_value_2"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong>: (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong>: (0x01) The application could not print data.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Copy the object data. */
+
+UINT tx_demo_object_data_write(UX_PICTBRIDGE *pictbridge,
+    UCHAR *object_buffer, ULONG offset, ULONG total_length, ULONG length);
+{
+    UINT status;
+
+    /* Send the data to the local printer. */
+    status = local_printer_data_send(object_buffer, length);
+
+    /* We have printed the requested data. Return status. */
+    return(status);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

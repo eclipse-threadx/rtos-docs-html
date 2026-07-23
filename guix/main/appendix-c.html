@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Appendix C - GUIX Widget Styles :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/guix/main/appendix-c.html">
+    <meta name="description" content="Learn about the GUIX widget styles.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guix" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">GUIX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">GUIX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">GUIX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-guix.html">Overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="guix-studio-quick-start.html">GUIX Studio Quick Start Guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-1.html">Ch. 1 - Introduction to GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-3.html">Ch. 3 - Functional overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-4.html">Ch. 4 - Description of GUIX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-5.html">Ch. 5 - GUIX display drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-example.html">GUIX example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - GUIX color definitions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - GUIX color formats</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - GUIX widget styles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - GUIX brush, canvas, and gradient attributes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - GUIX event description</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-f.html">App. F - GUIX RTOS binding services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-g.html">App. G - GUIX font structure</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-h.html">App. H - GUIX build-time configuration flags</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-i.html">App. I - GUIX information structures</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-j.html">App. J - Canvas Partial Frame Buffer Feature</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-k.html">App. K - GUIX Widget Status Flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX Studio User Guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix-studio.html">About GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-1.html">Ch. 1 - Introduction to GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-2.html">Ch. 2 - Installation and Use of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-3.html">Ch. 3 - Description of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-4.html">Ch. 4 - GUIX Studio Resources</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-6.html">Ch. 6 - GUIX Studio Generated Code</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-9.html">Ch. 9 - GUIX Studio Command Line</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-10.html">Ch. 10 - Simple Example Project</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-11.html">Ch. 11 - Resource Project File</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">GUIX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">GUIX</a></li>
+    <li>GUIX user guide</li>
+    <li><a href="appendix-c.html">App. C - GUIX widget styles</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/guix/modules/ROOT/pages/appendix-c.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Appendix C - GUIX Widget Styles</h1>
+<div class="paragraph">
+<p><strong><strong><em>General Styles (Used with most widget types):</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_BORDER_NONE</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000000</p>
+</li>
+<li>
+<p>Description: Use this style to draw a widget with no border.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_BORDER_RAISED</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000001</p>
+</li>
+<li>
+<p>Description: Draw widget with a raised border.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_BORDER_RECESSED</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000002</p>
+</li>
+<li>
+<p>Description: Draw widget with a recessed border.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_BORDER_THIN</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000004</p>
+</li>
+<li>
+<p>Description: Draw a one-pixel width border.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_BORDER_THICK</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000008</p>
+</li>
+<li>
+<p>Description: Draw widget with a thick border.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_BORDER_MASK</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x0000000f</p>
+</li>
+<li>
+<p>Description: Mask value used to test only the style fields of the widget style member.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_TRANSPARENT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x10000000</p>
+</li>
+<li>
+<p>Description: Create a widget that is at least partially transparent. This style should be used when a widget does not draw itself fully opaque, including widgets that draw a semi-transparent pixelmap as the widget background. This style flag informs GUIX that the widget parent must be drawn to refresh the widget background area.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_DRAW_SELECTED</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x20000000</p>
+</li>
+<li>
+<p>Description: Specify that the widget should be drawn using selected state colors and fonts. Different widget types use the DRAW_SELECTED style in different ways to indicate the widget is
+currently selected.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_ENABLED</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x40000000</p>
+</li>
+<li>
+<p>Description: Mark the widget as enabled, which allows the widget to accept user input events and generate output signals.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_DYNAMICALLY_ALLOCATED</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x80000000</p>
+</li>
+<li>
+<p>Description: Indicates the widget control block memory is dynamically allocated using the gx_system_memory_allocator service when the widget is created, and the control block memory is freed if the widget is destroyed.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_USE_LOCAL_ALPHA</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x01000000</p>
+</li>
+<li>
+<p>Description: Instructs GUIX drawing functions to use the local widget alpha value when drawing the widget. This flag is normally used by the internal GUIX logic to implement widget fading
+animations.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Text Alignment Styles (styles applied to all widgets that draw text):</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_TEXT_LEFT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00001000</p>
+</li>
+<li>
+<p>Description: Text is drawn left-aligned within the widget client area.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_TEXT_RIGHT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00002000</p>
+</li>
+<li>
+<p>Description: Text is drawn right-aligned within the widget client
+area.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_TEXT_CENTER</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00004000</p>
+</li>
+<li>
+<p>Description: Text is drawn center-aligned within the widget client area.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_TEXT_COPY</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00008000</p>
+</li>
+<li>
+<p>Description: By default, widgets that draw text keep only a pointer to the text which is passed in by the application. For statically defined text that is defined within the string table, there is no reason for the widget to make a private copy of the text assigned. However, if the text assigned to a widget is created dynamically using functions like sprint() or gx_utility_ltoa, then it is often convenient to tell the widget to keep it&#8217;s own private copy of any text assigned. This allows the application to use automatic or temporary variables when defining the text string, when the application would otherwise be required to define statically defined character arrays for each text widget that is using dynamically defined text. When this style flag is set, the widget will use the gx_system_memory_allocator function to dynamically allocate the memory block needed to hold a private copy of the assigned string. Therefore using this style flag is predicated on the application defining memory_allocator and memory_deallocator functions. GX_STYLE_TEXT_COPY should not be cleared after it has been set, and doing so will cause unpredictable results.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Button Styles (apply only to GUIX button widget types):</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_BUTTON_PUSHED</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value 0x00000010</p>
+</li>
+<li>
+<p>Description: Indicates the button is in the pushed or selected state.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_BUTTON_TOGGLE</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value 0x00000020</p>
+</li>
+<li>
+<p>Description: Button will switch status between pushed and unpushed on every click event. This style is commonly used with "checkbox" style buttons.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_BUTTON_RADIO</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value 0x00000040</p>
+</li>
+<li>
+<p>Description: This style indicates the button will be exclusive, and deselect any button siblings when selected. This style is commonly used with "radio button" style buttons.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_BUTTON_EVENT_ON_PUSH</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000080</p>
+</li>
+<li>
+<p>Description: Indicates the button generates a click event when initially pushed. The default operation is to generate a click event when the button is released.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_BUTTON_REPEAT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value 0x00000100</p>
+</li>
+<li>
+<p>Description: Indicates the button should send repeated click events to the button parent when the button is held in the pushed state.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>List Styles (apply only to GUIX list widget types):</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_CENTER_SELECTED</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000010</p>
+</li>
+<li>
+<p>Description: Reserved</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_WRAP</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value 0x00000020</p>
+</li>
+<li>
+<p>Description: The list children wrap from start to end when the list is dragged or scrolled past the starting or ending list index.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_FLICKABLE</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000040</p>
+</li>
+<li>
+<p>Description: Reserved</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Pixelmap Button and Icon Button Styles:</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_HALIGN_CENTER</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00010000</p>
+</li>
+<li>
+<p>Description: The button pixelmap should be center aligned within the button boundary on the horizontal axis.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_HALIGN_LEFT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00020000</p>
+</li>
+<li>
+<p>Description: The button pixelmap should be left aligned within the button boundary on the horizontal axis.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_HALIGN_RIGHT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value 0x00040000</p>
+</li>
+<li>
+<p>Description: The button pixelmap should be right aligned within the button boundary on the horizontal axis.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_VALIGN_CENTER</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value 0x00080000</p>
+</li>
+<li>
+<p>Description: The button pixelmap should be center aligned within the button boundary on the vertical axis.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_VALIGN_TOP</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00100000</p>
+</li>
+<li>
+<p>Description: The button pixelmap should be top aligned within the button boundary on the vertical axis.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_VALIGN_BOTTOM</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00200000</p>
+</li>
+<li>
+<p>Description: The button pixelmap should be bottom aligned within the button boundary on the vertical horizontal axis.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Slider Styles (Apply only to GX_SLIDER and derived widget types):</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_SHOW_NEEDLE</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000200</p>
+</li>
+<li>
+<p>Description: This style must be included for the slider to draw the needle indicator. This style can be disabled if the application wants to disable the slider needle or draw a custom needle indicator.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_SHOW_TICKMARKS</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000400</p>
+</li>
+<li>
+<p>Description: The slider widget will do software drawing of dashed tickmark lines when this style is enabled.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_SLIDER_VERTICAL</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value 0x00000800</p>
+</li>
+<li>
+<p>Description: Set this style flag to create a vertical slider, and clear this style flag to create a horizontal slider.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Sprite Styles (Applies only to GX_SPRITE widget types):</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_SPRITE_AUTO</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000010</p>
+</li>
+<li>
+<p>Description: Indicates the sprite animation will run automatically when the sprite widget received the GX_EVENT_SHOW event.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_SPRITE_LOOP</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000020</p>
+</li>
+<li>
+<p>Description: With this style, the sprite widget will continuously loop through sprite animation frames until the sprite is stopped by the application.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Pixelmap Slider Styles:</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_TILE_BACKGROUND</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value 0x00001000</p>
+</li>
+<li>
+<p>Description: The slider background image is tiled to fill the sprite bounding rectangle. This allows a small vertical or horizontal stripe image to be used to fill the slider background.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Additional Progress Bar Styles:</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_PROGRESS_PERCENT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000010</p>
+</li>
+<li>
+<p>Description: When this style is set, the progress bar will draw  bar value as a percentage rather than a raw value. The text is centered in the progress bar bounding rectangle.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_PROGRESS_TEXT_DRAW</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000020</p>
+</li>
+<li>
+<p>Description: Draw the current progress bar value as decimal text centered within the progress bar.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_PROGRESS_VERTICAL</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x0000040</p>
+</li>
+<li>
+<p>Description: Indicate the progress is vertically oriented. The default is horizontal orientation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_PROGRESS_SEGMENT_FILL</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Value</strong>: 0x00000100</p>
+</li>
+<li>
+<p>Description: The progress bar value is indicated with segmented filled rectangles, rather than a solid fill.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Additional Radial Progress Bar Styles:</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_RADIAL_PROGRESS_ALIAS</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000200</p>
+</li>
+<li>
+<p>Description: Draw the radial progress bar using anti-aliased brush styles. This requires more CPU bandwidth but also produces a nicer appearance. For lower performance CPU targets, clearing this style flag will result in faster drawing speed.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_RADIAL_PROGRESS_ROUND</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000400</p>
+</li>
+<li>
+<p>Description: Use a round line end brush style when drawing the radial progress bar arc. The default is a square line end.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Additional Text Input Styles:</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_ CURSOR_BLINK</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000040</p>
+</li>
+<li>
+<p>Description: The text input widget cursor will flash on and off rather than being steady.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_ CURSOR_ALWAYS</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000080</p>
+</li>
+<li>
+<p>Description. The text input widget cursor is normally only displayed when the widget owns input focus. This style flag will make the cursor always visible regardless of input focus.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_TEXT_INPUT_NOTIFY_ALL</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000100</p>
+</li>
+<li>
+<p>Description: With this style flag set the GX_EVENT_TEXT_EDITED event every time key down event is received by the text input widget.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Additional Window Styles:</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_TILE_WALLPAPER</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00040000</p>
+</li>
+<li>
+<p>Description: The window will tile any assigned wallpaper image to fill the window client rectangle.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_AUTO_HSCROLL</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00100000</p>
+</li>
+<li>
+<p>Description: Reserved for future use.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_AUTO_VSCROLL</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00200000</p>
+</li>
+<li>
+<p>Description: Reserved for future use.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Additional Menu Styles:</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_MENU_EXPANDED</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000010</p>
+</li>
+<li>
+<p>Description: Accordion menu widget is initially in expanded state.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Additional Tree View Styles:</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_TREE_VIEW_SHOW_ROOT_LINES</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000010</p>
+</li>
+<li>
+<p>Description: Tree view widget should draw lines from node icon to root tree node.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Additional Scrollbar Styles:</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_SCROLLBAR_BACKGROUND_TILE</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00010000</p>
+</li>
+<li>
+<p>Description: Reserved for future use.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_SCROLLBAR_RELATIVE_THUMB</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00020000</p>
+</li>
+<li>
+<p>Description: The scrollbar thumb width (for a horizontal scroll bar) or height (for a vertical scroll bar) are calculated based on the ratio of the visible area of the parent window to the min and max scrollbar range.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_SCROLLBAR_END_BUTTONS</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00040000</p>
+</li>
+<li>
+<p>Description: The scrollbar automatically creates and attaches buttons at each end of the scrollbar region.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_SCROLLBAR_VERTICAL</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x01000000</p>
+</li>
+<li>
+<p>Description: The scrollbar is vertically oriented.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_SCROLLBAR_HORIZONTAL</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x02000000</p>
+</li>
+<li>
+<p>Description: The scrollbar is horizontally oriented.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><strong><em>Text Scroll Wheel Styles:</em></strong></strong></p>
+</div>
+<div class="paragraph">
+<p><strong>GX_STYLE_TEXT_SCROLL_WHEEL_ROUND</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Value: 0x00000200</p>
+</li>
+<li>
+<p>Description: The scroll wheel uses a Sinusoidal algorithm to make the scroll wheel appear to have a rounded shape. This style flag can add significant overhead to the performance of the scroll wheel widget, but can also give the wheel a 3D realistic appearance.</p>
+</li>
+</ul>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

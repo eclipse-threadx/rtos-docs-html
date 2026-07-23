@@ -1,0 +1,3833 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 4 - NetX Duo DHCPv6 Client services :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-dhcpv6-client/chapter4.html">
+    <meta name="description" content="This chapter contains a description of all NetX Duo DHCPv6 Client services (listed below) in alphabetic order.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo DHCPv6 client user guide</li>
+    <li><a href="chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-dhcpv6-client/chapter4.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 4 - NetX Duo DHCPv6 Client services</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of all NetX Duo DHCPv6 Client services (listed below) in alphabetic order.</p>
+</div>
+<div class="paragraph">
+<p>In the "Return Values" section in the following API descriptions, values in <strong>BOLD</strong> are not affected by the <strong>NX_DISABLE_ERROR_CHECKING</strong> define that is used to disable API error checking, while non-bold values are completely disabled.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_client_create"><a class="anchor" href="#_nx_dhcpv6_client_create"></a>nx_dhcpv6_client_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create a DHCPv6 client instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT  nx_dhcpv6_client_create(
+    NX_DHCPV6 *dhcpv6_ptr,
+    NX_IP *ip_ptr,
+    CHAR *name_ptr,
+    NX_PACKET_POOL *packet_pool_ptr,
+    VOID *stack_ptr,
+    ULONG stack_size,
+    VOID (*dhcpv6_state_change_notify)(
+        struct NX_DHCPV6_STRUCT *dhcpv6_ptr,
+        UINT old_state,
+        UINT new_state),
+    VOID (*dhcpv6_server_error_handler)(
+        struct NX_DHCPV6_STRUCT *dhcpv6_ptr,
+        UINT op_code, UINT status_code,
+        UINT message_type));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates a DHCPv6 client instance including callback functions.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters"><a class="anchor" href="#_input_parameters"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 control block</p>
+</li>
+<li>
+<p><em>ip_ptr</em>: Pointer to Client IP instance</p>
+</li>
+<li>
+<p><em>name_ptr</em>: Pointer to name for DHCPv6 instance</p>
+</li>
+<li>
+<p><em>packet_pool_ptr</em>: Pointer to Client packet pool</p>
+</li>
+<li>
+<p><em>stack_ptr</em>: Pointer to Client stack memory</p>
+</li>
+<li>
+<p><em>stack_size</em>: Size of Client stack memory</p>
+</li>
+<li>
+<p><em>dhcpv6_state_change_notify</em>: Pointer to callback function invoked when the Client initiates a new DHCPv6 request to the server</p>
+</li>
+<li>
+<p><em>dhcpv6_server_error_handler</em>: Pointer to callback function invoked when the Client receives an error status from the server</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful Client create</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_DHCPV6_PARAM_ERROR (0xE93) Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from"><a class="anchor" href="#_allowed_from"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Create a DHCPv6 client instance without specifying link local or preferred
+   global IP address.  */
+status =  nx_dhcpv6_client_create(&amp;dhcp_0, &amp;ip_0, "DHCPv6 Client", &amp;pool_0,
+                                  NULL, NULL, pointer, 2048,
+                                  dhcpv6_state_change_notify,
+                                  dhcpv6_server_error_handler);
+
+/* If status is NX_SUCCESS a DHCPv6 client instance was successfully
+   created.  */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also"><a class="anchor" href="#_see_also"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_client_delete</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_client_delete"><a class="anchor" href="#_nx_dhcpv6_client_delete"></a>nx_dhcpv6_client_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete a DHCPv6 Client instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_client_delete(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes a previously created DHCPv6 client instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_2"><a class="anchor" href="#_input_parameters_2"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful DHCPv6 deletion</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_DHCPV6_PARAM_ERROR (0xE93) Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_2"><a class="anchor" href="#_allowed_from_2"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Delete a DHCPv6 client instance.  */
+status =  nx_dhcpv6_client_delete(&amp;my_dhcp);
+
+/* If status is NX_SUCCESS the DHCPv6 client instance was successfully
+   deleted.  */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_2"><a class="anchor" href="#_see_also_2"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_client_create</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_client_set_interface"><a class="anchor" href="#_nx_dhcpv6_client_set_interface"></a>nx_dhcpv6_client_set_interface</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sets Client&#8217;s Network Interface for DHCPv6</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT    nx_dhcpv6_client_set_interface(
+    NX_DHCPV6 *dhcpv6_ptr,
+    UINT *interface_index);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the Client&#8217;s network interface for communicating with the DHCPv6 Server(s) to the specified input interface index.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_3"><a class="anchor" href="#_input_parameters_3"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>interface_index</em>: Index indicating network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Interface successfully set</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE (0x4C) Invalid interface index input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_3"><a class="anchor" href="#_allowed_from_3"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Set the client interface for DHCPv6 communication with the Server to
+   the secondary interface (1). */
+
+UINT index = 1;
+status = nx_dhcpv6_client_set_interface(&amp;dhcp_0, index);
+
+/* If status is NX_SUCCESS, the Client successfully set
+   the DHCPv6 network interface.  */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_3"><a class="anchor" href="#_see_also_3"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_client _create</p>
+</li>
+<li>
+<p>nx_dhcpv6_start</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_client_set_destination_address"><a class="anchor" href="#_nx_dhcpv6_client_set_destination_address"></a>nx_dhcpv6_client_set_destination_address</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sets the destination address where DHCPv6 message should be sent to</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_client_set_destination_address(
+    NX_DHCPV6 *dhcpv6_ptr,
+    NXD_ADDRESS *destination_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the destination address where DHCPv6 message should be sent to. By default is ALL_DHCP_Relay_Agents_and_Servers(FF02::1:2).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_4"><a class="anchor" href="#_input_parameters_4"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>destination_address</em>: Destination address</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Interface successfully set</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_DHCPV6_PARAM_ERROR (0xE93) Parament error</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_4"><a class="anchor" href="#_allowed_from_4"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Set the destination address where DHCPv6 message should be sent to. */
+
+NXD_ADDRESS dest_address; /* Set the destination address.  */
+
+status = nx_dhcpv6_client_set_destination_address(&amp;dhcp_0, &amp;dest_address);
+
+/* If status is NX_SUCCESS, the Client successfully set the destination address. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_4"><a class="anchor" href="#_see_also_4"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_client _create</p>
+</li>
+<li>
+<p>nx_dhcpv6_start</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_create_client_duid"><a class="anchor" href="#_nx_dhcpv6_create_client_duid"></a>nx_dhcpv6_create_client_duid</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create Client DUID object</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_create_client_duid(
+    NX_DHCPV6 *dhcpv6_ptr,
+    UINT duid_type, UINT hardware_type,
+    ULONG time);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates the Client DUID with the input parameters. If the time input is not supplied and the duid type indicates link layer with time, this function will supply a time which includes a randomizing factor for uniqueness. Vendor assigned (enterprise) duid types are not supported.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_5"><a class="anchor" href="#_input_parameters_5"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>duid_type</em>: Type of DUID (hardware, enterprise etc)</p>
+</li>
+<li>
+<p><em>hardware_type</em>: Network hardware e.g. IEEE 802</p>
+</li>
+<li>
+<p><em>time</em>: Value used in creating unique identifier</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful Client DUID created</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_DHCPV6_PARAM_ERROR (0xE93) Invalid non pointer input</p>
+</li>
+<li>
+<p>NX_DHCPV6_UNSUPPORTED_DUID_TYPE (0xE98) DUID type unknown or not supported</p>
+</li>
+<li>
+<p>NX_DHCPV6_UNSUPPORTED_DUID_HW_TYPE (0xE99) DUID hardware type unknown or not supported</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_5"><a class="anchor" href="#_allowed_from_5"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Create the Client DUID from the supplied input.
+   The time field is left NULL so the DHCPv6 client will provide one.  */
+status = nx_dhcpv6_create_client_duid(&amp;dhcp_0, NX_DHCPV6_DUID_TYPE_LINK_TIME,
+                                      NX_DHCPV6_HW_TYPE_IEEE_802, 0)
+
+/* If status is NX_SUCCESS the client DUID was successfully created.  */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_5"><a class="anchor" href="#_see_also_5"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_create_client_ia</p>
+</li>
+<li>
+<p>nx_dhcpv6_create_client_iana</p>
+</li>
+<li>
+<p>nx_dhcpv6_create_server_duid</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_create_client_ia"><a class="anchor" href="#_nx_dhcpv6_create_client_ia"></a>nx_dhcpv6_create_client_ia</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add an Identity Association to the Client</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_create_client_ia(
+    NX_DHCPV6 *dhcpv6_ptr,
+    NXD_ADDRESS *ipv6_address,
+    ULONG preferred_lifetime,
+    ULONG valid_lifetime);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This service is identical to the <em>nx_dhcpv6_add_client_ia</em> service. It adds a Client Identity Association by filling in the Client record with the supplied parameters. To request the maximum preferred and valid lifetimes, set these parameters to infinity. To add more than one IA to a DHCPv6 Client, set the NX_DHCPV6_MAX_IA_ADDRESS to a value higher than the default value of 1.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_6"><a class="anchor" href="#_input_parameters_6"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>ipv6_address</em>: Pointer to NetX Duo IP address block</p>
+</li>
+<li>
+<p><em>preferred_lifetime</em>: Length of time before IP address is deprecated</p>
+</li>
+<li>
+<p><em>valid_lifetime</em>: Length of time before IP address is expired</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful Client IA added</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_IA_ADDRESS_ALREADY_EXIST</strong> (0xEAF) Duplicate IA address</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_REACHED_MAX_IA_ADDRESS</strong> (0xEAE) IA exceeds the max IAs Client can store</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_DHCPV6_INVALID_IA_ADDRESS (0xEA4) Invalid (e.g. null) IA address in IA</p>
+</li>
+<li>
+<p>NX_DHCPV6_PARAM_ERROR (0xE93) Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_6"><a class="anchor" href="#_allowed_from_6"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_6"><a class="anchor" href="#_example_6"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Add an Client IA using the supplied input.   */
+status = nx_dhcpv6_create_client_ia(&amp;dhcp_0, &amp;ipv6_address,
+NX_DHCPV6_PREFERRED_LIFETIME, NX_DHCPV6_VALID_LIFETIME);
+
+/* If status is NX_SUCCESS the client IA was successfully added.  */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_6"><a class="anchor" href="#_see_also_6"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_add_client_duid</p>
+</li>
+<li>
+<p>nx_dhcpv6_create_server_duid</p>
+</li>
+<li>
+<p>nx_dhcpv6_create_client_iana</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_create_client_iana"><a class="anchor" href="#_nx_dhcpv6_create_client_iana"></a>nx_dhcpv6_create_client_iana</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create an Identity Association (Non Temporary) for the Client</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_create_client_iana(
+    NX_DHCPV6 *dhcpv6_ptr,
+    UINT IA_ident,
+    ULONG T1, ULONG T2);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates a Client Non Temporary Identity Association (IANA) from the supplied parameters. To set the T1 and T2 times to maximum (infinity) in the DHCPv6 Client requests, set these parameters to NX_DHCPV6_INFINITE_LEASE.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+A Client has only one IANA.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_7"><a class="anchor" href="#_input_parameters_7"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>IA_ident</em>: Identity Association unique identifier</p>
+</li>
+<li>
+<p><em>T1</em>: When the Client must start the IPv6 address renewal</p>
+</li>
+<li>
+<p><em>T2</em>: When the Client must start theIPv6 address rebinding</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_7"><a class="anchor" href="#_return_values_7"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully created the IANA</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_DHCPV6_PARAM_ERROR (0xE93) Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_7"><a class="anchor" href="#_allowed_from_7"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_7"><a class="anchor" href="#_example_7"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Create the Client IANA from the supplied input.  */
+status = nx_dhcpv6_create_client_iana(&amp;dhcp_0, DHCPV6_IA_ID, DHCPV6_T1,
+                                      DHCPV6_T2);
+
+/* If status is NX_SUCCESS the client IANA was successfully created.  */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_7"><a class="anchor" href="#_see_also_7"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_create_client_duid</p>
+</li>
+<li>
+<p>nx_dhcpv6_create_server_duid</p>
+</li>
+<li>
+<p>nx_dhcpv6_add_client_ia</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_add_client_ia"><a class="anchor" href="#_nx_dhcpv6_add_client_ia"></a>nx_dhcpv6_add_client_ia</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add an Identity Association to the Client</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_add_client_ia(
+    NX_DHCPV6 *dhcpv6_ptr,
+    NXD_ADDRESS *ipv6_address,
+    ULONG preferred_lifetime,
+    ULONG valid_lifetime);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>This service adds a Client Identity Association by filling in the Client record with the supplied parameters. To request the maximum preferred and valid lifetimes, set these parameters to infinity. To add more than one IA to a DHCPv6 Client, set the NX_DHCPV6_MAX_IA_ADDRESS to a value higher than the default value of 1.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_8"><a class="anchor" href="#_input_parameters_8"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>ipv6_address</em>: Pointer to NetX Duo IP address block</p>
+</li>
+<li>
+<p><em>preferred_lifetime</em>: Length of time before IP address is deprecated</p>
+</li>
+<li>
+<p><em>valid_lifetime</em>: Length of time before IP address is expired</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_8"><a class="anchor" href="#_return_values_8"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful Client IA added</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_IA_ADDRESS_ALREADY_EXIST</strong> (0xEAF) Duplicate IA address</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_REACHED_MAX_IA_ADDRESS</strong> (0xEAE) IA exceeds the max IAs Client can store</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_DHCPV6_INVALID_IA_ADDRESS (0xEA4) Invalid (e.g. null) IA address in IA</p>
+</li>
+<li>
+<p>NX_DHCPV6_PARAM_ERROR (0xE93) Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_8"><a class="anchor" href="#_allowed_from_8"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Add an Client IA using the supplied input.   */
+status = nx_dhcpv6_add_client_ia(&amp;dhcp_0, &amp;ipv6_address,
+								 NX_DHCPV6_PREFERRED_LIFETIME,
+                                 NX_DHCPV6_VALID_LIFETIME);
+
+/* If status is NX_SUCCESS the client IA was successfully added.  */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_8"><a class="anchor" href="#_see_also_8"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_create_client_duid</p>
+</li>
+<li>
+<p>nx_dhcpv6_create_server_duid</p>
+</li>
+<li>
+<p>nx_dhcpv6_create_client_iana</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_get_client_duid_time_id"><a class="anchor" href="#_nx_dhcpv6_get_client_duid_time_id"></a>nx_dhcpv6_get_client_duid_time_id</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieves time ID from Client DUID</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_get_client_duid_time_id(
+    NX_DHCPV6 *dhcpv6_ptr,
+    ULONG *time_id);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the time ID field from the Client DUID. If the application must first call <em>nx_dhcpv6_create_client_duid</em>, to fill in the Client DUID in the DHCPv6 Client instance or it will have a null value for this field. The intent is for the application to save this data and present the same Client DUID to the server, including the time field, across reboots.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_9"><a class="anchor" href="#_input_parameters_9"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>time_id</em>: Pointer to Client DUID time field</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_9"><a class="anchor" href="#_return_values_9"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) IP lease data successfully retrieved</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_9"><a class="anchor" href="#_allowed_from_9"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Retrieve the time ID from the Client DUID.  */
+status = nx_dhcpv6_get_client_duid_time_id(&amp;dhcp_0, &amp;time_ID);
+
+/* If status is NX_SUCCESS the time ID was retrieved. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_9"><a class="anchor" href="#_see_also_9"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_get_IP_address</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_time_lease_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_other_option_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_time_accrued</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_get_ip_address"><a class="anchor" href="#_nx_dhcpv6_get_ip_address"></a>nx_dhcpv6_get_IP_address</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieves Client&#8217;s global IPv6 address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_get_IP_address(
+    NX_DHCPV6 *dhcpv6_ptr,
+    NXD_ADDRESS *ip_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the Client&#8217;s global IPv6 address. If the Client does not have a valid address, an error status is returned. If a Client has more than one global IPv6 address, the primary IPv6 address is returned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_10"><a class="anchor" href="#_input_parameters_10"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>ip_address</em>: Pointer to IPv6 address</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_10"><a class="anchor" href="#_return_values_10"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) IPv6 address successfully assigned</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_IA_ADDRESS_NOT_VALID</strong> (0xEAD) IPv6 address is not valid</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_10"><a class="anchor" href="#_allowed_from_10"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT address_status;
+UINT address_index;
+
+/* Retrieve the client's assigned IP address.  */
+status = nx_dhcpv6_get_IP_address(&amp;dhcp_0, &amp;ipv6_address);
+
+/* If status is NX_SUCCESS the client IP address was assigned.
+   Now register it with NetX Duo on the primary interface (index zero).
+   The address index is returned in the address_index field*/
+status = nxd_ipv6_address_set(&amp;ip_0, 0, &amp;ipv6_address, 64, &amp;address_index);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_10"><a class="anchor" href="#_see_also_10"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_get_lease_time_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_client_duid_time_id</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_other_option_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_time_accrued</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_get_lease_time_data"><a class="anchor" href="#_nx_dhcpv6_get_lease_time_data"></a>nx_dhcpv6_get_lease_time_data</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieves Client&#8217;s IA address lease time data</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_get_lease_time_data(
+    NX_DHCPV6 *dhcpv6_ptr,
+    ULONG *T1,
+    ULONG *T2,
+    ULONG *preferred_lifetime,
+    ULONG *valid_lifetime);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the Client&#8217;s global IA address time data. If the Client IA address status is invalid, time data is set to zero and a successful completion status is returned. If a Client has more than one global IPv6 address, the primary IA address data is returned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_11"><a class="anchor" href="#_input_parameters_11"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>T1</em>: Pointer to IA address renew time</p>
+</li>
+<li>
+<p><em>T2</em>: Pointer to IA address rebind time</p>
+</li>
+<li>
+<p><em>preferred_lifetime</em>: Pointer to time when IA address is deprecated</p>
+</li>
+<li>
+<p><em>valid_lifetime</em>: Pointer to time when IA address is expired</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_11"><a class="anchor" href="#_return_values_11"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) IA lease data successfully retrieved</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_11"><a class="anchor" href="#_allowed_from_11"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_11"><a class="anchor" href="#_example_11"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Retrieve the client's assigned IA lease data.  */
+status = nx_dhcpv6_get_lease_time_data(&amp;dhcp_0, &amp;T1, &amp;T2, &amp;preferred_lifetime,
+                                       &amp;valid_lifetime);
+
+/* If status is NX_SUCCESS the client IA address lease data was retrieved.  */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_11"><a class="anchor" href="#_see_also_11"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_get_IP_address</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_client_duid_time_id</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_other_option_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_time_accrued</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_iana_lease_time</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_get_iana_lease_time"><a class="anchor" href="#_nx_dhcpv6_get_iana_lease_time"></a>nx_dhcpv6_get_iana lease_time</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieve the Client&#8217;s IANA lease time data</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_get_iana_lease_time(
+    NX_DHCPV6 *dhcpv6_ptr,
+    ULONG *T1,
+    ULONG *T2);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the Client&#8217;s global IA-NA lease time data (T1 and T2). If none of the Client IA-NA addresses have a valid address status, time data is set to zero and a successful completion status is returned. If a Client has more than one global IPv6 address, the primary IA address data is returned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_12"><a class="anchor" href="#_input_parameters_12"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>T1</em>: Pointer to time for starting lease renewal</p>
+</li>
+<li>
+<p><em>T2</em>: Pointer to time for starting lease rebinding</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_12"><a class="anchor" href="#_return_values_12"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) IANA lease data successfully retrieved</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_12"><a class="anchor" href="#_allowed_from_12"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_12"><a class="anchor" href="#_example_12"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Retrieve the client's assigned IANA lease data.  */
+status = nx_dhcpv6_get_iana_lease_time(&amp;dhcp_0, &amp;T1, &amp;T2);
+
+/* If status is NX_SUCCESS the client IA address lease data was retrieved.  */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_12"><a class="anchor" href="#_see_also_12"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_get_IP_address</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_client_duid_time_id</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_other_option_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_time_accrued</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_lease_time_data</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_get_valid_ip_address_count"><a class="anchor" href="#_nx_dhcpv6_get_valid_ip_address_count"></a>nx_dhcpv6_get_valid_ip_address_count</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieve a count of Client&#8217;s valid IA addresses</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_get_valid_ip_address_count(
+    NX_DHCPV6 *dhcpv6_ptr,
+    UINT *address_count);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the count of the Client&#8217;s valid IPv6 addresses. A valid IPv6 address is bound (assigned) to the Client and registered with the IP instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_13"><a class="anchor" href="#_input_parameters_13"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>address_count</em>: Pointer to address count to return</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_13"><a class="anchor" href="#_return_values_13"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) IANA lease data successfully retrieved</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_13"><a class="anchor" href="#_allowed_from_13"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_13"><a class="anchor" href="#_example_13"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT address_count;
+
+/* Retrieve the count of valid IA-NA addresses.  */
+status = nx_dhcpv6_get_valid_ip_address_count(&amp;dhcp_0, &amp;address_count);
+
+/* If status is NX_SUCCESS the client IA address count was retrieved.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_get_valid_ip_address_lease_time"><a class="anchor" href="#_nx_dhcpv6_get_valid_ip_address_lease_time"></a>nx_dhcpv6_get_valid_ip_address_lease_time</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieve the Client IA data by address index</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_14"><a class="anchor" href="#_prototype_14"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_get_valid_ip_address_lease_time(
+    NX_DHCPV6 *dhcpv6_ptr,
+    UINT address_index,
+    NXD_ADDRESS *ip_address,
+    ULONG *preferred_lifetime,
+    ULONG *valid_lifetime);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_14"><a class="anchor" href="#_description_14"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the Client&#8217;s IA address and lease data by address index. If an invalid index is supplied, or the IPv6 address at that index is not valid, the service returns an NX_DHCPV6_IA_ADDRESS_NOT_VALID error status.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_14"><a class="anchor" href="#_input_parameters_14"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>address_index</em>: Index into DHCPv6 IA table</p>
+</li>
+<li>
+<p><em>ip_address</em>: Pointer to IPv6 address to retrieve</p>
+</li>
+<li>
+<p><em>preferred_lifetime</em>: Pointer to time when IA address is deprecated</p>
+</li>
+<li>
+<p><em>valid_lifetime</em>: Pointer to time when IA address is expired</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_14"><a class="anchor" href="#_return_values_14"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) IANA data successfully retrieved</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_IA_ADDRESS_NOT_VALID</strong> (0xEAD) An invalid index or no valid IPv6 address at the supplied index</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_14"><a class="anchor" href="#_allowed_from_14"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_14"><a class="anchor" href="#_example_14"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT address_index = 1;
+NXD_ADDRESS *ip_address;
+
+/* Retrieve the IPv6 address, and valid and preferred lifetime for the IA record
+   Saved at index 1 in the DHCPv6 table.  */
+status = nx_dhcpv6_get_valid_ip_address_lease_time(&amp;dhcp_0, address_index,
+                                                   &amp;ip_address,
+                                                   &amp;preferred_lifetime,
+                                                   &amp;valid_lifetime);
+
+/* If status is NX_SUCCESS the client IA address and lease data were retrieved.  */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_13"><a class="anchor" href="#_see_also_13"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_get_IP_address</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_iana_lease_time</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_lease_time_data</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_get_dns_server_address"><a class="anchor" href="#_nx_dhcpv6_get_dns_server_address"></a>nx_dhcpv6_get_DNS_server_address</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieves DNS Server address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_15"><a class="anchor" href="#_prototype_15"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_get_DNS_server_address(
+    NX_DHCPV6 *dhcpv6_ptr,
+    UINT index,
+    NXD_ADDRESS *server_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_15"><a class="anchor" href="#_description_15"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the DNS server IPv6 address data at the specified index in the Client list. If the list does not contain a server address at the index, an error is returned. The index may not exceed the size of the DNS Server list is specified by the user configurable option NX_DHCPV6_NUM_DNS_SERVERS.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_15"><a class="anchor" href="#_input_parameters_15"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>index</em>: Index into the DNS Server list</p>
+</li>
+<li>
+<p><em>server_address</em>: Pointer to Server address buffer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_15"><a class="anchor" href="#_return_values_15"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Address successfully retrieved</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_15"><a class="anchor" href="#_allowed_from_15"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_15"><a class="anchor" href="#_example_15"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Retrieve the DNS server at the specified index in the list. */
+
+UINT index = 0;
+NXD_ADDRESS server_address;
+
+
+        status = nx_dhcpv6_get_DNS_server_address(&amp;dhcp_0, index, &amp;server_address);
+
+/* If status == NX_SUCCESS, the DNS server IP address successfully retrieved. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_14"><a class="anchor" href="#_see_also_14"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_get_IP_address</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_lease_time_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_time_accrued</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_get_other_option_data"><a class="anchor" href="#_nx_dhcpv6_get_other_option_data"></a>nx_dhcpv6_get_other_option_data</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieves DHCPv6 option data</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_16"><a class="anchor" href="#_prototype_16"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT  nx_dhcpv6_get_other_option_data(
+    NX_DHCPV6 *dhcpv6_ptr,
+    UINT option_code,
+    UCHAR *buffer);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_16"><a class="anchor" href="#_description_16"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves DHCPv6 option data from a DHCPv6 message for the specified option code.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_16"><a class="anchor" href="#_input_parameters_16"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>option</em>: code Option code for which data to retrieve</p>
+</li>
+<li>
+<p><em>buffer</em>: Pointer to buffer to copy data to</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_16"><a class="anchor" href="#_return_values_16"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Option data successfully retrieved</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_UNKNOWN_OPTION</strong> (0xEAB) Unknown/unsupported option code</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_DHCPV6_PARAM_ERROR (0xE93) Invalid non pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_16"><a class="anchor" href="#_allowed_from_16"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_16"><a class="anchor" href="#_example_16"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Retrieve the option data specified by the input option code. */
+status = nx_dhcpv6_get_other_option_data(&amp;dhcp_0, option_code, buffer);
+
+/* If status is NX_SUCCESS the option data was retrieved. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_15"><a class="anchor" href="#_see_also_15"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_get_IP_address</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_lease_time_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_time_accrued</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_get_time_accrued"><a class="anchor" href="#_nx_dhcpv6_get_time_accrued"></a>nx_dhcpv6_get_time_accrued</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieves time accrued on Client&#8217;s IP address lease</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_17"><a class="anchor" href="#_prototype_17"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_get_time_accrued(
+    NX_DHCPV6 *dhcpv6_ptr,
+    ULONG *time_accrued);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_17"><a class="anchor" href="#_description_17"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the time accrued on the Client&#8217;s IPv6 address lease. The function checks all the IPv6 addresses assigned to the Client for the first valid address. If no valid addresses are found, a zero value for time accrued is returned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_17"><a class="anchor" href="#_input_parameters_17"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>time_accrued</em>: Pointer to time accrued in IP lease</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_17"><a class="anchor" href="#_return_values_17"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Accrued time successfully retrieved</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_17"><a class="anchor" href="#_allowed_from_17"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_17"><a class="anchor" href="#_example_17"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Retrieve time accrued time on the Client address lease. */
+status = nx_dhcpv6_get_time_accrued(&amp;dhcp_0, &amp;time_accrued);
+
+/* If status is NX_SUCCESS the time accrued on the client IP address
+   lease was retrieved. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_16"><a class="anchor" href="#_see_also_16"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_get_IP_address</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_other_option_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_lease_time_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_set_time_accrued</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_get_time_server_address"><a class="anchor" href="#_nx_dhcpv6_get_time_server_address"></a>nx_dhcpv6_get_time_server_address</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieves Time Server address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_18"><a class="anchor" href="#_prototype_18"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT  nx_dhcpv6_get_time_server_address(
+    NX_DHCPV6 *dhcpv6_ptr,
+    UINT index,
+    NXD_ADDRESS *server_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_18"><a class="anchor" href="#_description_18"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the Time server IPv6 address data at the specified index in the Client list. If the list does not contain a server address at the index, an error is returned. The index may not exceed the size of the Time Server list is specified by the user configurable option NX_DHCPV6_NUM_TIME_SERVERS.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_18"><a class="anchor" href="#_input_parameters_18"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>index</em>: Index into the Time Server list</p>
+</li>
+<li>
+<p><em>server_address</em>: Pointer to Server address buffer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_18"><a class="anchor" href="#_return_values_18"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Address successfully retrieved</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_18"><a class="anchor" href="#_allowed_from_18"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_18"><a class="anchor" href="#_example_18"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Retrieve the Time server at the specified index in the list. */
+
+UINT index = 0;
+NXD_ADDRESS server_address;
+
+
+      status = nx_dhcpv6_get_time_server_address(&amp;dhcp_0, index, &amp;server_address);
+
+/* If status == NX_SUCCESS, the Time server IP address successfully retrieved. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_17"><a class="anchor" href="#_see_also_17"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_get_IP_address</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_lease_time_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_time_accrued</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_DNS_server_address</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_reinitialize"><a class="anchor" href="#_nx_dhcpv6_reinitialize"></a>nx_dhcpv6_reinitialize</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Remove the Client IP address from the IP table</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_19"><a class="anchor" href="#_prototype_19"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_reinitialize(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_19"><a class="anchor" href="#_description_19"></a>Description</h3>
+<div class="paragraph">
+<p>This service reinitializes the Client for restarting the DHCPv6 state machine and re-running the DHCPv6 protocol. This is not necessary if the Client has not previously started the DHPCv6 state machine or been assigned any IPv6 addresses. The addresses saved to the DHCPv6 Client as well as registered with the IP instance are both cleared.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The application must still start the DHCPv6 Client using the <em>nx_dhcpv6_start service</em> and begin the request for IPv6 address assignment by calling <em>nx_dhcpv6_request_solicit</em>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_19"><a class="anchor" href="#_input_parameters_19"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_19"><a class="anchor" href="#_return_values_19"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Address successfully removed</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_ALREADY_STARTED</strong> (0xE91) DHCPv6 Client is already running</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_19"><a class="anchor" href="#_allowed_from_19"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_19"><a class="anchor" href="#_example_19"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Clear the assigned IP address(es) from the Client and the IP instance */
+status = nx_dhcpv6_reinitialize(&amp;dhcp_0);
+
+/* If status is NX_SUCCESS the Client IP address was successfully removed. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_18"><a class="anchor" href="#_see_also_18"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_stop</p>
+</li>
+<li>
+<p>nx_dhcpv6_start</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_request_confirm"><a class="anchor" href="#_nx_dhcpv6_request_confirm"></a>nx_dhcpv6_request_confirm</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Process the Client&#8217;s CONFIRM state</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_20"><a class="anchor" href="#_prototype_20"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_request_confirm(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_20"><a class="anchor" href="#_description_20"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends a CONFIRM request. If a reply is received from the Server, the DHCPv6 Client updates its lease parameters with the received data.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_20"><a class="anchor" href="#_input_parameters_20"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_20"><a class="anchor" href="#_return_values_20"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) CONFIRM message successfully sent and processed</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_20"><a class="anchor" href="#_allowed_from_20"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_20"><a class="anchor" href="#_example_20"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Send a CONFIRM message to the Server. */
+status = nx_dhcpv6_request_confirm(&amp;dhcp_0);
+
+/* If status is NX_SUCCESS the Client successfully sent the CONFIRM message. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_19"><a class="anchor" href="#_see_also_19"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_request_inform_request</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_release</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_solicit</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_request_inform_request"><a class="anchor" href="#_nx_dhcpv6_request_inform_request"></a>nx_dhcpv6_request_inform_request</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Process the Client&#8217;s INFORM REQUEST state</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_21"><a class="anchor" href="#_prototype_21"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_request_inform_request(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_21"><a class="anchor" href="#_description_21"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends an INFORM REQUEST message. If a reply is received, When one is received, the reply is processed to determine it is valid and the server granted the request. The Client instance is then updated with the server information as needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_21"><a class="anchor" href="#_input_parameters_21"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_21"><a class="anchor" href="#_return_values_21"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) INFORM REQUEST message successfully created and processed</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_21"><a class="anchor" href="#_allowed_from_21"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_21"><a class="anchor" href="#_example_21"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Send an INFORM REQUEST message to the server. */
+status = nx_dhcpv6_request_inform_request(&amp;dhcp_0);
+
+/* If status is NX_SUCCESS the Client successfully sent the INFORM REQUEST
+   message and processed the reply. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_20"><a class="anchor" href="#_see_also_20"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_request_confirm</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_request_option_dns_server"><a class="anchor" href="#_nx_dhcpv6_request_option_dns_server"></a>nx_dhcpv6_request_option_DNS_server</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add DNS Server to DHCPv6 Option request</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_22"><a class="anchor" href="#_prototype_22"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_request_option_DNS_server(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_22"><a class="anchor" href="#_description_22"></a>Description</h3>
+<div class="paragraph">
+<p>This service adds the option for requesting DNS server information to the DHCPv6 option request. If the Server reply includes DNS server data, the Client will store the DNS server if it has room to do so. The number of DNS servers the Client can store is determined by the configurable option NX_DHCPV6_NUM_DNS_SERVERS whose default value is 2.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_22"><a class="anchor" href="#_input_parameters_22"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_22"><a class="anchor" href="#_return_values_22"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) DNS server option is included</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_22"><a class="anchor" href="#_allowed_from_22"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_22"><a class="anchor" href="#_example_22"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Set the DNS server option in Client requests. */
+nx_dhcpv6_request_option_DNS_server(&amp;dhcp_0, NX_TRUE);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_21"><a class="anchor" href="#_see_also_21"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_request_option_domain_name</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_option_time_server</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_option_timezone</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_request_option_fqdn"><a class="anchor" href="#_nx_dhcpv6_request_option_fqdn"></a>nx_dhcpv6_request_option_FQDN</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add Fully Qualified Domain Name option to Option request list</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_23"><a class="anchor" href="#_prototype_23"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_request_option_FQDN(
+    NX_DHCPV6 *dhcpv6_ptr,
+    UCHAR *domain_name,
+    UINT op);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_23"><a class="anchor" href="#_description_23"></a>Description</h3>
+<div class="paragraph">
+<p>This service adds the option for adding the Client Fully Qualified Domain Name to the DHCPv6 option request. There are three options for the FQDN option:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>NX_DHCPV6_CLIENT_DESIRES_UPDATE_AAAA_RR 0 Update the FQDN-to-IPv6 address mapping for FQDN and address(es) used by the Client.</p>
+</li>
+<li>
+<p>NX_DHCPV6_CLIENT_DESIRES_SERVER_DO_DNS_UPDATE 1 Update the FQDN-to-IPv6 address mapping for FQDN and address(es) used by the Client to the server.</p>
+</li>
+<li>
+<p>NX_DHCPV6_CLIENT_DESIRES_NO_SERVER_DNS_UPDATE 2 Request the server perform no DNS updates on the Client&#8217;s behalf.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_23"><a class="anchor" href="#_input_parameters_23"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>domain_name</em>: String holding the domain name</p>
+</li>
+<li>
+<p><em>op</em>: Type of FQDN option to apply (see list above)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_23"><a class="anchor" href="#_return_values_23"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) FQDN option is included</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_23"><a class="anchor" href="#_allowed_from_23"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_23"><a class="anchor" href="#_example_23"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Set the FQDN option in Client DHCPv6 request. */
+nx_dhcpv6_request_option_FQDN(&amp;dhcp_0, "DHCPv6_Client",
+							  NX_DHCPV6_CLIENT_DESIRES_NO_SERVER_DNS_UPDATE);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_22"><a class="anchor" href="#_see_also_22"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_request_option_domain_name</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_option_time_server</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_option_timezone</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_request_option_domain_name"><a class="anchor" href="#_nx_dhcpv6_request_option_domain_name"></a>nx_dhcpv6_request_option_domain_name</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add domain name option to DHCPv6 option request</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_24"><a class="anchor" href="#_prototype_24"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_request_option_domain_name(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_24"><a class="anchor" href="#_description_24"></a>Description</h3>
+<div class="paragraph">
+<p>This service adds the domain name option to the option request in Client request messages. If the Server reply includes domain name data, the Client will store the domain name information if the size of the domain name is within the buffer size for holding the domain name. This buffer size is a configurable option (NX_DHCPV6_DOMAIN_NAME_BUFFER_SIZE) with a default value of 30 bytes.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_24"><a class="anchor" href="#_input_parameters_24"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_24"><a class="anchor" href="#_return_values_24"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Domain name option set</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_24"><a class="anchor" href="#_allowed_from_24"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_24"><a class="anchor" href="#_example_24"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Set the domain name option in Client requests. */
+nx_dhcpv6_request_option_domain_name(&amp;dhcp_0, NX_TRUE);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_23"><a class="anchor" href="#_see_also_23"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_request_option_DNS_server</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_option_time_server</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_option_timezone</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_request_option_time_server"><a class="anchor" href="#_nx_dhcpv6_request_option_time_server"></a>nx_dhcpv6_request_option_time_server</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set time server data as optional request</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_25"><a class="anchor" href="#_prototype_25"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_request_option_time_server(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_25"><a class="anchor" href="#_description_25"></a>Description</h3>
+<div class="paragraph">
+<p>This service adds the option for time server information to the option request of Client request messages. If the Server reply includes tim server data, the Client will store the time server if it has room to do so. The number of time servers the Client can store is determined by the configurable option</p>
+</div>
+<div class="paragraph">
+<p>NX_DHCPV6_NUM_TIME _SERVERS whose default value is 1.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_25"><a class="anchor" href="#_input_parameters_25"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_25"><a class="anchor" href="#_return_values_25"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Time server option added</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_25"><a class="anchor" href="#_allowed_from_25"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_25"><a class="anchor" href="#_example_25"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Set the time server option in Client request messages. */
+nx_dhcpv6_request_option_time_server(&amp;dhcp_0, NX_TRUE);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_24"><a class="anchor" href="#_see_also_24"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_request_option_DNS_server</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_option_domain_name</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_option_timezone</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_request_option_timezone"><a class="anchor" href="#_nx_dhcpv6_request_option_timezone"></a>nx_dhcpv6_request_option_timezone</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set time zone data as optional request</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_26"><a class="anchor" href="#_prototype_26"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_request_option_timezone(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_26"><a class="anchor" href="#_description_26"></a>Description</h3>
+<div class="paragraph">
+<p>This service adds the option for requesting time zone information to the Client option request. If the Server reply includes time zone data, the Client will store the time zone information if the size of the time zone is within the buffer size for holding the time zone. This buffer size is a configurable option (NX_DHCPV6_ TIME_ZONE _BUFFER_SIZE) with a default value of 10 bytes.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_26"><a class="anchor" href="#_input_parameters_26"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_26"><a class="anchor" href="#_return_values_26"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Time zone option added</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_26"><a class="anchor" href="#_allowed_from_26"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_26"><a class="anchor" href="#_example_26"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Set time zone option in Client request messages. */
+nx_dhcpv6_request_option_timezone(&amp;dhcp_0, NX_TRUE);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_25"><a class="anchor" href="#_see_also_25"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_request_option_DNS_server</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_option_domain_name</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_option_time_server</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_request_release"><a class="anchor" href="#_nx_dhcpv6_request_release"></a>nx_dhcpv6_request_release</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send a DHCPv6 RELEASE message</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_27"><a class="anchor" href="#_prototype_27"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_request_release(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_27"><a class="anchor" href="#_description_27"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends a RELEASE message on the Client network. If the message is successfully sent, a successful status is returned. A successful completion does not mean the Client received a response or has been granted an IPv6 address yet. The DHCPv6 Client thread task waits for a reply from a DHCPv6 Server. If one is received, it checks the reply is valid and stores the data to the Client record.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_27"><a class="anchor" href="#_input_parameters_27"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_27"><a class="anchor" href="#_return_values_27"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) RELEASE message successfully sent</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_NOT_STARTED</strong> (0xE92) DHCPv6 Client task not started</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_IA_ADDRESS_NOT_VALID</strong> (0xEAD) Address not bound to Client</p>
+</li>
+<li>
+<p><strong>NX_INVALID_INTERFACE</strong> (0x4C) Not found in IP address table</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_27"><a class="anchor" href="#_allowed_from_27"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_27"><a class="anchor" href="#_example_27"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Send an RELEASE message to the Server. */
+status = nx_dhcpv6_request_release(&amp;dhcp_0);
+
+/* If status is NX_SUCCESS the Client successfully sent the RELEASE message. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_26"><a class="anchor" href="#_see_also_26"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_request_confirm</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_inform_request</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_solicit</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_request_solicit"><a class="anchor" href="#_nx_dhcpv6_request_solicit"></a>nx_dhcpv6_request_solicit</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send a SOLICIT message</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_28"><a class="anchor" href="#_prototype_28"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_request_solicit(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_28"><a class="anchor" href="#_description_28"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends a SOLICIT message out on the network. If the message is successfully sent, a successful status is returned. A successful completion does not mean the Client received a response or has been granted an IPv6 address yet. The DHCPv6 Client thread task waits for a reply (an ADVERTISE message) from a DHCPv6 Server. If one is received, it checks the reply is valid, stores the data to the Client record and promotes the Client to the REQUEST state.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the Rapid Commit option is set, the DHCPv6 Client will go directly to the Bound state if it receives a valid Server ADVERTISE message. See the service description for <em>nx_dhcpv6_request_solicit_rapid</em> for more details.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_28"><a class="anchor" href="#_input_parameters_28"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_28"><a class="anchor" href="#_return_values_28"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) SOLICIT message successfully sent</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_28"><a class="anchor" href="#_allowed_from_28"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_28"><a class="anchor" href="#_example_28"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Send an SOLICIT message to the server. */
+status = nx_dhcpv6_request_solicit(&amp;dhcp_0);
+
+/* If status is NX_SUCCESS the Client successfully sent the SOLICIT message. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_request_solicit_rapid"><a class="anchor" href="#_nx_dhcpv6_request_solicit_rapid"></a>nx_dhcpv6_request_solicit_rapid</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send a SOLICIT message with the Rapid Commit option</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_29"><a class="anchor" href="#_prototype_29"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_request_solicit_rapid(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_29"><a class="anchor" href="#_description_29"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends a SOLICIT message out on the network with the Rapid Commit option set. If the message is successfully sent, a successful status is returned. A successful completion does not mean the Client received a response or has been granted an IPv6 address yet. The DHCPv6 Client thread task waits for a reply (an ADVERTISE message) from a DHCPv6 Server. If one is received, it checks the reply is valid, stores the data to the Client record and promotes the Client to the BOUND state.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_29"><a class="anchor" href="#_input_parameters_29"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_29"><a class="anchor" href="#_return_values_29"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) SOLICIT message successfully sent</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_29"><a class="anchor" href="#_allowed_from_29"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_29"><a class="anchor" href="#_example_29"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Send an SOLICIT message to the server. */
+status = nx_dhcpv6_request_solicit_rapid(&amp;dhcp_0);
+
+/* If status is NX_SUCCESS the Client successfully sent the SOLICIT message. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_27"><a class="anchor" href="#_see_also_27"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_request_solicit</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_confirm</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_inform_request</p>
+</li>
+<li>
+<p>nx_dhcpv6_request_release</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_resume"><a class="anchor" href="#_nx_dhcpv6_resume"></a>nx_dhcpv6_resume</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Resume DHCPv6 Client task</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_30"><a class="anchor" href="#_prototype_30"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_resume(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_30"><a class="anchor" href="#_description_30"></a>Description</h3>
+<div class="paragraph">
+<p>This service resumes the DHCPv6 Client thread task. The current DHCPv6 Client state will be processed (e.g. Bound, Solicit)</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_30"><a class="anchor" href="#_input_parameters_30"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_30"><a class="anchor" href="#_return_values_30"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Client successfully resumed</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_30"><a class="anchor" href="#_allowed_from_30"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_30"><a class="anchor" href="#_example_30"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Resume the DHCPv6 Client task. */
+status = nx_dhcpv6_resume(&amp;dhcp_0);
+
+/* If status is NX_SUCCESS the Client thread task successfully resumed. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_28"><a class="anchor" href="#_see_also_28"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_start</p>
+</li>
+<li>
+<p>nx_dhcpv6_stop</p>
+</li>
+<li>
+<p>nx_dhcpv6_suspend</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6set_time_accrued"><a class="anchor" href="#_nx_dhcpv6set_time_accrued"></a>nx_dhcpv6<em>set</em> time_accrued</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sets time accrued on Client&#8217;s IP address lease</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_31"><a class="anchor" href="#_prototype_31"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_set_time_accrued(
+    NX_DHCPV6 *dhcpv6_ptr,
+    ULONG time_accrued);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_31"><a class="anchor" href="#_description_31"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the time accrued on the Client&#8217;s global IP address since it was assigned by the server. This should only be used if a Client is currently bound to an assigned IPv6 address.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_31"><a class="anchor" href="#_input_parameters_31"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+<li>
+<p><em>time_accrued</em>: Time accrued in IP lease</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_31"><a class="anchor" href="#_return_values_31"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Time accrued successfully set</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_31"><a class="anchor" href="#_allowed_from_31"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_31"><a class="anchor" href="#_example_31"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Set time accrued since client's assigned IP address was assigned. */
+status = nx_dhcpv6_set_time_accrued(&amp;dhcp_0, time_accrued);
+
+/* If status is NX_SUCCESS the time accrued on the client IP address lease was
+   successfully set. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_29"><a class="anchor" href="#_see_also_29"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_get_IP_address</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_other_option_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_lease_time_data</p>
+</li>
+<li>
+<p>nx_dhcpv6_get_time_accrued</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_start"><a class="anchor" href="#_nx_dhcpv6_start"></a>nx_dhcpv6_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start the DHCPv6 Client task</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_32"><a class="anchor" href="#_prototype_32"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_start(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_32"><a class="anchor" href="#_description_32"></a>Description</h3>
+<div class="paragraph">
+<p>This service starts the DHCPv6 Client task and prepares the Client for running the DHCPv6 protocol. It verifies the Client instance has sufficient information (such as a Client DUID), creates and binds the UDP socket for sending and receiving DHCPv6 messages and activates timers for keeping track of session time and when the current IPv6 lease expires.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_32"><a class="anchor" href="#_input_parameters_32"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_32"><a class="anchor" href="#_return_values_32"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Client successfully started</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_MISSING_REQUIRED_OPTIONS</strong> (0xEA9) Client missing required options</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_32"><a class="anchor" href="#_allowed_from_32"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_32"><a class="anchor" href="#_example_32"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Start the DHCPv6 Client task. */
+status = nx_dhcpv6_start(&amp;dhcp_0);
+
+/* If status is NX_SUCCESS the Client successfully started. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_30"><a class="anchor" href="#_see_also_30"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_resume</p>
+</li>
+<li>
+<p>nx_dhcpv6_suspend</p>
+</li>
+<li>
+<p>nx_dhcpv6_stop</p>
+</li>
+<li>
+<p>nx_dhcpv6_reinitialize</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_stop"><a class="anchor" href="#_nx_dhcpv6_stop"></a>nx_dhcpv6_stop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Stop the DHCPv6 Client task</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_33"><a class="anchor" href="#_prototype_33"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_stop(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_33"><a class="anchor" href="#_description_33"></a>Description</h3>
+<div class="paragraph">
+<p>This service stops the DHCPv6 Client task, and clears retransmission counts, maximum retransmission intervals, deactivates the session and lease expiration timers, and unbinds the DHCPv6 Client socket port. To restart the Client, one must first stop and optionally reinitialize the Client before starting another session with any DHCPv6 server. See the Small Example section for more details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_33"><a class="anchor" href="#_input_parameters_33"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_33"><a class="anchor" href="#_return_values_33"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Client successfully stopped</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_NOT_STARTED</strong> (0xE92) Client thread not started</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_33"><a class="anchor" href="#_allowed_from_33"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_33"><a class="anchor" href="#_example_33"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Stop the DHCPv6 Client task. */
+status = nx_dhcpv6_start(&amp;dhcp_0);
+
+/* If status is NX_SUCCESS the Client successfully stopped. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_31"><a class="anchor" href="#_see_also_31"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_resume</p>
+</li>
+<li>
+<p>nx_dhcpv6_suspend</p>
+</li>
+<li>
+<p>nx_dhcpv6_reinitialize</p>
+</li>
+<li>
+<p>nx_dhcpv6_start</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_suspend"><a class="anchor" href="#_nx_dhcpv6_suspend"></a>nx_dhcpv6_suspend</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Suspend the DHCPv6 Client task</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_34"><a class="anchor" href="#_prototype_34"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_dhcpv6_suspend(NX_DHCPV6 *dhcpv6_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_34"><a class="anchor" href="#_description_34"></a>Description</h3>
+<div class="paragraph">
+<p>This service suspends the DHCPv6 client task and any request it was in the middle of processing. Timers are deactivated and the Client state is set to non-running.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_34"><a class="anchor" href="#_input_parameters_34"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_ptr</em>: Pointer to DHCPv6 Client instance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_34"><a class="anchor" href="#_return_values_34"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Client successfully suspended</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_NOT_STARTED</strong> (0XE92) Client not running so cannot be suspended</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Must be called from thread</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_34"><a class="anchor" href="#_allowed_from_34"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_34"><a class="anchor" href="#_example_34"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Suspend the DHCPv6 Client task. */
+status = nx_dhcpv6_suspend(&amp;dhcp_0);
+
+/* If status is NX_SUCCESS the Client successfully suspended. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_32"><a class="anchor" href="#_see_also_32"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>nx_dhcpv6_resume</p>
+</li>
+<li>
+<p>nx_dhcpv6_start</p>
+</li>
+<li>
+<p>nx_dhcpv6_reinitialize</p>
+</li>
+<li>
+<p>nx_dhcpv6_stop</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

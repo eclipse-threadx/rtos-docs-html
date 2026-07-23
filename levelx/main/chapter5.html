@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 5 - LevelX NOR support :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/levelx/main/chapter5.html">
+    <meta name="description" content="NOR flash memory is composed of blocks that are typically evenly divisible by 512 bytes. LevelX divides each NOR flash block into 512-byte logical sectors.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="levelx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">LevelX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">LevelX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">LevelX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">LevelX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Overview of LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - LevelX NAND support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - LevelX NAND APIs</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - LevelX NOR support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - LevelX NOR APIs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">LevelX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">LevelX</a></li>
+    <li>LevelX user guide</li>
+    <li><a href="chapter5.html">Ch. 5 - LevelX NOR support</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/levelx/modules/ROOT/pages/chapter5.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 5 - LevelX NOR support</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>NOR flash memory is composed of <em>blocks</em> that are typically evenly divisible by 512 bytes. There are no concept of a flash <em>page</em> in NOR flash memory. Also, there are no <em>spare</em> bytes in NOR flash memory, hence LevelX must use the NOR flash memory itself for all management information. Direct read access is possible in NOR flash memory. Write access typically requires a special sequence of operations. NOR flash memory may be written to multiple times, providing that bits are being cleared. Bits in NOR flash memory can only be set once, via the erase block operation.</p>
+</div>
+<div class="paragraph">
+<p>LevelX divides each NOR flash block into 512-byte logical <em>sectors</em>. Furthermore, LevelX uses the first "n" sectors of each NOR flash block to store management information. The format of the LevelX NOR flash memory management information is:</p>
+</div>
+<div class="paragraph">
+<p><strong>LevelX NOR Block Format</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Byte Offset</th>
+<th class="tableblock halign-left valign-top">Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Block Erase Count]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Minimum Mapped Sector]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Maximum Mapped Sector]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Free Sector Bit Map]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Sector 0 Mapping Entry]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m+4*(n-1)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Sector "n" Mapping Entry]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Sector 0 Contents]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">s+512*(n-1)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Sector "n" Contents]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The 32-bit <em>Block Erase Count</em> contains the number of times the block has been erased. The main goal of LevelX is to keep the erase count of all blocks relatively close to help prevent any one block from wearing out prematurely. The 32-bit <em>Minimum Mapped Sector</em> and <em>Maximum Mapped Sector</em> fields are written only when all the logical sectors in the block have been mapped and written to. These fields are useful for optimization of the sector read operation. The <em>Free Sector Bit Map</em> entry is a bit map where each set bit corresponds to an unmapped sector in the block. This field is used to make the free sector search more efficient. This is a variable length field that requires one word for every 32 sectors in the block. The <em>Sector Mapping Entry</em> array contains mapping information for each sector in the block. Each entry has the following format:</p>
+</div>
+<div class="paragraph">
+<p><strong>Sector Mapping Entry</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Bit(s)</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">31</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Valid flag. When set and logical sector not all ones indicates mapping is valid</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Obsolete flag. When clear, this mapping is either obsolete or is in the process of becoming obsolete.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">29</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mapping entry write is complete when this bit is 0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0-28</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Logical sector mapped to this physical sector&#8212;&#8203;when not all ones.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The upper bit of the 32-bit field (bit 31) is used to indicate the logical sector mapping is valid. If this bit is 0, the information in this entry (and corresponding sector contents) is no longer valid. The next bit - bit 30 - is used to indicate this sector is in the process of becoming obsolete and a new sector is being written. Bit 29 is used to indicate when the mapping entry write is complete. If bit 29 is 0, the mapping entry write is complete. If bit 29 is set, the mapping entry was in the process of being written. Bits 30 and 29 are used in recovering from a potential power loss while updating a new sector mapping. Finally, the lower 29-bits (28-0) contain the logical sector number for the sector. If a sector has not been mapped, all bits will be set, i.e., it will have a value of 0xFFFFFFFF.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nor_driver_requirements"><a class="anchor" href="#_nor_driver_requirements"></a>NOR Driver Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>LevelX requires an underlying NOR flash driver that is specific to the underlying flash part and hardware implementation. The driver is specified to LevelX during initialization via the API <strong><em>lx_nor_flash_open</em></strong>. If <strong>LX_NOR_ENABLE_CONTROL_BLOCK_FOR_DRIVER_INTERFACE</strong> is defined, the driver services functions will have pointer to the NOR control block as the first parameter. The driver may access the user extensions in the control block for driver specific data. The prototype of the LevelX driver is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nor_driver_initialize(LX_NOR_FLASH *instance);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The "<em>instance</em>" parameter specifies the LevelX NOR control block. The driver initialization function is responsible for setting up all the other driver-level services for the associated LevelX instance. The services required for each LevelX NOR instance are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Read Sector</p>
+</li>
+<li>
+<p>Write Sector</p>
+</li>
+<li>
+<p>Block Erase</p>
+</li>
+<li>
+<p>Block Erased Verify</p>
+</li>
+<li>
+<p>System Error Handler</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_initialization"><a class="anchor" href="#_driver_initialization"></a>Driver Initialization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>These services are setup via setting function pointers in the <strong>LX_NOR_FLASH</strong> instance within the driver&#8217;s initialization function. The driver initialization function also is responsible for:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Specifying the base address of the flash.</p>
+</li>
+<li>
+<p>Specifying the total number of blocks and the number of words per block.</p>
+</li>
+<li>
+<p>A RAM buffer for reading one sector of flash (512 bytes) and aligned for ULONG access.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The driver initialization function likely also performs additional device and/or implementation-specific initialization duties before returning <strong>LX_SUCCESS</strong>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_read_sector"><a class="anchor" href="#_driver_read_sector"></a>Driver Read Sector</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NOR driver "read sector" service is responsible for reading a specific sector in a specific block of the NOR flash. All error checking and correcting logic is the responsibility of the driver service. If successful, the LevelX NOR driver returns <strong>LX_SUCCESS</strong>. If not successful, the LevelX NOR driver returns <em>LX_ERROR</em>. The prototype of the LevelX NOR driver "read sector" service is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nor_driver_read_sector(
+    LX_NOR_FLASH *nor_flash,
+    ULONG *flash_address,
+    ULONG *destination,
+    ULONG words);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where "<em>flash_address</em>" specifies the address of a logical sector within a NOR flash block of memory and "<em>destination</em>" and "<em>words</em>" specify where to place the sector contents and how many 32-bit words to read. The <em>nor_flash</em> parameter is provided for driver to access the NOR control block if needed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_write_sector"><a class="anchor" href="#_driver_write_sector"></a>Driver Write Sector</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NOR driver "write sector" service is responsible for writing a specific sector into a block of the NOR flash. All error checking is the responsibility of the driver service. If successful, the LevelX NOR driver returns <strong>LX_SUCCESS</strong>. If not successful, the LevelX NOR driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NOR driver "write sector" service is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nor_driver_write_sector(
+    LX_NOR_FLASH *nor_flash,
+    ULONG *flash_address,
+    ULONG *source,
+    ULONG words);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where "<em>flash_address</em>" specifies the address of a logical sector within a NOR flash block of memory and "<em>source</em>" and "<em>words</em>" specify the source of the write and how many 32-bit words to write. The <em>nor_flash</em> parameter is provided for driver to access the NOR control block if needed.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+LevelX relies on the driver to verify that the write sector was successful. This is typically done by reading back the programmed value to ensure it matches the requested value to be written.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_block_erase"><a class="anchor" href="#_driver_block_erase"></a>Driver Block Erase</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NOR driver "block erase" service is responsible for erasing the specified block of the NOR flash. If successful, the LevelX NOR driver returns <strong>LX_SUCCESS</strong>. If not successful, the LevelX NOR driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NOR driver "block erase" service is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nor_driver_block_erase(
+    LX_NOR_FLASH *nor_flash,
+    ULONG block,
+    ULONG erase_count);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where "<em>block</em>" identifies which NOR block to erase. The parameter "<em>erase_count</em>" is provided for diagnostic purposes. For example, the driver may want to alert another portion of the application software when the erase count exceeds a specific threshold. The <em>nor_flash</em> parameter is provided for driver to access the NOR control block if needed.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+LevelX relies on the driver to examine all bytes of the block to ensure they are erased (contain all ones).
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_block_erased_verify"><a class="anchor" href="#_driver_block_erased_verify"></a>Driver Block Erased Verify</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NOR driver "block erased verify" service is responsible for verifying that the specified block of the NOR flash is erased. If it is erased, the LevelX NOR driver returns <strong>LX_SUCCESS</strong>. If the block is not erased, the LevelX NOR driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NOR driver "block erased verify" service is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nor_driver_block_erased_verify(LX_NOR_FLASH *nor_flash, ULONG block);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where "<em>block</em>" specifies which block to verify that it is erased. The <em>nor_flash</em> parameter is provided for driver to access the NOR control block if needed.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+LevelX relies on the driver to examine all bytes of the specified to ensure they are erased (contain all ones).
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_system_error"><a class="anchor" href="#_driver_system_error"></a>Driver System Error</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NOR driver "system error handler" service is responsible for setting handling system errors detected by LevelX. The processing in this routine is application dependent. If it is successful, the LevelX NOR driver returns <strong>LX_SUCCESS</strong>. If it is not successful, the LevelX NOR driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NOR driver "system error" service is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nor_driver_system_error(LX_NOR_FLASH *nor_flash, UINT error_code);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where "<em>error_code</em>" represents the error that occurred. The <em>nor_flash</em> parameter is provided for driver to access the NOR control block if needed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nor_simulated_driver"><a class="anchor" href="#_nor_simulated_driver"></a>NOR Simulated Driver</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>LevelX provides a simulated NOR flash driver that simply uses RAM to simulate the operation of a NOR flash part. By default, the NOR simulated driver provides 8 NOR flash blocks with 16 512-byte sectors per block.</p>
+</div>
+<div class="paragraph">
+<p>The simulated NOR flash driver initialization function is <strong><em>lx_nor_flash_simulator_initialize</em></strong> and is defined in <strong><em>lx_nor_flash_simulator.c</em></strong>. This driver also provides a good template for writing specific NOR flash drivers.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nor_filex_integration"><a class="anchor" href="#_nor_filex_integration"></a>NOR FileX Integration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As mentioned earlier, LevelX does not rely on FileX for operation. All the LevelX APIs may be called directly by the application software to store/retrieve raw data to the logical sectors provided by LevelX. However, LevelX also supports FileX.</p>
+</div>
+<div class="paragraph">
+<p>The file <strong><em>fx_nor_flash_simulated_driver.c</em></strong> contains an example FileX driver for use with the NOR flash simulation. The NOR flash FileX driver for LevelX provides a good starting point for writing custom FileX drivers.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The FileX NOR flash format should be one full block size of sectors less than the NOR flash provides. This will help ensure best performance during the wear level processing. Additional techniques to improve write performance in the LevelX wear leveling algorithm include:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ensure that all writes are exactly one or more clusters in size and start on exact cluster boundaries.</p>
+</li>
+<li>
+<p>Pre-allocate clusters before performing large file write operations via the FileX <strong><em>fx_file_allocate</em></strong> class of APIs.</p>
+</li>
+<li>
+<p>Periodic use of <strong><em>lx_nor_flash_defragment</em></strong> to free up as many NOR blocks as possible and thus improve write performance.</p>
+</li>
+<li>
+<p>Ensure the FileX driver is enabled to receive release sector information and requests made to the driver to release sectors are handled in the driver by calling <strong><em>lx_nor_flash_sector_release</em></strong>.</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

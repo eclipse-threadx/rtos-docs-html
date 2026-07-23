@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Appendix A - NetX Duo Secure return/error codes :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-secure-tls/appendix-a.html">
+    <meta name="description" content="NetX Duo Secure Return/Error Codes">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo Secure TLS user guide</li>
+    <li><a href="appendix-a.html">App. A - NetX Duo Secure return/error codes</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-secure-tls/appendix-a.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Appendix A - NetX Duo Secure return/error codes</h1>
+<div class="sect1">
+<h2 id="_netx_duo_secure_tls_return_codes"><a class="anchor" href="#_netx_duo_secure_tls_return_codes"></a>NetX Duo Secure TLS return codes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Table 1 below lists the possible error codes that may be returned by NetX Duo Secure TLS services. Note that the services may also return TCP/IP error codes&#8201;&#8212;&#8201;TLS values begin at 0x101 and TCP/IP values are below 0x100. X.509 return values start at 0x181. Refer to the NetX Duo TCP/IP documentation for information on TCP/IP return values and see below for X.509 values.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Error Name</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_SUCCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Function returned successfully. (Same as NX_SUCCESS).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_SESSION_UNINITIALIZED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x101</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS main loop called with uninitialized socket.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNRECOGNIZED_MESSAGE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x102</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS record layer received an unrecognized message type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_STATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x103</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal error - state not recognized.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x104</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal error - received packet did not contain TLS data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNKNOWN_CIPHERSUITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x105</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The chosen ciphersuite is not supported - internal error for server, for client it means the remote host sent a bad ciphersuite (error or attack).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_CIPHER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x106</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In doing an encryption or decryption, the chosen cipher is disabled or unavailable.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_HANDSHAKE_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x107</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Something in message processing during the handshake has failed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_HASH_MAC_VERIFY_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x108</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming record had a MAC that did not match the one we generated.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_TCP_SEND_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x109</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The outgoing TCP send of a record failed for some reason.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INCORRECT_MESSAGE_LENGTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming message had a length that was incorrect (usually a length other than one in the header, as in certificate messages)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_BAD_CIPHERSPEC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming ChangeCipherSpec message was incorrect.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_SERVER_CERT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming server certificate did not parse correctly.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_PUBLIC_CIPHER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate provided by a server specified a public-key operation we do not support.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_SUPPORTED_CIPHERS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received a ClientHello with no supported ciphersuites.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNKNOWN_TLS_VERSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming record had a TLS version that isn&#8217;t recognized.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_TLS_VERSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x110</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming record had a valid TLS version, but one that isn&#8217;t supported.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_ALLOCATE_PACKET_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x111</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An internal packet allocation for a TLS message failed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_CERTIFICATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x112</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An X509 certificate did not parse correctly.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_CLOSE_RESPONSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x113</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">During a TLS session close, did not receive a CloseNotify from the remote host.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_ALERT_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x114</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The remote host sent an alert, indicating an error and closing the connection.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_FINISHED_HASH_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x115</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Finish message hash received does not match the local generated hash - handshake corruption.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNKNOWN_CERT_SIG_ALGORITHM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x116</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate during verification had an unsupported signature algorithm.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERTIFICATE_SIG_CHECK_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x117</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate signature verification check failed - certificate data did not match signature.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_BAD_COMPRESSION_METHOD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x118</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received a Hello message with an unsupported compression method.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERTIFICATE_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x119</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In an operation on a certificate list, no matching certificate was found.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_SELF_SIGNED_CERT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The remote host sent a self-signed certificate and NX_SECURE_ALLOW_SELF_SIGNED_CERTIFICATES is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_ISSUER_CERTIFICATE_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A remote certificate was received with an issuer not in the local trusted store.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_OUT_OF_ORDER_MESSAGE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A DTLS message was received in the wrong order - a dropped datagram is the likely culprit.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_REMOTE_HOST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A packet was received from a remote host that we do not recognize.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_EPOCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A DTLS message was received and matched to a DTLS session but it had the wrong epoch and should be ignored.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_REPEAT_MESSAGE_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A DTLS message was received with a sequence number we have already seen, ignore it.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NEED_DTLS_SESSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x120</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A TLS session was used in a DTLS API that was not initialized for DTLS.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NEED_TLS_SESSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x121</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A TLS session was used in a TLS API that was initialized for DTLS and not TLS.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_SEND_ADDRESS_MISMATCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x122</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Caller attempted to send data over a DTLS session with an IP address or port that did not match the session.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_FREE_DTLS_SESSIONS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x123</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A new connection tried to get a DTLS session from the cache, but there were none free.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_DTLS_SESSION_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x124</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The caller searched for a DTLS session, but the given IP address and port did not match any entries in the cache.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_MORE_PSK_SPACE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x125</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The caller attempted to add a PSK to a TLS session but there was no more space in the given session.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_MATCHING_PSK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x126</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A remote host provided a PSK identity hint that did not match any in our local store.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CLOSE_NOTIFY_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x127</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A TLS session received a CloseNotify alert from the remote host indicating the session is complete.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_AVAILABLE_SESSIONS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x128</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No TLS sessions in a TLS object are available to handle a connection.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_CERT_SPACE_ALLOCATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x129</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No certificate space was allocated for incoming remote certificates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_PADDING_CHECK_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Encryption padding in an incoming message was not correct.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_CERT_SIGN_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In processing a CertificateVerifyRequest, no supported certificate type was provided by the remote server.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_CERT_SIGN_ALG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In processing a CertificateVerifyRequest, no supported signature algorithm was provided by the remote server.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INSUFFICIENT_CERT_SPACE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not enough certificate buffer space allocated for a certificate.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_PROTOCOL_VERSION_CHANGED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The protocol version in an incoming TLS record did not match the version of the established session.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_RENEGOTIATION_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A HelloRequest message was received, but we are not re-negotiating.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_FEATURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x130</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A feature that was disabled was encountered during a TLS session or handshake.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERTIFICATE_VERIFY_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x131</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A CertificateVerify message from a remote Client failed to verify the Client certificate.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_EMPTY_REMOTE_CERTIFICATE_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x132</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The remote host sent an empty certificate message.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_RENEGOTIATION_EXTENSION_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x133</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An error occurred in processing an or sending a Secure Renegotiation Indication extension.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_RENEGOTIATION_SESSION_INACTIVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x134</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A session renegotiation was attempting with a TLS session that was not active.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_PACKET_BUFFER_TOO_SMALL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x135</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS received a record that was too large for the assigned packet buffer. The record could not be processed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_EXTENSION_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x136</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A specified extension was not received from the remote host during the TLS handshake.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_SNI_EXTENSION_INVALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x137</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS received an invalid Server Name Indication extension.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERT_ID_INVALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x138</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application tried to add a server certificate with an invalid certificate ID value (likely 0).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERT_ID_DUPLICATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x139</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application tried to add a server certificate with a certificate ID already present in the local store.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_RENEGOTIATION_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The remote host did not provide the Secure Renegotiation Indication Extension or the SCSV pseudo-ciphersuite so secure renegotiation cannot be performed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_MISSING_CRYPTO_ROUTINE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In attempting to perform a cryptographic operation, one of the entries in the ciphersuite table (or one of its function pointers) was improperly set to NULL.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_EMPTY_EC_GROUP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECC ciphersuite is set but no supported EC group.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_EMPTY_EC_POINT_FORMAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECC ciphersuite is set but no supported EC point format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_BAD_SERVERHELLO_KEYSHARE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In a TLS 1.3 KeyShare extension from a remote server, the server provided something we didn&#8217;t expect.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INSUFFICIENT_METADATA_SPACE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The application-supplied "metadata" for TLS cryptographic routines was too small.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_POST_HANDSHAKE_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x140</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not an error, but an indication to continue processing until application data is received.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_BAD_CLIENTHELLO_KEYSHARE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x141</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In a TLS 1.3 KeyShare extension from a remote client, the client provided something we didn&#8217;t expect.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_1_3_UNKNOWN_CIPHERSUITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x142</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received unknown ciphersuite when using TLS 1.3.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_SESSION_TICKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x143</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received a NewSessionTicket message with improper or invalid parameters.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_MISSING_EXTENSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x144</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific extension is missed in the message.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERTIFICATE_REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x145</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Server received an empty certificate.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNEXPECTED_CLIENTHELLO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x146</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS 1.3 Server receive ClientHello for renegotiation.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INAPPROPRIATE_FALLBACK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x147</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Remote Client attempted an inappropriate TLS version downgrade.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_BAD_CLIENTHELLO_PSK_EXTENSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x148</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In a TLS 1.3 PSK extension from a remote client, the client provided something we didn&#8217;t expect.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_PSK_BINDER_MISMATCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x149</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In a TLS 1.3 PSK extension from a remote client, the client provided a bad PSK binder value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CRYPTO_KEYS_TOO_LARGE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In attempting to generate TLS session keys, the key buffer was too small - increase NX_SECURE_TLS_KEY_MATERIAL_SIZE.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_ECC_CURVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The remote host provided a certificate or chose a ciphersuite with an ECC curve that isn&#8217;t supported.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_ECC_FORMAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Encountered a curve type or ECC format that is not supported.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_SIGNATURE_ALGORITHM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An unsupported signature algorithm was encountered (used in key exchange or other non-certificate situations).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_SIGNATURE_VERIFICATION_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A signature verification check failed (used in key exchange or other non-cert situations).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNEXPECTED_MESSAGE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS received an unexpected message from the remote host.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_AEAD_DECRYPT_FAIL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x150</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming record did not pass integrity check with AEAD ciphers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_RECORD_OVERFLOW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x151</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received a TLSCiphertext record that had a length too long.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_HANDSHAKE_FRAGMENT_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x152</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received a fragmented handshake message - take appropriate action at a higher level of the state machine.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Error Name</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_SUCCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Function returned successfully. (Same as NX_SUCCESS).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_SESSION_UNINITIALIZED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x101</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS main loop called with uninitialized socket.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNRECOGNIZED_MESSAGE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x102</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS record layer received an unrecognized message type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_STATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x103</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal error - state not recognized.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x104</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal error - received packet did not contain TLS data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNKNOWN_CIPHERSUITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x105</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The chosen ciphersuite is not supported - internal error for server, for client it means the remote host sent a bad ciphersuite (error or attack).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_CIPHER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x106</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In doing an encryption or decryption, the chosen cipher is disabled or unavailable.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_HANDSHAKE_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x107</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Something in message processing during the handshake has failed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_HASH_MAC_VERIFY_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x108</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming record had a MAC that did not match the one we generated.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_TCP_SEND_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x109</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The outgoing TCP send of a record failed for some reason.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INCORRECT_MESSAGE_LENGTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming message had a length that was incorrect (usually a length other than one in the header, as in certificate messages)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_BAD_CIPHERSPEC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming ChangeCipherSpec message was incorrect.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_SERVER_CERT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming server certificate did not parse correctly.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_PUBLIC_CIPHER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate provided by a server specified a public-key operation we do not support.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_SUPPORTED_CIPHERS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received a ClientHello with no supported ciphersuites.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNKNOWN_TLS_VERSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming record had a TLS version that isn&#8217;t recognized.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_TLS_VERSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x110</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming record had a valid TLS version, but one that isn&#8217;t supported.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_ALLOCATE_PACKET_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x111</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An internal packet allocation for a TLS message failed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_CERTIFICATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x112</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An X509 certificate did not parse correctly.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_CLOSE_RESPONSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x113</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">During a TLS session close, did not receive a CloseNotify from the remote host.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_ALERT_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x114</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The remote host sent an alert, indicating an error and closing the connection.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_FINISHED_HASH_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x115</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Finish message hash received does not match the local generated hash - handshake corruption.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNKNOWN_CERT_SIG_ALGORITHM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x116</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate during verification had an unsupported signature algorithm.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERTIFICATE_SIG_CHECK_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x117</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate signature verification check failed - certificate data did not match signature.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_BAD_COMPRESSION_METHOD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x118</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received a Hello message with an unsupported compression method.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERTIFICATE_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x119</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In an operation on a certificate list, no matching certificate was found.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_SELF_SIGNED_CERT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The remote host sent a self-signed certificate and NX_SECURE_ALLOW_SELF_SIGNED_CERTIFICATES is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_ISSUER_CERTIFICATE_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A remote certificate was received with an issuer not in the local trusted store.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_OUT_OF_ORDER_MESSAGE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A DTLS message was received in the wrong order - a dropped datagram is the likely culprit.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_REMOTE_HOST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A packet was received from a remote host that we do not recognize.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_EPOCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A DTLS message was received and matched to a DTLS session but it had the wrong epoch and should be ignored.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_REPEAT_MESSAGE_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A DTLS message was received with a sequence number we have already seen, ignore it.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NEED_DTLS_SESSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x120</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A TLS session was used in a DTLS API that was not initialized for DTLS.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NEED_TLS_SESSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x121</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A TLS session was used in a TLS API that was initialized for DTLS and not TLS.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_SEND_ADDRESS_MISMATCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x122</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Caller attempted to send data over a DTLS session with an IP address or port that did not match the session.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_FREE_DTLS_SESSIONS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x123</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A new connection tried to get a DTLS session from the cache, but there were none free.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_DTLS_SESSION_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x124</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The caller searched for a DTLS session, but the given IP address and port did not match any entries in the cache.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_MORE_PSK_SPACE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x125</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The caller attempted to add a PSK to a TLS session but there was no more space in the given session.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_MATCHING_PSK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x126</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A remote host provided a PSK identity hint that did not match any in our local store.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CLOSE_NOTIFY_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x127</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A TLS session received a CloseNotify alert from the remote host indicating the session is complete.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_AVAILABLE_SESSIONS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x128</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No TLS sessions in a TLS object are available to handle a connection.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_CERT_SPACE_ALLOCATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x129</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No certificate space was allocated for incoming remote certificates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_PADDING_CHECK_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Encryption padding in an incoming message was not correct.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_CERT_SIGN_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In processing a CertificateVerifyRequest, no supported certificate type was provided by the remote server.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_CERT_SIGN_ALG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In processing a CertificateVerifyRequest, no supported signature algorithm was provided by the remote server.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INSUFFICIENT_CERT_SPACE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not enough certificate buffer space allocated for a certificate.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_PROTOCOL_VERSION_CHANGED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The protocol version in an incoming TLS record did not match the version of the established session.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_NO_RENEGOTIATION_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A HelloRequest message was received, but we are not re-negotiating.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_FEATURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x130</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A feature that was disabled was encountered during a TLS session or handshake.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERTIFICATE_VERIFY_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x131</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A CertificateVerify message from a remote Client failed to verify the Client certificate.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_EMPTY_REMOTE_CERTIFICATE_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x132</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The remote host sent an empty certificate message.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_RENEGOTIATION_EXTENSION_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x133</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An error occurred in processing an or sending a Secure Renegotiation Indication extension.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_RENEGOTIATION_SESSION_INACTIVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x134</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A session renegotiation was attempting with a TLS session that was not active.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_PACKET_BUFFER_TOO_SMALL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x135</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS received a record that was too large for the assigned packet buffer. The record could not be processed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_EXTENSION_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x136</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A specified extension was not received from the remote host during the TLS handshake.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_SNI_EXTENSION_INVALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x137</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS received an invalid Server Name Indication extension.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERT_ID_INVALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x138</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application tried to add a server certificate with an invalid certificate ID value (likely 0).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERT_ID_DUPLICATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x139</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application tried to add a server certificate with a certificate ID already present in the local store.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_RENEGOTIATION_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The remote host did not provide the Secure Renegotiation Indication Extension or the SCSV pseudo-ciphersuite so secure renegotiation cannot be performed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_MISSING_CRYPTO_ROUTINE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In attempting to perform a cryptographic operation, one of the entries in the ciphersuite table (or one of its function pointers) was improperly set to NULL.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_EMPTY_EC_GROUP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECC ciphersuite is set but no supported EC group.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_EMPTY_EC_POINT_FORMAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECC ciphersuite is set but no supported EC point format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_BAD_SERVERHELLO_KEYSHARE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In a TLS 1.3 KeyShare extension from a remote server, the server provided something we didn&#8217;t expect.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INSUFFICIENT_METADATA_SPACE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The application-supplied "metadata" for TLS cryptographic routines was too small.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_POST_HANDSHAKE_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x140</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not an error, but an indication to continue processing until application data is received.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_BAD_CLIENTHELLO_KEYSHARE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x141</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In a TLS 1.3 KeyShare extension from a remote client, the client provided something we didn&#8217;t expect.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_1_3_UNKNOWN_CIPHERSUITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x142</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received unknown ciphersuite when using TLS 1.3.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INVALID_SESSION_TICKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x143</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received a NewSessionTicket message with improper or invalid parameters.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_MISSING_EXTENSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x144</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific extension is missed in the message.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CERTIFICATE_REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x145</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Server received an empty certificate.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNEXPECTED_CLIENTHELLO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x146</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS 1.3 Server receive ClientHello for renegotiation.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_INAPPROPRIATE_FALLBACK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x147</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Remote Client attempted an inappropriate TLS version downgrade.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_BAD_CLIENTHELLO_PSK_EXTENSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x148</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In a TLS 1.3 PSK extension from a remote client, the client provided something we didn&#8217;t expect.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_PSK_BINDER_MISMATCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x149</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In a TLS 1.3 PSK extension from a remote client, the client provided a bad PSK binder value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_CRYPTO_KEYS_TOO_LARGE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In attempting to generate TLS session keys, the key buffer was too small - increase NX_SECURE_TLS_KEY_MATERIAL_SIZE.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_ECC_CURVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The remote host provided a certificate or chose a ciphersuite with an ECC curve that isn&#8217;t supported.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_ECC_FORMAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Encountered a curve type or ECC format that is not supported.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNSUPPORTED_SIGNATURE_ALGORITHM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An unsupported signature algorithm was encountered (used in key exchange or other non-certificate situations).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_SIGNATURE_VERIFICATION_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A signature verification check failed (used in key exchange or other non-cert situations).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_UNEXPECTED_MESSAGE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS received an unexpected message from the remote host.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_AEAD_DECRYPT_FAIL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x150</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An incoming record did not pass integrity check with AEAD ciphers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_RECORD_OVERFLOW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x151</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received a TLSCiphertext record that had a length too long.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_TLS_HANDSHAKE_FRAGMENT_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x152</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Received a fragmented handshake message - take appropriate action at a higher level of the state machine.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Table 1&#8201;&#8212;&#8201;NetX Duo Secure TLS error return codes</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_secure_x_509_return_codes"><a class="anchor" href="#_netx_duo_secure_x_509_return_codes"></a>NetX Duo Secure X.509 Return Codes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Table 2 below lists the possible error codes that may be returned by NetX Duo Secure X.509 services. Note that the services may also return other error codes. X.509 return values start at 0x181, TLS values begin at 0x101, and TCP/IP values are below 0x100. Refer to the NetX Duo TCP/IP documentation for information on TCP/IP return values and above for TLS return values.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Error Name</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_SUCCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Successful return status. (Same as NX_SUCCESS)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_MULTIBYTE_TAG_UNSUPPORTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x181</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">We encountered a multi-byte ASN.1 tag - not currently supported.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_ASN1_LENGTH_TOO_LONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x182</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Encountered a length value longer than we can handle.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_FOUND_NON_ZERO_PADDING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x183</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Expected a padding value of 0 - got something different.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_MISSING_PUBLIC_KEY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x184</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X509 expected a public key but didn&#8217;t find one.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_INVALID_PUBLIC_KEY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x185</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Found a public key, but it is invalid or has an incorrect format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_INVALID_CERTIFICATE_SEQUENCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x186</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The top-level ASN.1 block is not a sequence - invalid X509 certificate.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_MISSING_SIGNATURE_ALGORITHM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x187</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Expecting a signature algorithm identifier, did not find it.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_INVALID_CERTIFICATE_DATA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x188</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Certificate identity data is in an invalid format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_UNEXPECTED_ASN1_TAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x189</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">We were expecting a specific ASN.1 tag for X509 format but we got something else.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_PKCS1_INVALID_PRIVATE_KEY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x18A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A PKCS#1 private key file was passed in, but the formatting was incorrect.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_CHAIN_TOO_SHORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x18B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An X509 certificate chain was too short to hold the entire chain during chain building.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_CHAIN_VERIFY_FAILURE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x18C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An X509 certificate chain was unable to be verified (catch-all error).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_PKCS7_PARSING_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x18D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parsing an X.509 PKCS#7-encoded signature failed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_CERTIFICATE_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x18E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In looking up a certificate, no matching entry was found.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_INVALID_VERSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x18F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate included a field that isn&#8217;t compatible with the given version.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_INVALID_TAG_CLASS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x190</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate included an ASN.1 tag with an invalid tag class value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_INVALID_EXTENSIONS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x191</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate included an extensions TLV but that did not contain a sequence.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_INVALID_EXTENSION_SEQUENCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x192</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate included an extension sequence that was invalid X.509.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_CERTIFICATE_EXPIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x193</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate had a "not after" field that was less than the current time.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_CERTIFICATE_NOT_YET_VALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x194</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate had a "not before" field that was greater than the current time.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_CERTIFICATE_DNS_MISMATCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x195</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate Common Name or Subject Alt Name did not match a given DNS TLD.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_INVALID_DATE_FORMAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x196</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate contained a date field that is not in a recognized format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_CRL_ISSUER_MISMATCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x197</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A provided CRL and certificate were not issued by the same Certificate Authority.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_CRL_SIGNATURE_CHECK_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x198</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A CRL signature check failed against its issuer.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_CRL_CERTIFICATE_REVOKED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x199</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A certificate was found in a valid CRL and has therefore been revoked.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_WRONG_SIGNATURE_METHOD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x19A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In attempting to validate a signature the signature method did not match the expected method.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_EXTENSION_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x19B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In looking for an extension, no extension with a matching ID was found.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_ALT_NAME_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x19C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A name was searched for in a subjectAltName extension but was not found.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_INVALID_PRIVATE_KEY_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x19D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private key type given was unknown or invalid.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_NAME_STRING_TOO_LONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x19E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Passed a name string that was too long for an internal buffer (DNS name, etc&#8230;&#8203;).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_EXT_KEY_USAGE_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x19F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In searching an Extended Key Usage extension, the specified key usage OID was not found.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SECURE_X509_KEY_USAGE_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1A0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To be returned by the application callback if there is a failure in key usage during a certificate verification check.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Table 2&#8201;&#8212;&#8201;NetX Duo Secure X.509 error return codes</strong></p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

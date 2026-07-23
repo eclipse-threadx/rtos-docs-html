@@ -1,0 +1,2799 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 3 - Description of FTP services :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-ftp/chapter3.html">
+    <meta name="description" content="This chapter contains a description of all NetX Duo FTP services (listed below) in alphabetic order.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo FTP user guide</li>
+    <li><a href="chapter3.html">Ch. 3 - Description of FTP services</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-ftp/chapter3.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 3 - Description of FTP services</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of all NetX Duo FTP services (listed below) in alphabetic order (except where IPv4 and IPv6 equivalents of the same service are paired together).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In the <strong>Return Values</strong> section in the following API descriptions, values in <strong>BOLD</strong> are not affected by the <strong>NX_DISABLE_ERROR_CHECKING</strong> define that is used to disable API error checking, while non-bold values are completely disabled.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_connect"><a class="anchor" href="#_nx_ftp_client_connect"></a>nx_ftp_client_connect</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Connect to an FTP Server over IPv4</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_connect(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    ULONG server_ip,
+    CHAR *username,
+    CHAR *password,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This service connects the previously created NetX Duo FTP Client instance to the FTP Server at the supplied IP address.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters"><a class="anchor" href="#_input_parameters"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>server_ip</em>: IP address of FTP Server.</p>
+</li>
+<li>
+<p><em>username</em>: Client username for authentication.</p>
+</li>
+<li>
+<p><em>password</em>: Client password for authentication.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP Client connection. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP connection.</p>
+</li>
+<li>
+<p><strong>NX_TFTP_EXPECTED_22X_CODE</strong> (0xDB) Did not get a 22X (ok) response</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_23X_CODE</strong> (0xDC) Did not get a 23X (ok) response</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_33X_CODE</strong> (0xDE) Did not get a 33X (ok) response</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_DISCONNECTED</strong> (0xD4) Client is already connected.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+<li>
+<p>NX_IP_ADDRESS_ERROR (0x21) Invalid IP address.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from"><a class="anchor" href="#_allowed_from"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Connect the FTP Client instance "my_client" to the FTP Server at
+
+IP address 1.2.3.4. */
+
+status = nx_ftp_client_connect(&amp;my_client, IP_ADDRESS(1,2,3,4), NULL, NULL, 100);
+
+/* If status is NX_SUCCESS an FTP Client instance was successfully
+    connected to the FTP Server. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also"><a class="anchor" href="#_see_also"></a>See Also</h3>
+<div class="paragraph">
+<p>nx_ftp_client_create, nx_ftp_client_delete, nx_ftp_client_directory_create, nx_ftp_client_disconnect, nxd_ftp_client_connect</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_ftp_client_connect"><a class="anchor" href="#_nxd_ftp_client_connect"></a>nxd_ftp_client_connect</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Connect to an FTP Server with IPv6 support</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nxd_ftp_client_connect(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    NXD_ADDRESS *server_ipduo,
+    CHAR *username,
+    CHAR *password,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This service connects the previously created NetX Duo FTP Client instance to the FTP Server at the supplied IP address. Both IPv4 and IPv6 networks are supported.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_2"><a class="anchor" href="#_input_parameters_2"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>server_ipduo</em>: IP address of the FTP Server.</p>
+</li>
+<li>
+<p><em>username</em>: Client username for authentication.</p>
+</li>
+<li>
+<p><em>password</em>: Client password for authentication.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP Client connection. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP connection.</p>
+</li>
+<li>
+<p><strong>NX_TFTP_EXPECTED_22X_CODE</strong> (0xDB) Did not get a 22X (ok) response</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_23X_CODE</strong> (0xDC) Did not get a 23X (ok) response</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_33X_CODE</strong> (0xDE) Did not get a 33X (ok) response</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_DISCONNECTED</strong> (0xD4) Client is already connected</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer inout.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+<li>
+<p>NX_IP_ADDRESS_ERROR (0x21) Invalid IP address.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_2"><a class="anchor" href="#_allowed_from_2"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Connect an FTP Client instance to the FTP Server. */
+
+/* Set up an IPv6 address for the server here.
+    Note this could also be an IPv4 address as well*/
+
+server_ip_addr.nxd_ip_address.v6[3] = 0x106;
+server_ip_addr.nxd_ip_address.v6[2] = 0x0;
+server_ip_addr.nxd_ip_address.v6[1] = 0x0000f101;
+server_ip_addr.nxd_ip_address.v6[0] = 0x20010db8;
+server_ip_addr.nxd_ip_version = NX_IP_VERSION_V6;
+
+status = nxd_ftp_client_connect(&amp;my_client, server_ip_addr, NULL, NULL, 100);
+
+/* If status is NX_SUCCESS an FTP Client instance was successfully
+    connected to the FTP Server. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_2"><a class="anchor" href="#_see_also_2"></a>See Also</h3>
+<div class="paragraph">
+<p>nx_ftp_client_create, nx_ftp_client_delete, nx_ftp_client_directory_create, nx_ftp_client_disconnect, nx_ftp_client_connect</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_create"><a class="anchor" href="#_nx_ftp_client_create"></a>nx_ftp_client_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create an FTP Client instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_create(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    CHAR *ftp_client_name,
+    NX_IP *ip_ptr,
+    ULONG window_size,
+    NX_PACKET_POOL *pool_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates an FTP Client instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_3"><a class="anchor" href="#_input_parameters_3"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>ftp_client_name</em>: Name of FTP Client.</p>
+</li>
+<li>
+<p><em>ip_ptr</em>: Pointer to previously created IP instance.</p>
+</li>
+<li>
+<p><em>window_size</em>: Advertised window size for TCP sockets of this FTP Client.</p>
+</li>
+<li>
+<p><em>pool_ptr</em>: Pointer to the default packet pool for this FTP Client. Note that the minimum packet payload must be large enough to hold  complete path and the file or directory name.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP Client create.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_3"><a class="anchor" href="#_allowed_from_3"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization and Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Create the FTP Client instance "my_client." */
+status = nx_ftp_client_create(&amp;my_client, "My Client", &amp;client_ip,
+    2000, &amp;client_pool);
+/* If status is NX_SUCCESS the FTP Client instance was successfully created. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_delete"><a class="anchor" href="#_nx_ftp_client_delete"></a>nx_ftp_client_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete an FTP Client instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_delete(NX_FTP_CLIENT *ftp_client_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes an FTP Client instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_4"><a class="anchor" href="#_input_parameters_4"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP Client delete.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_DISCONNECTED</strong> (0xD4) FTP client not disconnected</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_4"><a class="anchor" href="#_allowed_from_4"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Delete the FTP Client instance "my_client." */
+
+status = nx_ftp_client_delete(&amp;my_client);
+
+/* If status is NX_SUCCESS the FTP Client instance was successfully
+    deleted. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_directory_create"><a class="anchor" href="#_nx_ftp_client_directory_create"></a>nx_ftp_client_directory_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create a directory on FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_directory_create(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    CHAR *directory_name,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates the specified directory on the FTP Server that is connected to the specified FTP Client.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_5"><a class="anchor" href="#_input_parameters_5"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>directory_name</em>: Name of directory to create.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP directory create. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP directory create.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_CONNECTED</strong> (0xD3) FTP Client is not connected.</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_2XX_CODE</strong> (0xDA) Did not get a 2XX (ok) response</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_5"><a class="anchor" href="#_allowed_from_5"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Create the directory "my_dir" on the FTP Server connected to
+    the FTP Client instance "my_client." */
+
+status = nx_ftp_client_directory_create(&amp;my_client, "my_dir", 200);
+
+/* If status is NX_SUCCESS the directory "my_dir" was successfully created. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_directory_default_set"><a class="anchor" href="#_nx_ftp_client_directory_default_set"></a>nx_ftp_client_directory_default_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set default directory on FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_directory_default_set(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    CHAR *directory_path,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the default directory on the FTP Server that is connected to the specified FTP Client. This default directory applies only to this client&#8217;s connection.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_6"><a class="anchor" href="#_input_parameters_6"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>directory_path</em>: Name of directory path to set.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP default directory set. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP default set.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_CONNECTED</strong> (0xD3) FTP Client is not connected.</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_2XX_CODE</strong> (0xDA) Did not get a 2XX (ok) response</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_6"><a class="anchor" href="#_allowed_from_6"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_6"><a class="anchor" href="#_example_6"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Set the default directory to "my_dir" on the FTP Server connected to
+    the FTP Client instance "my_client." */
+
+status = nx_ftp_client_directory_default_set(&amp;my_client, "my_dir", 200);
+
+/* If status is NX_SUCCESS the directory "my_dir" is the default directory. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_directory_delete"><a class="anchor" href="#_nx_ftp_client_directory_delete"></a>nx_ftp_client_directory_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete directory on FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_directory_delete(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    CHAR *directory_name,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes the specified directory on the FTP Server that is connected to the specified FTP Client.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_7"><a class="anchor" href="#_input_parameters_7"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>directory_name</em>: Name of directory to delete.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP directory delete. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_7"><a class="anchor" href="#_return_values_7"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP directory delete.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_CONNECTED</strong> (0xD3) FTP Client is not connected.</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_2XX_CODE</strong> (0xDA) Did not get a 2XX (ok) response</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_7"><a class="anchor" href="#_allowed_from_7"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_7"><a class="anchor" href="#_example_7"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Delete directory "my_dir" on the FTP Server connected to
+    the FTP Client instance "my_client." */
+
+status = nx_ftp_client_directory_delete(&amp;my_client, "my_dir", 200);
+
+/* If status is NX_SUCCESS the directory "my_dir" is deleted. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_directory_listing_get"><a class="anchor" href="#_nx_ftp_client_directory_listing_get"></a>nx_ftp_client_directory_listing_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get directory listing from FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_directory_listing_get(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    CHAR *directory_name,
+    NX_PACKET **packet_ptr,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>This service gets the contents of the specified directory on the FTP Server that is connected to the specified FTP Client. The supplied packet pointer will contain one or more directory entries. Each entry is separated by a &lt;cr/lf&gt; combination. The <strong><em>nx_ftp_client_directory_listing_continue</em></strong> should be called to complete the directory get operation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_8"><a class="anchor" href="#_input_parameters_8"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>directory_name</em>: Name of directory to get contents of.</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Pointer to destination packet pointer. If successful, the packet payload will contain one or more directory entries.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP directory listing. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_8"><a class="anchor" href="#_return_values_8"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP directory listing.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_CONNECTED</strong> (0xD3) FTP Client is not connected.</p>
+</li>
+<li>
+<p><strong>NX_NOT_ENABLED</strong> (0x14) Service (IPv6) not enabled</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_1XX_CODE</strong> (0xD9) Did not get a 1XX (ok) response</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_2XX_CODE</strong> (0xDA) Did not get a 2XX (ok) response</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_8"><a class="anchor" href="#_allowed_from_8"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Get the contents of directory "my_dir" on the FTP Server connected to
+    the FTP Client instance "my_client." */
+
+status = nx_ftp_client_directory_listing_get(&amp;my_client, "my_dir", &amp;my_packet,
+    200);
+
+/* If status is NX_SUCCESS, one or more entries of the directory "my_dir"
+    can be found in "my_packet". */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_directory_listing_continue"><a class="anchor" href="#_nx_ftp_client_directory_listing_continue"></a>nx_ftp_client_directory_listing_continue</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Continue directory listing from FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_directory_listing_continue(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    NX_PACKET **packet_ptr,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>This service continues getting the contents of the specified directory on the FTP Server that is connected to the specified FTP Client. It should have been immediately preceded by a call to <strong><em>nx_ftp_client_directory_listing_get</em></strong>. If successful, the supplied packet pointer will contain one or more directory entries. This routine should be called until an NX_FTP_END_OF_LISTING status is received.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_9"><a class="anchor" href="#_input_parameters_9"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Pointer to destination packet pointer. If successful, the packet payload will contain one or more directory entries, separated by a &lt;cr/lf&gt;.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP directory listing. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_9"><a class="anchor" href="#_return_values_9"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP directory listing.</p>
+</li>
+<li>
+<p><strong>NX_FTP_END_OF_LISTING</strong> (0xD8) No more entries in this directory.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_CONNECTED</strong> (0xD3) FTP Client is not connected.</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_2XX_CODE</strong> (0xDA) Did not get a 2XX (ok) response</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_9"><a class="anchor" href="#_allowed_from_9"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Continue getting the contents of directory "my_dir" on the FTP Server
+    connected to the FTP Client instance "my_client." */
+
+status = nx_ftp_client_directory_listing_continue(&amp;my_client, &amp;my_packet,
+    200);
+
+/* If status is NX_SUCCESS, one or more entries of the directory "my_dir"
+    can be found in "my_packet". */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_disconnect"><a class="anchor" href="#_nx_ftp_client_disconnect"></a>nx_ftp_client_disconnect</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Disconnect from FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_disconnect(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>This service disconnects a previously established FTP Server connection with the specified FTP Client.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_10"><a class="anchor" href="#_input_parameters_10"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP Client disconnect. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_10"><a class="anchor" href="#_return_values_10"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP disconnect.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_CONNECTED</strong> (0xD3) FTP Client is not connected.</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_2XX_CODE</strong> (0xDA) Did not get a 2XX (ok) response</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_10"><a class="anchor" href="#_allowed_from_10"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Disconnect "my_client" from the FTP Server. */
+
+status = nx_ftp_client_disconnect(&amp;my_client, 200);
+
+/* If status is NX_SUCCESS, "my_client" has been disconnected. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_file_close"><a class="anchor" href="#_nx_ftp_client_file_close"></a>nx_ftp_client_file_close</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Close Client file</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_file_close(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This service closes a previously opened file on the FTP Server.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_11"><a class="anchor" href="#_input_parameters_11"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP Client file close. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_11"><a class="anchor" href="#_return_values_11"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP file close.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_CONNECTED</strong> (0xD3) FTP Client is not connected.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_OPEN (0xD5)</strong> File not open; cannot close it</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_2XX_CODE</strong> (0xDA) Did not get a 2XX (ok) response</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_11"><a class="anchor" href="#_allowed_from_11"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_11"><a class="anchor" href="#_example_11"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Close previously opened file of client "my_client" on the FTP Server. */
+
+status = nx_ftp_client_file_close(&amp;my_client, 200);
+
+/* If status is NX_SUCCESS, the file opened previously in the "my_client" FTP
+    connection has been closed. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_file_delete"><a class="anchor" href="#_nx_ftp_client_file_delete"></a>nx_ftp_client_file_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete file on FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_file_delete(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    CHAR *file_name,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes the specified file on the FTP Server.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_12"><a class="anchor" href="#_input_parameters_12"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>file_name</em>: Name of file to delete.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP Client file delete. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_12"><a class="anchor" href="#_return_values_12"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP file delete.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_CONNECTED</strong> (0xD3) FTP Client is not connected.</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_2XX_CODE</strong> (0xDA) Did not get a 2XX (ok) response</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_12"><a class="anchor" href="#_allowed_from_12"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_12"><a class="anchor" href="#_example_12"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Delete the file "my_file.txt" on the FTP Server using the previously
+    connected client "my_client." */
+
+status = nx_ftp_client_file_delete(&amp;my_client, "my_file.txt", 200);
+
+/* If status is NX_SUCCESS, the file "my_file.txt" on the FTP Server is
+    deleted. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_file_open"><a class="anchor" href="#_nx_ftp_client_file_open"></a>nx_ftp_client_file_open</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Opens file on FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_file_open(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    CHAR *file_name,
+    UINT open_type,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This service opens the specified file&#8201;&#8212;&#8201;for reading or writing&#8201;&#8212;&#8201;on the FTP Server previously connected to the specified Client instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_13"><a class="anchor" href="#_input_parameters_13"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>file_name</em>: Name of file to open.</p>
+</li>
+<li>
+<p><em>open_type</em>: Either <strong>NX_FTP_OPEN_FOR_READ</strong> or <strong>NX_FTP_OPEN_FOR_WRITE</strong>.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP Client file open. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_13"><a class="anchor" href="#_return_values_13"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP file open.</p>
+</li>
+<li>
+<p><strong>NX_OPTION_ERROR</strong> (0x0A) Invalid open type.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_CONNECTED</strong> (0xD3) FTP Client is not connected.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_CLOSED</strong> (0xD6) FTP Client is already opened.</p>
+</li>
+<li>
+<p><strong>NX_NO_FREE_PORTS</strong> (0x45) No TCP ports available to assign</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_13"><a class="anchor" href="#_allowed_from_13"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_13"><a class="anchor" href="#_example_13"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Open the file "my_file.txt" for reading on the FTP Server using the previously
+    connected client "my_client." */
+
+status = nx_ftp_client_file_open(&amp;my_client, "my_file.txt", NX_FTP_OPEN_FOR_READ,
+    200);
+
+/* If status is NX_SUCCESS, the file "my_file.txt" on the FTP Server is
+    open for reading. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_file_read"><a class="anchor" href="#_nx_ftp_client_file_read"></a>nx_ftp_client_file_read</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Read from file</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_14"><a class="anchor" href="#_prototype_14"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_file_read(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    NX_PACKET **packet_ptr,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_14"><a class="anchor" href="#_description_14"></a>Description</h3>
+<div class="paragraph">
+<p>This service reads a packet from a previously opened file. It should be called repetitively until a status of NX_FTP_END_OF_FILE is received.</p>
+</div>
+<div class="paragraph">
+<p>Note that the caller does not allocate a packet for this service.  It need only supply a pointer to a packet pointer. This service will update that packet pointer to point to a packet retrieved from the socket receive queue.  If a successful status is returned, that means there was a packet available, and it is the caller&#8217;s responsibility to release the packet when it is done with it.</p>
+</div>
+<div class="paragraph">
+<p>If a non-zero status (either an error status or NX_FTP_END_OF_FILE) is returned, the caller does not release the packet. Otherwise, an error is generated when if the packet pointer is NULL.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_14"><a class="anchor" href="#_input_parameters_14"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Pointer to destination for the data packet pointer to be stored. If successful, the packet some or all the contains of the file.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP Client file read. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_14"><a class="anchor" href="#_return_values_14"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP file read.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_OPEN</strong> (0xD5) FTP Client is not opened.</p>
+</li>
+<li>
+<p><strong>NX_FTP_END_OF_FILE</strong> (0xD7) End of file condition.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_14"><a class="anchor" href="#_allowed_from_14"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_14"><a class="anchor" href="#_example_14"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">NX_PACKET   *my_packet;
+
+/* Read a packet of data from the file "my_file.txt" that was previously opened
+    from the client "my_client." */
+
+status = nx_ftp_client_file_read(&amp;my_client, &amp;my_packet, 200);
+
+/* Check status.  */
+if (status != NX_SUCCESS)
+{
+    error_counter++;
+}
+else
+{
+    /* Release packet when done with it. */
+    nx_packet_release(my_packet);
+}
+
+/* If status is NX_SUCCESS, the packet pointer, "my_packet" points to the packet
+    that contains the next bytes from the file. If the file is completely
+    downloaded, an NX_FTP_END_OF_FILE status is returned (no packet retrieved). */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_file_rename"><a class="anchor" href="#_nx_ftp_client_file_rename"></a>nx_ftp_client_file_rename</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Rename file on FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_15"><a class="anchor" href="#_prototype_15"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_file_rename(
+    NX_FTP_CLIENT *ftp_ptr,
+    CHAR *filename,
+    CHAR *new_filename,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_15"><a class="anchor" href="#_description_15"></a>Description</h3>
+<div class="paragraph">
+<p>This service renames a file on the FTP Server.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_15"><a class="anchor" href="#_input_parameters_15"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>filename</em>: Current name of file.</p>
+</li>
+<li>
+<p><em>new_filename</em>: New name for file.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP Client file rename. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_15"><a class="anchor" href="#_return_values_15"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP file rename.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_CONNECTED</strong> (0xD3) FTP Client is not connected.</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_3XX_CODE</strong> (0XDD) Did not receive 3XX (ok) response</p>
+</li>
+<li>
+<p><strong>NX_FTP_EXPECTED_2XX_CODE</strong> (0xDA) Did not get a 2XX (ok) response</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_15"><a class="anchor" href="#_allowed_from_15"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_15"><a class="anchor" href="#_example_15"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Rename file "my_file.txt" to "new_file.txt" on the previously connected
+    Client instance "my_client." */
+
+status = nx_ftp_client_file_rename(&amp;my_client, "my_file.txt", "new_file.txt",
+    200);
+
+/* If status is NX_SUCCESS, the file has been renamed. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_file_write"><a class="anchor" href="#_nx_ftp_client_file_write"></a>nx_ftp_client_file_write</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Write to file</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_16"><a class="anchor" href="#_prototype_16"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_file_write(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    NX_PACKET *packet_ptr,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_16"><a class="anchor" href="#_description_16"></a>Description</h3>
+<div class="paragraph">
+<p>This service writes a packet of data to the previously opened file on the FTP Server.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_16"><a class="anchor" href="#_input_parameters_16"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Packet pointer containing data to write.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the FTP Client file write. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timeout value</strong> (0x00000001 through 0xFFFFFFFE) Selecting a numeric value (1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the FTP Server response.</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until a FTP Server responds to the request.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_16"><a class="anchor" href="#_return_values_16"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP file write.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NOT_OPEN</strong> (0xD5) FTP Client is not opened.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_16"><a class="anchor" href="#_allowed_from_16"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_16"><a class="anchor" href="#_example_16"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Write the data contained in "my_packet" to the previously opened file
+    "my_file.txt". */
+
+status = nx_ftp_client_file_write(&amp;my_client, my_packet, 200);
+
+/* If status is NX_SUCCESS, the file has been written to. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_client_passive_mode_set"><a class="anchor" href="#_nx_ftp_client_passive_mode_set"></a>nx_ftp_client_passive_mode_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Enable or disable passive transfer mode</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_17"><a class="anchor" href="#_prototype_17"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_client_passive_mode_set(
+    NX_FTP_CLIENT *ftp_client_ptr,
+    UINT passive_mode_enabled);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_17"><a class="anchor" href="#_description_17"></a>Description</h3>
+<div class="paragraph">
+<p>This service enables passive transfer mode if the passive_mode_enabled input is set to NX_TRUE on a previously created FTP Client instance such that subsequent calls to read or write files (RETR, STOR) or download a directory listing (NLST) are done in transfer mode. To disable passive mode transfer and return to the default behavior of active transfer mode, call this function with the passive_mode_enabled input set to <strong>NX_FALSE</strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_17"><a class="anchor" href="#_input_parameters_17"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_client_ptr</em>: Pointer to FTP Client control block.</p>
+</li>
+<li>
+<p><em>passive_mode_enabled</em>: If set to <strong>NX_TRUE</strong>, passive mode is enabled. If set to <strong>NX_FALSE</strong>, passive mode is disabled.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_17"><a class="anchor" href="#_return_values_17"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful passive mode set.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_INVALID_PARAMETERS (0x4D) Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_17"><a class="anchor" href="#_allowed_from_17"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_17"><a class="anchor" href="#_example_17"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Enable the FTP Client to exchange data with the FTP server in passive mode. */
+
+status = nx_ftp_client_passive_mode_set(&amp;my_client, NX_TRUE);
+
+/* If status is NX_SUCCESS, the FTP client is in passive transfer mode. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_server_create"><a class="anchor" href="#_nx_ftp_server_create"></a>nx_ftp_server_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_18"><a class="anchor" href="#_prototype_18"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_server_create(
+    NX_FTP_SERVER *ftp_server_ptr,
+    CHAR *ftp_server_name,
+    NX_IP *ip_ptr,
+    FX_MEDIA *media_ptr,
+    VOID *stack_ptr,
+    ULONG stack_size,
+    NX_PACKET_POOL *pool_ptr,
+    UINT (*ftp_login)(
+        struct NX_FTP_SERVER_STRUCT *ftp_server_ptr,
+        ULONG client_ip_address,
+        UINT client_port,
+        CHAR *name,
+        CHAR *password,
+        CHAR *extra_info),
+    UINT (*ftp_logout)(
+        struct NX_FTP_SERVER_STRUCT *ftp_server_ptr,
+        ULONG client_ip_address,
+        UINT client_port,
+        CHAR *name,
+        CHAR *password,
+        CHAR *extra_info));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_18"><a class="anchor" href="#_description_18"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates an FTP Server instance on the specified and previously created NetX Duo IP instance. Note the FTP Server needs to be started with a call to <strong><em>nx_ftp_server_start</em></strong> for it to begin operation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_18"><a class="anchor" href="#_input_parameters_18"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_server_ptr</em>: Pointer to FTP Server control block.</p>
+</li>
+<li>
+<p><em>ftp_server_name</em>: Name of FTP Server.</p>
+</li>
+<li>
+<p><em>ip_ptr</em>: Pointer to associated NetX Duo IP instance. Note there can only be one FTP Server for an IP instance.</p>
+</li>
+<li>
+<p><em>media_ptr</em>: Pointer to associated FileX media instance.</p>
+</li>
+<li>
+<p><em>stack_ptr</em>: Pointer to memory for the internal FTP Server thread&#8217;s stack area.</p>
+</li>
+<li>
+<p><em>stack_size</em>: Size of stack area specified by <em>stack_ptr</em>.</p>
+</li>
+<li>
+<p><em>pool_ptr</em>: Pointer to default NetX Duo packet pool. Note the payload size of packets in the pool must be large enough to accommodate the largest filename/path.</p>
+</li>
+<li>
+<p><em>ftp_login</em>: Function pointer to application&#8217;s login function. This function is supplied the username and password from the Client requesting a connection, and the Client address in the ULONG data type. If this is valid, the application&#8217;s login function should return <strong>NX_SUCCESS</strong>.</p>
+</li>
+<li>
+<p><em>ftp_logout</em>: Function pointer to application&#8217;s logout function. This function is supplied the username and password from the Client requesting a disconnection, and the Client address in the ULONG data type. If this is valid, the application&#8217;s login function should return <strong>NX_SUCCESS</strong>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_18"><a class="anchor" href="#_return_values_18"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP Server create.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_18"><a class="anchor" href="#_allowed_from_18"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization and Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_18"><a class="anchor" href="#_example_18"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Create the FTP Server "my_server" on the IP instance "ip_0" using the
+    "ram_disk" media. */
+
+status = nx_ftp_server_create(&amp;my_server, "My Server Name", &amp;ip_0, &amp;ram_disk,
+    stack_ptr, stack_size, &amp;pool_0,
+    my_login, my_logout);
+
+/* If status is NX_SUCCESS, the FTP Server has been created. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_ftp_server_create"><a class="anchor" href="#_nxd_ftp_server_create"></a>nxd_ftp_server_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create FTP Server with IPv4 and IPv6 support</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_19"><a class="anchor" href="#_prototype_19"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nxd_ftp_server_create(
+    NX_FTP_SERVER *ftp_server_ptr,
+    CHAR *ftp_server_name,
+    NX_IP *ip_ptr,
+    FX_MEDIA *media_ptr,
+    VOID *stack_ptr,
+    ULONG stack_size,
+    NX_PACKET_POOL *pool_ptr,
+    UINT (*ftp_login_duo)(
+        struct NX_FTP_SERVER_STRUCT *ftp_server_ptr,
+        NXD_ADDRESS *client_ip_address,
+        UINT client_port,
+        CHAR *name,
+        CHAR *password,
+        CHAR *extra_info),
+    UINT (*ftp_logout_duo)(
+        struct NX_FTP_SERVER_STRUCT *ftp_server_ptr,
+        NXD_ADDRESS *client_ip_address,
+        UINT client_port,
+        CHAR *name,
+        CHAR *password,
+        CHAR *extra_info));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_19"><a class="anchor" href="#_description_19"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates an FTP Server instance on the specified and previously created NetX Duo IP instance. Note the FTP Server still needs to be started with a call to <strong><em>nx_ftp_server_start</em></strong> for it to begin operation after the Server is created.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_19"><a class="anchor" href="#_input_parameters_19"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_server_ptr</em>: Pointer to FTP Server control block.</p>
+</li>
+<li>
+<p><em>ftp_server_name</em>: Name of FTP Server.</p>
+</li>
+<li>
+<p><em>ip_ptr</em>: Pointer to associated NetX Duo IP instance. Note there can only be one FTP Server for an IP instance.</p>
+</li>
+<li>
+<p><em>media_ptr</em>: Pointer to associated FileX media instance.</p>
+</li>
+<li>
+<p><em>stack_ptr</em>: Pointer to memory for the internal FTP Server thread&#8217;s stack area.</p>
+</li>
+<li>
+<p><em>stack_size</em>: Size of stack area specified by <em>stack_ptr</em>.</p>
+</li>
+<li>
+<p><em>pool_ptr</em>: Pointer to default NetX Duo packet pool. Note the payload size of packets in the pool must be large enough to accommodate the largest filename/path.</p>
+</li>
+<li>
+<p><em>ftp_login_duo</em>: Function pointer to application&#8217;s login function. This function is supplied the username and password from the Client requesting a connection, and a pointer to the Client address in the NXD_ADDRESS data type. If this is valid, the application&#8217;s login function should return NX_SUCCESS.</p>
+</li>
+<li>
+<p><em>ftp_logout_duo</em>: Function pointer to application&#8217;s logout function. This function is supplied the username and password from the Client requesting a disconnection, and a pointer to the Client address in the NXD_ADDRESS data type. If this is valid, the application&#8217;s login function should return NX_SUCCESS.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_19"><a class="anchor" href="#_return_values_19"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP Server create.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_19"><a class="anchor" href="#_allowed_from_19"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization and Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_19"><a class="anchor" href="#_example_19"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Create the FTP Server "my_server" on the IP instance "ip_0" using the
+    "ram_disk" media. */
+
+status = nxd_ftp_server_create(&amp;my_server, "My Server Name", &amp;ip_0, &amp;ram_disk,
+    stack_ptr, stack_size, &amp;pool_0,
+    my_duo_login, my_duo_logout);
+
+/* If status is NX_SUCCESS, the FTP Server has been created. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_server_delete"><a class="anchor" href="#_nx_ftp_server_delete"></a>nx_ftp_server_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_20"><a class="anchor" href="#_prototype_20"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_server_delete(NX_FTP_SERVER *ftp_server_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_20"><a class="anchor" href="#_description_20"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes a previously created FTP Server instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_20"><a class="anchor" href="#_input_parameters_20"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_server_ptr</em>: Pointer to FTP Server control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_20"><a class="anchor" href="#_return_values_20"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP Server delete.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_20"><a class="anchor" href="#_allowed_from_20"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_20"><a class="anchor" href="#_example_20"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Delete the FTP Server "my_server". */
+
+status = nx_ftp_server_delete(&amp;my_server);
+
+/* If status is NX_SUCCESS, the FTP Server has been deleted. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_server_start"><a class="anchor" href="#_nx_ftp_server_start"></a>nx_ftp_server_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_21"><a class="anchor" href="#_prototype_21"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_server_start(NX_FTP_SERVER *ftp_server_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_21"><a class="anchor" href="#_description_21"></a>Description</h3>
+<div class="paragraph">
+<p>This service starts a previously created FTP Server instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_21"><a class="anchor" href="#_input_parameters_21"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_server_ptr</em>: Pointer to FTP Server control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_21"><a class="anchor" href="#_return_values_21"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP Server start.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_21"><a class="anchor" href="#_allowed_from_21"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_21"><a class="anchor" href="#_example_21"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Start the FTP Server "my_server". */
+
+status = nx_ftp_server_start(&amp;my_server);
+
+/* If status is NX_SUCCESS, the FTP Server has been started. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ftp_server_stop"><a class="anchor" href="#_nx_ftp_server_stop"></a>nx_ftp_server_stop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Stop FTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_22"><a class="anchor" href="#_prototype_22"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_ftp_server_stop(NX_FTP_SERVER *ftp_server_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_22"><a class="anchor" href="#_description_22"></a>Description</h3>
+<div class="paragraph">
+<p>This service stops a previously created and started FTP Server instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_22"><a class="anchor" href="#_input_parameters_22"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ftp_server_ptr</em>: Pointer to FTP Server control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_22"><a class="anchor" href="#_return_values_22"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful FTP Server stop.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid FTP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_22"><a class="anchor" href="#_allowed_from_22"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_22"><a class="anchor" href="#_example_22"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Stop the FTP Server "my_server". */
+
+status = nx_ftp_server_stop(&amp;my_server);
+
+/* If status is NX_SUCCESS, the FTP Server has been stopped. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

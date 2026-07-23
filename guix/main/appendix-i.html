@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Appendix I - GUIX Information Structures :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/guix/main/appendix-i.html">
+    <meta name="description" content="Learn about GUIX information structures.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guix" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">GUIX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">GUIX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">GUIX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-guix.html">Overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="guix-studio-quick-start.html">GUIX Studio Quick Start Guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-1.html">Ch. 1 - Introduction to GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-3.html">Ch. 3 - Functional overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-4.html">Ch. 4 - Description of GUIX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-5.html">Ch. 5 - GUIX display drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-example.html">GUIX example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - GUIX color definitions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - GUIX color formats</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - GUIX widget styles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - GUIX brush, canvas, and gradient attributes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - GUIX event description</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-f.html">App. F - GUIX RTOS binding services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-g.html">App. G - GUIX font structure</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-h.html">App. H - GUIX build-time configuration flags</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="appendix-i.html">App. I - GUIX information structures</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-j.html">App. J - Canvas Partial Frame Buffer Feature</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-k.html">App. K - GUIX Widget Status Flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX Studio User Guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix-studio.html">About GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-1.html">Ch. 1 - Introduction to GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-2.html">Ch. 2 - Installation and Use of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-3.html">Ch. 3 - Description of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-4.html">Ch. 4 - GUIX Studio Resources</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-6.html">Ch. 6 - GUIX Studio Generated Code</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-9.html">Ch. 9 - GUIX Studio Command Line</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-10.html">Ch. 10 - Simple Example Project</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-11.html">Ch. 11 - Resource Project File</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">GUIX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">GUIX</a></li>
+    <li>GUIX user guide</li>
+    <li><a href="appendix-i.html">App. I - GUIX information structures</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/guix/modules/ROOT/pages/appendix-i.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Appendix I - GUIX Information Structures</h1>
+<div class="sect1">
+<h2 id="_gx_bidi_text_info"><a class="anchor" href="#_gx_bidi_text_info"></a>GX_BIDI_TEXT_INFO</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition"><a class="anchor" href="#_definition"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_BIDI_TEXT_INFO_STRUCT
+{
+    GX_STRING gx_bidi_text_info_text;
+    GX_FONT  *gx_bidi_text_info_font;
+    GX_VALUE  gx_bidi_text_info_display_width;
+} GX_BIDI_TEXT_INFO;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>| Members | Description |
+| ----------------------- | --------------------------------------- |
+| <strong>gx_bidi_text_info_text</strong>               | Text for reordering |
+| <strong>gx_bidi_text_info_font</strong>               | Font used to display text, set it to GX_NULL if line breaking is not needed |
+| <strong>gx_bidi_text_info_display_width</strong>      | Available width for displaying, set it to -1 if line breaking is not needed |</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_bidi_resolved_text_info"><a class="anchor" href="#_gx_bidi_resolved_text_info"></a>GX_BIDI_RESOLVED_TEXT_INFO</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_2"><a class="anchor" href="#_definition_2"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_BIDI_RESOLVED_TEXT_INFO_STRUCT
+{
+    GX_STRING                                *gx_bidi_resolved_text_info_text;
+    UINT                                      gx_bidi_resolved_text_info_total_lines;
+    struct GX_BIDI_RESOLVED_TEXT_INFO_STRUCT *gx_bidi_resolved_text_info_next;
+} GX_BIDI_RESOLVED_TEXT_INFO;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_bidi_resolved_text_info_text</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to the array of reordered bidi text</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_bidi_resolved_text_info_total_lines</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total lines of resolved bidi text for one paragraph</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_bidi_resolved_text_info_next</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resolved bidi text information for the next paragraph</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_circular_gauge_info"><a class="anchor" href="#_gx_circular_gauge_info"></a>GX_CIRCULAR_GAUGE_INFO</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_3"><a class="anchor" href="#_definition_3"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_CIRCULAR_GAUGE_INFO_STRUCT
+{
+    INT             gx_circular_gauge_info_animation_steps;
+    INT             gx_circular_gauge_info_animation_delay;
+    GX_VALUE        gx_circular_gauge_info_needle_xpos;
+    GX_VALUE        gx_circular_gauge_info_needle_ypos;
+    GX_VALUE        gx_circular_gauge_info_needle_xcor;
+    GX_VALUE        gx_circular_gauge_info_needle_ycor;
+    GX_RESOURCE_ID  gx_circular_gauge_info_needle_pixelmap;
+} GX_CIRCULAR_GAUGE_INFO;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_circular_gauge_info_animation_steps</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total steps the needle will travel through when moving from the current needle angle to a newly assigned needle angle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_circular_gauge_info_animation_delay</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The number of GUIX clock ticks to delay between animation steps</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_circular_gauge_info_needle_xpos</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The distance from the left of the gauge widget to the center-of-rotation of the gauge needle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_circular_gauge_info_needle_ypos</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The distance from the top of the gauge widget to the center-of-rotation of the gauge needle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_circular_gauge_info_needle_xcor</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The distance from the left of the needle image to the center-of-rotation of the gauge needle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_circular_gauge_info_needle_ycor</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The distance from the top of the needle image to the center-of-rotation of the gauge needle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_circular_gauge_info_needle_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the pixelmap which will be used to draw the gauge needle. This image will be rotated as needed by the gauge widget to display the gauge needle in any position</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The diagram below illustrates the xpos, ypos, and xcor, ycor coordinates:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix/image8.png" alt="Diagram of the Needle Y and X coordinates">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_line_chart_info"><a class="anchor" href="#_gx_line_chart_info"></a>GX_LINE_CHART_INFO</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_4"><a class="anchor" href="#_definition_4"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_LINE_CHART_INFO_STRUCT
+{
+    INT            gx_line_chart_min_val;
+    INT            gx_line_chart_max_val;
+    INT           *gx_line_chart_data;
+    GX_VALUE       gx_line_left_margin;
+    GX_VALUE       gx_line_top_margin;
+    GX_VALUE       gx_line_right_margin;
+    GX_VALUE       gx_line_bottom_margin;
+    GX_VALUE       gx_line_chart_max_data_count;
+    GX_VALUE       gx_line_chart_active_data_count;
+    GX_VALUE       gx_line_chart_axis_line_width;
+    GX_VALUE       gx_line_chart_data_line_width;
+    GX_RESOURCE_ID gx_line_chart_axis_color;
+    GX_RESOURCE_ID gx_line_chart_line_color;
+} GX_LINE_CHART_INFO;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_line_chart_min_val</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The minimum data value, which is used to calculate scaling</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_line_chart_max_val</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum data value, which is used to calculate scaling</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_line_chart_data</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to an array of integer values. These are the integer values plotted by the line chart widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_line_&lt;side&gt;_margin</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The offset from the chart window outer bound to the actual chart rendering area. The chart axis and data line are always plotted within this inner boundary, which allows the application to draw labels and other information inside the chart window but outside the char graphing area</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_line_chart_max_data_count</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The number of data values which may be present. This parameter is used for calculating the x-axis scaling or interval for plotting data points.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_line_active_data_count</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The number of data values that actually present in the data array. A line chart may be scaled to draw a maximum of 100 values (for example), but on any particular update a smaller number of data values may actually be present.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_line_axis_line_width</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width of the line used to draw the horizontal and vertical axis</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_line_data_line_width</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width of the plotted data line</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_line_chart_axis_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the color used to draw the axis lines</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_line_chart_line_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the color used to draw the chart data line</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_mouse_cursor_info"><a class="anchor" href="#_gx_mouse_cursor_info"></a>GX_MOUSE_CURSOR_INFO</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_5"><a class="anchor" href="#_definition_5"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_MOUSE_CURSOR_INFO_STRUCT
+{
+    GX_RESOURCE_ID             gx_mouse_cursor_image_id;
+    GX_VALUE                   gx_mouse_cursor_hotspot_x;
+    GX_VALUE                   gx_mouse_cursor_hotspot_y;
+} GX_MOUSE_CURSOR_INFO;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_mouse_cursor_image_id</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the mouse image</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_mouse_cursor_hotspot_x</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The offset from the left of the mouse image to the mouse image hotspot</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_mouse_cursor_hotspot_y</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The offset from the top of the mouse image to the mouse image hotspot</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_pen_configuration"><a class="anchor" href="#_gx_pen_configuration"></a>GX_PEN_CONFIGURATION</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_6"><a class="anchor" href="#_definition_6"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_PEN_CONFIGURATION_STRUCT
+{
+    GX_FIXED_VAL     gx_pen_configuration_min_drag_dist;
+    UINT             gx_pen_configuration_max_pen_speed_ticks;
+}GX_PEN_CONFIGURATION;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_pen_configuration_min_drag_dist</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The minimum drag distance per GUIX timer tick to trigger an FLICK event. Call GX_FIXED_VAL_MAKE to make a fixed point data type value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_pen_configuration_max_pen_speed_ticks</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum drag speed in GUIX timer ticks to trigger an FLICK event</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_pixelmap_slider_info"><a class="anchor" href="#_gx_pixelmap_slider_info"></a>GX_PIXELMAP_SLIDER_INFO</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_7"><a class="anchor" href="#_definition_7"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_PIXELMAP_SLIDER_INFO_STRUCT
+{
+    GX_RESOURCE_ID gx_pixelmap_slider_info_lower_background_pixelmap;
+    GX_RESOURCE_ID gx_pixelmap_slider_info_upper_background_pixelmap;
+    GX_RESOURCE_ID gx_pixelmap_slider_info_needle_pixelmap;
+} GX_PIXELMAP_SLIDER_INFO;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_pixelmap_slider_info_lower_background_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the pixelmap for filling the background before the needle. If upper background pixelmap is not set, it&#8217;s used for filling background both before and after the needle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_pixelmap_slider_info_upper_background_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the pixelmap for filling background after the needle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_pixelmap_slider_info_needle_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the needle pixelmap</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_progress_bar_info"><a class="anchor" href="#_gx_progress_bar_info"></a>GX_PROGRESS_BAR_INFO</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_8"><a class="anchor" href="#_definition_8"></a><strong>Definition</strong></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_PROGRESS_BAR_INFO_STRUCT
+{
+    INT gx_progress_bar_info_min_val;
+    INT gx_progress_bar_info_max_val;
+    INT gx_progress_bar_info_current_val;
+    GX_RESOURCE_ID gx_progress_bar_font_id;
+    GX_RESOURCE_ID gx_progress_bar_normal_text_color;
+    GX_RESOURCE_ID gx_progress_bar_selected_text_color;
+    GX_RESOURCE_ID gx_progress_bar_disabled_text_color;
+    GX_RESOURCE_ID gx_progress_bar_fill_pixelmap;
+} GX_PROGRESS_BAR_INFO;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_progress_bar_info_min_val</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Minimum reported value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_progress_bar_info_max_val</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum reported value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_progress_bar_info_current_val</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Current value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_progress_bar_info_font_id</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the font, used to draw the optional text value within the progress bar widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_progress_bar_normal_text_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the text color in normal state, used to define the optional text drawing within the progress bar widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_progress_bar_selected_text_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the text color when the widget gain focus, used to define the optional text drawing within the progress bar widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_progress_bar_disabled_text_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the text color when GX_STYLE_ENABLED is not active, used to define the optional text drawing within the progress bar widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_progress_bar_fill_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the pixelmap for background filling</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_radial_progress_bar_info"><a class="anchor" href="#_gx_radial_progress_bar_info"></a>GX_RADIAL_PROGRESS_BAR_INFO</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_9"><a class="anchor" href="#_definition_9"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_RADIAL_PROGRESS_BAR_INFO_STRUCT
+{
+    GX_VALUE       gx_radial_progress_bar_info_xcenter;
+    GX_VALUE       gx_radial_progress_bar_info_ycenter;
+    GX_VALUE       gx_radial_progress_bar_info_radius;
+    GX_VALUE       gx_radial_progress_bar_info_current_val;
+    GX_VALUE       gx_radial_progress_bar_info_anchor_val;
+    GX_RESOURCE_ID gx_radial_progress_bar_info_font_id;
+    GX_RESOURCE_ID gx_radial_progress_bar_info_normal_text_color;
+    GX_RESOURCE_ID gx_radial_progress_bar_info_selected_text_color;
+    GX_RESOURCE_ID gx_radial_progress_bar_info_disabled_text_color;
+    GX_VALUE       gx_radial_progress_bar_info_normal_brush_width;
+    GX_VALUE       gx_radial_progress_bar_info_selected_brush_width;
+    GX_RESOURCE_ID gx_radial_progress_bar_info_normal_brush_color;
+    GX_RESOURCE_ID gx_radial_progress_bar_info_selected_brush_color;
+} GX_RADIAL_PROGRESS_BAR_INFO;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_info_xcenter</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Widget position in x coordinate</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_info_ycenter</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Widget position in y coordinate</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_info_radius</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Radius of the progress circle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_info_current_val</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Current value, limited to the range [-360, 360], indicates the angular delta between the anchor position and the end point of the upper arc. Negative value causes the arc to be drawn in a clockwise direction starting at the anchor position. Positive value causes the arc to be drawn in a counter-clockwise direction starting at the anchor position. The application must scale the real-word value being indicated to assign an angular value to the progress bar widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_anchor_val</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Starting angle of the upper progress arc. The value is defined in terms of integer degree with 0 degree pointing to the right and 90 degree indicating straight up position.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_font_id</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the font used to draw the optional text value within the progress bar widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_normal_text_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the text color in normal state, used to define the optional text drawing within the progress bar widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_selected_text_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the text color when widget gain focus, used to define the optional text drawing within the progress bar widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_disabled_text_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the text color when GX_STYLE_ENABLED is not active, used to define the optional text drawing within the progress bar widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_normal_brush_width</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width of the lower progress circle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_selected_brush_width</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width of the upper progress arc, the upper arc may be narrower, the same as, or wider than the lower circle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_normal_brush_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the color to fill lower progress circle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_progress_bar_selected_brush_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the color to fill upper progress arc</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_radial_slider_info"><a class="anchor" href="#_gx_radial_slider_info"></a>GX_RADIAL_SLIDER_INFO</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_10"><a class="anchor" href="#_definition_10"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_RADIAL_SLIDER_INFO_STRUCT
+{
+    GX_VALUE       gx_radial_slider_info_xcenter;
+    GX_VALUE       gx_radial_slider_info_ycenter;
+    USHORT         gx_radial_slider_info_radius;
+    USHORT         gx_radial_slider_info_track_width;
+    GX_VALUE       gx_radial_slider_info_current_angle;
+    GX_VALUE       gx_radial_slider_info_min_angle;
+    GX_VALUE       gx_radial_slider_info_max_angle;
+    GX_VALUE      *gx_radial_slider_info_angle_list;
+    USHORT         gx_radial_slider_info_list_cont;
+    GX_RESOURCE_ID gx_radial_slider_info_background_pixelmap;
+    GX_RESOURCE_ID gx_radial_slider_info_needle_pixelmap;
+} GX_RADIAL_SLIDER_INFO;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_slider_info_xcenter</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Distance from the left of the slider widget to the center-of-rotation of the slider needle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_slider_info_ycenter</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Distance from the top of the slider widget to the center-of-rotation of the slider needle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_slider_info_radius</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Radius of the radial slider circle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_slider_info_track_width</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width of radial slider track</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_slider_info_current_angle</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Current slider angle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_slider_info_min_angle</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Minimum slider angle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_slider_info_max_angle</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum slider angle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_slider_info_angle_list</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Angle value list, defines anchor angles, if set, slider angle can only be one of the defined anchor angles</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_slider_info_list_count</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of anchor angles</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_slider_info_background_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of background pixelmap</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_radial_slider_info_needle_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of needle pixelmap</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_rectangle"><a class="anchor" href="#_gx_rectangle"></a>GX_RECTANGLE</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_11"><a class="anchor" href="#_definition_11"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_RECTANGLE_STRUCT
+{
+    GX_VALUE gx_rectangle_left;
+    GX_VALUE gx_rectangle_top;
+    GX_VALUE gx_rectangle_right;
+    GX_VALUE gx_rectangle_bottom;
+} GX_RECTANGLE;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_rectangle_left</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Left of the rectangle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_rectangle_top</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Top of the rectangle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_rectangle_right</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Right of the rectangle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_rectangle_bottom</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bottom of the rectangle</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_rich_text_fonts"><a class="anchor" href="#_gx_rich_text_fonts"></a>GX_RICH_TEXT_FONTS</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_12"><a class="anchor" href="#_definition_12"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_RICH_TEXT_FONTS_STRUCT
+{
+    GX_RESOURCE_ID             gx_rich_text_fonts_normal_id;
+    GX_RESOURCE_ID             gx_rich_text_fonts_bold_id;
+    GX_RESOURCE_ID             gx_rich_text_fonts_italic_id;
+    GX_RESOURCE_ID             gx_rich_text_fonts_bold_italic_id;
+} GX_RICH_TEXT_FONTS;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_rich_text_fonts_normal_id</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of normal text font</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_rich_text_fonts_bold_id</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of bold text font</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_rich_text_fonts_italic_id</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of italic text font</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_rich_text_fonts_bold_italic_id</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of bold italic text font</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_scroll_info"><a class="anchor" href="#_gx_scroll_info"></a>GX_SCROLL_INFO</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_13"><a class="anchor" href="#_definition_13"></a><strong>Definition</strong></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_SCROLL_INFO_STRUCT
+{
+    INT      gx_scroll_value;
+    INT      gx_scroll_minimum;
+    INT      gx_scroll_maximum;
+    GX_VALUE gx_scroll_visible;
+    GX_VALUE gx_scroll_increment;
+} GX_SCROLL_INFO;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_value</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Current scroll position</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_minimum</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Minimum reported position</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_maximum</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum reported position</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_visible</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parent window visible range</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_increment</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scrollbar minimum delta value</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_scrollbar_appearance"><a class="anchor" href="#_gx_scrollbar_appearance"></a>GX_SCROLLBAR_APPEARANCE</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_14"><a class="anchor" href="#_definition_14"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_SCROLLBAR_APPEARANCE_STRUCT
+{
+    GX_VALUE       gx_scroll_width;
+    GX_VALUE       gx_scroll_thumb_width;
+    GX_VALUE       gx_scroll_thumb_travel_min;
+    GX_VALUE       gx_scroll_thumb_travel_max;
+    GX_UBYTE       gx_scroll_thumb_border_style;
+    GX_RESOURCE_ID gx_scroll_fill_pixelmap;
+    GX_RESOURCE_ID gx_scroll_thumb_pixelmap;
+    GX_RESOURCE_ID gx_scroll_up_pixelmap;
+    GX_RESOURCE_ID gx_scroll_down_pixelmap;
+    GX_RESOURCE_ID gx_scroll_thumb_color;
+    GX_RESOURCE_ID gx_scroll_thumb_border_color;
+    GX_RESOURCE_ID gx_scroll_button_color;
+} GX_SCROLLBAR_APPEARANCE;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_width</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width of the scrollbar widget, in pixels</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_thumb_width</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width of the thumb button which slides on the scrollbar, in pixels. This value is usually some number of pixels less than the total scrollbar width</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_thumb_travel_min</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Offset from the end of scrollbar to minimum thumb button travel point. This limit can be used to prevent the thumb button from traveling to the very end of the scrollbar</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_thumb_travel_max</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Offset from the end of scrollbar to maximum thumb button travel point. This limit can be used to prevent the thumb button from traveling to the very end of the scrollbar</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_thumb_border_style</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Border styles of thumb button</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_fill_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional pixelmap ID. If this pixelmap ID is not zero, the scrollbar uses this pixelmap to draw the scrollbar background</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_thumb_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional pixelmap ID. If this pixelmap ID is not zero, the scrollbar thumb button uses this pixelmap to draw itself</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_up_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional pixelmap ID. If this pixelmap ID is not zero, the scrollbar uses this pixelmap ID to draw the scrollbar left/up end button</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_down_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional pixelmap ID. If this pixelmap ID is not zero, the scrollbar uses this pixelmap ID to draw the scrollbar right/down end button</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_thumb_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of color used to fill thumb button</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_thumb_border_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of color used to draw the border of thumb button</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_scroll_button_color</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of color used to fill scrollbar end buttons</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_slider_info"><a class="anchor" href="#_gx_slider_info"></a>GX_SLIDER_INFO</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_15"><a class="anchor" href="#_definition_15"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_SLIDER_INFO_STRUCT
+{
+    INT      gx_slider_info_min_val;
+    INT      gx_slider_info_max_val;
+    INT      gx_slider_info_current_val;
+    INT      gx_slider_info_increment;
+    GX_VALUE gx_slider_info_min_travel;
+    GX_VALUE gx_slider_info_max_travel;
+    GX_VALUE gx_slider_info_needle_width;
+    GX_VALUE gx_slider_info_needle_height;
+    GX_VALUE gx_slider_info_needle_inset;
+    GX_VALUE gx_slider_info_needle_hotspot_offset;
+} GX_SLIDER_INFO;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_slider_info_min_val</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Minimum reported value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_slider_info_max_val</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum reported value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_slider_info_current_value</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Current value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_slider_info_min_travel</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Needle travel limit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_slider_info_max_travel</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Needle travel limit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_slider_info_needle_width</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Needle width in pixel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_slider_info_needle_height</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Needle height in pixel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_slider_info_needle_inset</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Needle draw position. If GX_STYLE_SLIDER_VERTICAL is set, used to specify the offset from the needle draw start position to the slider left. Else, used to specify the offset from the needle draw start position to the slider top.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_slider_info_needle_hotspot_offset</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Needle hotpot_offset, used to specify the offset from the needle draw start position to the slider hotspot.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gx_sprite_frame"><a class="anchor" href="#_gx_sprite_frame"></a>GX_SPRITE_FRAME</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_definition_16"><a class="anchor" href="#_definition_16"></a>Definition</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct GX_SPRITE_FRAME_STRUCT
+{
+    GX_RESOURCE_ID gx_sprite_frame_pixelmap;
+    GX_VALUE gx_sprite_frame_x_offset;
+    GX_VALUE gx_sprite_frame_y_offset;
+    UINT gx_sprite_frame_delay;
+    UINT gx_sprite_frame_background_operation;
+    UCHAR gx_sprite_frame_alpha;
+} GX_SPRITE_FRAME;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Members</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_sprite_frame_pixelmap</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource ID of the pixelmap to be displayed for this frame. The ID can be 0.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_sprite_frame_x_offset</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Offset from the sprite widget left to display the pixelmap</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_sprite_frame_y_offset</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Offset from the sprite widget top to display the pixelmap</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_sprite_frame_delay</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delay value, in GUIX timer ticks, after displaying this frame before advancing to the next sprite frame</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_sprite_frame_background_operation</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Define how the background should be erased. Possible values for this field are:<br>
+GX_SPRITE_BACKGROUND_NO_ACTION: No fill between frames<br>
+GX_SPRITE_BACKGROUND_SOLID_FILL: Redraw sprite background<br>
+GX_SPRITE_BACKGROUND_RESTORE: Restore previous pixelmap</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gx_sprite_frame_alpha</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alpha value to be added to the displayed pixelmap. The value 255 specifies that no extra alpha value should be imposed. If the pixelmap includes an alpha channel, this alpha channel will be added to the frame alpha value.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

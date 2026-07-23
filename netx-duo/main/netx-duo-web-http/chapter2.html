@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 2 - Installation and use of HTTP and HTTPS :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-web-http/chapter2.html">
+    <meta name="description" content="This chapter contains a description of various issues related to installation, setup, and usage of the NetX Duo Web HTTP component.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo Web HTTP and HTTPS user guide</li>
+    <li><a href="chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-web-http/chapter2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 2 - Installation and use of HTTP and HTTPS</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of various issues related to installation, setup, and usage of the NetX Duo Web HTTP component.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_product_distribution"><a class="anchor" href="#_product_distribution"></a>Product Distribution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>HTTP for NetX Duo is available at <a href="https://github.com/eclipse-threadx/netxduo" class="bare">https://github.com/eclipse-threadx/netxduo</a>. The package includes three source files, two include files, and a file that contains this document, as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>nx_web_http_common.h</strong> Common header file for NetX Duo Web HTTP</p>
+</li>
+<li>
+<p><strong>nx_web_http_client.h</strong> Header file for HTTP Client for NetX Duo Web</p>
+</li>
+<li>
+<p><strong>nx_web_http_server.h</strong> Header file for HTTP Server for NetX Duo Web</p>
+</li>
+<li>
+<p><strong>nx_web_http_client.c</strong> C Source file for HTTP Client for NetX Duo Web</p>
+</li>
+<li>
+<p><strong>nx_web_http_server.c</strong> C Source file for HTTP Server for NetX Duo Web</p>
+</li>
+<li>
+<p><strong>nx_tcpserver.c</strong> C Source file for multiple TCP sockets</p>
+</li>
+<li>
+<p><strong>nx_tcpserver.h</strong> Header file for defining HTTPS Server symbols</p>
+</li>
+<li>
+<p><strong>nx_md5.c</strong> MD5 digest algorithms</p>
+</li>
+<li>
+<p><strong>filex_stub.h</strong> Stub file if FileX is not present</p>
+</li>
+<li>
+<p><strong>nx_web_http.pdf</strong> Description of HTTP for NetX Duo Web</p>
+</li>
+<li>
+<p><strong>demo_netx_web_http.c</strong> NetX Duo Web HTTP demonstration</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_http_installation"><a class="anchor" href="#_http_installation"></a>HTTP Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to use NetX Duo Web HTTP, the entire distribution mentioned previously should be copied to the same directory where NetX Duo is installed. For example, if NetX Duo is installed in the directory "<em>\threadx\arm7\green</em>" then the <em>nx_web_http_client.h</em> and <em>nx_web_http_client.c</em> for NetX Duo Web HTTP Client applications, and <em>nx_web_http_server.h</em>, <em>nx_web_http_server.c, nx_tcpserver.c and nx_tcpserver.h</em> for NetX Duo Web HTTP Server applications. For both client and server applications, <em>nx_web_http_common.h</em> must be in this directory as well. <em>nx_md5.c</em> should also be copied into this directory if digest authentication is being used. For the demo 'ram driver' application HTTP Client and Server files should be copied into the same directory.</p>
+</div>
+<div class="paragraph">
+<p>If using TLS, you should have a separate NetX Duo Secure directory containing the TLS source files.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_http"><a class="anchor" href="#_using_http"></a>Using HTTP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using NetX Duo Web HTTP is easy. Basically, the application code must include <em>nx_web_http_client.h</em> and/or <em>nx_web_http_server.h</em> after it includes <em>tx_api.h, fx_api.h,</em> and <em>nx_api.h</em> (<em>nx_web_http_common.h</em> is automatically included). Those headers enable the application to use ThreadX, FileX, and NetX Duo, respectively. For HTTPS support, the headers must be included after the <em>nx_secure_tls.h</em> file is included to bring in TLS support.</p>
+</div>
+<div class="paragraph">
+<p>Once the HTTP header files are included, the application code is then able to make the HTTP function calls specified later in this guide. The application must also link with <em>nx_web_http_client.c for HTTP(S) clients</em>, <em>nx_web_http_server.c and nx_tcpserver.c for HTTP(S) servers</em>, and <em>nx_md5.c (for digest authentication)</em> in the build process. These files must be compiled in the same manner as other application files and its object form must be linked along with the files of the application. This is all that is required to use NetX Duo Web HTTP.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If NX_WEB_HTTP_DIGEST_ENABLE is not specified in the build process, the <em>md5.c</em> file does not need to be added to the application. Similarly, if no HTTP Client capabilities are required, the <em>nx_web_http_client.c</em> file may be omitted and if no HTTP Server capabilities are required, <em>nx_web_http_server.c</em> may be omitted.</p>
+</div>
+<div class="paragraph">
+<p>Unless NX_WEB_HTTPS_ENABLE is defined in order to enable HTTPS (instead of using only plaintext HTTP) then NetX Duo Secure TLS does not need to be in the build.</p>
+</div>
+<div class="paragraph">
+<p>Since HTTP utilizes NetX Duo TCP services, TCP must be enabled with the <em>nx_tcp_enable()</em> call prior to using HTTP.</p>
+</div>
+<div class="paragraph">
+<p>When using HTTPS with NetX Duo Secure TLS, TLS must be initialized with <em>nx_secure_tls_initialize()</em> prior to calling HTTPS routines.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_small_example_system"><a class="anchor" href="#_small_example_system"></a>Small Example System</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An example of how to use NetX Duo Web HTTP is described below.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This is provided for demonstration purposes only and is not guaranteed to compile and run as is.</p>
+</div>
+<div class="paragraph">
+<p>Please refer to the NetX Duo HTTPS release code distribution for  demo source code file(s) that will properly build in the native Express Logic environment.  Also be aware that these demos are intentionally kept very simple as they are intended to introduce HTTPS and/or NetX Duo HTTPS application to new users.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In this example, the HTTP include file <em>nx_web_http_client.h and nx_web_http_server.h are</em> brought in (<em>netx_web_http_common.h</em> is included automatically). Next, the HTTP Server is created in "<em>tx_application_define</em>". Note that the HTTP Server control block "<em>Server</em>" was defined as a global variable previously. After successful creation, the HTTPS Server is started. The HTTPS Client is then created. It writes the file and reads the file back.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+NX_WEB_HTTPS_ENABLE is defined on this system.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* This is a small demo of HTTPS on the high-performance NetX Duo TCP/IP stack.
+   This demo relies on ThreadX, NetX Duo, and FileX to show an HTML
+   transfer from the client and then back from the server.  */
+
+#include  "tx_api.h"
+#include  "fx_api.h"
+#include  "nx_api.h"
+#include  "nx_crypto.h"
+#include  "nx_secure_tls_api.h"
+#include  "nx_secure_x509.h"
+#include  "nx_web_http_client.h"
+#include  "nx_web_http_server.h"
+#define    DEMO_STACK_SIZE         4096
+
+
+/* Define the ThreadX and NetX object control blocks...  */
+
+TX_THREAD               thread_0;
+TX_THREAD               thread_1;
+NX_PACKET_POOL          pool_0;
+NX_PACKET_POOL          pool_1;
+NX_IP                   ip_0;
+NX_IP                   ip_1;
+FX_MEDIA                ram_disk;
+
+/* Define HTTP objects.  */
+
+NX_WEB_HTTP_SERVER      my_server;
+NX_WEB_HTTP_CLIENT      my_client;
+
+/* Define the counters used in the demo application...  */
+
+ULONG                   error_counter;
+
+
+/* Define the RAM disk memory.  */
+
+UCHAR                   ram_disk_memory[32000];
+
+/* Include cryptographic routines for TLS. */
+extern const NX_SECURE_TLS_CRYPTO nx_crypto_tls_ciphers;
+
+/* Define TLS data for HTTPS. */
+CHAR crypto_metadata[8928 * NX_WEB_HTTP_SESSION_MAX];
+UCHAR tls_packet_buffer[16500];
+
+/* NX_WEB_HTTP_SERVER_SESSION_MAX defaults to 2 in nx_web_http_server.h */
+UCHAR server_tls_packet_buffer[16500 * NX_WEB_HTTP_SERVER_SESSION_MAX];
+
+/* Define certificate containers. The server certificate is used to identify the NetX
+   Web HTTPS server and the trusted certificate is used by the client to verify the
+   server's identity certificate.  */
+NX_SECURE_X509_CERT server_certificate;
+NX_SECURE_X509_CERT trusted_certificate;
+
+/* Remote certificates need both an NX_SECURE_X509_CERT container and an associated
+   buffer. The number of certificates depends on the remote host, but usually at least
+   two certificates will be sent – the identity certificate for the host and the
+   certificate that issued the identity certificate. */
+NX_SECURE_X509_CERT remote_certificate, remote_issuer;
+
+UCHAR remote_cert_buffer[2000];
+UCHAR remote_issuer_buffer[2000];
+
+/* Certificate information for server and client (see NetX Duo Secure TLS reference on X.509
+    certificates for more information). Arrays are populated with binary versions Of
+    certificates and keys and the corresponding "len" variables are assigned the lengths
+    of that data. Trusted certificates do not need a private key. */
+const UCHAR server_cert_der[] = { … };
+const UINT  server_cert_derlen = … ;
+const UCHAR server_cert_key_der[] = { … };
+const UINT  server_cert_key_derlen = … ;
+
+const UCHAR trusted_cert_der[] = { … };
+const UINT  trusted_cert_derlen = … ;
+
+
+/* Define function prototypes.  */
+
+void    thread_0_entry(ULONG thread_input);
+VOID    _fx_ram_driver(FX_MEDIA *media_ptr) ;
+void    _nx_ram_network_driver(struct NX_IP_DRIVER_STRUCT *driver_req);
+UINT    authentication_check(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
+             CHAR *resource, CHAR **name, CHAR **password, CHAR **realm);
+UINT tls_setup_callback(NX_WEB_HTTP_CLIENT *client_ptr,
+   NX_SECURE_TLS_SESSION *tls_session);
+
+/* Define the application's authentication check.  This is called by
+   the HTTP server whenever a new request is received.  */
+UINT  authentication_check(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
+            CHAR *resource, CHAR **name, CHAR **password, CHAR **realm)
+{
+    /* Just use a simple name, password, and realm for all
+       requests and resources.  */
+    *name =     "name";
+    *password = "password";
+    *realm =    "NetX Web HTTP demo";
+
+    /* Request basic authentication.  */
+    return(NX_WEB_HTTP_BASIC_AUTHENTICATE);
+}
+
+/* Define the TLS setup callback for HTTPS Client. This function is invoked when the
+   HTTPS client is started – all TLS per-session initialization should go in here. */
+UINT tls_setup_callback(NX_WEB_HTTP_CLIENT *client_ptr,
+  NX_SECURE_TLS_SESSION *tls_session)
+{
+    UINT status;
+
+    /* Initialize and create TLS session. */
+    nx_secure_tls_session_create(tls_session, &amp;nx_crypto_tls_ciphers,
+        crypto_metadata, sizeof(crypto_metadata));
+
+    /* Allocate space for packet reassembly. */
+    nx_secure_tls_session_packet_buffer_set(tls_session, tls_packet_buffer,
+        sizeof(tls_packet_buffer));
+
+
+    /* Add a CA Certificate to our trusted store for verifying incoming server
+        certificates. */
+    nx_secure_x509_certificate_initialize(&amp;trusted_certificate, trusted_cert_der,
+        trusted_cert_der_len, NX_NULL, 0, NULL, 0,
+        NX_SECURE_X509_KEY_TYPE_NONE);
+    nx_secure_tls_trusted_certificate_add(tls_session, &amp;trusted_certificate);
+
+    /* Need to allocate space for the certificate coming in from the remote host. */
+    nx_secure_tls_remote_certificate_allocate(tls_session, &amp;remote_certificate,
+        remote_cert_buffer, sizeof(remote_cert_buffer));
+    nx_secure_tls_remote_certificate_allocate(tls_session,
+        &amp;remote_issuer, remote_issuer_buffer,
+        sizeof(remote_issuer_buffer));
+
+    return(NX_SUCCESS);
+ }
+
+/* Define main entry point.  */
+
+ int main()
+ {
+     /* Enter the ThreadX kernel.  */
+     tx_kernel_enter();
+ }
+
+/* Define what the initial system looks like.  */
+void    tx_application_define(void *first_unused_memory)
+{
+
+    CHAR    *pointer;
+
+    /* Setup the working pointer.  */
+    pointer =  (CHAR *) first_unused_memory;
+
+    /* Create the main thread.  */
+    tx_thread_create(&amp;thread_0, "thread 0", thread_0_entry, 0,
+        pointer, DEMO_STACK_SIZE,
+        2, 2, TX_NO_TIME_SLICE, TX_AUTO_START);
+    pointer = pointer + DEMO_STACK_SIZE;
+
+    /* Initialize the NetX system.  */
+    nx_system_initialize();
+
+    /* Create packet pool.  */
+    nx_packet_pool_create(&amp;pool_0, "NetX Packet Pool 0",
+        600, pointer, 8192);
+    pointer = pointer + 8192;
+
+    /* Create an IP instance.  */
+    nx_ip_create(&amp;ip_0, "NetX IP Instance 0", IP_ADDRESS(1, 2, 3, 4),
+        0xFFFFFF00UL, &amp;pool_0, _nx_ram_network_driver,
+        pointer, 4096, 1);
+    pointer =  pointer + 4096;
+
+    /* Create another packet pool. */
+    nx_packet_pool_create(&amp;pool_1, "NetX Packet Pool 1", 600, pointer, 8192);
+    pointer = pointer + 8192;
+
+    /* Create another IP instance.  */
+    nx_ip_create(&amp;ip_1, "NetX IP Instance 1", IP_ADDRESS(1, 2, 3, 5),
+        0xFFFFFF00UL, &amp;pool_1, _nx_ram_network_driver,
+        pointer, 4096, 1);
+    pointer = pointer + 4096;
+
+    /* Enable ARP and supply ARP cache memory for IP Instance 0.  */
+    nx_arp_enable(&amp;ip_0, (void *) pointer, 1024);
+    pointer = pointer + 1024;
+
+    /* Enable ARP and supply ARP cache memory for IP Instance 1.  */
+    nx_arp_enable(&amp;ip_1, (void *) pointer, 1024);
+    pointer = pointer + 1024;
+
+    /* Enable TCP processing for both IP instances.  */
+    nx_tcp_enable(&amp;ip_0);
+    nx_tcp_enable(&amp;ip_1);
+
+    /* Open the RAM disk.  */
+    fx_media_open(&amp;ram_disk, "RAM DISK",
+        _fx_ram_driver, ram_disk_memory, pointer, 4096);
+    pointer += 4096;
+
+    /* Create the NetX Web HTTP Server.  */
+    nx_web_http_server_create(&amp;my_server, "My HTTP Server", &amp;ip_1,
+        NX_WEB_HTTPS_SERVER_PORT, &amp;ram_disk,
+        pointer, 4096, &amp;pool_1, authentication_check, NX_NULL);
+    pointer = pointer + 4096;
+
+    /* The TLS server needs an identity certificate which is imported as a binary DER-
+        encoded X.509 certificate and its associated private key (e.g. DER-encoded PKCS#1
+        RSA private key). */
+    nx_secure_x509_certificate_initialize(&amp;server_certificate, server_cert_der,
+        server_cert_der_len, NX_NULL, 0,
+        server_cert_key_der, server_cert_key_der_len,
+        NX_SECURE_X509_KEY_TYPE_RSA_PKCS1_DER);
+
+    /* Setup TLS session data for the TCP server.
+        This enables TLS and HTTPS for the server.  */
+    nx_web_http_server_secure_configure(&amp;my_server, &amp;nx_crypto_tls_ciphers,
+        crypto_metadata, sizeof(crypto_metadata), server_tls_packet_buffer,
+        sizeof(server_tls_packet_buffer), &amp;server_certificate, NX_NULL, 0,
+        NX_NULL, 0, NX_NULL, 0);
+
+    /* Start the HTTP Server.  */
+    nx_web_http_server_start(&amp;my_server);
+}
+
+/* Define the test thread.  */
+void    thread_0_entry(ULONG thread_input)
+{
+    NX_PACKET   *my_packet;
+    UINT        status;
+
+    /* Create an HTTP client instance.  */
+    status = nx_web_http_client_create(&amp;my_client, "My Client", &amp;ip_0, &amp;pool_0, 600);
+
+    /* Check status.  */
+    if (status)
+        error_counter++;
+
+    /* Prepare to send the simple 103-byte HTML file to the Server over HTTPS.  */
+    status = nx_web_http_client_put_secure_start(&amp;my_client, IP_ADDRESS(1,2,3,5),
+        NX_WEB_HTTPS_SERVER_PORT, "/test.htm", "name", "password", 103, tls_setup_callback, 50);
+
+    /* Check status.  */
+    if (status)
+        error_counter++;
+
+    /* Allocate a packet.  */
+     status = nx_web_http_client_request_packet_allocate(&amp;pool_0, &amp;my_packet,
+        NX_TCP_PACKET, NX_WAIT_FOREVER);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+        return;
+
+    /* Build a simple 103-byte HTML page.  */
+    nx_packet_data_append(my_packet, "&lt;HTML&gt;\r\n", 8,
+        &amp;pool_0, NX_WAIT_FOREVER);
+    nx_packet_data_append(my_packet,
+        "&lt;HEAD&gt;&lt;TITLE&gt;NetX HTTP Test&lt;/TITLE&gt;&lt;/HEAD&gt;\r\n", 44,
+        &amp;pool_0, NX_WAIT_FOREVER);
+    nx_packet_data_append(my_packet, "&lt;BODY&gt;\r\n", 8,
+        &amp;pool_0, NX_WAIT_FOREVER);
+    nx_packet_data_append(my_packet, "&lt;H1&gt;NetX Test Page&lt;/H1&gt;\r\n", 25,
+        &amp;pool_0, NX_WAIT_FOREVER);
+    nx_packet_data_append(my_packet, "&lt;/BODY&gt;\r\n", 9,
+        &amp;pool_0, NX_WAIT_FOREVER);
+    nx_packet_data_append(my_packet, "&lt;/HTML&gt;\r\n", 9,
+        &amp;pool_0, NX_WAIT_FOREVER);
+
+    /* Complete the PUT by writing the total length.  */
+    status =  nx_web_http_client_put_packet(&amp;my_client, my_packet, 50);
+
+    /* Check status.  */
+    if (status)
+        error_counter++;
+
+    /* Now GET the file back!  */
+    status =  nx_web_http_client_get_secure_start(&amp;my_client, IP_ADDRESS(1,2,3,5),
+        NX_WEB_HTTPS_SERVER_PORT, "/test.htm",
+        "name", "password", tls_setup_callback, 50);
+
+    /* Check status.  */
+    if (status)
+        error_counter++;
+
+    /* Get a packet.  */
+    status =  nx_web_http_client_response_body_get(&amp;my_client, &amp;my_packet, 20);
+
+    /* Check for an error.  */
+    if ((status) || (my_packet -&gt; nx_packet_length != 103))
+        error_counter++;
+
+    /* Check to see if we have a packet.  */
+    if (status == NX_SUCCESS)
+    {
+
+        /* Yes, release it!  */
+        nx_packet_release(my_packet);
+    }
+
+    /* Make sure TLS shuts down properly. */
+    nx_web_http_client_delete(&amp;my_client);
+
+    /* Flush the media.  */
+    fx_media_flush(&amp;ram_disk);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_options"><a class="anchor" href="#_configuration_options"></a>Configuration Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several configuration options for building HTTP for NetX Duo. Following is a list of all options, where each is described in detail. The default values are listed but can be redefined prior to inclusion of <em>nx_web_http_client.h and nx_web_http_server.h</em>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_DISABLE_ERROR_CHECKING</strong> Defined, this option removes the basic HTTP error checking. It is typically used after the application has been debugged.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_DIGEST_ENABLE</strong> If defined, authentication using the MD5 digest is enabled on the HTTPS Server. By default it is not defined.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_PRIORITY</strong> The priority of the HTTPS Server thread. By default, this value is defined as 16 to specify priority 16.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_NO_FILEX</strong> Defined, this option provides a stub for FileX dependencies. The HTTPS Client will function without any change if this option is defined. The HTTPS Server will need to either be modified or the user will have to create a handful of FileX services in order to function properly.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_TYPE_OF_SERVICE</strong> Type of service required for the HTTPS TCP requests. By default, this value is defined as NX_IP_NORMAL to indicate normal IP packet service.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_THREAD_TIME_SLICE</strong> The number of timer ticks the Server thread is allowed to run before yielding to threads of the same priority. The default value is 2. Note this option is deprecated.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_FRAGMENT_OPTION</strong> Fragment enable for HTTP TCP requests. By default, this value is NX_DONT_FRAGMENT to disable HTTP TCP fragmenting.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_WINDOW_SIZE</strong> Server socket window size. By default, this value is 2048 bytes.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_TIME_TO_LIVE</strong> Specifies the number of routers this packet can pass before it is discarded. The default value is set to 0x80.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_TIMEOUT</strong> Specifies the number of ThreadX ticks that internal services will suspend for. The default value is set to 10 seconds (10 * <em>NX_IP_PERIODIC_RATE</em>).</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_TIMEOUT_ACCEPT</strong> Specifies the number of ThreadX ticks that internal services will suspend for in internal <em>nx_tcp_server_socket_accept()</em> calls. The default value is set to (10 * <em>NX_IP_PERIODIC_RATE</em>).</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_TIMEOUT_DISCONNECT</strong> Specifies the number of ThreadX ticks that internal services will suspend for in internal <em>nx_tcp_socket_disconnect()</em> calls. The default value is set to 10 seconds (10 * <em>NX_IP_PERIODIC_RATE</em>).</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_TIMEOUT_RECEIVE</strong> Specifies the number of ThreadX ticks that internal services will suspend for in internal <em>nx_tcp_socket_receive()</em> calls. The default value is set to 10 seconds (10 * <em>NX_IP_PERIODIC_RATE</em>).</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_TIMEOUT_SEND</strong> Specifies the number of ThreadX ticks that internal services will suspend for in internal <em>nx_tcp_socket_send()</em> calls. The default value is set to 10 seconds (10 * <em>NX_IP_PERIODIC_RATE</em>).</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_MAX_HEADER_FIELD</strong> Specifies the maximum size of the HTTP header field. The default value is 256.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_MULTIPART_ENABLE</strong> If defined, enables HTTPS Server to support multipart HTTP requests.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_MAX_PENDING</strong> Specifies the number of connections that can be queued for the HTTPS Server. The default value is set to twice the maximum number of server sessions.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_MAX_RESOURCE</strong> Specifies the number of bytes allowed in a client supplied <em>resource name</em>. The default value is set to 40.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_MAX_NAME</strong> Specifies the number of bytes allowed in a client supplied <em>username</em>. The default value is set to 20.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_MAX_PASSWORD</strong> Specifies the number of bytes allowed in a client supplied <em>password</em>. The default value is set to 20.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_SESSION_MAX</strong> Specifies the number of simultaneous sessions for an HTTP or HTTPS Server. A TCP socket and a TLS session (if HTTPS is enabled) are allocated for each session. The default value is set to 2.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTPS_ENABLE</strong> If defined, this macro enables TLS and HTTPS. Leave undefined to free up resources if only plaintext HTTP is desired. By default, this macro is not defined.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTPS_KEEPALIVE_DISABLE</strong> If defined, this macro disables HTTP keep-alive feature. By default, this macro is not defined.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_MIN_PACKET_SIZE</strong> Specifies the minimum size of the packets in the pool specified at server creation. The minimum size is needed to ensure the complete HTTP header can be contained in one packet. The default value is set to 600.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_CLIENT_MIN_PACKET_SIZE</strong> Specifies the minimum size of the packets in the pool specified at Client creation. The minimum size is needed to ensure the complete HTTP header can be contained in one packet. The default value is set to 600.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_RETRY_SECONDS</strong> Set the Server socket retransmission timeout in seconds. The default value is set to 2.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_ SERVER_RETRY_MAX</strong> This sets the maximum number of retransmissions on Server socket. The default value is set to 10.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_ SERVER_RETRY_SHIFT</strong> This value is used to set the next retransmission timeout. The current timeout is multiplied by the number of retransmissions thus far, shifted by the value of the socket timeout shift. The default value is set to 1 for doubling the timeout.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_SERVER_RETRY_TRANSMIT_QUEUE_DEPTH</strong> This specifies the maximum number of packets that can be enqueued on the Server socket retransmission queue. If the number of packets enqueued reaches this number, no more packets can be sent until one or more enqueued packets are released. The default value is set to 20.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

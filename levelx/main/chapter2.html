@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 2 - Installation and use of LevelX :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/levelx/main/chapter2.html">
+    <meta name="description" content="Installation and use of LevelX is straightforward and described in the following sections of this chapter.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="levelx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">LevelX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">LevelX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">LevelX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">LevelX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Overview of LevelX</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - LevelX NAND support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - LevelX NAND APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - LevelX NOR support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - LevelX NOR APIs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">LevelX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">LevelX</a></li>
+    <li>LevelX user guide</li>
+    <li><a href="chapter2.html">Ch. 2 - Installation and use of LevelX</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/levelx/modules/ROOT/pages/chapter2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 2 - Installation and use of LevelX</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Installation and use of LevelX is straightforward and described in the following sections of this chapter.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_distribution"><a class="anchor" href="#_distribution"></a>Distribution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>LevelX is distributed in ANSI C where each function is contained in its own separate C file. The files in the LevelX distribution are as follows.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>lx_api.h</p>
+</li>
+<li>
+<p>lx_nand_flash_256byte_ecc_check.c</p>
+</li>
+<li>
+<p>lx_nand_flash_256byte_ecc_compute.c</p>
+</li>
+<li>
+<p>lx_nand_flash_block_allocate.c</p>
+</li>
+<li>
+<p>lx_nand_flash_block_data_move.c</p>
+</li>
+<li>
+<p>lx_nand_flash_block_find.c</p>
+</li>
+<li>
+<p>lx_nand_flash_block_mapping_set.c</p>
+</li>
+<li>
+<p>lx_nand_flash_block_status_set.c</p>
+</li>
+<li>
+<p>lx_nand_flash_close.c</p>
+</li>
+<li>
+<p>lx_nand_flash_data_page_copy.c</p>
+</li>
+<li>
+<p>lx_nand_flash_defragment.c</p>
+</li>
+<li>
+<p>lx_nand_flash_erase_count_set.c</p>
+</li>
+<li>
+<p>lx_nand_flash_extended_cache_enable.c</p>
+</li>
+<li>
+<p>lx_nand_flash_format.c</p>
+</li>
+<li>
+<p>lx_nand_flash_free_block_list_add.c</p>
+</li>
+<li>
+<p>lx_nand_flash_initialize.c</p>
+</li>
+<li>
+<p>lx_nand_flash_mapped_block_list_add.c</p>
+</li>
+<li>
+<p>lx_nand_flash_mapped_block_list_get.c</p>
+</li>
+<li>
+<p>lx_nand_flash_mapped_block_list_remove.c</p>
+</li>
+<li>
+<p>lx_nand_flash_memory_initialize.c</p>
+</li>
+<li>
+<p>lx_nand_flash_metadata_allocate.c</p>
+</li>
+<li>
+<p>lx_nand_flash_metadata_build.c</p>
+</li>
+<li>
+<p>lx_nand_flash_metadata_write.c</p>
+</li>
+<li>
+<p>lx_nand_flash_open.c</p>
+</li>
+<li>
+<p>lx_nand_flash_page_ecc_check.c</p>
+</li>
+<li>
+<p>lx_nand_flash_page_ecc_compute.c</p>
+</li>
+<li>
+<p>lx_nand_flash_partial_defragment.c</p>
+</li>
+<li>
+<p>lx_nand_flash_sectors_read.c</p>
+</li>
+<li>
+<p>lx_nand_flash_sectors_release.c</p>
+</li>
+<li>
+<p>lx_nand_flash_sectors_write.c</p>
+</li>
+<li>
+<p>lx_nand_flash_sector_read.c</p>
+</li>
+<li>
+<p>lx_nand_flash_sector_release.c</p>
+</li>
+<li>
+<p>lx_nand_flash_sector_write.c</p>
+</li>
+<li>
+<p>lx_nand_flash_system_error.c</p>
+</li>
+<li>
+<p>lx_nor_flash_block_reclaim.c</p>
+</li>
+<li>
+<p>lx_nor_flash_close.c</p>
+</li>
+<li>
+<p>lx_nor_flash_defragment.c</p>
+</li>
+<li>
+<p>lx_nor_flash_extended_cache_enable.c</p>
+</li>
+<li>
+<p>lx_nor_flash_initialize.c</p>
+</li>
+<li>
+<p>lx_nor_flash_logical_sector_find.c</p>
+</li>
+<li>
+<p>lx_nor_flash_next_block_to_erase_find.c</p>
+</li>
+<li>
+<p>lx_nor_flash_open.c</p>
+</li>
+<li>
+<p>lx_nor_flash_partial_defragment.c</p>
+</li>
+<li>
+<p>lx_nor_flash_physical_sector_allocate.c</p>
+</li>
+<li>
+<p>lx_nor_flash_sector_mapping_cache_invalidate.c</p>
+</li>
+<li>
+<p>lx_nor_flash_sector_read.c</p>
+</li>
+<li>
+<p>lx_nor_flash_sector_release.c</p>
+</li>
+<li>
+<p>lx_nor_flash_sector_write.c</p>
+</li>
+<li>
+<p>lx_nor_flash_system_error.c</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>There are also simulator and FileX driver samples for both LevelX NAND and NOR instances, as follows.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>demo_filex_nand_flash.c</p>
+</li>
+<li>
+<p>fx_nand_flash_simulated_driver.c</p>
+</li>
+<li>
+<p>lx_nand_flash_simulator.c</p>
+</li>
+<li>
+<p>demo_filex_nor_flash.c</p>
+</li>
+<li>
+<p>fx_nor_flash_simulated_driver.c</p>
+</li>
+<li>
+<p>lx_nor_flash_simulator.c</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Of course, if only NAND flash is required, only the LevelX NAND flash files (<strong><em>lx_nand</em></strong>.c_*) are needed. Similarly, if only NOR flash is required, only the NOR flash files (<strong><em>lx_nor</em></strong>.c_*) are needed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_options"><a class="anchor" href="#_configuration_options"></a>Configuration Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>LevelX can be configured at compile time via the conditional defines described below. Simply add the desired define to the compilation of each LevelX source to use the option.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>LX_DIRECT_READ</strong>:  Defined, this option bypasses the NOR flash driver read routine in favor or reading the NOR memory directly, resulting in a significant performance increase.</p>
+</li>
+<li>
+<p><strong>LX_FREE_SECTOR_DATA_VERIFY</strong>: Defined, this causes the LevelX NOR instance open logic to verify free NOR sectors are all ones.</p>
+</li>
+<li>
+<p><strong>LX_NAND_SECTOR_MAPPING_CACHE_SIZE</strong>:  By default this value is 16 and defines the logical sector mapping cache size. Large values improve performance, but cost memory. The minimum size is 8 and all values must be a power of 2.</p>
+</li>
+<li>
+<p><strong>LX_NAND_FLASH_DIRECT_MAPPING_CACHE</strong>: Defined, this creates a direct mapping cache, such that there are no cache misses. It also requires that LX_NAND_SECTOR_MAPPING_CACHE_SIZE represents the exact number of total pages in your flash device.</p>
+</li>
+<li>
+<p><strong>LX_NOR_DISABLE_EXTENDED_CACHE</strong>: Defined, this disabled the extended NOR cache.</p>
+</li>
+<li>
+<p><strong>LX_NOR_EXTENDED_CACHE_SIZE</strong>: By default this value is 8, which represents a maximum of 8 sectors that can be cached in a NOR instance.</p>
+</li>
+<li>
+<p><strong>LX_NOR_SECTOR_MAPPING_CACHE_SIZE</strong>: By default this value is 16 and defines the logical sector mapping cache size. Large values improve performance, but cost memory. The minimum size is 8 and all values must be a power of 2.</p>
+</li>
+<li>
+<p><strong>LX_THREAD_SAFE_ENABLE</strong>: Defined, this makes LevelX thread-safe by using a ThreadX mutex object throughout the API.</p>
+</li>
+<li>
+<p><strong>LX_STANDALONE_ENABLE</strong>: Defined, enables LevelX to be used in standalone mode (without Eclipse ThreadX). By default this symbol is not defined.</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+When using LevelX in Standalone mode (<strong>LX_STANDALONE_ENABLE</strong> must be defined), ThreadX files/libraries are not required. LevelX thread-safe feature is disabled in this mode.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>LX_NOR_FLASH_USER_EXTENSION</strong>: Define user extension for NOR flash control block. User extension is placed at the end of flash control block and it is not cleared on opening flash.</p>
+</li>
+<li>
+<p><strong>LX_NAND_FLASH_USER_EXTENSION</strong>: Define user extension for NAND flash control block. User extension is placed at the end of flash control block and it is not cleared on opening flash.</p>
+</li>
+<li>
+<p><strong>LX_NOR_ENABLE_MAPPING_BITMAP</strong>: Determine if logical sector mapping bitmap should be enabled in extended cache. Cache memory will be allocated to sector mapping bitmap first. One bit can be allocated for each physical sector.</p>
+</li>
+<li>
+<p><strong>LX_NOR_ENABLE_OBSOLETE_COUNT_CACHE</strong>: Determine if obsolete count cache should be enabled in extended cache. Cache memory will be allocated to obsolete count cache after the mapping bitmap if enabled, and the rest of the cache memory is allocated to sector cache.</p>
+</li>
+<li>
+<p><strong>LX_NOR_OBSOLETE_COUNT_CACHE_TYPE</strong>: Defines obsolete count cache element size. If number of sectors per block is greater than 256, use USHORT instead of UCHAR.</p>
+</li>
+<li>
+<p><strong>LX_NOR_SECTOR_SIZE</strong>: Define the logical sector size for NOR flash. The sector size is in units of 32-bit words. This sector size should match the sector size used in file system.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_levelx"><a class="anchor" href="#_using_levelx"></a>Using LevelX</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To use LevelX, either by itself or with FileX, include the file <strong><em>lx_api.h</em></strong> in the code that references the LevelX API. Also ensure that the LevelX object code is available at link time. Please examine the files <strong><em>demo_filex_nand_flash.c</em></strong> and <strong><em>demo_filex_nor_flash.c</em></strong> for examples of how to use LevelX.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

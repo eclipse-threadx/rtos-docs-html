@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Overview of ThreadX :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx/main/overview-threadx.html">
+    <meta name="description" content="Learn more about ThreadX, an advanced real-time operating system (RTOS) designed specifically for deeply embedded applications.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">ThreadX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">ThreadX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">ThreadX documentation</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="overview-threadx.html">Overview of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of ThreadX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Device drivers for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - Demonstration system for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - ThreadX API services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - ThreadX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - ThreadX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX User Guide Addendum for ARMv8-M</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="user-guide-armv8m/chapter1.html">Ch. 1 - Introduction to ThreadX for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="user-guide-armv8m/chapter2.html">Ch. 2 - Installing ThreadX support for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="user-guide-armv8m/chapter3.html">Ch. 3 - ThreadX APIs for ARMv8-M</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX SMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter1.html">Ch. 1 - Introduction to ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter2.html">Ch. 2 - Installation &amp; Use of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter3.html">Ch. 3 - Functional Components of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter4.html">Ch. 4 - Description of ThreadX SMP Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter5.html">Ch. 5 - Device Drivers for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter6.html">Ch. 6 - Demonstration System for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-a.html">App. A - ThreadX SMP API Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-b.html">App. B - ThreadX SMP Constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-c.html">App. C - ThreadX SMP Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-d.html">App. D - ASCII Character Codes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - ThreadX SMP MISRA C compliance</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">ThreadX</a></li>
+    <li><a href="overview-threadx.html">Overview of ThreadX</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/threadx/modules/ROOT/pages/overview-threadx.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Overview of ThreadX</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX is Eclipse Foundation&#8217;s advanced industrial grade Real-Time Operating System (RTOS). It is designed specifically for deeply embedded, real-time, and IoT applications. ThreadX provides advanced scheduling, communication, synchronization, timer, memory management, and interrupt management facilities. In addition, ThreadX has many advanced features, including its picokernel architecture, preemption-threshold scheduling, event-chaining, execution profiling, performance metrics, and system event tracing. Combined with its superior ease-of-use, ThreadX is the ideal choice for the most demanding of embedded applications. ThreadX has billions of deployments across a wide variety of products, including consumer devices, medical electronics, and industrial control equipment.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_threadx_footprint"><a class="anchor" href="#_threadx_footprint"></a>ThreadX footprint</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX has a remarkably small 2-KB instruction area and 1 KB of RAM minimal footprint. This small size is largely due to its non-layered picokernel architecture and automatic scaling. Automatic scaling means that only the services (and supporting infrastructure) used by the application are included in the final image at link time.</p>
+</div>
+<div class="paragraph">
+<p>Here are some typical ThreadX size characteristics.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">ThreadX Service</th>
+<th class="tableblock halign-left valign-top">Typical Size in Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Core Services (Require)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2,000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Queue Services</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">900</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Event Flag Services</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">900</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Semaphore Services</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">450</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mutex Services</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1,200</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Block Memory Services</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">550</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Byte Memory Services</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">900</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_threadx_execution_speed"><a class="anchor" href="#_threadx_execution_speed"></a>ThreadX execution speed</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX achieves a sub-microsecond context switch on most popular processors and is faster overall than other commercial RTOSs. In addition to being fast, ThreadX is also highly deterministic. It achieves the same fast performance whether there are 200 threads ready, or just one.</p>
+</div>
+<div class="paragraph">
+<p>Here are some typical performance characteristics of ThreadX:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fast boot: ThreadX boots in fewer than 120 cycles.</p>
+</li>
+<li>
+<p>Optional removal of basic error checking: Basic ThreadX error checking can be skipped at compile time. This can be useful when the application code is verified and no longer requires error checking on each parameter. Skipping error checking can be done on a compilation unit, rather than system-wide.</p>
+</li>
+<li>
+<p>Picokernel design: Services are not layered on each other, eliminating unnecessary function call overhead.</p>
+</li>
+<li>
+<p>Optimized interrupt processing: Only scratch registers are saved/restored upon ISR entry/exit, unless preemption is necessary.</p>
+</li>
+<li>
+<p>Optimized API processing:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">ThreadX Service</th>
+<th class="tableblock halign-left valign-top">Service Time in Microseconds*</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Thread Suspend</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Thread Resume</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Queue Send</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Queue Receive</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Get Semaphore</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Put Semaphore</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Context Switch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interrupt Response</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0&#8201;&#8212;&#8201;0.6</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><em>*Performance figures based on typical processor running at 200 MHz</em>.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_advanced_technology"><a class="anchor" href="#_advanced_technology"></a>Advanced technology</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX is notable for its preemption-threshold scheduling. This feature is unique to ThreadX and has been the subject of extensive academic research. You can learn more from the paper <a href="https://ieeexplore.ieee.org/document/811269">Scheduling Fixed-Priority Tasks with Preemption Threshold</a>, by Yun Wang (Concordia University) and Manas Saksena (University of Pittsburgh).</p>
+</div>
+<div class="paragraph">
+<p>Key capabilities of ThreadX:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Complete and Comprehensive Multitasking Facilities</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Threads, application timers, message queues, counting semaphores, mutexes, event flags, block, and byte memory pools</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Priority-Based Preemptive Scheduling</p>
+</li>
+<li>
+<p>Priority Flexibility&#8201;&#8212;&#8201;Up to 1024 Priority Levels</p>
+</li>
+<li>
+<p>Cooperative Scheduling</p>
+</li>
+<li>
+<p>Preemption-Threshold&#8201;&#8212;&#8201;Unique to ThreadX, helps reduce context switches and help guarantee schedulability (per academic research)</p>
+</li>
+<li>
+<p>Memory Protection via ThreadX MODULES</p>
+</li>
+<li>
+<p>Fully Deterministic</p>
+</li>
+<li>
+<p>Event Trace&#8201;&#8212;&#8201;Capture last <em>n</em> system/application events</p>
+</li>
+<li>
+<p>Event Chaining&#8201;&#8212;&#8201;Register an application-specific "notify" callback function for each ThreadX communication or synchronization object</p>
+</li>
+<li>
+<p>ThreadX MODULES with Optional Memory Protection</p>
+</li>
+<li>
+<p>Run-Time Performance Metrics</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Number of thread resumptions</p>
+</li>
+<li>
+<p>Number of thread suspensions</p>
+</li>
+<li>
+<p>Number of solicited thread pre-emptions</p>
+</li>
+<li>
+<p>Number of asynchronous thread interrupt pre-emptions</p>
+</li>
+<li>
+<p>Number of thread priority inversions</p>
+</li>
+<li>
+<p>Number of thread relinquishes</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Execution Profile Kit (EPK)</p>
+</li>
+<li>
+<p>Separate Interrupt Stack</p>
+</li>
+<li>
+<p>Run-Time Stack Analysis</p>
+</li>
+<li>
+<p>Optimized Timer Interrupt Processing</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_multicore_support_amp_smp"><a class="anchor" href="#_multicore_support_amp_smp"></a>Multicore support (AMP &amp; SMP)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Standard ThreadX is often used in an Asymmetric Multiprocessing (AMP) fashion, where a separate copy of ThreadX and the application (or Linux) executes on each core and communicate with each other via shared memory or an inter-processor communication mechanism such as OpenAMP (ThreadX supports OpenAMP).</p>
+</div>
+<div class="paragraph">
+<p>In environments where loading processors is highly dynamic, ThreadX Symmetric Multiprocessing (SMP) is available for the following processor families:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ARM Cortex-Ax</p>
+</li>
+<li>
+<p>ARM Cortex-Rx</p>
+</li>
+<li>
+<p>ARM Cortex-A5x 64-bit</p>
+</li>
+<li>
+<p>Synopsys ARC HS</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP performs dynamic load balancing across <em>n</em> processors. It allows all ThreadX resources (queues, semaphores, event flags, memory pools, etc.) to be accessed by any thread on any core. ThreadX SMP enables the complete ThreadX API on all cores and introduces the following new APIs applicable to SMP operation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>UINT tx_thread_smp_core_exclude(TX_THREAD *thread_ptr, ULONG exclusion_map);</code></p>
+</li>
+<li>
+<p><code>UINT tx_thread_smp_core_exclude_get(TX_THREAD *thread_ptr, ULONG *exclusion_map_ptr);</code></p>
+</li>
+<li>
+<p><code>UINT tx_thread_smp_core_get(void);</code></p>
+</li>
+<li>
+<p><code>UINT tx_timer_smp_core_exclude(TX_TIMER *timer_ptr, ULONG exclusion_map);</code></p>
+</li>
+<li>
+<p><code>UINT tx_timer_smp_core_exclude_get(TX_TIMER *timer_ptr, ULONG *exclusion_map_ptr);</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_memory_protection_via_threadx_modules"><a class="anchor" href="#_memory_protection_via_threadx_modules"></a>Memory protection via ThreadX Modules</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An add-on product called ThreadX Modules enables one or more application threads to be bundled into a "Module" that can be dynamically loaded and run (or executed in place) on the target.</p>
+</div>
+<div class="paragraph">
+<p>Modules enable field upgrade, bug fixing, and program partitioning to allow large applications to occupy only the memory needed by active threads.</p>
+</div>
+<div class="paragraph">
+<p>Modules also have a separate address space from ThreadX itself. This enables ThreadX to place memory protection (via MPU or MMU) around the Module such that accidental access outside the module will not be able to corrupt any other software component.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_misra_compliant"><a class="anchor" href="#_misra_compliant"></a>MISRA compliant</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX and ThreadX SMP source code is MISRA-C: 2004 and MISRA C:2012 compliant. MISRA C is a set of programming guidelines for critical systems using the C programming language. The original MISRA C guidelines were primarily targeted toward automotive applications; however, MISRA C is now widely recognized as being applicable to any safety-critical application. ThreadX is compliant with all required and mandatory rules of MISRA-C: 2004 and MISRA C:2012.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/overview-threadx/misra-logo-certification.png" alt="Image of MISRA certification.">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_supports_most_popular_tools"><a class="anchor" href="#_supports_most_popular_tools"></a>Supports most popular tools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX supports most popular embedded development tools, including IAR&#8217;s Embedded Workbench, which also has the most comprehensive ThreadX kernel awareness available. Other tool integration includes GNU (GCC), ARM DS-5/uVision®, Green Hills MULTI®, Wind River Workbench, Imagination Codescape, Renesas e2studio, Metaware SeeCode, NXP CodeWarrior, Lauterbach TRACE32®, TI Code-Composer Studio, CrossCore, and all analog devices.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_adaptation_layer_for_threadx"><a class="anchor" href="#_adaptation_layer_for_threadx"></a>Adaptation layer for ThreadX</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can ease application migration issues to Eclipse ThreadX by using ThreadX <a href="https://github.com/eclipse-threadx/threadx/tree/master/utility/rtos_compatibility_layers">adaption layers</a> for various legacy RTOS APIs (FreeRTOS, POSIX, OSEK, etc.)</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

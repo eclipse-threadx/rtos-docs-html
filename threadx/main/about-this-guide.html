@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>About the ThreadX Guide :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx/main/about-this-guide.html">
+    <meta name="description" content="This guide provides comprehensive information about ThreadX, the Eclipse Foundation high-performance real-time kernel.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">ThreadX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">ThreadX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">ThreadX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-threadx.html">Overview of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of ThreadX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Device drivers for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - Demonstration system for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - ThreadX API services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - ThreadX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - ThreadX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX User Guide Addendum for ARMv8-M</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="user-guide-armv8m/chapter1.html">Ch. 1 - Introduction to ThreadX for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="user-guide-armv8m/chapter2.html">Ch. 2 - Installing ThreadX support for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="user-guide-armv8m/chapter3.html">Ch. 3 - ThreadX APIs for ARMv8-M</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX SMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter1.html">Ch. 1 - Introduction to ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter2.html">Ch. 2 - Installation &amp; Use of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter3.html">Ch. 3 - Functional Components of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter4.html">Ch. 4 - Description of ThreadX SMP Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter5.html">Ch. 5 - Device Drivers for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter6.html">Ch. 6 - Demonstration System for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-a.html">App. A - ThreadX SMP API Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-b.html">App. B - ThreadX SMP Constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-c.html">App. C - ThreadX SMP Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-d.html">App. D - ASCII Character Codes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - ThreadX SMP MISRA C compliance</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">ThreadX</a></li>
+    <li>ThreadX user guide</li>
+    <li><a href="about-this-guide.html">About this guide</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/threadx/modules/ROOT/pages/about-this-guide.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">About the ThreadX Guide</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This guide provides comprehensive information about ThreadX, the Eclipse Foundation high-performance real-time kernel.</p>
+</div>
+<div class="paragraph">
+<p>It is intended for the embedded real-time software developer. The developer should be familiar with standard real-time operating system functions and the C programming language.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_organization"><a class="anchor" href="#_organization"></a>Organization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="chapter1.html" class="xref page">Chapter 1</a> - Provides a basic overview of ThreadX and its relationship to real-time embedded development</p>
+</div>
+<div class="paragraph">
+<p><a href="chapter2.html" class="xref page">Chapter 2</a> - Gives the basic steps to install and use ThreadX in your application right <em>out of the box</em></p>
+</div>
+<div class="paragraph">
+<p><a href="chapter3.html" class="xref page">Chapter 3</a> - Describes in detail the functional operation of ThreadX, the high performance real-time kernel</p>
+</div>
+<div class="paragraph">
+<p><a href="chapter4.html" class="xref page">Chapter 4</a> - Details the application&#8217;s interface to ThreadX</p>
+</div>
+<div class="paragraph">
+<p><a href="chapter5.html" class="xref page">Chapter 5</a> - Describes writing I/O drivers for ThreadX applications</p>
+</div>
+<div class="paragraph">
+<p><a href="chapter6.html" class="xref page">Chapter 6</a> - Describes the demonstration application that is supplied with every ThreadX processor support package</p>
+</div>
+<div class="paragraph">
+<p><a href="appendix-a.html" class="xref page">Appendix A</a> - ThreadX API</p>
+</div>
+<div class="paragraph">
+<p><a href="appendix-b.html" class="xref page">Appendix B</a> - ThreadX constants</p>
+</div>
+<div class="paragraph">
+<p><a href="appendix-c.html" class="xref page">Appendix C</a> - ThreadX data types</p>
+</div>
+<div class="paragraph">
+<p><a href="appendix-d.html" class="xref page">Appendix D</a> - ASCII chart</p>
+</div>
+<div class="paragraph">
+<p><a href="appendix-e.html" class="xref page">Appendix E</a> - ThreadX SMP MISRA C compliance</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_guide_conventions"><a class="anchor" href="#_guide_conventions"></a>Guide Conventions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>Italics</em> - typeface denotes book titles, emphasizes important words, and indicates parameters.</p>
+</div>
+<div class="paragraph">
+<p><strong>Boldface</strong> - typeface denotes key words, constants, type names, user interface elements, variable names, and further emphasizes important words.</p>
+</div>
+<div class="paragraph">
+<p><strong><em>Italics and Boldface</em></strong> - typeface denotes file names and function names.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Information symbols draw attention to important or additional information that could affect performance or function.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Warning symbols draw attention to situations in which developers should take care to avoid because they could cause fatal errors.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_threadx_data_types"><a class="anchor" href="#_threadx_data_types"></a>ThreadX Data Types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to the custom ThreadX control structure data types, there are a series of special data types that are used in ThreadX service call interfaces. These special data types map directly to data types of the underlying C compiler. This is done to insure portability between different C compilers. The exact implementation can be found in the <strong><em>tx_port.h</em></strong> file included with the source.</p>
+</div>
+<div class="paragraph">
+<p>The following is a list of ThreadX service call data types and their associated meanings:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Data type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>UINT</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Basic unsigned integer. This type must support 8-bit unsigned data; however, it is mapped to the most convenient unsigned data type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>ULONG</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unsigned long type. This type must support 32-bit unsigned data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>VOID</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Almost always equivalent to the compiler&#8217;s void type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>CHAR</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Most often a standard 8-bit character type.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Additional data types are used within the ThreadX source. They are
+also located in the <strong><em>tx_port.h</em></strong> file.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>Troubleshooting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For troubleshooting, be sure to collect the following information:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>A detailed description of the problem, including frequency of occurrence and whether it can be reliably reproduced.</p>
+</li>
+<li>
+<p>A detailed description of any changes to the application and/or ThreadX that preceded the problem.</p>
+</li>
+<li>
+<p>The contents of the <em>_tx_version_id</em> string found in the <em>tx_port.h</em> file of your distribution. This string provides valuable information regarding your run-time environment.</p>
+</li>
+<li>
+<p>The contents in RAM of the <strong>_tx_build_options</strong> <strong>ULONG</strong> variable. This variable gives information on how your ThreadX library was built.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

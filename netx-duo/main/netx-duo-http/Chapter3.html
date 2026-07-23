@@ -1,0 +1,5160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 3 - Description of NetX Duo HTTP Services :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-http/Chapter3.html">
+    <meta name="description" content="This chapter contains a description of all NetX Duo HTTP services (listed below) in alphabetical order except for the NetX (IPv4 only) equivalent of the same service are paired together.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo HTTP user guide</li>
+    <li><a href="Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-http/Chapter3.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 3 - Description of NetX Duo HTTP Services</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of all NetX Duo HTTP services (listed below) in alphabetical order except for the 'NetX' (IPv4 only) equivalent of the same service are paired together.</p>
+</div>
+<div class="paragraph">
+<p>In the <strong>Return Values</strong> section in the following API descriptions, values in BOLD are not affected by the <strong>NX_DISABLE_ERROR_CHECKING</strong> define that is used to disable API error checking, while non-bold values are completely disabled.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_client_create"><a class="anchor" href="#_nx_http_client_create"></a>nx_http_client_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create a PPPoE Client instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_client_create(
+    NX_HTTP_CLIENT *client_ptr,
+    CHAR *client_name,
+    NX_IP *ip_ptr,
+    NX_PACKET_POOL *pool_ptr,
+    ULONG window_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates an HTTP Client instance on the specified IP instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters"><a class="anchor" href="#_input_parameters"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>client_name</em>: Name of HTTP Client instance.</p>
+</li>
+<li>
+<p><em>ip_ptr</em>: Pointer to IP instance.</p>
+</li>
+<li>
+<p><em>pool_ptr</em>: Pointer to default packet pool. Note that the packets in this pool must have a payload large enough to handle the complete response header. This is defined by <strong>NX_HTTP_CLIENT_MIN_PACKET_SIZE</strong> in <strong><em>nx_http.h</em></strong>.</p>
+</li>
+<li>
+<p><em>window_size</em>: Size of the Client&#8217;s TCP socket receive window.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful HTTP Client create</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid HTTP, ip_ptr, or packet pool pointer</p>
+</li>
+<li>
+<p>NX_HTTP_POOL_ERROR (0xE9) Invalid payload size in packet pool</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from"><a class="anchor" href="#_allowed_from"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Create the HTTP Client instance "my_client" on "ip_0". */
+status =  nx_http_client_create(&amp;my_client, "my client", &amp;ip_0, &amp;pool_0, 100);
+
+/* If status is NX_SUCCESS an HTTP Client instance was successfully created. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_client_delete"><a class="anchor" href="#_nx_http_client_delete"></a>nx_http_client_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete an HTTP Client Instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_client_delete(NX_HTTP_CLIENT *client_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes a previously created HTTP Client instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_2"><a class="anchor" href="#_input_parameters_2"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful HTTP Client delete</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid HTTP pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_2"><a class="anchor" href="#_allowed_from_2"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Delete the HTTP Client instance "my_client."  */
+status =  nx_http_client_delete(&amp;my_client);
+
+/* If status is NX_SUCCESS an HTTP Client instance was successfully deleted. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_client_get_start"><a class="anchor" href="#_nx_http_client_get_start"></a>nx_http_client_get_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start an HTTP GET request over IPv4</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_client_get_start(
+    NX_HTTP_CLIENT *client_ptr,
+    ULONG ip_address,
+    CHAR *resource,
+    CHAR *input_ptr,
+    UINT input_size,
+    CHAR *username,
+    CHAR *password,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to create and send a GET request with the resource specified by "resource" pointer on the previously created HTTP Client instance. If this routine returns NX_SUCCESS, the application can then make multiple calls to <em>nx_http_client_get_packet</em> to retrieve packets of data corresponding to the requested resource content.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The resource string can refer to a local file e.g. <code>"/index.htm"</code> or it can refer to another URL e.g. <code>http://abc.website.com/index.htm</code> if the HTTP Server indicates it supports referring GET requests.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service works only over IPv4 network. For applications that need to connect to IPv6 network, <em>nxd_http_client_get_start_extended</em> should be used.</p>
+</div>
+<div class="paragraph">
+<p>This service is deprecated. Developers are encouraged to migrate to <em>nx_http_client_get_start_extended</em> or <em>nxd_http_client_get_start_extended</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_3"><a class="anchor" href="#_input_parameters_3"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>ip_address</em>: IP address of the HTTP Server.</p>
+</li>
+<li>
+<p><em>resource</em>: Pointer to URL string for requested resource.</p>
+</li>
+<li>
+<p><em>input_ptr</em>: Pointer to additional data for the GET request. This is optional. If valid, the specified input is placed in the content area of the message and a POST is used instead of a GET operation.</p>
+</li>
+<li>
+<p><em>input_size</em>: Number of bytes in optional additional input pointed to by <code>input_ptr</code>.</p>
+</li>
+<li>
+<p><em>username</em>: Pointer to optional user name for authentication.</p>
+</li>
+<li>
+<p><em>password</em>: Pointer to optional password for authentication.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the HTTP Client get start request. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>time out value</strong> (0x00000001 through 0xFFFFFFFE)</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting <strong>TX_WAIT_FOREVER</strong> causes the calling thread to suspend indefinitely until the HTTP Server responds to the request. Selecting a numeric value (0x1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the HTTP Server response.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent HTTP Client. GET start message.</p>
+</li>
+<li>
+<p><strong>NX_HTTP_ERROR</strong> (0xE0) Internal HTTP Client error</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_READY</strong> (0xEA) HTTP Client not ready</p>
+</li>
+<li>
+<p><strong>NX_HTTP_FAILED</strong> (0xE2) HTTP Client error communicating with the HTTP Server.</p>
+</li>
+<li>
+<p><strong>NX_HTTP_AUTHENTICATION_ERROR</strong> (0xEB) Invalid name and/or password.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_3"><a class="anchor" href="#_allowed_from_3"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Start the GET operation on the HTTP Client "my_client."  */
+status =  nx_http_client_get_start(&amp;my_client, IP_ADDRESS(1,2,3,5), "/TEST.HTM",
+                           NX_NULL, 0, "myname", "mypassword", 1000);
+
+/* If status is NX_SUCCESS, the GET request for TEST.HTM is started and is so
+   far successful. The client must now call nx_http_client_get_packet multiple
+   times to retrieve the content associated with TEST.HTM. */
+
+
+#define POST_MESSAGE   "Add this data to the message content"
+
+/* Start the POST operation on the HTTP Client "my_client."  */
+status =  nx_http_client_get_start(&amp;my_client, IP_ADDRESS(1,2,3,5), "/TEST.HTM",
+                            POST_MESSAGE, sizeof(POST_MESSAGE),
+                            "myname", "mypassword", 1000);
+
+
+/* If status is NX_SUCCESS, the POST_MESSAGE is added to the message in the POST request
+   for TEST.HTM and successfully sent. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_client_get_start_extended"><a class="anchor" href="#_nx_http_client_get_start_extended"></a>nx_http_client_get_start_extended</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start an HTTP GET request over IPv4</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_client_get_start_extended(
+    NX_HTTP_CLIENT *client_ptr,
+    ULONG ip_address,
+    CHAR *resource,
+    UINT resource_length,
+    CHAR *input_ptr,
+    UINT input_size,
+    CHAR *username,
+    UINT username_length,
+    CHAR *password,
+    UINT password_length,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to create and send a GET request with the resource specified by "resource" pointer on the previously created HTTP Client instance. If this routine returns NX_SUCCESS, the application can then make multiple calls to <em>nx_http_client_get_packet</em> to retrieve packets of data corresponding to the requested resource content.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The resource string can refer to a local file e.g. <code>"/index.htm"</code> or it can refer to another URL e.g. <code>http://abc.website.com/index.htm</code> if the HTTP Server indicates it supports referring GET requests.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service works only over IPv4 network. For applications that need to connect to IPv6 network, <em>nxd_http_client_get_start_extended</em> should be used.</p>
+</div>
+<div class="paragraph">
+<p>This service replaces <em>nx_http_client_get_start</em>. It requires caller to specify the length of the resource, username and password.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_4"><a class="anchor" href="#_input_parameters_4"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>ip_address</em>: IP address of the HTTP Server.</p>
+</li>
+<li>
+<p><em>resource Pointer</em>: to URL string for requested resource.</p>
+</li>
+<li>
+<p><em>resource_length</em>: Length of URL string for requested resource.</p>
+</li>
+<li>
+<p><em>input_ptr</em>: Pointer to additional data for the GET request. This is optional. If valid, the specified input is placed in the content area of the message and a POST is used instead of a GET operation.</p>
+</li>
+<li>
+<p><em>input_size</em>: Number of bytes in optional additional input pointed to by <code>input_ptr</code>.</p>
+</li>
+<li>
+<p><em>username</em>: Pointer to optional user name for authentication.</p>
+</li>
+<li>
+<p><em>username_length</em>: Length of optional user name for authentication.</p>
+</li>
+<li>
+<p><em>password</em>: Pointer to optional password for authentication.</p>
+</li>
+<li>
+<p><em>password_length</em>: Length of optional password for authentication.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the HTTP Client get start request. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>time out value</strong> (0x00000001 through 0xFFFFFFFE)</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting <strong>TX_WAIT_FOREVER</strong> causes the calling thread to suspend indefinitely until the HTTP Server responds to the request. Selecting a numeric value (0x1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the HTTP Server response.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent HTTP Client. GET start message</p>
+</li>
+<li>
+<p><strong>NX_HTTP_ERROR</strong> (0xE0) Internal HTTP Client error</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_READY</strong> (0xEA) HTTP Client not ready</p>
+</li>
+<li>
+<p><strong>NX_HTTP_FAILED</strong> (0xE2) HTTP Client error communicating with the HTTP Server.</p>
+</li>
+<li>
+<p><strong>NX_HTTP_AUTHENTICATION_ERROR</strong> (0xEB) Invalid name and/or password.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_4"><a class="anchor" href="#_allowed_from_4"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* If status is NX_SUCCESS, the GET request for TEST.HTM is started and is so
+   far successful. The client must now call nx_http_client_get_packet multiple
+   times to retrieve the content associated with TEST.HTM. */
+
+
+#define POST_MESSAGE   "Add this data to the message content"
+
+/* Start the POST operation on the HTTP Client "my_client."  */
+status =  nx_http_client_get_start_extended(&amp;my_client, IP_ADDRESS(1,2,3,5), "/TEST.HTM",
+                                     9, POST_MESSAGE, sizeof(POST_MESSAGE),
+                                     "myname", 6, "mypassword", 10, 1000);
+
+
+/* If status is NX_SUCCESS, the POST_MESSAGE is added to the message in the POST request
+   for TEST.HTM and successfully sent. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_http_client_get_start"><a class="anchor" href="#_nxd_http_client_get_start"></a>nxd_http_client_get_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send an HTTP GET request (IPv4 or IPv6)</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_http_client_get_start(
+    NX_HTTP_CLIENT *client_ptr,
+    NXD_ADDRESS *server_ip,
+    CHAR *resource,
+    CHAR *input_ptr,
+    UINT input_size,
+    CHAR *username,
+    CHAR *password,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to create and send a GET request with the resource specified by <em>resource</em> pointer on the previously created HTTP Client instance. It can be used to connect to IPv4 or IPv6 network. If this routine returns <strong>NX_SUCCESS</strong>, the application can then make multiple calls to <strong><em>nx_http_client_get_packet</em></strong> to retrieve packets of data corresponding to the requested resource content.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The resource string can refer to a local file e.g. <code>"/index.htm"</code> or it can refer to another URL e.g. <code>http://abc.website.com/index.htm</code> if the HTTP Server indicates it supports referring GET requests.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service is deprecated. Developers are encouraged to migrate to <em>nxd_http_client_get_start_extended</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_5"><a class="anchor" href="#_input_parameters_5"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>Server_ip</em>: IP address of the HTTP Server.</p>
+</li>
+<li>
+<p><em>resource</em>: Pointer to URL string for requested resource.</p>
+</li>
+<li>
+<p><em>input_ptr</em>: Pointer to additional data for the GET request. This is optional. If valid, the specified input is placed in the content area of the message and a POST is used instead of a GET operation.</p>
+</li>
+<li>
+<p><em>input_size</em>: Number of bytes in optional additional input pointed to by <code>input_ptr</code>.</p>
+</li>
+<li>
+<p><em>username</em>: Pointer to optional user name for authentication.</p>
+</li>
+<li>
+<p><em>username_length</em>: Length of optional user name for authentication.</p>
+</li>
+<li>
+<p><em>password</em>: Pointer to optional password for authentication.</p>
+</li>
+<li>
+<p><em>password_length</em>: Length of optional password for authentication.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the HTTP Client get start request. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>time out value</strong> (0x00000001 through 0xFFFFFFFE)</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting <strong>TX_WAIT_FOREVER</strong> causes the calling thread to suspend indefinitely until the HTTP Server responds to the request. Selecting a numeric value (0x1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the HTTP Server response.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent GET request</p>
+</li>
+<li>
+<p><strong>NX_HTTP_PASSWORD_TOO_LONG</strong> (0xF0) Password exceeds buffer size</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_READY</strong> (0xEA) HTTP Client not ready</p>
+</li>
+<li>
+<p><strong>NX_HTTP_FAILED</strong> (0xE2) Invalid packet parameters.</p>
+</li>
+<li>
+<p><strong>NX_HTTP_AUTHENTICATION_ERROR</strong> (0xEB) Invalid name or password</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_5"><a class="anchor" href="#_allowed_from_5"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">NXD_ADDRESS server_ip_address;
+
+/* for an IPv4 address, define as follows: */
+server_ip_address.nxd_ip_version = NX_IP_VERSION_V4;
+server_ip_address.nxd_ip_address.v4 = IP_ADDRESS(1,2,3,4);
+
+/* for an IPv6 address, define as follows: */
+server_ip_address.nxd_ip_version = NX_IP_VERSION_V6;
+server_ip_address.nxd_ip_address.v6[0] = 0x20010db8;
+server_ip_address.nxd_ip_address.v6[1] = 0x0;
+server_ip_address.nxd_ip_address.v6[2] = 0xf101;
+server_ip_address.nxd_ip_address.v6[3] = 0x106;
+
+
+/* Start the GET operation on the HTTP Client "my_client."  */
+status =  nxd_http_client_get_start(&amp;my_client, server_ip_address, "/TEST.HTM",
+NX_NULL, 0, "myname", "mypassword", 1000);
+
+
+/* If status is NX_SUCCESS, the GET request for TEST.HTM is started and is so
+   far successful. The client must now call nx_http_client_get_packet multiple
+   times to retrieve the content associated with TEST.HTM. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_http_client_get_start_extended"><a class="anchor" href="#_nxd_http_client_get_start_extended"></a>nxd_http_client_get_start_extended</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send an HTTP GET request (IPv4 or IPv6)</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_http_client_get_start_extended(
+    NX_HTTP_CLIENT *client_ptr,
+    NXD_ADDRESS *server_ip,
+    CHAR *resource,
+    UINT resource_length,
+    CHAR *input_ptr,
+    UINT input_size,
+    CHAR *username,
+    UINT username_length,
+    CHAR *password,
+    UINT password_length,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to create and send a GET request with the resource specified by "resource" pointer on the previously created HTTP Client instance. It can be used to connect to IPv4 or IPv6 network. If this routine returns NX_SUCCESS, the application can then make multiple calls to <em>nx_http_client_get_packet</em> to retrieve packets of data corresponding to the requested resource content.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The resource string can refer to a local file e.g. <code>"/index.htm"</code> or it can refer to another URL e.g. <code>http://abc.website.com/index.htm</code> if the HTTP Server indicates it supports referring GET requests.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service replaces <em>nxd_http_client_get_start</em>. It requires caller to specify the length of the resource, username and password.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_6"><a class="anchor" href="#_input_parameters_6"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>Server_ip</em>: IP address of the HTTP Server.</p>
+</li>
+<li>
+<p><em>resource</em>: Pointer to URL string for requested resource.</p>
+</li>
+<li>
+<p><em>resource_length</em>: Length of URL string for requested resource.</p>
+</li>
+<li>
+<p><em>input_ptr</em>: Pointer to additional data for the GET request. This is optional. If valid, the specified input is placed in the content area of the message and a POST is used instead of a GET operation.</p>
+</li>
+<li>
+<p><em>input_size</em>: Number of bytes in optional additional input pointed to by <code>input_ptr</code>.</p>
+</li>
+<li>
+<p><em>username</em>: Pointer to optional user name for authentication.</p>
+</li>
+<li>
+<p><em>username_length</em>: Length of optional user name for authentication.</p>
+</li>
+<li>
+<p><em>password</em>: Pointer to optional password for authentication.</p>
+</li>
+<li>
+<p><em>password_length</em>: Length of optional password for authentication.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait internally to process the HTTP Client get start. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>time out value</strong> (0x00000001 through 0xFFFFFFFE)</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Selecting TX_WAIT_FOREVER causes the calling thread to suspend indefinitely until the HTTP Server responds to the request.</p>
+</div>
+<div class="paragraph">
+<p>+
+Selecting a numeric value (0x1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the HTTP Server response.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent GET request</p>
+</li>
+<li>
+<p><strong>NX_HTTP_PASSWORD_TOO_LONG</strong> (0xF0) Password exceeds buffer size</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_READY</strong> (0xEA) HTTP Client not ready</p>
+</li>
+<li>
+<p><strong>NX_HTTP_FAILED</strong> (0xE2) Invalid packet parameters.</p>
+</li>
+<li>
+<p><strong>NX_HTTP_AUTHENTICATION_ERROR</strong> (0xEB) Invalid name or password</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_6"><a class="anchor" href="#_allowed_from_6"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_6"><a class="anchor" href="#_example_6"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">NXD_ADDRESS server_ip_address;
+
+/* for an IPv4 address, define as follows: */
+server_ip_address.nxd_ip_version = NX_IP_VERSION_V4;
+server_ip_address.nxd_ip_address.v4 = IP_ADDRESS(1,2,3,4);
+
+/* for an IPv6 address, define as follows: */
+server_ip_address.nxd_ip_version = NX_IP_VERSION_V6;
+server_ip_address.nxd_ip_address.v6[0] = 0x20010db8;
+server_ip_address.nxd_ip_address.v6[1] = 0x0;
+server_ip_address.nxd_ip_address.v6[2] = 0xf101;
+server_ip_address.nxd_ip_address.v6[3] = 0x106;
+
+
+/* Start the GET operation on the HTTP Client "my_client."  */
+status =  nxd_http_client_get_start_extended(&amp;my_client, server_ip_address,
+                                             "/TEST.HTM", 9, NX_NULL, 0, "myname",
+        6, "mypassword", 10, 1000);
+
+
+/* If status is NX_SUCCESS, the GET request for TEST.HTM is started and is so
+   far successful. The client must now call nx_http_client_get_packet multiple
+   times to retrieve the content associated with TEST.HTM. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_client_get_packet"><a class="anchor" href="#_nx_http_client_get_packet"></a>nx_http_client_get_packet</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get next resource data packet</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_client_get_packet(
+    NX_HTTP_CLIENT *client_ptr,
+    NX_PACKET **packet_ptr,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the next packet of content of the resource requested by the previous <em>nx_http_client_get_start</em> call. Successive calls to this routine should be made until the return status of NX_HTTP_GET_DONE is received.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_7"><a class="anchor" href="#_input_parameters_7"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Destination for packet pointer containing partial resource content.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the HTTP Client get packet. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>time out value</strong> (0x00000001 through 0xFFFFFFFE)</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting <strong>TX_WAIT_FOREVER</strong> causes the calling thread to suspend indefinitely until the HTTP Server responds to the request. Selecting a numeric value (0x1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the HTTP Server response.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_7"><a class="anchor" href="#_return_values_7"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful HTTP Client get packet.</p>
+</li>
+<li>
+<p><strong>NX_HTTP_GET_DONE</strong> (0xEC) HTTP Client get packet is done</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_READY</strong> (0xEA) HTTP Client not in get mode.</p>
+</li>
+<li>
+<p><strong>NX_HTTP_BAD_PACKET_LENGTH</strong> (0xED) Invalid packet length</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_7"><a class="anchor" href="#_allowed_from_7"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_7"><a class="anchor" href="#_example_7"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Get the next packet of resource content on the HTTP Client "my_client."
+   Note that the nx_http_client_get_start routine must have been called
+   previously. */
+status =  nx_http_client_get_packet(&amp;my_client, &amp;next_packet, 1000);
+
+
+/* If status is NX_SUCCESS, the next packet of content is pointed to
+   by "next_packet". */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_client_put_start"><a class="anchor" href="#_nx_http_client_put_start"></a>nx_http_client_put_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start an HTTP PUT request over IPv4</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_client_put_start(
+    NX_HTTP_CLIENT *client_ptr,
+    ULONG ip_address,
+    CHAR *resource,
+    CHAR *username,
+    CHAR *password,
+    ULONG total_bytes,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to send a PUT request with the specified resource to the HTTP Server at the supplied IP address. If this routine is successful, the application code should make successive calls to the <strong><em>nx_http_client_put_packet</em></strong> routine to actually send the resource contents to the HTTP Server.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The resource string can refer to a local file e.g. <code>"/index.htm"</code> or it can refer to another URL e.g. <code>http://abc.website.com/index.htm</code> if the HTTP Server indicates it supports referring PUT requests.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service is deprecated. Developers are encouraged to migrate to <strong><em>nxd_http_client_put_start_extended</em></strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_8"><a class="anchor" href="#_input_parameters_8"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>ip_address</em>: IP address of the HTTP Server.</p>
+</li>
+<li>
+<p><em>resource</em>: Pointer to URL string for requested resource.</p>
+</li>
+<li>
+<p><em>username</em>: Pointer to optional user name for authentication.</p>
+</li>
+<li>
+<p><em>password</em>: Pointer to optional password for authentication.</p>
+</li>
+<li>
+<p><em>total_bytes</em>: Total bytes of resource being sent. Note that the combined length of all packets sent via subsequent calls to <em>nx_http_client_put_packet</em> must equal this value.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the HTTP Client PUT start. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>time out value</strong> (0x00000001 through 0xFFFFFFFE)</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting <strong>TX_WAIT_FOREVER</strong> causes the calling thread to suspend indefinitely until the HTTP Server responds to the request. Selecting a numeric value (0x1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the HTTP Server response</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_8"><a class="anchor" href="#_return_values_8"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent PUT request</p>
+</li>
+<li>
+<p><strong>NX_HTTP_USERNAME_TOO_LONG</strong> (0xF1) Username too large for buffer</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_READY</strong> (0xEA) HTTP Client not ready</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_SIZE_ERROR (0x09) Invalid total size of resource</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_8"><a class="anchor" href="#_allowed_from_8"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Start an HTTP PUT to place the 20-byte resource "/TEST.HTM" on the HTTP Server
+   at IP address 1.2.3.5. */
+status =  nx_http_client_put_start(&amp;my_client, IP_ADDRESS(1, 2, 3, 5),
+"/TEST.HTM", "myname", "mypassword", 20, NX_WAIT_FOREVER);
+
+/* If status is NX_SUCCESS, the PUT operation for TEST.HTM has successfully been
+   started. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_client_put_start_extended"><a class="anchor" href="#_nx_http_client_put_start_extended"></a>nx_http_client_put_start_extended</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start an HTTP PUT request over IPv4</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_client_put_start_extended(
+    NX_HTTP_CLIENT *client_ptr,
+    ULONG ip_address,
+    CHAR *resource,
+    UINT resource_length,
+    CHAR *username,
+    UINT username_length,
+    CHAR *password,
+    UINT password_length,
+    ULONG total_bytes,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to send a PUT request with the specified resource to the HTTP Server at the supplied IP address. If this routine is successful, the application code should make successive calls to the <em>nx_http_client_put_packet</em> routine to actually send the resource contents to the HTTP Server.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The resource string can refer to a local file e.g. <code>"/index.htm"</code> or it can refer to another URL e.g. <code>http://abc.website.com/index.htm</code> if the HTTP Server indicates it supports referring PUT requests.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service replaces <em>nx_http_client_put_start</em>. It requires caller to specify the length of the resource, username and password.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_9"><a class="anchor" href="#_input_parameters_9"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>ip_address</em>: IP address of the HTTP Server.</p>
+</li>
+<li>
+<p><em>resource</em>: Pointer to URL string for requested resource.</p>
+</li>
+<li>
+<p><em>resource_length</em>: Length of URL string for resource to send to Server.</p>
+</li>
+<li>
+<p><em>username</em>: Pointer to optional user name for authentication.</p>
+</li>
+<li>
+<p><em>username_length</em>: Length of optional user name for authentication.</p>
+</li>
+<li>
+<p><em>password</em>: Pointer to optional password for authentication.</p>
+</li>
+<li>
+<p><em>password_length</em>: Length of optional password for authentication.</p>
+</li>
+<li>
+<p><em>total_bytes</em>: Total bytes of resource being sent. Note that the combined length of all packets sent via subsequent calls to <em>nx_http_client_put_packet</em> must equal this value.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the HTTP Client PUT start. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>time out value</strong> (0x00000001 through 0xFFFFFFFE)</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting <strong>TX_WAIT_FOREVER</strong> causes the calling thread to suspend indefinitely until the HTTP Server responds to the request. Selecting a numeric value (0x1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the HTTP Server response.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_9"><a class="anchor" href="#_return_values_9"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>*NX_SUCCESS</em>: (0x00) Successfully sent PUT request</p>
+</li>
+<li>
+<p><em>*NX_HTTP_USERNAME_TOO_LONG</em>: (0xF1) Username too large for buffer</p>
+</li>
+<li>
+<p><em>*NX_HTTP_NOT_READY</em>: (0xEA) HTTP Client not ready</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_SIZE_ERROR (0x09) Invalid total size of resource</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_9"><a class="anchor" href="#_allowed_from_9"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Start an HTTP PUT to place the 20-byte resource "/TEST.HTM" on the HTTP Server
+   at IP address 1.2.3.5. */
+status =  nx_http_client_put_start_extended(&amp;my_client, IP_ADDRESS(1, 2, 3, 5),
+"/TEST.HTM", 9, "myname", 6, "mypassword", 10, 20, NX_WAIT_FOREVER);
+
+/* If status is NX_SUCCESS, the PUT operation for TEST.HTM has successfully been
+   started. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_http_client_put_start"><a class="anchor" href="#_nxd_http_client_put_start"></a>nxd_http_client_put_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start an HTTP PUT request (IPv4 or IPv6)</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_http_client_put_start(
+    NX_HTTP_CLIENT *client_ptr,
+    NXD_ADDRESS *server_ip,
+    CHAR *resource,
+    CHAR *username,
+    CHAR *password,
+    ULONG total_bytes,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to PUT (send) the specified resource on the HTTP Server at the supplied IP address over IPv6. If this routine is successful, the application code should make successive calls to the <em>nx_http_client_put_packet</em> routine to actually send the resource contents to the HTTP Server.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The resource string can refer to a local file e.g. <code>"/index.htm"</code> or it can refer to another URL e.g. <code>http://abc.website.com/index.htm</code> if the HTTP Server indicates it supports referring PUT requests.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service is deprecated. Developers are encouraged to migrate to <em>nxd_http_client_put_start_extended</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_10"><a class="anchor" href="#_input_parameters_10"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>server_ip</em>: IP address of the HTTP Server.</p>
+</li>
+<li>
+<p><em>resource</em>: Pointer to URL string for resource to send to Server.</p>
+</li>
+<li>
+<p><em>username</em>: Pointer to optional user name for authentication.</p>
+</li>
+<li>
+<p><em>password</em>: Pointer to optional password for authentication.</p>
+</li>
+<li>
+<p><em>total_bytes</em>: Total bytes of resource being sent. Note that the combined length of all packets sent via subsequent calls to <em>nx_http_client_put_packet</em> must equal this value.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the HTTP Client PUT start. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>time out value</strong> (0x00000001 through 0xFFFFFFFE)</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting <strong>TX_WAIT_FOREVER</strong> causes the calling thread to suspend indefinitely until the HTTP Server responds to the request. Selecting a numeric value (0x1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the HTTP Server response.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_10"><a class="anchor" href="#_return_values_10"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent HTTP Client PUT request</p>
+</li>
+<li>
+<p><strong>NX_HTTP_ERROR</strong> (0xE0) HTTP Client internal error</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_READY</strong> (0xEA) HTTP Client not ready</p>
+</li>
+<li>
+<p><strong>NX_HTTP_FAILED</strong> (0xE2) HTTP Client error communicating with the HTTP Server</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_SIZE_ERROR (0x09) Invalid total size of resource</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_10"><a class="anchor" href="#_allowed_from_10"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">NXD_ADDRESS server_ip_address;
+
+/* for an IPv4 address, define as follows: */
+server_ip_address.nxd_ip_version = NX_IP_VERSION_V4;
+server_ip_address.nxd_ip_address.v4 = IP_ADDRESS(1,2,3,4);
+
+/* for an IPv6 address, define as follows: */
+server_ip_address.nxd_ip_version = NX_IP_VERSION_V6;
+server_ip_address.nxd_ip_address.v6[0] = 0x20010db8;
+server_ip_address.nxd_ip_address.v6[1] = 0x0;
+server_ip_address.nxd_ip_address.v6[2] = 0xf101;
+server_ip_address.nxd_ip_address.v6[3] = 0x106;
+
+/* Start an HTTP PUT to place the 20-byte resource Client_test.HTM" on the HTTPv6
+   Server. */
+status =  nxd_http_client_put_start(&amp;my_client, &amp;server_ip_address,
+ 									"/client_test.htm", "name", "password", 103, 50);
+
+/* If status is NX_SUCCESS, the PUT operation for Client_test.HTM has successfully
+   been started. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_http_client_put_start_extended"><a class="anchor" href="#_nxd_http_client_put_start_extended"></a>nxd_http_client_put_start_extended</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start an HTTP PUT request (IPv4 or IPv6)</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_http_client_put_start_extended(
+    NX_HTTP_CLIENT *client_ptr,
+    NXD_ADDRESS *server_ip,
+    CHAR *resource,
+    UINT resource_length,
+    CHAR *username,
+    UINT username_length,
+    CHAR *password,
+    UINT password_length,
+    ULONG total_bytes,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to PUT (send) the specified resource on the HTTP Server at the supplied IP address over IPv6. If this routine is successful, the application code should make successive calls to the <em>nx_http_client_put_packet</em> routine to actually send the resource contents to the HTTP Server.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The resource string can refer to a local file e.g. <code>"/index.htm"</code> or it can refer to another URL e.g. <code>http://abc.website.com/index.htm</code> if the HTTP Server indicates it supports referring PUT requests.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service replaces <em>nxd_http_client_put_start</em>. It requires caller to specify the length of the resource, username and password.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_11"><a class="anchor" href="#_input_parameters_11"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>ip_address</em>: IP address of the HTTP Server.</p>
+</li>
+<li>
+<p><em>resource</em>: Pointer to URL string for requested resource.</p>
+</li>
+<li>
+<p><em>resource_length</em>: Length of URL string for resource to send to Server.</p>
+</li>
+<li>
+<p><em>username</em>: Pointer to optional user name for authentication.</p>
+</li>
+<li>
+<p><em>username_length</em>: Length of optional user name for authentication.</p>
+</li>
+<li>
+<p><em>password</em>: Pointer to optional password for authentication.</p>
+</li>
+<li>
+<p><em>password_length</em>: Length of optional password for authentication.</p>
+</li>
+<li>
+<p><em>total_bytes</em>: Total bytes of resource being sent. Note that the combined length of all packets sent via subsequent calls to <em>nx_http_client_put_packet</em> must equal this value.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait for the HTTP Client PUT start. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>time out value</strong> (0x00000001 through 0xFFFFFFFE)</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting <strong>TX_WAIT_FOREVER</strong> causes the calling thread to suspend indefinitely until the HTTP Server responds to the request. Selecting a numeric value (0x1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the HTTP Server response.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_11"><a class="anchor" href="#_return_values_11"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent HTTP Client PUT request</p>
+</li>
+<li>
+<p><strong>NX_HTTP_ERROR</strong> (0xE0) HTTP Client internal error</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_READY</strong> (0xEA) HTTP Client not ready</p>
+</li>
+<li>
+<p>NX_HTTP_FAILED (0xE2) HTTP Client error communicating with the HTTP Server</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_SIZE_ERROR (0x09) Invalid total size of resource</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_11"><a class="anchor" href="#_allowed_from_11"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_11"><a class="anchor" href="#_example_11"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">NXD_ADDRESS server_ip_address;
+
+/* for an IPv4 address, define as follows: */
+server_ip_address.nxd_ip_version = NX_IP_VERSION_V4;
+server_ip_address.nxd_ip_address.v4 = IP_ADDRESS(1,2,3,4);
+
+/* for an IPv6 address, define as follows: */
+server_ip_address.nxd_ip_version = NX_IP_VERSION_V6;
+server_ip_address.nxd_ip_address.v6[0] = 0x20010db8;
+server_ip_address.nxd_ip_address.v6[1] = 0x0;
+server_ip_address.nxd_ip_address.v6[2] = 0xf101;
+server_ip_address.nxd_ip_address.v6[3] = 0x106;
+
+/* Start an HTTP PUT to place the 20-byte resource Client_test.HTM" on the HTTPv6
+   Server. */
+status =  nxd_http_client_put_start_extended(&amp;my_client, &amp;server_ip_address,
+											"/client_test.htm", 16, "name", 4, "password", 8, 103, 50);
+
+/* If status is NX_SUCCESS, the PUT operation for Client_test.HTM has successfully
+   been started. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_client_put_packet"><a class="anchor" href="#_nx_http_client_put_packet"></a>nx_http_client_put_packet</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send next resource data packet</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_client_put_packet(
+    NX_HTTP_CLIENT *client_ptr,
+    NX_PACKET *packet_ptr,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to send the next packet of resource content to the HTTP Server.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This routine should be called repetitively until the combined length of the packets sent equals the "total_bytes" specified in the previous <em>nx_http_client_put_start</em> call.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_12"><a class="anchor" href="#_input_parameters_12"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Pointer to next content of the resource to being sent to the HTTP Server.</p>
+</li>
+<li>
+<p><em>wait_option</em>: Defines how long the service will wait internally to process the HTTP Client PUT packet. The wait options are defined as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>time out value</strong> (0x00000001 through 0xFFFFFFFE)</p>
+</li>
+<li>
+<p><strong>TX_WAIT_FOREVER</strong> (0xFFFFFFFF) Selecting <strong>TX_WAIT_FOREVER</strong> causes the calling thread to suspend indefinitely until the HTTP Server responds to the request. Selecting a numeric value (0x1-0xFFFFFFFE) specifies the maximum number of timer-ticks to stay suspended while waiting for the HTTP Server response.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_12"><a class="anchor" href="#_return_values_12"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent HTTP Client packet.</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_READY</strong> (0xEA) HTTP Client not ready</p>
+</li>
+<li>
+<p><strong>NX_HTTP_REQUEST_UNSUCCESSFUL_CODE</strong> (0xEE) Received Server error code</p>
+</li>
+<li>
+<p><strong>NX_HTTP_BAD_PACKET_LENGTH</strong> (0xED) Invalid packet length</p>
+</li>
+<li>
+<p><strong>NX_HTTP_AUTHENTICATION_ERROR</strong> (0xEB) Invalid name and/or Password</p>
+</li>
+<li>
+<p><strong>NX_HTTP_INCOMPLETE_PUT_ERROR</strong> (0xEF) Server responds before PUT Is complete</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_INVALID_PACKET (0x12) Packet too small for TCP header</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_12"><a class="anchor" href="#_allowed_from_12"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_12"><a class="anchor" href="#_example_12"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Send a 20-byte packet representing the content of the resource
+   "/TEST.HTM" to the HTTP Server. */
+status =  nx_http_client_put_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
+
+/* If status is NX_SUCCESS, the 20-byte resource contents of TEST.HTM has
+   successfully been sent. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_client_set_connect_port"><a class="anchor" href="#_nx_http_client_set_connect_port"></a>nx_http_client_set_connect_port</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the connection port to the Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_client_set_connect_port(
+    NX_HTTP_CLIENT *client_ptr,
+    UINT port);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This service changes the connect port when connecting to the HTTP Server to the specified port at runtime. Otherwise the connect port defaults to 80. This must be called before <strong><em>nx_http_client_get_start</em></strong> and <strong><em>nx_http_client_put_start</em></strong> e.g. when the HTTP Client connects with the Server.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_13"><a class="anchor" href="#_input_parameters_13"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to HTTP Client control block.</p>
+</li>
+<li>
+<p><em>port</em>: Port for connecting to the Server.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_13"><a class="anchor" href="#_return_values_13"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully change port</p>
+</li>
+<li>
+<p>NX_INVALID_PORT (0x46) Port exceeds the maximum (0xFFFF) or is zero</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_13"><a class="anchor" href="#_allowed_from_13"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads, Initialization</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_13"><a class="anchor" href="#_example_13"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">NX_HTTP_CLIENT *client_ptr;
+
+/* Change the connect port to 114. */
+status =  nx_http_client_set_connect_port(client_ptr, 114);
+
+/* If status is NX_SUCCESS, the connect port is successfully changed. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_cache_info_callback_set"><a class="anchor" href="#_nx_http_server_cache_info_callback_set"></a>nx_http_server_cache_info_callback_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the callback to retrieve URL max age and date</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_14"><a class="anchor" href="#_prototype_14"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_cache_info_callback_set(
+    NX_HTTP_SERVER *server_ptr,
+    UINT (*cache_info_get)(
+        CHAR *resource,
+        UINT *max_age,
+        NX_HTTP_SERVER_DATE *date));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_14"><a class="anchor" href="#_description_14"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the callback service invoked to obtain the maximum age and last modified date of the specified resource.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_14"><a class="anchor" href="#_input_parameters_14"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server control block.</p>
+</li>
+<li>
+<p><em>cache_info_get</em>: Pointer to the callback</p>
+</li>
+<li>
+<p><em>max_age</em>: Pointer to maximum age of a resource</p>
+</li>
+<li>
+<p><em>data</em>: Pointer to last modified date returned.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_14"><a class="anchor" href="#_return_values_14"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully set the callback</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_14"><a class="anchor" href="#_allowed_from_14"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_14"><a class="anchor" href="#_example_14"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">NX_HTTP_SERVER my_server;
+
+UINT cache_info_get(CHAR *resource, UINT *max_age,
+                           NX_HTTP_SERVER_DATE *last_modified);
+
+/* After my_server is created with nx_http_server_create and before the HTTP
+   server is set by nx_http_server_start, set the cache info callback: */
+
+status = nx_http_server_cache_info_callback_set(&amp;my_server, cache_info_get);
+
+
+/* If status is NX_SUCCESS, the callback was successfully sent. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_callback_data_send"><a class="anchor" href="#_nx_http_server_callback_data_send"></a>nx_http_server_callback_data_send</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send data from callback function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_15"><a class="anchor" href="#_prototype_15"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_callback_data_send(
+    NX_HTTP_SERVER *server_ptr,
+    VOID *data_ptr,
+    ULONG data_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_15"><a class="anchor" href="#_description_15"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends the data in the supplied packet from the application&#8217;s callback routine. This is typically used to send dynamic data associated with GET/POST requests.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If this function is used, the callback routine is responsible for sending the entire response in the proper format. In addition, the callback routine must return the status of NX_HTTP_CALLBACK_COMPLETED.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_15"><a class="anchor" href="#_input_parameters_15"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server control block.</p>
+</li>
+<li>
+<p><em>data_ptr</em>: Pointer to the data to send.</p>
+</li>
+<li>
+<p><em>data_length</em>: Number of bytes to send.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_15"><a class="anchor" href="#_return_values_15"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent Server data</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_15"><a class="anchor" href="#_allowed_from_15"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_15"><a class="anchor" href="#_example_15"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  my_request_notify(NX_HTTP_SERVER *server_ptr, UINT request_type,
+  CHAR *resource, NX_PACKET *packet_ptr)
+{
+
+    /* Look for the test resource!  */
+    if ((request_type == NX_HTTP_SERVER_GET_REQUEST) &amp;&amp;
+                (strcmp(resource, "/test.htm") == 0))
+    {
+
+        /* Found it, override the GET processing by sending the resource
+    contents directly. */
+
+        nx_http_server_callback_data_send(server_ptr,
+    "HTTP/1.0 200 \r\nContent-Length:
+    103\r\nContent-Type: text/html\r\n\r\n",
+    63);
+
+        nx_http_server_callback_data_send(server_ptr, "&lt;HTML&gt;\r\n&lt;HEAD&gt;&lt;TITLE&gt;NetX
+    HTTP Test &lt;/TITLE&gt;&lt;/HEAD&gt;\r\n
+    &lt;BODY&gt;\r\n&lt;H1&gt;NetX Test Page
+    &lt;/H1&gt;\r\n&lt;/BODY&gt;\r\n&lt;/HTML&gt;\r\n", 103);
+
+        /* Return completion status. */
+        return(NX_HTTP_CALLBACK_COMPLETED);
+    }
+
+    return(NX_SUCCESS);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_callback_generate_response_header"><a class="anchor" href="#_nx_http_server_callback_generate_response_header"></a>nx_http_server_callback_generate_response_header</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create a response header in a callback function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_16"><a class="anchor" href="#_prototype_16"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_callback_generate_response_header(
+    NX_HTTP_SERVER *server_ptr,
+    NX_PACKET **packet_pptr,
+    CHAR *status_code,
+    UINT content_length,
+    CHAR *content_type,
+    CHAR* additional_header);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_16"><a class="anchor" href="#_description_16"></a>Description</h3>
+<div class="paragraph">
+<p>This service calls the internal function <em>_nx_http_server_generate_response_header</em> when the HTTP server responds to Client get, put and delete requests. It is intended for use in HTTP server callback functions when the HTTP server application is designing its response to the Client.</p>
+</div>
+<div class="paragraph">
+<p>This service is deprecated. Developers are encouraged to migrate to <em>nxd_http_server_callback_generate_response_header_extended</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_16"><a class="anchor" href="#_input_parameters_16"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server control block.</p>
+</li>
+<li>
+<p><em>packet_pptr</em>: Pointer a packet pointer allocated for message</p>
+</li>
+<li>
+<p><em>status_code</em>: Indicate status of resource. Examples:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_HTTP_STATUS_OK</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_HTTP_STATUS_MODIFIED</strong></p>
+</li>
+<li>
+<p><strong>NX_HTTP_STATUS_INTERNAL_ERROR</strong></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>content_length</em>: Size of content in bytes</p>
+</li>
+<li>
+<p><em>content_type</em>: Type of HTTP e.g. "text/plain"</p>
+</li>
+<li>
+<p><em>additional_header</em>: Pointer to additional header text</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_16"><a class="anchor" href="#_return_values_16"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully created header</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_16"><a class="anchor" href="#_allowed_from_16"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_16"><a class="anchor" href="#_example_16"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">CHAR demotestbuffer[] = "&lt;html&gt;\r\n\r\n&lt;head&gt;\r\n\r\n&lt;title&gt;Main   \
+			Window&lt;/title&gt;\r\n&lt;/head&gt;\r\n\r\n&lt;body&gt;Test message\r\n   \  &lt;/body&gt;\r\n&lt;/html&gt;\r\n";
+
+     /* my_request_notify is the application request notify callback registered with
+      the HTTP server in nx_http_server_create, creates a response to the received
+      Client request. */
+
+      UINT  my_request_notify(NX_HTTP_SERVER *server_ptr, UINT request_type,
+ CHAR *resource, NX_PACKET *recv_packet_ptr)
+      {
+
+NX_PACKET   *sresp_packet_ptr;
+ULONG       string_length;
+CHAR        temp_string[30];
+ULONG       length = 0;
+
+
+   length = sizeof(demotestbuffer) - 1;
+
+/* Derive the client request type from the client request. */
+   string_length =  (ULONG) nx_http_server_type_retrieve(server_ptr, server_ptr -&gt;
+nx_http_server_request_resource, temp_string,
+sizeof(temp_string));
+
+       /* Null terminate the string. */
+   temp_string[temp] = 0;
+
+       /* Now build a response header with server status is OK and no additional header
+          info. */
+   status = nx_http_server_callback_generate_response_header(http_server_ptr,
+                  &amp;resp_packet_ptr, NX_HTTP_STATUS_OK,
+                  length, temp_string, NX_NULL);
+
+/* If status is NX_SUCCESS, the header was successfully appended. */
+
+/* Now add data to the packet. */
+   status = nx_packet_data_append(resp_packet_ptr, &amp;demotestbuffer[0],
+                 length,  server_ptr -&gt;
+                 nx_http_server_packet_pool_ptr, NX_WAIT_FOREVER);
+   if (status != NX_SUCCESS)
+   {
+       nx_packet_release(resp_packet_ptr);
+       return status;
+   }
+
+
+
+/* Now send the packet! */
+           status = nx_tcp_socket_send(&amp;(server_ptr -&gt; nx_http_server_socket),
+                                      resp_packet_ptr, NX_HTTP_SERVER_TIMEOUT_SEND);
+
+   if (status != NX_SUCCESS)
+   {
+      nx_packet_release(resp_packet_ptr);
+
+      return status;
+   }
+
+/* Let HTTP server know the response has been sent. */
+  return NX_HTTP_CALLBACK_COMPLETED;
+
+     }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_callback_generate_response_header_extended"><a class="anchor" href="#_nx_http_server_callback_generate_response_header_extended"></a>nx_http_server_callback_generate_response_header_extended</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create a response header in a callback function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_17"><a class="anchor" href="#_prototype_17"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_callback_generate_response_header_extended(
+    NX_HTTP_SERVER *server_ptr,
+    NX_PACKET **packet_pptr,
+    CHAR *status_code,
+    UINT status_code_length,
+    UINT content_length,
+    CHAR *content_type,
+    UINT content_type_length,
+    CHAR *additional_header,
+    UINT additional_header_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_17"><a class="anchor" href="#_description_17"></a>Description</h3>
+<div class="paragraph">
+<p>This service calls the internal function <em>_nx_http_server_generate_response_header</em> when the HTTP server responds to Client get, put and delete requests. It is intended for use in HTTP server callback functions when the HTTP server application is designing its response to the Client.</p>
+</div>
+<div class="paragraph">
+<p>This service replaces <em>nx_http_server_callback_generate_response_header</em>. This version supplies additional length information to the callback function.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_17"><a class="anchor" href="#_input_parameters_17"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server control block.</p>
+</li>
+<li>
+<p><em>packet_pptr</em>: Pointer a packet pointer allocated for message</p>
+</li>
+<li>
+<p><em>status_code</em>: Indicate status of resource. Examples:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_HTTP_STATUS_OK</strong></p>
+</li>
+<li>
+<p><strong>NX_HTTP_STATUS_MODIFIED</strong></p>
+</li>
+<li>
+<p><strong>NX_HTTP_STATUS_INTERNAL_ERROR</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>status_code</em>: Length of status code</p>
+</li>
+<li>
+<p><em>content_length</em>: Size of content in bytes</p>
+</li>
+<li>
+<p><em>content_type</em>: Type of HTTP e.g. "text/plain"</p>
+</li>
+<li>
+<p><em>content_type_length</em>: Length of HTTP type</p>
+</li>
+<li>
+<p><em>additional_header</em>: Pointer to additional header text</p>
+</li>
+<li>
+<p><em>additional_header_length</em>: Length of additional header text</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_17"><a class="anchor" href="#_return_values_17"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully created header</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_17"><a class="anchor" href="#_allowed_from_17"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_17"><a class="anchor" href="#_example_17"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">CHAR demotestbuffer[] = "&lt;html&gt;\r\n\r\n&lt;head&gt;\r\n\r\n&lt;title&gt;Main   \
+	 Window&lt;/title&gt;\r\n&lt;/head&gt;\r\n\r\n&lt;body&gt;Test message\r\n   \  &lt;/body&gt;\r\n&lt;/html&gt;\r\n";
+
+     /* my_request_notify is the application request notify callback registered with
+      the HTTP server in nx_http_server_create, creates a response to the received
+      Client request. */
+
+      UINT  my_request_notify(NX_HTTP_SERVER *server_ptr, UINT request_type,
+ CHAR *resource, NX_PACKET *recv_packet_ptr)
+      {
+
+NX_PACKET   *sresp_packet_ptr;
+ULONG       string_length;
+CHAR        temp_string[30];
+ULONG       length = 0;
+
+
+   length = sizeof(demotestbuffer) - 1;
+
+/* Derive the client request type from the client request. */
+   string_length =  (ULONG) nx_http_server_type_retrieve(server_ptr, server_ptr -&gt;
+nx_http_server_request_resource, temp_string,
+sizeof(temp_string));
+
+       /* Null terminate the string. */
+   temp_string[temp] = 0;
+
+       /* Now build a response header with server status is OK and no additional header
+          info. */
+   status = nx_http_server_callback_generate_response_header_extended(
+                             http_server_ptr, &amp;resp_packet_ptr, NX_HTTP_STATUS_OK,
+              sizeof(NX_HTTP_STATUS_OK) - 1, length,
+              temp_string, string_length, NX_NULL, 0);
+
+/* If status is NX_SUCCESS, the header was successfully appended. */
+
+/* Now add data to the packet. */
+   status = nx_packet_data_append(resp_packet_ptr, &amp;demotestbuffer[0],
+                 length,  server_ptr -&gt;
+                 nx_http_server_packet_pool_ptr, NX_WAIT_FOREVER);
+   if (status != NX_SUCCESS)
+   {
+       nx_packet_release(resp_packet_ptr);
+       return status;
+   }
+
+
+
+/* Now send the packet! */
+           status = nx_tcp_socket_send(&amp;(server_ptr -&gt; nx_http_server_socket),
+                                      resp_packet_ptr, NX_HTTP_SERVER_TIMEOUT_SEND);
+
+   if (status != NX_SUCCESS)
+   {
+      nx_packet_release(resp_packet_ptr);
+
+      return status;
+   }
+
+/* Let HTTP server know the response has been sent. */
+  return NX_HTTP_CALLBACK_COMPLETED;
+
+     }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_callback_packet_send"><a class="anchor" href="#_nx_http_server_callback_packet_send"></a>nx_http_server_callback_packet_send</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send an HTTP packet from callback function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_18"><a class="anchor" href="#_prototype_18"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_callback_packet_send(
+    NX_HTTP_SERVER *server_ptr,
+    NX_PACKET *packet_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_18"><a class="anchor" href="#_description_18"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends a complete HTTP server response from an HTTP callback. HTTP server will send the packet with the NX_HTTP_SERVER _TIMEOUT_SEND. The HTTP header and data must be appended to the packet. If the return status indicates an error, the HTTP application must release the packet.</p>
+</div>
+<div class="paragraph">
+<p>The callback should return NX_HTTP_CALLBACK_COMPLETED.</p>
+</div>
+<div class="paragraph">
+<p>See <em>nx_http_server_callback_generate_response_header</em> for a more detailed example.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_18"><a class="anchor" href="#_input_parameters_18"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server control block.</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Pointer to the packet to send</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_18"><a class="anchor" href="#_return_values_18"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent Server packet</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_18"><a class="anchor" href="#_allowed_from_18"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_18"><a class="anchor" href="#_example_18"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* The packet is appended with HTTP header and data and is ready to send to the
+   Client directly. */
+
+   status = nx_http_server_callback_response_send(server_ptr, packet_ptr);
+
+   if (status != NX_SUCCESS)
+   {
+
+	nx_packet_release(packet_ptr);
+   }
+
+    return(NX_HTTP_CALLBACK_COMPLETED);</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_callback_response_send"><a class="anchor" href="#_nx_http_server_callback_response_send"></a>nx_http_server_callback_response_send</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send response from callback function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_19"><a class="anchor" href="#_prototype_19"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_callback_response_send(
+    NX_HTTP_SERVER *server_ptr,
+    CHAR *header,
+    CHAR *information,
+    CHAR additional_info);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_19"><a class="anchor" href="#_description_19"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends the supplied response information from the application&#8217;s callback routine. This is typically used to send custom responses associated with GET/POST requests.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If this function is used, the callback routine must return the status of NX_HTTP_CALLBACK_COMPLETED.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service is deprecated. Developers are encouraged to migrate to <em>nxd_http_server_callback_response_send_extended</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_19"><a class="anchor" href="#_input_parameters_19"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server control block.</p>
+</li>
+<li>
+<p><em>header</em>: Pointer to the response header string.</p>
+</li>
+<li>
+<p><em>information</em>: Pointer to the information string.</p>
+</li>
+<li>
+<p><em>additional_info</em>: Pointer to the additional information string.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_19"><a class="anchor" href="#_return_values_19"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent Server response</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_19"><a class="anchor" href="#_allowed_from_19"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_19"><a class="anchor" href="#_example_19"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  my_request_notify(NX_HTTP_SERVER *server_ptr, UINT request_type,
+					    CHAR *resource, NX_PACKET *packet_ptr)
+{
+
+    /* Look for the test resource!  */
+    if ((request_type == NX_HTTP_SERVER_GET_REQUEST) &amp;&amp;
+               (strcmp(resource, "/test.htm") == 0))
+    {
+
+        /* In this example, we will complete the GET processing with
+           a resource not found response. */
+	 nx_http_server_callback_response_send(server_ptr,
+                      "HTTP/1.0 404 ",
+                      "NetX HTTP Server unable to find
+                       file: ", resource);
+
+        /* Return completion status. */
+        return(NX_HTTP_CALLBACK_COMPLETED);
+    }
+
+    return(NX_SUCCESS);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_callback_response_send_extended"><a class="anchor" href="#_nx_http_server_callback_response_send_extended"></a>nx_http_server_callback_response_send_extended</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send response from callback function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_20"><a class="anchor" href="#_prototype_20"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_callback_response_send_extended(
+    NX_HTTP_SERVER *server_ptr,
+    CHAR *header,
+    UINT header_length,
+    CHAR *information,
+    UINT information_length,
+    CHAR *additional_info,
+    UINT additional_info_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_20"><a class="anchor" href="#_description_20"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends the supplied response information from the application&#8217;s callback routine. This is typically used to send custom responses associated with GET/POST requests.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If this function is used, the callback routine must return the status of NX_HTTP_CALLBACK_COMPLETED.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service replaces <em>nx_http_server_callback_response_send</em>. This version takes additional length information as arguments.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_20"><a class="anchor" href="#_input_parameters_20"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server control block.</p>
+</li>
+<li>
+<p><em>header</em>: Pointer to the response header string.</p>
+</li>
+<li>
+<p><em>header_length</em>: Length of the response header string.</p>
+</li>
+<li>
+<p><em>information</em>: Pointer to the information string.</p>
+</li>
+<li>
+<p><em>information_length</em>: Length of the information string.</p>
+</li>
+<li>
+<p><em>additional_info</em>: Pointer to the additional information string.</p>
+</li>
+<li>
+<p><em>additional_info_length</em>: Length of the additional information string.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_20"><a class="anchor" href="#_return_values_20"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully sent Server response</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_20"><a class="anchor" href="#_allowed_from_20"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_20"><a class="anchor" href="#_example_20"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  my_request_notify(NX_HTTP_SERVER *server_ptr, UINT request_type,
+						CHAR *resource, NX_PACKET *packet_ptr)
+{
+
+    /* Look for the test resource!  */
+    if ((request_type == NX_HTTP_SERVER_GET_REQUEST) &amp;&amp;
+               (strcmp(resource, "/test.htm") == 0))
+    {
+
+        /* In this example, we will complete the GET processing with
+           a resource not found response. */
+	 nx_http_server_callback_response_send_extended(
+                                             server_ptr,
+                      "HTTP/1.0 404 ", 12,
+                      "NetX HTTP Server unable to find
+                       file: ", 38, resource, 9);
+
+        /* Return completion status. */
+        return(NX_HTTP_CALLBACK_COMPLETED);
+    }
+
+    return(NX_SUCCESS);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_content_get"><a class="anchor" href="#_nx_http_server_content_get"></a>nx_http_server_content_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get content from the request</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_21"><a class="anchor" href="#_prototype_21"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_content_get(
+    NX_HTTP_SERVER *server_ptr,
+    NX_PACKET *packet_ptr,
+    ULONG byte_offset,
+    CHAR *destination_ptr,
+    UINT destination_size,
+    UINT *actual_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_21"><a class="anchor" href="#_description_21"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to retrieve the specified amount of content from the POST or PUT HTTP Client request. It should be called from the application&#8217;s request notify callback specified during HTTP Server creation (<strong><em>nx_http_server_create</em></strong>).</p>
+</div>
+<div class="paragraph">
+<p>This service is deprecated. Developers are encouraged to migrate to <em>nx_http_server_content_get_extended</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_21"><a class="anchor" href="#_input_parameters_21"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server control block.</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Pointer to the HTTP Client request packet. Note that this packet must not be released by the request notify callback.</p>
+</li>
+<li>
+<p><em>byte_offset</em>: Number of bytes to offset into the content area.</p>
+</li>
+<li>
+<p><em>destination_ptr</em>: Pointer to the destination area for the content.</p>
+</li>
+<li>
+<p><em>destination_size</em>: Maximum number of bytes available in the destination area.</p>
+</li>
+<li>
+<p><em>actual_size</em>: Pointer to the destination variable that will be set to the actual size of the content copied.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_21"><a class="anchor" href="#_return_values_21"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful HTTP Server content get</p>
+</li>
+<li>
+<p><strong>NX_HTTP_ERROR</strong> (0xE0) HTTP Server internal error</p>
+</li>
+<li>
+<p><strong>NX_HTTP_DATA_END</strong> (0xE7) End of request content</p>
+</li>
+<li>
+<p><strong>NX_HTTP_TIMEOUT</strong> (0xE1) HTTP Server timeout in getting next packet of content</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_21"><a class="anchor" href="#_allowed_from_21"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_21"><a class="anchor" href="#_example_21"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Assuming we are in the application's request notify callback
+   routine, retrieve up to 100 bytes of content starting at offset
+   0. */
+status =  nx_http_server_content_get(&amp;my_server, packet_ptr,
+                      0, my_buffer, 100, &amp;actual_size);
+
+/* If status is NX_SUCCESS, "my_buffer" contains "actual_size" bytes of
+   request content. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_content_get_extended"><a class="anchor" href="#_nx_http_server_content_get_extended"></a>nx_http_server_content_get_extended</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get content from the request/supports zero length Content Length</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_22"><a class="anchor" href="#_prototype_22"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_content_get_extended(
+    NX_HTTP_SERVER *server_ptr,
+    NX_PACKET *packet_ptr,
+    ULONG byte_offset,
+    CHAR *destination_ptr,
+    UINT destination_size,
+    UINT *actual_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_22"><a class="anchor" href="#_description_22"></a>Description</h3>
+<div class="paragraph">
+<p>This service is almost identical to <strong><em>nx_http_server_content_get</em></strong> it attempts to retrieve the specified amount of content from the POST or PUT HTTP Client request. However it handles requests with Content Length of zero value ('empty request') as a valid request. It should be called from the application&#8217;s request notify callback specified during HTTP Server creation (<strong><em>nx_http_server_create</em></strong>).</p>
+</div>
+<div class="paragraph">
+<p>This service replaces <strong><em>nx_http_server_content_get</em></strong>. This version requires caller to supply additional length information.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_22"><a class="anchor" href="#_input_parameters_22"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server control block.</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Pointer to the HTTP Client request packet. Note that this packet must not be released by the request notify callback.</p>
+</li>
+<li>
+<p><em>byte_offset</em>: Number of bytes to offset into the content area.</p>
+</li>
+<li>
+<p><em>destination_ptr</em>: Pointer to the destination area for the content.</p>
+</li>
+<li>
+<p><em>destination_size</em>: Maximum number of bytes available in the destination area.</p>
+</li>
+<li>
+<p><em>actual_size</em>: Pointer to the destination variable that will be set to the actual size of the content copied.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_22"><a class="anchor" href="#_return_values_22"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful HTTP content get</p>
+</li>
+<li>
+<p><strong>NX_HTTP_ERROR</strong> (0xE0) HTTP Server internal error</p>
+</li>
+<li>
+<p><strong>NX_HTTP_DATA_END</strong> (0xE7) End of request content</p>
+</li>
+<li>
+<p><strong>NX_HTTP_TIMEOUT</strong> (0xE1) HTTP Server timeout in getting next packet</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid  pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_22"><a class="anchor" href="#_allowed_from_22"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_22"><a class="anchor" href="#_example_22"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Assuming we are in the application's request notify callback
+   routine, retrieve up to 100 bytes of content starting at offset
+   0. */
+status =  nx_http_server_content_get_extended(&amp;my_server, packet_ptr,
+                               0, my_buffer, 100, &amp;actual_size);
+
+/* If status is NX_SUCCESS, "my_buffer" contains "actual_size" bytes of
+   request content. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_content_length_get"><a class="anchor" href="#_nx_http_server_content_length_get"></a>nx_http_server_content_length_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get length of content in the request</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_23"><a class="anchor" href="#_prototype_23"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_content_length_get(NX_PACKET *packet_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_23"><a class="anchor" href="#_description_23"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to retrieve the HTTP content length in the supplied packet. If there is no HTTP content, this routine returns a value of zero. It should be called from the application&#8217;s request notify callback specified during HTTP Server creation (<em>nx_http_server_create</em>).</p>
+</div>
+<div class="paragraph">
+<p>This service is deprecated. Developers are encouraged to migrate to <em>nx_http_server_content_length_get_extended</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_23"><a class="anchor" href="#_input_parameters_23"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>packet_ptr</em>: Pointer to the HTTP Client request packet. Note that this packet must not be released by the request notify callback.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_23"><a class="anchor" href="#_return_values_23"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>content length</strong> On error, a value of zero is returned</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_23"><a class="anchor" href="#_allowed_from_23"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_23"><a class="anchor" href="#_example_23"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Assuming we are in the application's request notify callback
+   routine, get the content length of the HTTP Client request. */
+length =  nx_http_server_content_length_get(packet_ptr);
+
+/* The "length" variable now contains the length of the HTTP Client
+   request content area. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_content_length_get_extended"><a class="anchor" href="#_nx_http_server_content_length_get_extended"></a>nx_http_server_content_length_get_extended</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get length of content in the request/supports Content Length of zero value</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_24"><a class="anchor" href="#_prototype_24"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_content_length_get_extended(
+    NX_PACKET *packet_ptr,
+    UINT *content_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_24"><a class="anchor" href="#_description_24"></a>Description</h3>
+<div class="paragraph">
+<p>This service is similar to <strong><em>nx_http_server_content_length_get</em></strong> and attempts to retrieve the HTTP content length in the supplied packet. However, the return value indicates successful completion status, and the actual length value is returned in the input pointer <em>content_length</em>. If there is no HTTP content/Content Length = 0, this routine still returns a successful completion status and the content_length input pointer points to a valid length (zero). It should be called from the application&#8217;s request notify callback specified during HTTP Server creation (<strong><em>nx_http_server_create</em></strong>).</p>
+</div>
+<div class="paragraph">
+<p>This service replaces <strong><em>nx_http_server_content_length_get</em></strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_24"><a class="anchor" href="#_input_parameters_24"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>packet_ptr</em>: Pointer to the HTTP Client request packet. Note that this packet must not be released by the request notify callback.</p>
+</li>
+<li>
+<p><em>content_length</em>: Pointer to value retrieved from Content Length field</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_24"><a class="anchor" href="#_return_values_24"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful Server content get</p>
+</li>
+<li>
+<p><strong>NX_HTTP_INCOMPLETE_PUT_ERROR</strong> (0xEF) Improper HTTP header format</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_24"><a class="anchor" href="#_allowed_from_24"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_24"><a class="anchor" href="#_example_24"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Assuming we are in the application's request notify callback
+   routine, get the content length of the HTTP Client request. */
+ULONG content_length;
+
+status =  nx_http_server_content_length_get_extended(packet_ptr, &amp;content_length);
+
+/* If the "status" variable indicates successful completion, the"length" variable
+   contains the length of the HTTP Client request content area. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_create"><a class="anchor" href="#_nx_http_server_create"></a>nx_http_server_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create an HTTP Server instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_25"><a class="anchor" href="#_prototype_25"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_create(
+    NX_HTTP_SERVER *http_server_ptr,
+	 CHAR *http_server_name,
+    NX_IP *ip_ptr,
+    FX_MEDIA *media_ptr,
+    VOID *stack_ptr,
+    ULONG stack_size,
+    NX_PACKET_POOL *pool_ptr,
+    UINT (*authentication_check)(
+        NX_HTTP_SERVER *server_ptr,
+        UINT request_type,
+        CHAR *resource,
+        CHAR **name,
+        CHAR **password,
+        CHAR **realm),
+	  UINT (*request_notify)(
+        NX_HTTP_SERVER *server_ptr,
+        INT request_type,
+        CHAR *resource,
+        NX_PACKET *packet_ptr));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_25"><a class="anchor" href="#_description_25"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates an HTTP Server instance, which runs in the context of its own ThreadX thread. The optional <em>authentication_check</em> and request_notify application callback routines give the application software control over the basic operations of the HTTP Server.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_25"><a class="anchor" href="#_input_parameters_25"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>http_server_ptr</em>: Pointer to HTTP Server control block.</p>
+</li>
+<li>
+<p><em>http_server_name</em>: Pointer to HTTP Server&#8217;s name.</p>
+</li>
+<li>
+<p><em>ip_ptr</em>: Pointer to previously created IP instance.</p>
+</li>
+<li>
+<p><em>media_ptr</em>: Pointer to previously created FileX media instance.</p>
+</li>
+<li>
+<p><em>stack_ptr</em>: Pointer to HTTP Server thread stack area.</p>
+</li>
+<li>
+<p><em>stack_size</em>: Pointer to HTTP Server thread stack size.</p>
+</li>
+<li>
+<p><em>authentication_check</em>: Function pointer to application&#8217;s authentication checking routine. If specified, this routine is called for each HTTP Client request. If this parameter is NULL, no authentication will be performed.</p>
+</li>
+<li>
+<p><em>request_notify</em>: Function pointer to application&#8217;s request notify routine. If specified, this routine is called prior to the HTTP server processing of the request. This allows the resource name to be redirected or fields within a resource to be updated prior to completing the HTTP Client request.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_25"><a class="anchor" href="#_return_values_25"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful HTTP Server create.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid HTTP Server, IP, media, stack, or packet pool pointer.</p>
+</li>
+<li>
+<p>NX_HTTP_POOL_ERROR (0xE9) Packet payload of pool is not large enough to contain complete HTTP request.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_25"><a class="anchor" href="#_allowed_from_25"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_25"><a class="anchor" href="#_example_25"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Create an HTTP Server instance called "my_server."  */
+status =  nx_http_server_create(&amp;my_server, "my server", &amp;ip_0, &amp;ram_disk,
+			  stack_ptr, stack_size, &amp;pool_0,
+			  my_authentication_check, my_request_notify);
+
+/* If status equals NX_SUCCESS, the HTTP Server creation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_delete"><a class="anchor" href="#_nx_http_server_delete"></a>nx_http_server_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete an HTTP Server instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_26"><a class="anchor" href="#_prototype_26"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_delete(NX_HTTP_SERVER *http_server_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_26"><a class="anchor" href="#_description_26"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes a previously created HTTP Server instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_26"><a class="anchor" href="#_input_parameters_26"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>http_server_ptr</em>: Pointer to HTTP Server control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_26"><a class="anchor" href="#_return_values_26"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful HTTP Server delete</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid HTTP Server pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_26"><a class="anchor" href="#_allowed_from_26"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_26"><a class="anchor" href="#_example_26"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Delete the HTTP Server instance called "my_server."  */
+status =  nx_http_server_delete(&amp;my_server);
+
+/* If status equals NX_SUCCESS, the HTTP Server delete was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_get_entity_content"><a class="anchor" href="#_nx_http_server_get_entity_content"></a>nx_http_server_get_entity_content</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieve the location and length of entity data</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_27"><a class="anchor" href="#_prototype_27"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_get_entity_content(
+    NX_HTTP_SERVER *server_ptr,
+    NX_PACKET **packet_pptr,
+    ULONG *available_offset,
+    ULONG *available_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_27"><a class="anchor" href="#_description_27"></a>Description</h3>
+<div class="paragraph">
+<p>This service determines the location of the start of data within the current multipart entity in the received Client messages, and the length of data not including the boundary string. Internally HTTP server updates its own offsets so that this function can be called again on the same Client datagram for messages with multiple entities. The packet pointer is updated to the next packet where the Client message is a multi-packet datagram.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<strong>NX_HTTP_MULTIPART_ENABLE</strong> must be enabled to use this service.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>See <a href="#nx_http_server_get_entity_header"><em>nx_http_server_get_entity_header</em></a> for more details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_27"><a class="anchor" href="#_input_parameters_27"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server</p>
+</li>
+<li>
+<p><em>packet_pptr</em>: Pointer to location of packet pointer. Note that the application should not release this packet.</p>
+</li>
+<li>
+<p><em>available_offset</em>: Pointer to offset of entity data from the packet prepend pointer</p>
+</li>
+<li>
+<p><em>available_length</em>: Pointer to length of entity data</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_27"><a class="anchor" href="#_return_values_27"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully retrieved size and location of entity content</p>
+</li>
+<li>
+<p><strong>NX_HTTP_BOUNDARY_ALREADY_FOUND</strong> (0xF4) Content for the HTTP server  internal multipart markers is already found</p>
+</li>
+<li>
+<p>NX_HTTP_ERROR (0xE0) Internal HTTP error</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_27"><a class="anchor" href="#_allowed_from_27"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_27"><a class="anchor" href="#_example_27"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">NX_HTTP_SERVER my_server;
+
+UINT        offset, length;
+NX_PACKET  *packet_ptr;
+
+/* Inside the request notify callback, the HTTP server application first obtains
+   the entity header to determine details about the multipart data. If
+   successful, it then calls this service to get the location of entity data: */
+
+status =  nx_http_server_get_entity_content(&amp;my_server, &amp;packet_ptr, *offset,
+&amp;length);
+
+/* If status equals NX_SUCCESS, offset and location determine the location of the
+   entity data. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_get_entity_header"><a class="anchor" href="#_nx_http_server_get_entity_header"></a>nx_http_server_get_entity_header</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieve the contents of entity header</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_28"><a class="anchor" href="#_prototype_28"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_get_entity_header(
+    NX_HTTP_SERVER *server_ptr,
+    NX_PACKET **packet_pptr,
+    UCHAR *entity_header_buffer,
+    ULONG buffer_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_28"><a class="anchor" href="#_description_28"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the entity header into the specified buffer. Internally HTTP Server updates its own pointers to locate the next multipart entity in a Client datagram with multiple entity headers. The packet pointer is updated to the next packet where the Client message is a multi-packet datagram.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<strong>NX_HTTP_MULTIPART_ENABLE</strong> must be enabled to use this service.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_28"><a class="anchor" href="#_input_parameters_28"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server</p>
+</li>
+<li>
+<p><em>packet_pptr</em>: Pointer to location of packet pointer. Note that the application should not release this packet.</p>
+</li>
+<li>
+<p><em>entity_header_buffer</em>: Pointer to location to store entity header</p>
+</li>
+<li>
+<p><em>buffer_size</em>: Size of input buffer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_28"><a class="anchor" href="#_return_values_28"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully retrieved entity header</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_FOUND</strong> <strong>(0xE6)</strong> Entity header field not found</p>
+</li>
+<li>
+<p><strong>NX_HTTP_TIMEOUT</strong> <strong>(0xE1)</strong> Time expired to receive next packet for multipacket client message</p>
+</li>
+<li>
+<p>NX_HTTP_ERROR (0xE0) Internal HTTP error</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_28"><a class="anchor" href="#_allowed_from_28"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_28"><a class="anchor" href="#_example_28"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* my_request_notify is the application request notify callback registered with
+      the HTTP server in nx_http_server_create, creates a response to the received
+      Client request. */
+
+      UINT  my_request_notify(NX_HTTP_SERVER *server_ptr, UINT request_type,
+ 							  CHAR *resource, NX_PACKET *packet_ptr)
+      {
+
+		NX_PACKET   *sresp_packet_ptr;
+		UINT        offset, length;
+		NX_PACKET   *response_pkt;
+		UCHAR       buffer[1440];
+
+    	/* Process multipart data. */
+    	if(request_type == NX_HTTP_SERVER_POST_REQUEST)
+    	{
+
+	   /* Get the content header. */
+	   while(nx_http_server_get_entity_header(server_ptr, &amp;packet_ptr, buffer,
+                                         sizeof(buffer)) == NX_SUCCESS)
+   {
+
+      /* Header obtained successfully. Get the content data location. */
+      while(nx_http_server_get_entity_content(server_ptr, &amp;packet_ptr, &amp;offset,
+                                              &amp;length) == NX_SUCCESS)
+      {
+           /* Write content data to buffer. */
+           nx_packet_data_extract_offset(packet_ptr, offset, buffer, length,
+                                         &amp;length);
+           buffer[length] = 0;
+      }
+
+    }
+
+    /* Generate HTTP header. */
+    status = nx_http_server_callback_generate_response_header(server_ptr,
+                         &amp;response_pkt, NX_HTTP_STATUS_OK, 800, "text/html",
+                         "Server: NetXDuo HTTP 5.3\r\n");
+
+    if(status == NX_SUCCESS)
+    {
+        if(nx_http_server_callback_packet_send(server_ptr, response_pkt) !=
+  NX_SUCCESS)
+ {
+                nx_packet_release(response_pkt);
+	 }
+    }
+
+
+}
+else
+{
+	/* Indicate we have not processed the response to client yet.*/
+	return(NX_SUCCESS);
+}
+
+/* Indicate the response to client is transmitted. */
+return(NX_HTTP_CALLBACK_COMPLETED);</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_gmt_callback_set"><a class="anchor" href="#_nx_http_server_gmt_callback_set"></a>nx_http_server_gmt_callback_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the callback to obtain GMT date and time</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_29"><a class="anchor" href="#_prototype_29"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_gmt_callback_set(
+    NX_HTTP_SERVER *server_ptr,
+    VOID (*gmt_get)(NX_HTTP_SERVER_DATE *date);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_29"><a class="anchor" href="#_description_29"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the callback to obtain GMT date and time with a previously created HTTP server. This service is invoked with the HTTP server is creating a header in HTTP server responses to the Client.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_29"><a class="anchor" href="#_input_parameters_29"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server</p>
+</li>
+<li>
+<p><em>gmt_getv</em>: Pointer to GMT callback</p>
+</li>
+<li>
+<p><em>datev</em>: Pointer to the date retrieved</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_29"><a class="anchor" href="#_return_values_29"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully set the callback</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07)	Invalid packet or parameter pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_29"><a class="anchor" href="#_allowed_from_29"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_29"><a class="anchor" href="#_example_29"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">NX_HTTP_SERVER my_server;
+
+VOID get_gmt(NX_HTTP_SERVER_DATE *now);
+
+/* After the HTTP server is created by calling nx_http_server_create, and before
+   starting HTTP services when nx_http_server_start is called, set the GMT
+   retrieve callback: */
+
+status =  nx_http_server_gmt_callback_set(&amp;my_server, gmt_get);
+
+/* If status equals NX_SUCCESS, the gmt_get will be called to set the HTTP server
+   response header date. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_invalid_userpassword_notify_set"><a class="anchor" href="#_nx_http_server_invalid_userpassword_notify_set"></a>nx_http_server_invalid_userpassword_notify_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the callback to to handle invalid user/password</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_30"><a class="anchor" href="#_prototype_30"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_invalid_userpassword_notify_set(
+    NX_HTTP_SERVER *http_server_ptr,
+    UINT (*invalid_username_password_callback)
+        (CHAR *resource,
+        NXD_ADDRESS *client_address,
+        UINT request_type));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_30"><a class="anchor" href="#_description_30"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the callback invoked when an invalid username and password is received in a Client get, put or delete request, either by digest or basic authentication. The HTTP server must be previously created.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_30"><a class="anchor" href="#_input_parameters_30"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server</p>
+</li>
+<li>
+<p><em>invalid_username_password_callback</em>: Pointer to invalid user/pass callback</p>
+</li>
+<li>
+<p><em>resource</em>: Pointer to the resource specified by the client</p>
+</li>
+<li>
+<p><em>client_address</em>: Pointer to client address. Can be IPv4 or IPv6</p>
+</li>
+<li>
+<p><em>request_type</em>: Indicates client request type. May be:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_HTTP_SERVER_GET_REQUEST</strong></p>
+</li>
+<li>
+<p><strong>NX_HTTP_SERVER_POST_REQUEST</strong></p>
+</li>
+<li>
+<p><strong>NX_HTTP_SERVER_HEAD_REQUEST</strong></p>
+</li>
+<li>
+<p><strong>NX_HTTP_SERVER_PUT_REQUEST</strong></p>
+</li>
+<li>
+<p><strong>NX_HTTP_SERVER_DELETE_REQUEST</strong></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_30"><a class="anchor" href="#_return_values_30"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully set the callback</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_30"><a class="anchor" href="#_allowed_from_30"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_30"><a class="anchor" href="#_example_30"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">NX_HTTP_SERVER my_server;
+VOID invalid_username_password_callback (NX_ CHAR *resource,
+										 NXD_ADDRESS *client_address,
+										 UINT   request_type);
+
+/* After the HTTP server is created by calling nx_http_server_create, and before
+   starting HTTP services when nx_http_server_start is called, set the invalid
+   username password callback: */
+
+status =  nx_http_server_gmt_callback_set(&amp;my_server,
+										  invalid_username_password_callback);
+
+/* If status equals NX_SUCCESS, the invalid_username_password_callback function
+   will be called when the HTTP server receives an invalid username/password. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_mime_maps_additional_set"><a class="anchor" href="#_nx_http_server_mime_maps_additional_set"></a>nx_http_server_mime_maps_additional_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set additional MIME maps for HTML</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_31"><a class="anchor" href="#_prototype_31"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_mime_maps_additional_set(
+    NX_HTTP_SERVER *server_ptr,
+    NX_HTTP_SERVER_MIME_MAP *mime_maps,
+    UINT mime_maps_num);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_31"><a class="anchor" href="#_description_31"></a>Description</h3>
+<div class="paragraph">
+<p>This service allows the HTTP application developer to add additional MIME types from the default MIME types supplied by NetX Duo HTTP Server (see <em>nx_http_server_get_type</em> for list of defined types).</p>
+</div>
+<div class="paragraph">
+<p>When a client request is received, e.g. a GET request, HTTP server parses the requested file type from the HTTP header using preferentially the additional MIME map set and if no match if found, it looks for a match in the default MIME map of the HTTP server. If no match is found, the MIME type defaults to "text/plain".</p>
+</div>
+<div class="paragraph">
+<p>If the request notify function is registered with the HTTP server, the request notify callback can call <strong><em>nx_http_server_type_retrieve</em></strong> to parse the file type.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_31"><a class="anchor" href="#_input_parameters_31"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP Server instance</p>
+</li>
+<li>
+<p><em>mime_maps</em>: Pointer to a MIME map array</p>
+</li>
+<li>
+<p><em>mime_map_num</em>: Number of MIME maps in array</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_31"><a class="anchor" href="#_return_values_31"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful HTTP Server MIME map set</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_31"><a class="anchor" href="#_allowed_from_31"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_31"><a class="anchor" href="#_example_31"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* my_server is an NX_HTTP_SERVER previously created. */
+
+NX_HTTP_SERVER_MIME_MAP my_mime_maps [2];
+
+static NX_HTTP_SERVER_MIME_MAP my_mime_maps[] =
+{
+    {"abc",      "yourtype/abc"},
+    {"xyz",      "mytype/xyz"},
+};
+
+status =  nx_http_server_mime_maps_additional_set(&amp;my_server,
+												  &amp;my_mime_maps[0], 2);
+
+/* If status equals NX_SUCCESS, two additional MIME types are added to the HTTP
+  server MIME map set." */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_packet_content_find"><a class="anchor" href="#_nx_http_server_packet_content_find"></a>nx_http_server_packet_content_find</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Extract content length and set pointer to start of data</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_32"><a class="anchor" href="#_prototype_32"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_packet_content_find(
+    NX_HTTP_SERVER *server_ptr,
+    NX_PACKET **packet_ptr,
+    UINT *content_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_32"><a class="anchor" href="#_description_32"></a>Description</h3>
+<div class="paragraph">
+<p>This service extracts the content length from the HTTP header. It also  updates the supplied packet as follows: the packet prepend pointer (start of location of packet buffer to write to) is set to the HTTP content (data) just passed the HTTP header.</p>
+</div>
+<div class="paragraph">
+<p>If the beginning of content is not found in the current packet, the function waits for the next packet to be received using the <strong>NX_HTTP_SERVER_TIMEOUT_RECEIVE</strong> wait option.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This should not be called before calling <strong><em>nx_http_server_get_entity_header</em></strong> because it modifies the prepend pointer past the entity header.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_32"><a class="anchor" href="#_input_parameters_32"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP server instance</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Pointer to packet pointer for returning the packet with updated prepend pointer</p>
+</li>
+<li>
+<p><em>content_length</em>: Pointer to extracted <em>content_length</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_32"><a class="anchor" href="#_return_values_32"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) HTTP content length found and packet successfully updated</p>
+</li>
+<li>
+<p><strong>NX_HTTP_TIMEOUT</strong> (0xE1) Time expired waiting on next packet</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_32"><a class="anchor" href="#_allowed_from_32"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_32"><a class="anchor" href="#_example_32"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* The HTTP server pointed to by server_ptr is previously created and started.
+The server has received a Client request packet, recv_packet_ptr, and the packet
+content find service is called from the request notify callback function
+registered with the HTTP server. */
+
+UINT content_length;
+
+status =  nx_http_server_packet_content_find(server_ptr, recv_packet_ptr,
+                                             &amp;content_length);
+
+/* If status equals NX_SUCCESS, the content length specifies the content length
+   and the packet pointer prepend pointer is set to the HTTP content (data). */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_packet_get"><a class="anchor" href="#_nx_http_server_packet_get"></a>nx_http_server_packet_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Receive the next HTTP packet</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_33"><a class="anchor" href="#_prototype_33"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_packet_get(
+    NX_HTTP_SERVER *server_ptr,
+    NX_PACKET **packet_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_33"><a class="anchor" href="#_description_33"></a>Description</h3>
+<div class="paragraph">
+<p>This service returns the next packet received on the HTTP server socket. The wait option to receive a packet is NX_HTTP_SERVER_TIMEOUT_RECEIVE.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_33"><a class="anchor" href="#_input_parameters_33"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to HTTP server instance</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Pointer to received packet</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_33"><a class="anchor" href="#_return_values_33"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully received next packet</p>
+</li>
+<li>
+<p><strong>NX_HTTP_TIMEOUT</strong> (0xE1) Time expired waiting on next packet</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07)	Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_33"><a class="anchor" href="#_allowed_from_33"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_33"><a class="anchor" href="#_example_33"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* The HTTP server pointed to by server_ptr is previously created and started. */
+
+UINT content_length;
+NX_PACKET *recv_packet_ptr;
+
+status =  nx_http_server_packet_get(server_ptr, &amp;recv_packet_ptr);
+
+/* If status equals NX_SUCCESS, a Client packet is obtained. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_param_get"><a class="anchor" href="#_nx_http_server_param_get"></a>nx_http_server_param_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get parameter from the request</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_34"><a class="anchor" href="#_prototype_34"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_param_get(
+    NX_PACKET *packet_ptr,
+    UINT param_number, CHAR *param_ptr,
+    UINT max_param_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_34"><a class="anchor" href="#_description_34"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to retrieve the specified HTTP URL parameter in the supplied request packet. If the requested HTTP parameter is not present,  this routine returns a status of <strong>NX_HTTP_NOT_FOUND</strong>. This routine should be called from the application&#8217;s request notify callback specified during HTTP Server creation (<strong><em>nx_http_server_create</em></strong>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_34"><a class="anchor" href="#_input_parameters_34"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>packet_ptr</em>: Pointer to HTTP Client request packet. Note that the application should not release this packet.</p>
+</li>
+<li>
+<p><em>param_number</em>: Logical number of the parameter starting at zero, from left to right in the parameter list.</p>
+</li>
+<li>
+<p><em>param_ptr</em>: Destination area to copy the parameter.</p>
+</li>
+<li>
+<p><em>max_param_size</em>: Maximum size of the parameter destination area.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_34"><a class="anchor" href="#_return_values_34"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful HTTP Server parameter get</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_FOUND</strong> (0xE6) Specified parameter not found</p>
+</li>
+<li>
+<p><strong>NX_HTTP_IMPROPERLY_TERMINATED_PARAM</strong> (0xF3) Request parameter not properly terminated</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_34"><a class="anchor" href="#_allowed_from_34"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_34"><a class="anchor" href="#_example_34"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Assuming we are in the application's request notify callback
+   routine, get the first parameter of the HTTP Client request. */
+
+status =  nx_http_server_param_get(request_packet_ptr, 0, param_destination,
+			   30);
+
+/* If status equals NX_SUCCESS, the NULL-terminated first parameter can be found
+   in "param_destination." */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_query_get"><a class="anchor" href="#_nx_http_server_query_get"></a>nx_http_server_query_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get query from the request</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_35"><a class="anchor" href="#_prototype_35"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_query_get(
+    NX_PACKET *packet_ptr,
+    UINT query_number,
+    CHAR *query_ptr,
+    UINT max_query_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_35"><a class="anchor" href="#_description_35"></a>Description</h3>
+<div class="paragraph">
+<p>This service attempts to retrieve the specified HTTP URL query in the supplied request packet. If the requested HTTP query is not present,  this routine returns a status of <strong>NX_HTTP_NOT_FOUND</strong>. This routine should be called from the application&#8217;s request notify callback specified during HTTP Server creation (<strong><em>nx_http_server_create</em></strong>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_35"><a class="anchor" href="#_input_parameters_35"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>packet_ptr</em>: Pointer to HTTP Client request packet. Note that the application should not release this packet.</p>
+</li>
+<li>
+<p><em>query_number</em>: Logical number of the parameter starting at zero, from left to right in the query list.</p>
+</li>
+<li>
+<p><em>query_ptr</em>: Destination area to copy the query.</p>
+</li>
+<li>
+<p><em>max_query_size</em>: Maximum size of the query destination area.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_35"><a class="anchor" href="#_return_values_35"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful HTTP Server query get</p>
+</li>
+<li>
+<p><strong>NX_HTTP_FAILED</strong> (0xE2) Query size too small.</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NOT_FOUND</strong> (0xE6) Specified query not found</p>
+</li>
+<li>
+<p><strong>NX_HTTP_NO_QUERY_PARSED</strong> (0xF2) No query in Client request</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_35"><a class="anchor" href="#_allowed_from_35"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_35"><a class="anchor" href="#_example_35"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Assuming we are in the application's request notify callback
+   routine, get the first query of the HTTP Client request. */
+status =  nx_http_server_query_get(request_packet_ptr, 0, query_destination,
+				30);
+
+/* If status equals NX_SUCCESS, the NULL-terminated first query can be found
+   in "query_destination." */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_start"><a class="anchor" href="#_nx_http_server_start"></a>nx_http_server_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start the HTTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_36"><a class="anchor" href="#_prototype_36"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_start(NX_HTTP_SERVER *http_server_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_36"><a class="anchor" href="#_description_36"></a>Description</h3>
+<div class="paragraph">
+<p>This service starts the previously create HTTP Server instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_36"><a class="anchor" href="#_input_parameters_36"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>http_server_ptr</em>: Pointer to HTTP Server instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_36"><a class="anchor" href="#_return_values_36"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful Server start</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_36"><a class="anchor" href="#_allowed_from_36"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_36"><a class="anchor" href="#_example_36"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Start the HTTP Server instance "my_server."  */
+status =  nx_http_server_start(&amp;my_server);
+
+/* If status equals NX_SUCCESS, the HTTP Server has been started. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_stop"><a class="anchor" href="#_nx_http_server_stop"></a>nx_http_server_stop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Stop the HTTP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_37"><a class="anchor" href="#_prototype_37"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_stop(NX_HTTP_SERVER *http_server_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_37"><a class="anchor" href="#_description_37"></a>Description</h3>
+<div class="paragraph">
+<p>This service stops the previously create HTTP Server instance. This routine should be called prior to deleting an HTTP Server instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_37"><a class="anchor" href="#_input_parameters_37"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>http_server_ptr</em>: Pointer to HTTP Server instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_37"><a class="anchor" href="#_return_values_37"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successful Server stop</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_37"><a class="anchor" href="#_allowed_from_37"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_37"><a class="anchor" href="#_example_37"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Stop the HTTP Server instance "my_server."  */
+status =  nx_http_server_stop(&amp;my_server);
+
+/* If status equals NX_SUCCESS, the HTTP Server has been stopped. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_type_get"><a class="anchor" href="#_nx_http_server_type_get"></a>nx_http_server_type_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Extract file type from Client HTTP request</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_38"><a class="anchor" href="#_prototype_38"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_type_get(
+    NX_HTTP_SERVER *http_server_ptr,
+    CHAR *name,
+    CHAR *http_type_string);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_38"><a class="anchor" href="#_description_38"></a>Description</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This service is deprecated. Users are encouraged to use the service <em>nx_http_server_type_retrieve</em>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This service extracts the HTTP request type in the buffer http_type_string and its length in the return value from the input buffer name, usually the URL. If no MIME map is found, it defaults to the "text/plain" type. Otherwise it compares the extracted type against the HTTP Server default MIME maps for a match. The default MIME maps in NetX Duo HTTP Server are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>html</strong> text/html</p>
+</li>
+<li>
+<p><strong>htm</strong> text/html</p>
+</li>
+<li>
+<p><strong>txt</strong> text/plain</p>
+</li>
+<li>
+<p><strong>gif</strong> image/gif</p>
+</li>
+<li>
+<p><strong>jpg</strong> image/jpeg</p>
+</li>
+<li>
+<p><strong>ico</strong> image/x-icon</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If supplied, it will also search a user defined set of additional MIME maps. See <em>nx_http_server_mime_maps_additional_set</em> for more details on user defined maps.</p>
+</div>
+<div class="paragraph">
+<p>This service is deprecated. Developers are encouraged to migrate to <em>nx_http_server_type_get_extended</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_38"><a class="anchor" href="#_input_parameters_38"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>http_server_ptr</em>: Pointer to HTTP Server instance</p>
+</li>
+<li>
+<p><em>name Pointer</em>: to buffer to search</p>
+</li>
+<li>
+<p><em>http_type_string</em>: (Pointer to extracted HTML type)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_38"><a class="anchor" href="#_return_values_38"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Length of string in bytes</strong> Non zero value is success. Zero indicates error.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_38"><a class="anchor" href="#_allowed_from_38"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_38"><a class="anchor" href="#_example_38"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* my_server is a previously created HTTP server, which starts accepting client
+   requests when nx_http_server_start is called*/
+
+CHAR temp_string[20];
+UINT string_length;
+
+/* Extract the HTTP type. */
+    string_length =  nx_http_server_type_get(&amp;my_server_ptr,
+				my_server.nx_http_server_request_resource, temp_string);
+
+/* If string_length is non zero, the HTTP string is extracted. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_type_get_extended"><a class="anchor" href="#_nx_http_server_type_get_extended"></a>nx_http_server_type_get_extended</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Extract file type from Client HTTP request</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_39"><a class="anchor" href="#_prototype_39"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_type_get_extended(
+    NX_HTTP_SERVER *http_server_ptr,
+    CHAR *name, CHAR *http_type_string,
+    UINT http_type_string_max_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_39"><a class="anchor" href="#_description_39"></a>Description</h3>
+<div class="paragraph">
+<p>This service extracts the HTTP request type in the buffer <em>http_type_string</em> and its length in the return value from the input buffer <em>name</em>, usually the URL. If no MIME map is found, it defaults to the "text/plain" type. Otherwise it compares the extracted type against the HTTP Server default MIME maps for a match. The default MIME maps in NetX Duo HTTP Server are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>html</strong> text/html</p>
+</li>
+<li>
+<p><strong>htm</strong> text/html</p>
+</li>
+<li>
+<p><strong>txt</strong> text/plain</p>
+</li>
+<li>
+<p><strong>gif</strong> image/gif</p>
+</li>
+<li>
+<p><strong>jpg</strong> image/jpeg</p>
+</li>
+<li>
+<p><strong>ico</strong> image/x-icon</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If supplied, it will also search a user defined set of additional MIME maps. See <em>nx_http_server_mime_maps_additional_set</em> for more details on user defined maps.</p>
+</div>
+<div class="paragraph">
+<p>This service replaces <em>nx_http_server_type_get</em>. This version supplies additional length information.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_39"><a class="anchor" href="#_input_parameters_39"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>http_server_ptr</em>: Pointer to HTTP Server instance</p>
+</li>
+<li>
+<p><em>name</em>: Pointer to buffer to search</p>
+</li>
+<li>
+<p><em>name_length</em>: Length of buffer to search</p>
+</li>
+<li>
+<p><em>http_type_string</em>: (Pointer to extracted HTML type)</p>
+</li>
+<li>
+<p><em>http_type_string_max_size</em>: Size of the http_type_string buffer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_39"><a class="anchor" href="#_return_values_39"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Length of string in bytes</strong> Non zero value is success. Zero indicates error.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_39"><a class="anchor" href="#_allowed_from_39"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_39"><a class="anchor" href="#_example_39"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* my_server is a previously created HTTP server, which starts accepting client
+   requests when nx_http_server_start is called*/
+
+CHAR temp_string[20];
+UINT string_length;
+
+/* Get the length of request resource. */
+	if (_nx_utility_string_length_check(
+					my_server.nx_http_server_request_resource, &amp;resource_length,
+                    sizeof(my_server.nx_http_server_request_resource) - 1))
+           {
+               return;
+           }
+
+/* Extract the HTTP type. */
+    string_length =  nx_http_server_type_get_extended(&amp;my_server,
+			   my_server.nx_http_server_request_resource, resource_length,
+			   temp_string, sizeof(temp_string));
+
+/* If string_length is non zero, the HTTP string is extracted. */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For a more detailed example, see the description for <a href="#nx_http_server_callback_generate_response_header"><em>nx_http_server_callback_generate_response_header</em></a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_digest_authenticate_notify_set"><a class="anchor" href="#_nx_http_server_digest_authenticate_notify_set"></a>nx_http_server_digest_authenticate_notify_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set digest authenticate callback function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_40"><a class="anchor" href="#_prototype_40"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_digest_authenticate_notify_set(
+    NX_HTTP_SERVER *http_server_ptr,
+    UINT (*digest_authenticate_callback)(
+        NX_HTTP_SERVER *server_ptr,
+        CHAR *name_ptr,
+        CHAR *realm_ptr,
+        CHAR *password_ptr,
+        CHAR *method,
+        CHAR *authorization_uri,
+        CHAR *authorization_nc,
+        CHAR *authorization_cnonce));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_40"><a class="anchor" href="#_description_40"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the callback invoked when digest authenticate is performed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_40"><a class="anchor" href="#_input_parameters_40"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>http_server_ptr</em>: Pointer to HTTP Server instance</p>
+</li>
+<li>
+<p><em>digest_authenticate_callback</em>: Pointer to digest authenticate callback</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_40"><a class="anchor" href="#_return_values_40"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully set the callback</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_NOT_SUPPORTED (0x4B) Digest authenticate not enabled</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_40"><a class="anchor" href="#_allowed_from_40"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_40"><a class="anchor" href="#_example_40"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT digest_authenticate_callback(NX_HTTP_SERVER *server_ptr, CHAR *name_ptr,
+                                  CHAR *realm_ptr, CHAR *password_ptr, CHAR *method,
+                                  CHAR *authorization_uri, CHAR *authorization_nc,
+                                  CHAR *authorization_cnonce)
+{
+    return(NX_SUCCESS);
+}
+
+NX_HTTP_SERVER my_server;
+
+/* After the HTTP server is created by calling nx_http_server_create, and before
+   starting HTTP services when nx_http_server_start is called, set the digest authenticate callback: */
+
+status =  nx_http_server_digest_authenticate_notify_set (&amp;my_server,
+    digest_authenticate_callback);
+
+/* If status equals NX_SUCCESS, the digest_authenticate_callback function
+   will be called when the HTTP server performs digest authenticate. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_http_server_authentication_check_set"><a class="anchor" href="#_nx_http_server_authentication_check_set"></a>nx_http_server_authentication_check_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set authentication checking callback function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_41"><a class="anchor" href="#_prototype_41"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_http_server_authentication_check_set(
+    NX_HTTP_SERVER *http_server_ptr,
+    UINT (*authentication_check_extended)(
+        NX_HTTP_SERVER *server_ptr,
+        UINT request_type,
+        CHAR *resource,
+        CHAR **name,
+        UINT *name_length,
+        CHAR **password,
+        UINT *password_length,
+        CHAR **realm,
+        UINT *realm_length));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_41"><a class="anchor" href="#_description_41"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the callback function of authentication checking.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_41"><a class="anchor" href="#_input_parameters_41"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>http_server_ptr</em>: Pointer to HTTP Server instance</p>
+</li>
+<li>
+<p><em>authentication_check_extended</em>: Pointer to application&#8217;s authentication checking</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_41"><a class="anchor" href="#_return_values_41"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Successfully set the callback</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_41"><a class="anchor" href="#_allowed_from_41"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_41"><a class="anchor" href="#_example_41"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">static UINT  authentication_check_extended(NX_HTTP_SERVER *server_ptr,
+                                           UINT request_type, CHAR *resource,
+                                           CHAR **name, UINT *name_length,
+                                           CHAR **password, UINT *password_length,
+                                           CHAR **realm, UINT *realm_length)
+{
+
+    /* Just use a simple name, password, and realm for all
+       requests and resources. */
+    *name =     "name";
+    *password = "password";
+    *realm =    "NetX Duo HTTP demo";
+    *name_length = 4;
+    *password_length = 8;
+    *realm_length = 18;
+
+    /* Request basic authentication. */
+    return(NX_HTTP_BASIC_AUTHENTICATE);
+}
+
+NX_HTTP_SERVER my_server;
+
+/* After the HTTP server is created by calling nx_http_server_create, and before
+   starting HTTP services when nx_http_server_start is called, set the
+   authentication checking callback: */
+
+nx_http_server_authentication_check_set (&amp;my_server,
+										 authentication_check_extended);</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

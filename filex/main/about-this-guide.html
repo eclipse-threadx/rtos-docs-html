@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>About This FileX User Guide :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/filex/main/about-this-guide.html">
+    <meta name="description" content="This guide contains comprehensive information about FileX, the high-performance real-time file system from Eclipse Foundation.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="filex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">FileX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">FileX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">FileX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-filex.html">Overview of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">FileX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - I/O drivers for FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - FileX fault tolerant module</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - FileX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - FileX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">FileX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">FileX</a></li>
+    <li>FileX user guide</li>
+    <li><a href="about-this-guide.html">About this guide</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/filex/modules/ROOT/pages/about-this-guide.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">About This FileX User Guide</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This guide contains comprehensive information about FileX, the high-performance, real-time embedded file system from Eclipse Foundation. To gain the most from this guide, you should be familiar with standard real-time operating system functions, FAT file system services, and the C programming language.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_organization"><a class="anchor" href="#_organization"></a>Organization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="chapter1.html" class="xref page">Chapter 1</a> - Introduces FileX</p>
+</div>
+<div class="paragraph">
+<p><a href="chapter2.html" class="xref page">Chapter 2</a> - Gives the basic steps to install and use FileX with your ThreadX application</p>
+</div>
+<div class="paragraph">
+<p><a href="chapter3.html" class="xref page">Chapter 3</a> - Provides a functional overview of the FileX system and basic information about FAT file system formats</p>
+</div>
+<div class="paragraph">
+<p><a href="chapter4.html" class="xref page">Chapter 4</a> - Details the application&#8217;s interface to FileX</p>
+</div>
+<div class="paragraph">
+<p><a href="chapter5.html" class="xref page">Chapter 5</a> - Describes the supplied FileX RAM driver and how to write your own custom FileX drivers</p>
+</div>
+<div class="paragraph">
+<p><a href="chapter6.html" class="xref page">Chapter 6</a> - Describes the FileX Fault Tolerant Module</p>
+</div>
+<div class="paragraph">
+<p><a href="appendix-a.html" class="xref page">Appendix A</a> - FileX Services</p>
+</div>
+<div class="paragraph">
+<p><a href="appendix-b.html" class="xref page">Appendix B</a> - FileX Constants</p>
+</div>
+<div class="paragraph">
+<p><a href="appendix-c.html" class="xref page">Appendix C</a> - FileX Data Types</p>
+</div>
+<div class="paragraph">
+<p><a href="appendix-d.html" class="xref page">Appendix D</a> - ASCII Chart</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_guide_conventions"><a class="anchor" href="#_guide_conventions"></a>Guide Conventions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>Italics</em> - Typeface denotes book titles, emphasizes important words, and indicates variables.</p>
+</div>
+<div class="paragraph">
+<p><strong>Boldface</strong> - Typeface denotes file names,
+key words, and further emphasizes important words and variables.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Information symbols draw attention to important or additional information that could affect performance or function.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Warning symbols draw attention to situations that developers should avoid because they could cause fatal errors.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_filex_data_types"><a class="anchor" href="#_filex_data_types"></a>FileX Data Types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to the custom FileX control structure data types, there is a series of special data types that are used in FileX service call interfaces. These special data types map directly to data types of the underlying C compiler. This is done to ensure portability between different C compilers. The exact implementation is inherited from ThreadX and can be found in the tx_port.h file included in the ThreadX distribution.</p>
+</div>
+<div class="paragraph">
+<p>The following is a list of FileX service call data types and their associated meanings.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>UINT</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Basic unsigned integer. This type must support 8-bit unsigned data; however, it is mapped to the most convenient unsigned data type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>ULONG</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unsigned long type. This type must support 32-bit unsigned data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>VOID</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Almost always equivalent to the compiler&#8217;s void type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>CHAR</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Most often a standard 8-bit character type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>ULONG64</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64-bit unsigned integer data type.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Additional data types are used within the FileX source. They are located in either the <strong><em>tx_port.h</em></strong> or <strong><em>fx_port.h</em></strong> files.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>Troubleshooting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For troubleshooting, be sure to collect the following information.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>A detailed description of the problem, including frequency of occurrence and whether it can be reliably reproduced.</p>
+</li>
+<li>
+<p>A detailed description of any changes to the application and/or FileX that preceded the problem.</p>
+</li>
+<li>
+<p>The contents of the <em>tx_version_id and
+_fx_version_id strings found in the <strong>_tx_port.h</em></strong> and <strong><em>fx_port.h</em></strong> files of your distribution. These strings will provide valuable information regarding your run-time environment.</p>
+</li>
+<li>
+<p>The contents in RAM of the following <strong>ULONG</strong> variables. These variables will give information on how your ThreadX and FileX libraries were built:</p>
+<div class="paragraph">
+<p><strong>_tx_build_options</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>_fx_system_build_options1</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>_fx_system_build_options2</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>_fx_system_build_options3</strong></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

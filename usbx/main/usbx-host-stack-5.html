@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 5 - USBX Host Classes API :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/usbx/main/usbx-host-stack-5.html">
+    <meta name="description" content="Learn about the USBX Host Classes API.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="usbx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">USBX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">USBX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">USBX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-usbx.html">Overview of USBX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-3.html">Ch. 3 - Functional components of USBX device stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-2.html">Ch. 2 - USBX device class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-7.html">Ch. 7 - USBX device class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-6.html">Ch. 6 - USBX CDC-ECM class usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-2.html">Ch. 2 - USBX Host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">USBX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">USBX</a></li>
+    <li>USBX host stack user guide</li>
+    <li><a href="usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/usbx/modules/ROOT/pages/usbx-host-stack-5.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 5 - USBX Host Classes API</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter covers all the exposed APIs of the USBX host classes. The
+following APIs for each class are described in detail.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>HID class</p>
+</li>
+<li>
+<p>CDC-ACM class</p>
+</li>
+<li>
+<p>CDC-ECM class</p>
+</li>
+<li>
+<p>Storage class</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_client_register"><a class="anchor" href="#_ux_host_class_hid_client_register"></a>ux_host_class_hid_client_register</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Register a HID client to the HID class.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_hid_client_register(
+    UCHAR *hid_client_name,
+    UINT (*hid_client_handler)
+    (struct UX_HOST_CLASS_HID_CLIENT_COMMAND_STRUCT *));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to register a HID client to the HID class and returns immediately. The HID class needs to find a match between a HID device and HID client before requesting data from this device.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The C string of hid_client_name must be NULL-terminated and the length of it (without the NULL-terminator itself) must be no larger than <strong>UX_HOST_CLASS_HID_MAX_CLIENT_NAME_LENGTH</strong>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters"><a class="anchor" href="#_parameters"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hid_client_name</strong> Pointer to the HID client name.</p>
+</li>
+<li>
+<p><strong>hid_client_handler</strong> Pointer to the HID client handler.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed</p>
+</li>
+<li>
+<p><strong>UX_MEMORY_INSUFFICIENT</strong> (0x12) Memory allocation for client failed.</p>
+</li>
+<li>
+<p><strong>UX_MEMORY_ARRAY_FULL</strong> (0x1a) Max clients already registered.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_ALREADY_INSTALLED</strong> (0x58) This class already exists</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates how to register a HID client, in
+this case a USB mouse, to the HID class. */
+
+status = ux_host_class_hid_client_register("ux_host_class_hid_client_mouse",
+    ux_host_class_hid_mouse_entry);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_report_callback_register"><a class="anchor" href="#_ux_host_class_hid_report_callback_register"></a>ux_host_class_hid_report_callback_register</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Register a callback from the HID class.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_hid_report_callback_register(
+    UX_HOST_CLASS_HID *hid,
+    UX_HOST_CLASS_HID_REPORT_CALLBACK *call_back);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to register a callback from the HID class to the HID client when a report is received and returns immediately.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_2"><a class="anchor" href="#_parameters_2"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hid</strong> Pointer to the HID class instance</p>
+</li>
+<li>
+<p><strong>call_back</strong> Pointer to the call_back structure</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) Invalid HID instance.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_HID_REPORT_ERROR</strong> (0x79) Error in the report callback registration.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* This example illustrates how to register a HID client, in this case a USB mouse, to the HID class. In this case, the HID client is asking the HID class to call the client for each usage received in the HID report. */
+
+call_back.ux_host_class_hid_report_callback_id = 0;
+call_back.ux_host_class_hid_report_callback_function = ux_host_class_hid_mouse_callback;
+
+call_back.ux_host_class_hid_report_callback_buffer = UX_NULL;
+call_back.ux_host_class_hid_report_callback_flags = UX_HOST_CLASS_HID_REPORT_INDIVIDUAL_USAGE;
+
+call_back.ux_host_class_hid_report_callback_length = 0;
+
+status = ux_host_class_hid_report_callback_register(hid, &amp;call_back);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_periodic_report_start"><a class="anchor" href="#_ux_host_class_hid_periodic_report_start"></a>ux_host_class_hid_periodic_report_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start the periodic endpoint for a HID class instance.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_hid_periodic_report_start(UX_HOST_CLASS_HID *hid);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to start the periodic (interrupt) endpoint for the instance of the HID class that is bound to this HID client. The HID class cannot start the periodic endpoint until the HID client is activated and therefore it is left to the HID client to start this endpoint to receive reports.</p>
+</div>
+<div class="paragraph">
+<p>To protect states for reentry, it waits the semaphore of HID instance before modifying periodic report polling state.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameter"><a class="anchor" href="#_input_parameter"></a>Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hid</strong> Pointer to the HID class instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) Periodic reporting successfully started.</p>
+</li>
+<li>
+<p><strong>ux_host_class_hid_PERIODIC_REPORT_ERROR</strong> (0x7A) Error in the periodic report.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) HID class instance does not exist.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates how to start the periodic
+endpoint. */
+
+status = ux_host_class_hid_periodic_report_start(hid);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_periodic_report_stop"><a class="anchor" href="#_ux_host_class_hid_periodic_report_stop"></a>ux_host_class_hid_periodic_report_stop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Stop the periodic endpoint for a HID class instance.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_hid_periodic_report_stop(UX_HOST_CLASS_HID *hid);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to stop the periodic (interrupt) endpoint for the instance of the HID class that is bound to this HID client. The HID class cannot stop the periodic endpoint until the HID client is deactivated, all its resources freed and therefore it is left to the HID client to stop this endpoint.</p>
+</div>
+<div class="paragraph">
+<p>To protect states for reentry, it waits the semaphore of HID instance before modifying periodic report polling state.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameter_2"><a class="anchor" href="#_input_parameter_2"></a>Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hid</strong> Pointer to the HID class instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) Periodic reporting successfully stopped.</p>
+</li>
+<li>
+<p><strong>ux_host_class_hid_PERIODIC_REPORT_ERROR</strong> (0x7A) Error in the periodic report.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) HID class instance does not exist</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates how to stop the periodic endpoint. */
+
+status = ux_host_class_hid_periodic_report_stop(hid);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_idle_get"><a class="anchor" href="#_ux_host_class_hid_idle_get"></a>ux_host_class_hid_idle_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get a report idle rate from a HID class instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  ux_host_class_hid_idle_get(UX_HOST_CLASS_HID *hid,
+                                USHORT *idle_time, USHORT report_id)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to get idle rate time period used by device to keep sending reports when there is no data.</p>
+</div>
+<div class="paragraph">
+<p>To protect states for reentry, it waits the semaphore of HID instance and the semaphore of device default control endpoint before issuing the transfer request.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_3"><a class="anchor" href="#_parameters_3"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hid</strong> Pointer to the HID class instance.</p>
+</li>
+<li>
+<p><strong>idle_time</strong> Pointer to the buffer to hold idle rate time period between reports.</p>
+</li>
+<li>
+<p><strong>report_id</strong> Report ID.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed.</p>
+</li>
+<li>
+<p><strong>UX_FUNCTION_NOT_SUPPORTED</strong> (0x54) Function not supported.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) HID class instance does not exist.</p>
+</li>
+<li>
+<p><strong>UX_TRANSFER_STALLED</strong> (0x21) Request is not accepted by device, there is no idle rate control and reports are only sent when there is data.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">USHORT idle_time;
+UINT   status;
+
+/* The following example illustrates how to get idle rate. */
+
+status = ux_host_class_hid_idle_get(hid, &amp;idle_time, 0);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_idle_set"><a class="anchor" href="#_ux_host_class_hid_idle_set"></a>ux_host_class_hid_idle_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send idle rate</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  ux_host_class_hid_idle_set(UX_HOST_CLASS_HID *hid,
+                                USHORT idle_time, USHORT report_id)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to set idle rate time period to the device.</p>
+</div>
+<div class="paragraph">
+<p>To protect states for reentry, it waits the semaphore of HID instance and the semaphore of device default control endpoint before issuing the transfer request.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_4"><a class="anchor" href="#_parameters_4"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hid</strong> Pointer to the HID class instance.</p>
+</li>
+<li>
+<p><strong>idle_time</strong> Idle rate time period to set.</p>
+</li>
+<li>
+<p><strong>report_id</strong> Report ID.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed.</p>
+</li>
+<li>
+<p><strong>UX_FUNCTION_NOT_SUPPORTED</strong> (0x54) Function not supported.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_HID_REPORT_ERROR</strong> (0x70) Error in the periodic report.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) HID class instance does not exist.</p>
+</li>
+<li>
+<p><strong>UX_TRANSFER_STALLED</strong> (0x21) Request is not accepted by device, there is no idle rate control and reports are only sent when there is data.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_6"><a class="anchor" href="#_example_6"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* The following example illustrates how to set idle rate. */
+
+status = ux_host_class_hid_idle_set(hid, 50, 0);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_report_get"><a class="anchor" href="#_ux_host_class_hid_report_get"></a>ux_host_class_hid_report_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get a report from a HID class instance.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_hid_report_get(
+    UX_HOST_CLASS_HID *hid,
+    UX_HOST_CLASS_HID_CLIENT_REPORT *client_report);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to receive a report directly from the device without relying on the periodic endpoint. This report is coming from the control endpoint but its treatment is the same as though it were coming on the periodic endpoint.</p>
+</div>
+<div class="paragraph">
+<p>To protect states for reentry, it waits the semaphore of HID instance and the semaphore of device default control endpoint before issuing the transfer request.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_5"><a class="anchor" href="#_parameters_5"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hid</strong> Pointer to the HID class instance.</p>
+</li>
+<li>
+<p><strong>client_report</strong> Pointer to the HID client report.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_7"><a class="anchor" href="#_return_values_7"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The report was successfully received.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_HID_REPORT_ERROR</strong> (0x70) Either client report was invalid or error during transfer.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) HID class instance does not exist.</p>
+</li>
+<li>
+<p><strong>UX_BUFFER_OVERFLOW</strong> (0x5d) The buffer supplied is not big enough to accommodate the uncompressed report.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_7"><a class="anchor" href="#_example_7"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UX_HOST_CLASS_HID_CLIENT_REPORT input_report;
+
+UINT status;
+
+/* The following example illustrates how to get a report. */
+
+input_report.ux_host_class_hid_client_report = hid_report;
+input_report.ux_host_class_hid_client_report_buffer = buffer;
+input_report.ux_host_class_hid_client_report_length = length;
+input_report.ux_host_class_hid_client_flags = UX_HOST_CLASS_HID_REPORT_INDIVIDUAL_USAGE;
+
+status = ux_host_class_hid_report_get(hid, &amp;input_report);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_report_set"><a class="anchor" href="#_ux_host_class_hid_report_set"></a>ux_host_class_hid_report_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send a report</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_hid_report_set(
+    UX_HOST_CLASS_HID *hid,
+    UX_HOST_CLASS_HID_CLIENT_REPORT *client_report);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to send a report directly to the device.</p>
+</div>
+<div class="paragraph">
+<p>To protect states for reentry, it waits the semaphore of HID instance and the semaphore of device default control endpoint before issuing the transfer request.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_6"><a class="anchor" href="#_parameters_6"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hid</strong> Pointer to the HID class instance.</p>
+</li>
+<li>
+<p><strong>client_report</strong> Pointer to the HID client report.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_8"><a class="anchor" href="#_return_values_8"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The report was successfully sent.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_HID_REPORT_ERROR</strong> (0x70) Either client report was invalid or error during transfer.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) HID class instance does not exist.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_HID_REPORT_OVERFLOW</strong> (0x5d) The buffer supplied is not big enough to accommodate the uncompressed report.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* The following example illustrates how to send a report. */
+
+UX_HOST_CLASS_HID_CLIENT_REPORT input_report;
+
+input_report.ux_host_class_hid_client_report = hid_report;
+input_report.ux_host_class_hid_client_report_buffer = buffer;
+input_report.ux_host_class_hid_client_report_length = length;
+input_report.ux_host_class_hid_client_report_flags = UX_HOST_CLASS_HID_REPORT_INDIVIDUAL_USAGE;
+
+status = ux_host_class_hid_report_set(hid, &amp;input_report);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_mouse_buttons_get"><a class="anchor" href="#_ux_host_class_hid_mouse_buttons_get"></a>ux_host_class_hid_mouse_buttons_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get mouse buttons.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_hid_mouse_buttons_get(
+    UX_HOST_CLASS_HID_MOUSE *mouse_instance,
+    ULONG *mouse_buttons);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to get the mouse buttons.</p>
+</div>
+<div class="paragraph">
+<p>Note the polling of button states are in background. The last updated buttons states are returned immediately.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_7"><a class="anchor" href="#_parameters_7"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>mouse_instance</strong> Pointer to the HID mouse instance.</p>
+</li>
+<li>
+<p><strong>mouse_buttons</strong> Pointer to the return buttons.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_9"><a class="anchor" href="#_return_values_9"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) Mouse button successfully retrieved.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) HID class instance does not exist.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* The following example illustrates how to obtain mouse buttons. */
+
+UX_HOST_CLASS_HID_MOUSE *mouse_instance;
+
+ULONG mouse_buttons;
+
+status = ux_host_class_hid_mouse_button_get(mouse_instance, &amp;mouse_buttons);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_mouse_position_get"><a class="anchor" href="#_ux_host_class_hid_mouse_position_get"></a>ux_host_class_hid_mouse_position_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get mouse position.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_hid_mouse_position_get(
+    UX_HOST_CLASS_HID_MOUSE *mouse_instance,
+    SLONG *mouse_x_position,
+    SLONG *mouse_y_position);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to get the mouse position in x &amp; y coordinates.</p>
+</div>
+<div class="paragraph">
+<p>Note the polling of position states are in background. The last updated position states are returned immediately.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_8"><a class="anchor" href="#_parameters_8"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>mouse_instance</strong> Pointer to the HID mouse instance.</p>
+</li>
+<li>
+<p><strong>mouse_x_position</strong> Pointer to the x coordinate.</p>
+</li>
+<li>
+<p><strong>mouse_y_position</strong> Pointer to the y coordinate.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_10"><a class="anchor" href="#_return_values_10"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) X &amp; Y coordinates successfully retrieved.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) HID class instance does not exist.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* The following example illustrates how to obtain mouse coordinates. */
+
+UX_HOST_CLASS_HID_MOUSE *mouse_instance;
+
+SLONG mouse_x_position;
+SLONG mouse_y_position;
+
+status = ux_host_class_hid_mouse_position_get(mouse_instance,
+    &amp;mouse_x_position, &amp;mouse_y_position);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_keyboard_key_get"><a class="anchor" href="#_ux_host_class_hid_keyboard_key_get"></a>ux_host_class_hid_keyboard_key_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get keyboard key and state.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_hid_keyboard_key_get(
+    UX_HOST_CLASS_HID_KEYBOARD *keyboard_instance,
+    ULONG *keyboard_key,
+    ULONG *keyboard_state);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to get the keyboard key and state.</p>
+</div>
+<div class="paragraph">
+<p>Note the polling of key states are in background. The last updated keys states are returned immediately.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_9"><a class="anchor" href="#_parameters_9"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>keyboard_instance</strong> Pointer to the HID keyboard instance.</p>
+</li>
+<li>
+<p><strong>keyboard_key</strong> Pointer to keyboard key container.</p>
+</li>
+<li>
+<p><strong>keyboard_state</strong> Pointer to the keyboard state container.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_11"><a class="anchor" href="#_return_values_11"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) Key and state successfully retrieved.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xff) Nothing to report.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) HID class instance does not exist.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The keyboard state can have the following values.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_KEY_UP</strong> 0x10000</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_NUM_LOCK</strong> 0x0001</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_CAPS_LOCK</strong> 0x0002</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_SCROLL_LOCK</strong> 0x0004</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_MASK_LOCK</strong> 0x0007</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_LEFT_SHIFT</strong> 0x0100</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_RIGHT_SHIFT</strong> 0x0200</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_SHIFT</strong> 0x0300</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_LEFT_ALT</strong> 0x0400</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_RIGHT_ALT</strong> 0x0800</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_ALT</strong> 0x0a00</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_LEFT_CTRL</strong> 0x1000</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_RIGHT_CTRL</strong> 0x2000</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_CTRL</strong> 0x3000</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_LEFT_GUI</strong> 0x4000</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_RIGHT_GUI</strong> 0x8000</p>
+</li>
+<li>
+<p><strong>UX_HID_KEYBOARD_STATE_GUI</strong> 0xa000</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_11"><a class="anchor" href="#_example_11"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">while (1)
+{
+
+    /* Get a key/state from the keyboard. */
+    status = ux_host_class_hid_keyboard_key_get(keyboard,
+        &amp;keyboard_char, &amp;keyboard_state);
+
+    /* Check if there is something. */
+    if (status == UX_SUCCESS)
+    {
+
+        #ifdef UX_HOST_CLASS_HID_KEYBOARD_EVENTS_KEY_CHANGES_MODE
+            if (keyboard_state &amp; UX_HID_KEYBOARD_STATE_KEY_UP)
+            {
+                /* The key was released. */
+            } else
+            {
+                /* The key was pressed. */
+            }
+        #endif
+
+        /* We have a character in the queue. */
+        keyboard_queue[keyboard_queue_index] = (UCHAR) keyboard_char;
+
+        /* Can we accept more ? */
+        if(keyboard_queue_index &lt; 1024)
+            keyboard_queue_index++;
+    }
+
+    tx_thread_sleep(10);
+
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_keyboard_ioctl"><a class="anchor" href="#_ux_host_class_hid_keyboard_ioctl"></a>ux_host_class_hid_keyboard_ioctl</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform an IOCTL function to the HID keyboard.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_hid_keyboard_ioctl(
+    UX_HOST_CLASS_HID_KEYBOARD *keyboard_instance,
+    ULONG ioctl_function, VOID *parameter);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs a specific ioctl function to the HID keyboard. The call is blocking and only returns when there is either an error or when the command is completed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_10"><a class="anchor" href="#_parameters_10"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>keyboard_instance</strong> Pointer to the HID keyboard instance.</p>
+</li>
+<li>
+<p><strong>ioctl_function</strong> ioctl function to be performed. See table below for one of the allowed ioctl functions.</p>
+</li>
+<li>
+<p><strong>parameter</strong> Pointer to a parameter specific to the ioctl.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_12"><a class="anchor" href="#_return_values_12"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The ioctl function completed successfully.</p>
+</li>
+<li>
+<p><strong>UX_FUNCTION_NOT_SUPPORTED</strong> (0x54) Unknown IOCTL function</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ioctl_functions"><a class="anchor" href="#_ioctl_functions"></a>IOCTL functions</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>UX_HID_KEYBOARD_IOCTL_SET_LAYOUT</p>
+</li>
+<li>
+<p>UX_HID_KEYBOARD_IOCTL_KEY_DECODING_ENABLE</p>
+</li>
+<li>
+<p>UX_HID_KEYBOARD_IOCTL_KEY_DECODING_DISABLE</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_examplechange_keyboard_layout"><a class="anchor" href="#_examplechange_keyboard_layout"></a>Example&#8201;&#8212;&#8201;change keyboard layout</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* This example shows usage of the SET_LAYOUT IOCTL function.
+    USBX receives raw key values from the device (these raw values
+    are defined in the HID usage table specification) and optionally
+    decodes them for application usage. The decoding is performed
+    based on a set of arrays that act as maps – which array is used
+    depends on the raw key value (i.e. keypad and non-keypad) and
+    the current state of the keyboard (i.e. shift, caps lock, etc.). */
+
+/* When the shift condition is not present and the raw key value
+    is not within the keypad value range, this array will be used to decode the raw key value. */
+
+static UCHAR keyboard_layout_raw_to_unshifted_map[] =
+{
+    0,0,0,0,
+    'a','b','c','d','e','f','g',
+    'h','i','j','k','l','m','n',
+    'o','p','q','r','s','t',
+    'u','v','w','x','y','z',
+    '1','2','3','4','5','6','7','8','9','0',
+    0x0d,0x1b,0x08,0x07,0x20,'-','=','[',']',
+    '\\','#',';',0x27,'`',',','.','/',0xf0,
+    0xbb,0xbc,0xbd,0xbe,0xbf,0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,
+    0x00,0xf1,0x00,0xd2,0xc7,0xc9,0xd3,0xcf,0xd1,0xcd,0xcd,0xd0,0xc8,0xf2,
+    '/','*','-','+',
+    0x0d,'1','2','3','4','5','6','7','8','9','0','.','\\',0x00,0x00,'=',
+    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+};
+
+/* When the shift condition is present and the raw key value
+    is not within the keypad value range, this array will be used to decode the raw key value. */
+
+static UCHAR keyboard_layout_raw_to_shifted_map[] =
+{
+    0,0,0,0,
+    'A','B','C','D','E','F','G',
+    'H','I','J','K','L','M','N',
+    'O','P','Q','R','S','T',
+    'U','V','W','X','Y','Z',
+    '!','@','#','$','%','^','&amp;','*','(',')',
+    0x0d,0x1b,0x08,0x07,0x20,'_','+','{','}',
+    '|','~',':','"','~','&lt;','&gt;','?',0xf0,
+    0xbb,0xbc,0xbd,0xbe,0xbf,0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,
+    0x00,0xf1,0x00,0xd2,0xc7,0xc9,0xd3,0xcf,0xd1,0xcd,0xcd,0xd0,0xc8,0xf2,
+    '/','*','-','+',
+    0x0d,'1','2','3','4','5','6','7','8','9','0','.','\\',0x00,0x00,'=',
+    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+};
+
+/* When numlock is on and the raw key value is within the keypad
+    value range, this array will be used to decode the raw key value. */
+
+static UCHAR keyboard_layout_raw_to_numlock_on_map[] =
+{
+    '/','*','-','+',
+    0x0d,'1','2','3','4','5','6','7','8','9','0','.','\\',0x00,0x00,'=',
+};
+
+/* When numlock is off and the raw key value is within the keypad value
+    range, this array will be used to decode the raw key value. */
+static UCHAR keyboard_layout_raw_to_numlock_off_map[] =
+{
+    '/','*','-','+',
+    0x0d,0xcf,0xd0,0xd1,0xcb,'5',0xcd,0xc7,0xc8,0xc9,0xd2,0xd3,'\\',0x00,0x
+    00,'=',
+};
+
+/* Specify the keyboard layout for USBX usage. */
+static UX_HOST_CLASS_HID_KEYBOARD_LAYOUT keyboard_layout =
+{
+    keyboard_layout_raw_to_shifted_map,
+    keyboard_layout_raw_to_unshifted_map,
+    keyboard_layout_raw_to_numlock_on_map,
+    keyboard_layout_raw_to_numlock_off_map,
+    /* The maximum raw key value. Values larger than this are discarded. */
+    UX_HID_KEYBOARD_KEYS_UPPER_RANGE,
+    /* The raw key value for the letter 'a'. */
+    UX_HID_KEYBOARD_KEY_LETTER_A,
+    /* The raw key value for the letter 'z'. */
+    UX_HID_KEYBOARD_KEY_LETTER_Z,
+    /* The lower range raw key value for keypad keys - inclusive. */
+    UX_HID_KEYBOARD_KEYS_KEYPAD_LOWER_RANGE,
+    /* The upper range raw key value for keypad keys. */
+    UX_HID_KEYBOARD_KEYS_KEYPAD_UPPER_RANGE
+};
+
+/* Call the IOCTL function to change the keyboard layout. */
+status = ux_host_class_hid_keyboard_ioctl(keyboard,
+    UX_HID_KEYBOARD_IOCTL_SET_LAYOUT, (VOID *)&amp;keyboard_layout);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_exampledisable_keyboard_key_decode"><a class="anchor" href="#_exampledisable_keyboard_key_decode"></a>Example&#8201;&#8212;&#8201;disable keyboard key decode</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates IOCTL function of Disable key decode from keyboard layout. */
+status = ux_host_class_hid_keyboard_ioctl(keyboard,
+    UX_HID_KEYBOARD_IOCTL_DISABLE_KEYS_DECODE, UX_NULL);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_hid_remote_control_usage_get"><a class="anchor" href="#_ux_host_class_hid_remote_control_usage_get"></a>ux_host_class_hid_remote_control_usage_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get remote control usage</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_hid_remote_control_usage_get(
+    UX_HOST_CLASS_HID_REMOTE_CONTROL *remote_control_instance,
+    LONG *usage,
+    ULONG *value);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This function is used to get the remote control usages.</p>
+</div>
+<div class="paragraph">
+<p>Note the polling of remote control usages are in background and the usages are put in a circular queue, the function just returns the very first usage received and saved in the queue, immediately. When there is nothing in the queue status error is returned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_11"><a class="anchor" href="#_parameters_11"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>remote_control_instance</strong> Pointer to the HID remote control instance.</p>
+</li>
+<li>
+<p><strong>usage</strong> Pointer to the usage.</p>
+</li>
+<li>
+<p><strong>value</strong> Pointer to the value for the usage.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_13"><a class="anchor" href="#_return_values_13"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xff) Nothing to report.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) HID class instance does not exist.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The list of all possible usages is too long to fit in this user guide. For a full description, the ux_host_class_hid.h has the entire set of possible values.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_12"><a class="anchor" href="#_example_12"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Read usages and values as the user changes the vol/bass/treble buttons on the speaker */
+
+while (remote_control != UX_NULL)
+{
+    status = ux_host_class_hid_remote_control_usage_get(remote_control, &amp;usage, &amp;value);
+    if (status == UX_SUCCESS)
+    {
+        /* We have something coming from the HID remote control,
+        we filter the usage here and only allow the
+        volume usage which can be VOLUME, VOLUME_INCREMENT or VOLUME_DECREMENT */
+        switch(usage)
+        {
+            case UX_HOST_CLASS_HID_CONSUMER_VOLUME :
+            case UX_HOST_CLASS_HID_CONSUMER_VOLUME_INCREMENT :
+            case UX_HOST_CLASS_HID_CONSUMER_VOLUME_DECREMENT :
+
+            if (value&lt;0x80)
+            {
+                if (current_volume + audio_control.ux_host_class_audio_control_res &lt; 0xffff)
+                    current_volume = current_volume + audio_control.ux_host_class_audio_control_res;
+                } else {
+                if (current_volume &gt; audio_control.ux_host_class_audio_control_res)
+                    current_volume = current_volumeaudio_control.ux_host_class_audio_control_res;
+            }
+
+            audio_control.ux_host_class_audio_control_channel = 1;
+            audio_control.ux_host_class_audio_control = UX_HOST_CLASS_AUDIO_VOLUME_CONTROL;
+            audio_control.ux_host_class_audio_control_cur = current_volume;
+            status = ux_host_class_audio_control_value_set(audio, &amp;audio_control);
+            audio_control.ux_host_class_audio_control_channel = 2;
+            audio_control.ux_host_class_audio_control = UX_HOST_CLASS_AUDIO_VOLUME_CONTROL;
+            audio_control.ux_host_class_audio_control_cur = current_volume;
+            status = ux_host_class_audio_control_value_set(audio, &amp;audio_control);
+            break;
+
+        }
+    }
+    tx_thread_sleep(10);
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_host_class_cdc_acm_read"><a class="anchor" href="#_ux_host_class_cdc_acm_read"></a>ux_host_class_cdc_acm_read</h3>
+<div class="paragraph">
+<p>Read from the cdc_acm interface.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_14"><a class="anchor" href="#_prototype_14"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_cdc_acm_read(
+    UX_HOST_CLASS_CDC_ACM *cdc_acm,
+    UCHAR *data_pointer,
+    ULONG requested_length,
+    ULONG *actual_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_14"><a class="anchor" href="#_description_14"></a>Description</h3>
+<div class="paragraph">
+<p>This function reads from the cdc_acm interface. The call is blocking and only returns when there is either an error or when the transfer is complete.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This functions reads raw bulk data from device, so it keeps pending until buffer is full or device terminates the transfer by a short packet (including Zero Length Packet). For more details, please refer to <a href="usbx-device-stack-5.md#general-considerations-for-bulk-transfer"><strong>General Considerations for Bulk Transfer</strong></a>.
+The function reads bytes from the device packet by packet. If the prepared buffer size is smaller than a packet and the device sends more data than expected (in other words, the prepared buffer size is not a multiple of the USB endpoint&#8217;s max packet size), then buffer overflow will occur. To avoid this issue, the recommended way to read is to allocate a buffer exactly one packet size (USB endpoint max packet size). This way if there is more data, the next read can get it and no buffer overflow will occur. If there is less data, the current read can get a short packet instead of generating an error.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_12"><a class="anchor" href="#_parameters_12"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong> Pointer to the cdc_acm class instance.</p>
+</li>
+<li>
+<p><strong>data_pointer</strong> Pointer to the buffer address of the data payload.</p>
+</li>
+<li>
+<p><strong>requested_length</strong> Length to be received.</p>
+</li>
+<li>
+<p><strong>actual_length</strong> Length actually received.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_14"><a class="anchor" href="#_return_values_14"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) The cdc_acm instance is invalid.</p>
+</li>
+<li>
+<p><strong>UX_TRANSFER_TIMEOUT</strong> (0x5c) Transfer timeout, reading incomplete.</p>
+</li>
+<li>
+<p><strong>UX_TRANSFER_BUFFER_OVERFLOW</strong> (0x27) Transfer buffer overflow, inside a USB packet, host sending more bytes than available buffer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_13"><a class="anchor" href="#_example_13"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates this service. */
+
+status = ux_host_class_cdc_acm_read(cdc_acm, data_pointer,
+    requested_length, &amp;actual_length);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_cdc_acm_write"><a class="anchor" href="#_ux_host_class_cdc_acm_write"></a>ux_host_class_cdc_acm_write</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Write to the cdc_acm interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_15"><a class="anchor" href="#_prototype_15"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_cdc_acm_write(
+    UX_HOST_CLASS_CDC_ACM *cdc_acm,
+    UCHAR *data_pointer,
+    ULONG requested_length,
+    ULONG *actual_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_15"><a class="anchor" href="#_description_15"></a>Description</h3>
+<div class="paragraph">
+<p>This function writes to the cdc_acm interface. The call is blocking and only returns when there is either an error or when the transfer is complete.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_13"><a class="anchor" href="#_parameters_13"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong> Pointer to the cdc_acm class instance.</p>
+</li>
+<li>
+<p><strong>data_pointer</strong> Pointer to the buffer address of the data payload.</p>
+</li>
+<li>
+<p><strong>requested_length</strong> Length to be sent.</p>
+</li>
+<li>
+<p><strong>actual_length</strong> Length actually sent.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_15"><a class="anchor" href="#_return_values_15"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) The cdc_acm instance is invalid.</p>
+</li>
+<li>
+<p><strong>UX_TRANSFER_TIMEOUT</strong> (0x5c) Transfer timeout, writing incomplete.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_14"><a class="anchor" href="#_example_14"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates this service. */
+
+status = ux_host_class_cdc_acm_write(cdc_acm, data_pointer,
+    requested_length, &amp;actual_length);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_cdc_acm_ioctl"><a class="anchor" href="#_ux_host_class_cdc_acm_ioctl"></a>ux_host_class_cdc_acm_ioctl</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform an IOCTL function to the cdc_acm interface.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_16"><a class="anchor" href="#_prototype_16"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_cdc_acm_ioctl(
+    UX_HOST_CLASS_CDC_ACM *cdc_acm,
+    ULONG ioctl_function,
+    VOID *parameter);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_16"><a class="anchor" href="#_description_16"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs a specific ioctl function to the cdc_acm interface. The call is blocking and only returns when there is either an error or when the command is completed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_14"><a class="anchor" href="#_parameters_14"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong> Pointer to the cdc_acm class instance.</p>
+</li>
+<li>
+<p><strong>ioctl_function</strong> ioctl function to be performed. See table below for one of the allowed ioctl functions.</p>
+</li>
+<li>
+<p><strong>parameter</strong> Pointer to a parameter specific to the ioctl</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value"><a class="anchor" href="#_return_value"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The data transfer was completed.</p>
+</li>
+<li>
+<p><strong>UX_MEMORY_INSUFFICIENT</strong> (0x12) Not enough memory.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) CDC-ACM instance is in an invalid state.</p>
+</li>
+<li>
+<p><strong>UX_FUNCTION_NOT_SUPPORTED</strong> (0x54) Unknown IOCTL function.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ioctl_functions_2"><a class="anchor" href="#_ioctl_functions_2"></a>IOCTL functions:</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>UX_HOST_CLASS_CDC_ACM_IOCTL_SET_LINE_CODING</p>
+</li>
+<li>
+<p>UX_HOST_CLASS_CDC_ACM_IOCTL_GET_LINE_CODING</p>
+</li>
+<li>
+<p>UX_HOST_CLASS_CDC_ACM_IOCTL_SET_LINE_STATE</p>
+</li>
+<li>
+<p>UX_HOST_CLASS_CDC_ACM_IOCTL_SEND_BREAK</p>
+</li>
+<li>
+<p>UX_HOST_CLASS_CDC_ACM_IOCTL_ABORT_IN_PIPE</p>
+</li>
+<li>
+<p>UX_HOST_CLASS_CDC_ACM_IOCTL_ABORT_OUT_PIPE</p>
+</li>
+<li>
+<p>UX_HOST_CLASS_CDC_ACM_IOCTL_NOTIFICATION_CALLBACK</p>
+</li>
+<li>
+<p>UX_HOST_CLASS_CDC_ACM_IOCTL_GET_DEVICE_STATUS</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates this service. */
+
+status = ux_host_class_cdc_acm_ioctl(cdc_acm,
+    UX_HOST_CLASS_CDC_ACM_IOCTL_GET_LINE_CODING, (VOID *)&amp;line_coding);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_cdc_acm_reception_start"><a class="anchor" href="#_ux_host_class_cdc_acm_reception_start"></a>ux_host_class_cdc_acm_reception_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Begins background reception of data from the device.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_17"><a class="anchor" href="#_prototype_17"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_cdc_acm_reception_start(
+    UX_HOST_CLASS_CDC_ACM *cdc_acm,
+    UX_HOST_CLASS_CDC_ACM_RECEPTION *cdc_acm_reception);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_17"><a class="anchor" href="#_description_17"></a>Description</h3>
+<div class="paragraph">
+<p>This function causes USBX to continuously read data from the device in the background. Upon completion of each transaction, the callback specified in <strong>cdc_acm_reception</strong> is invoked so the application may perform further processing of the transaction&#8217;s data.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<strong>ux_host_class_cdc_acm_read</strong> must not be used while background reception is in use.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>cdc_acm_reception</strong> must have its callback function assigned, where <em>ux_host_class_cdc_acm_reception_data_tail</em> must be moved after data processed. The example of this callback implement follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">void demo_host_cdc_acm_reception_callback(UX_HOST_CLASS_CDC_ACM *cdc_acm, UINT status, UCHAR *reception_buffer, ULONG reception_size)
+{
+UX_HOST_CLASS_CDC_ACM_RECEPTION *reception = cdc_acm -&gt; ux_host_class_cdc_acm_reception;
+
+  /* Perform processing of the transaction's data at reception_buffer.  */
+
+  /* Move reception data tail to next buffer.  */
+  if (reception -&gt; ux_host_class_cdc_acm_reception_data_tail + reception -&gt; ux_host_class_cdc_acm_reception_block_size &gt;= reception -&gt; ux_host_class_cdc_acm_reception_data_buffer + reception -&gt; ux_host_class_cdc_acm_reception_data_buffer_size)
+
+      /* We are at the end of the buffer. Move back to the beginning.  */
+      reception -&gt; ux_host_class_cdc_acm_reception_data_tail = reception -&gt; ux_host_class_cdc_acm_reception_data_buffer;
+  else
+
+      /* Program the tail to be after the current buffer.  */
+      reception -&gt; ux_host_class_cdc_acm_reception_data_tail += reception -&gt; ux_host_class_cdc_acm_reception_block_size;
+}</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_15"><a class="anchor" href="#_parameters_15"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong> Pointer to the cdc_acm class instance.</p>
+</li>
+<li>
+<p><strong>cdc_acm_reception</strong> Pointer to parameter that contains values defining behavior of background reception. The layout of this parameter follows:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_HOST_CLASS_CDC_ACM_RECEPTION_STRUCT
+{
+    ULONG ux_host_class_cdc_acm_reception_state;
+    ULONG ux_host_class_cdc_acm_reception_block_size;
+    UCHAR *ux_host_class_cdc_acm_reception_data_buffer;
+    ULONG ux_host_class_cdc_acm_reception_data_buffer_size;
+    UCHAR *ux_host_class_cdc_acm_reception_data_head;
+    UCHAR *ux_host_class_cdc_acm_reception_data_tail;
+    VOID (*ux_host_class_cdc_acm_reception_callback)(struct UX_HOST_CLASS_CDC_ACM_STRUCT *cdc_acm,
+        UINT status, UCHAR *reception_buffer, ULONG reception_size);
+} UX_HOST_CLASS_CDC_ACM_RECEPTION;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_2"><a class="anchor" href="#_return_value_2"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) Background reception successfully started.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE _UNKNOWN</strong> (0x5b) Wrong class instance.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+UX_HOST_CLASS_CDC_ACM_RECEPTION cdc_acm_reception;
+
+/* Setup the background reception parameter. */
+
+/* Set the desired max read size for each transaction.
+    For example, if this value is 64, then the maximum amount of
+    data received from the device in a single transaction is 64.
+    If the amount of data received from the device is less than this value,
+    the callback will still be invoked with the actual amount of data received. */
+cdc_acm_reception.ux_host_class_cdc_acm_reception_block_size = block_size;
+
+/* Set the buffer where the data from the device is read to. */
+cdc_acm_reception.ux_host_class_cdc_acm_reception_data_buffer = cdc_acm_reception_buffer;
+
+/* Set the size of the data reception buffer.
+    Note that this should be at least as large as ux_host_class_cdc_acm_reception_block_size. */
+cdc_acm_reception.ux_host_class_cdc_acm_reception_data_buffer_size = cdc_acm_reception_buffer_size;
+
+/* Set the callback that is to be invoked upon each reception transfer completion. */
+cdc_acm_reception.ux_host_class_cdc_acm_reception_callback = reception_callback;
+
+/* Start background reception using the values we defined in the reception parameter. */
+status = ux_host_class_cdc_acm_reception_start(cdc_acm_host_data, &amp;cdc_acm_reception);
+
+/* If status equals UX_SUCCESS, background reception has successfully started. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_class_cdc_acm_reception_stop"><a class="anchor" href="#_ux_host_class_cdc_acm_reception_stop"></a>ux_host_class_cdc_acm_reception_stop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Stops background reception of packets.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_18"><a class="anchor" href="#_prototype_18"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_class_cdc_acm_reception_stop(
+    UX_HOST_CLASS_CDC_ACM *cdc_acm,
+    UX_HOST_CLASS_CDC_ACM_RECEPTION *cdc_acm_reception);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_18"><a class="anchor" href="#_description_18"></a>Description</h3>
+<div class="paragraph">
+<p>This function causes USBX to stop background reception previously
+started by <strong>ux_host_class_cdc_acm_reception_start</strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_16"><a class="anchor" href="#_parameters_16"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong> Pointer to the cdc_acm class instance.</p>
+</li>
+<li>
+<p><strong>cdc_acm_reception</strong> Pointer to the same parameter that was used to start background reception. The layout of this parameter follows:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_HOST_CLASS_CDC_ACM_RECEPTION_STRUCT
+{
+    ULONG ux_host_class_cdc_acm_reception_state;
+    ULONG ux_host_class_cdc_acm_reception_block_size;
+    UCHAR *ux_host_class_cdc_acm_reception_data_buffer;
+    ULONG ux_host_class_cdc_acm_reception_data_buffer_size;
+    UCHAR *ux_host_class_cdc_acm_reception_data_head;
+    UCHAR *ux_host_class_cdc_acm_reception_data_tail;
+    VOID (*ux_host_class_cdc_acm_reception_callback)(
+            struct UX_HOST_CLASS_CDC_ACM_STRUCT *cdc_acm, UINT status,
+            UCHAR *reception_buffer, ULONG reception_size);
+} UX_HOST_CLASS_CDC_ACM_RECEPTION;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_3"><a class="anchor" href="#_return_value_3"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) Background reception successfully stopped.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE _UNKNOWN</strong> (0x5b) Wrong class instance.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+UX_HOST_CLASS_CDC_ACM_RECEPTION cdc_acm_reception;
+
+/* Stop background reception. The reception parameter should be the same
+    that was passed to ux_host_class_cdc_acm_reception_start. */
+status = ux_host_class_cdc_acm_reception_stop(cdc_acm, &amp;cdc_acm_reception);
+
+/* If status equals UX_SUCCESS, background reception has successfully stopped. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

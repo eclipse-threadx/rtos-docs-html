@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Overview of GUIX and GUIX Studio :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/guix/main/overview-guix.html">
+    <meta name="description" content="GUIX is a professional-quality package, created to meet the needs of embedded systems developers.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guix" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">GUIX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">GUIX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">GUIX documentation</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="overview-guix.html">Overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="guix-studio-quick-start.html">GUIX Studio Quick Start Guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-1.html">Ch. 1 - Introduction to GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-3.html">Ch. 3 - Functional overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-4.html">Ch. 4 - Description of GUIX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-5.html">Ch. 5 - GUIX display drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-example.html">GUIX example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - GUIX color definitions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - GUIX color formats</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - GUIX widget styles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - GUIX brush, canvas, and gradient attributes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - GUIX event description</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-f.html">App. F - GUIX RTOS binding services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-g.html">App. G - GUIX font structure</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-h.html">App. H - GUIX build-time configuration flags</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-i.html">App. I - GUIX information structures</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-j.html">App. J - Canvas Partial Frame Buffer Feature</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-k.html">App. K - GUIX Widget Status Flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX Studio User Guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix-studio.html">About GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-1.html">Ch. 1 - Introduction to GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-2.html">Ch. 2 - Installation and Use of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-3.html">Ch. 3 - Description of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-4.html">Ch. 4 - GUIX Studio Resources</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-6.html">Ch. 6 - GUIX Studio Generated Code</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-9.html">Ch. 9 - GUIX Studio Command Line</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-10.html">Ch. 10 - Simple Example Project</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-11.html">Ch. 11 - Resource Project File</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">GUIX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">GUIX</a></li>
+    <li><a href="overview-guix.html">Overview of GUIX</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/guix/modules/ROOT/pages/overview-guix.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Overview of GUIX and GUIX Studio</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>GUIX embedded GUI is Eclipse Foundation&#8217;s advanced, industrial grade GUI solution designed specifically for deeply embedded, real-time, and IoT applications. Eclipse Foundation also provides a full-featured WYSIWYG desktop design tool named GUIX Studio, which allows developers to design their GUI on the desktop and generate GUIX embedded GUI code that can then be exported to the target. GUIX is fully integrated with ThreadX RTOS and is available for many of the same processors supported by ThreadX. All of this combined with an extremely small footprint, fast execution, and superior ease-of-use, make GUIX the ideal choice for the most demanding embedded IoT applications requiring a user interface.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_guix_api"><a class="anchor" href="#_guix_api"></a>GUIX API</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_powerful_apis"><a class="anchor" href="#_powerful_apis"></a>Powerful APIs</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Full support for direct canvas drawing when needed</p>
+</li>
+<li>
+<p>Simple to interact with GUIX Studio generated code</p>
+</li>
+<li>
+<p>APIs for line, rectangle, polygon, etc.</p>
+</li>
+<li>
+<p>APIs for circle, arc, pie, chord, ellipse, etc.</p>
+</li>
+<li>
+<p>APIs for text drawing and positioning</p>
+</li>
+<li>
+<p>Anti-aliasing, texture fills, and solid fills</p>
+</li>
+<li>
+<p>APIs for creating and modifying screens and widgets</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_guix_studio_generated_files"><a class="anchor" href="#_guix_studio_generated_files"></a>GUIX Studio Generated Files</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Automatically generated ANSI C source files</p>
+</li>
+<li>
+<p>Insulates application software from layout details</p>
+</li>
+<li>
+<p>Includes fonts and images required by UI design</p>
+</li>
+<li>
+<p>Generated files compiled with application code</p>
+</li>
+<li>
+<p>Screen layout can be updated without affecting application logic</p>
+</li>
+<li>
+<p>Resource IDs create language and theme independence</p>
+</li>
+<li>
+<p>User-supplied custom drawing and event processing functions</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_widget_library"><a class="anchor" href="#_widget_library"></a>Widget library</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Pre-defined but customizable set of common interface elements</p>
+</li>
+<li>
+<p>Extremely small, compact, and efficient</p>
+</li>
+<li>
+<p>Library includes button, gauge, list, window, scroll, slider, progress bar, prompt and many more</p>
+</li>
+<li>
+<p>Fully customizable drawing and appearance</p>
+</li>
+<li>
+<p>Fully customizable operation and event handling</p>
+</li>
+<li>
+<p>Only the widgets used are linked with application software</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_math_and_utilities"><a class="anchor" href="#_math_and_utilities"></a>Math and utilities</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Functions for sin, cos, arcsin, arccos, tangent, square root</p>
+</li>
+<li>
+<p>Functions for manipulating screen regions</p>
+</li>
+<li>
+<p>System configuration and startup</p>
+</li>
+<li>
+<p>Memory pool definition (optional)</p>
+</li>
+<li>
+<p>Timer Management</p>
+</li>
+<li>
+<p>Animation Management</p>
+</li>
+<li>
+<p>Dirty list maintenance</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_image_processing"><a class="anchor" href="#_image_processing"></a>Image processing</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Functions for runtime decode of jpeg and png images</p>
+</li>
+<li>
+<p>Apply dithering and color space conversion</p>
+</li>
+<li>
+<p>Image rotation</p>
+</li>
+<li>
+<p>Image scaling</p>
+</li>
+<li>
+<p>Image blending</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_event_processing"><a class="anchor" href="#_event_processing"></a>Event processing</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Automatically suspends GUIX thread when idle</p>
+</li>
+<li>
+<p>Event-driven programming model popular in UI design</p>
+</li>
+<li>
+<p>Insulates input drivers from GUIX drawing thread</p>
+</li>
+<li>
+<p>Functions for sending and receiving events</p>
+</li>
+<li>
+<p>Pre-defined event types for all GUIX widget types</p>
+</li>
+<li>
+<p>User-defined custom events supported</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_canvas_processing"><a class="anchor" href="#_canvas_processing"></a>Canvas processing</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Clipping and Z-Order maintenance</p>
+</li>
+<li>
+<p>Insulates widget library from hardware details</p>
+</li>
+<li>
+<p>Insulates application from hardware details</p>
+</li>
+<li>
+<p>Automatic background refresh of dirty areas</p>
+</li>
+<li>
+<p>Multiple canvases with layering and blending supported</p>
+</li>
+<li>
+<p>Can be invoked directly by the application software</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_device_drivers"><a class="anchor" href="#_input_device_drivers"></a>Input device driver(s)</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Hardware-specific support, GUIX and application insulated from hardware details</p>
+</li>
+<li>
+<p>Resistive Touch, Cap Touch, and keypad supported</p>
+</li>
+<li>
+<p>Input events passed to GUIX event queue</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_display_drivers"><a class="anchor" href="#_display_drivers"></a>Display drivers</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Hardware-specific support</p>
+</li>
+<li>
+<p>Generic drivers provided for all color depth and formats</p>
+</li>
+<li>
+<p>Customized to utilize available graphics accelerators</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_target_hardware"><a class="anchor" href="#_target_hardware"></a>Target hardware</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Nearly any hardware capable of graphical output Is compatible with GUIX</p>
+</li>
+<li>
+<p>Multiple physical displays supported</p>
+</li>
+<li>
+<p>Minimal RAM and Flash requirements</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_elegant_user_interfaces"><a class="anchor" href="#_create_elegant_user_interfaces"></a>Create Elegant User Interfaces</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>GUIX and GUIX Studio provide all the features necessary to create uniquely elegant user interfaces. The standard GUIX package includes various sample user interfaces, including a medical device reference, a smart watch reference, a home automation reference, an industrial control reference, an automotive reference, and various sprite and animation examples.</p>
+</div>
+<div class="sect2">
+<h3 id="_home_automation"><a class="anchor" href="#_home_automation"></a>Home Automation</h3>
+<div class="imageblock">
+<div class="content">
+<img src="_images/overview/guix_home_automation.png" alt="Screenshot of the GUIX home automation.">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_medical"><a class="anchor" href="#_medical"></a>Medical</h3>
+<div class="imageblock">
+<div class="content">
+<img src="_images/overview/demo_guix_medical.png" alt="Screenshot of the GUIX medical device.">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_consumer"><a class="anchor" href="#_consumer"></a>Consumer</h3>
+<div class="imageblock">
+<div class="content">
+<img src="_images/overview/demo_guix_smart_watch.png" alt="Screenshot of the GUIX Consumer smart watch.">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_white_goods"><a class="anchor" href="#_white_goods"></a>White Goods</h3>
+<div class="imageblock">
+<div class="content">
+<img src="_images/overview/demo_guix_white_goods.png" alt="Screenshot of the GUIX white goods example.">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_automotive"><a class="anchor" href="#_automotive"></a>Automotive</h3>
+<div class="imageblock">
+<div class="content">
+<img src="_images/overview/demo_guix_infotainment.png" alt="Screenshot of the GUIX automotive.">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_industrial"><a class="anchor" href="#_industrial"></a>Industrial</h3>
+<div class="imageblock">
+<div class="content">
+<img src="_images/overview/demo_guix_industrial.png" alt="Screenshot of the GUIX industrial control.">
+</div>
+</div>
+<div class="paragraph">
+<p>Each GUIX reference has a corresponding GUIX Studio project that defines all the graphical elements of the reference design. Changing a reference design is easy. Simply open the corresponding GUIX project, make the desired changes, save the project, and then select <em>Project</em>.</p>
+</div>
+<div class="paragraph">
+<p>Generate All Output Files to generate the C code for GUIX. Then simply rebuild the target application and run to observe the modified reference design.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_guix_memory_footprint"><a class="anchor" href="#_guix_memory_footprint"></a>GUIX Memory footprint</h3>
+<div class="paragraph">
+<p>GUIX has a remarkably small minimal footprint of 13.2KB of FLASH and 4KB RAM for basic support, not including the memory required for a canvas.</p>
+</div>
+<div class="paragraph">
+<p>For a display with internal GRAM and self-refresh technology, no canvas memory is required. However, to improve drawing performance, or for a display configuration that does not utilize GRAM local to the display, a canvas memory area is defined by the application.</p>
+</div>
+<div class="paragraph">
+<p>Canvas memory requirements are a function of the canvas size as well as the color depth, and are defined by the formula:</p>
+</div>
+<div class="paragraph">
+<p><em>Canvas RAM (bytes) = (x * y * (bpp/8))</em></p>
+</div>
+<div class="paragraph">
+<p>Where "x" and "y" are the dimensions of the canvas (display).</p>
+</div>
+<div class="paragraph">
+<p>Most applications also utilize graphical resources, which are not included in the core GUIX library storage requirements. These resources include fonts, graphical icons (pixelmaps), and static strings. This data can be stored in the const memory section (i.e. FLASH).</p>
+</div>
+<div class="paragraph">
+<p>The size of this memory area is dependent on a number of factors, including the number and size of unique fonts used, the number and size of the graphical icons used, the output color format, and whether or not each resource is using compressed data, since GUIX supports RLE compression of both font and pixelmap data. The storage requirements for each resource are displayed within the GUIX Studio application, allowing the user to track and monitor the amount of flash memory that will be consumed by the application resources.</p>
+</div>
+<div class="paragraph">
+<p>Like ThreadX, the size of GUIX automatically scales based on the services actually used by the application. This virtually eliminates the need for complicated configuration and build parameters, making things easier for the developer.</p>
+</div>
+<div class="sect3">
+<h4 id="_simple_easy_to_use"><a class="anchor" href="#_simple_easy_to_use"></a>Simple, easy-to-use</h4>
+<div class="paragraph">
+<p>GUIX is very simple to use and GUIX Studio makes it even easier by allowing developers to visually design on the desktop and generate C code that runs on the actual target. Applications can then add their own custom event handling and drawing functions to complete their GUI.</p>
+</div>
+<div class="paragraph">
+<p>Using the GUIX API is straightforward. The GUIX API is both intuitive and highly functional. The API names are made of real words and not the "alphabet soup" and/or the highly abbreviated names that are so common in other file system products. All GUIX APIs have a leading <em>gx_</em> and follow a noun-verb naming convention. Furthermore, there is a functional consistency throughout the API. For example, all APIs that initialize a widget control block are named &lt; widget_type&gt;_create, and the create function parameters for each widget type are always defined in the same order.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_comprehensive_set_of_built_in_widgets"><a class="anchor" href="#_comprehensive_set_of_built_in_widgets"></a>Comprehensive set of built-in widgets</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>GUIX provides a rich set of built-in widgets, including:</p>
+</li>
+<li>
+<p>Accordion Menu</p>
+</li>
+<li>
+<p>Button</p>
+</li>
+<li>
+<p>Checkbox</p>
+</li>
+<li>
+<p>Circular Gauge</p>
+</li>
+<li>
+<p>Drop Down List</p>
+</li>
+<li>
+<p>Horizontal List</p>
+</li>
+<li>
+<p>Horizontal Scrollbar Window</p>
+</li>
+<li>
+<p>Icon</p>
+</li>
+<li>
+<p>Icon Button</p>
+</li>
+<li>
+<p>Line Chart</p>
+</li>
+<li>
+<p>Menu</p>
+</li>
+<li>
+<p>Multi Line Text Button</p>
+</li>
+<li>
+<p>Multi Line Text Input</p>
+</li>
+<li>
+<p>Multi Line Text View</p>
+</li>
+<li>
+<p>Numeric Pixelmap Prompt</p>
+</li>
+<li>
+<p>Numeric Prompt</p>
+</li>
+<li>
+<p>Numeric Scroll Wheel</p>
+</li>
+<li>
+<p>Pixelmap Button</p>
+</li>
+<li>
+<p>Pixelmap Prompt</p>
+</li>
+<li>
+<p>Pixelmap Slider</p>
+</li>
+<li>
+<p>Pixelmap Sprite</p>
+</li>
+<li>
+<p>Progress Bar</p>
+</li>
+<li>
+<p>Prompt</p>
+</li>
+<li>
+<p>Radial Progress Bar</p>
+</li>
+<li>
+<p>Radio Button</p>
+</li>
+<li>
+<p>Scroll Wheel</p>
+</li>
+<li>
+<p>Single Line Text Input</p>
+</li>
+<li>
+<p>Slider</p>
+</li>
+<li>
+<p>String Scroll Wheel</p>
+</li>
+<li>
+<p>Text Button</p>
+</li>
+<li>
+<p>Tree View</p>
+</li>
+<li>
+<p>Vertical List</p>
+</li>
+<li>
+<p>Vertical Scrollbar</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>It&#8217;s easy for the application to create its own customer widgets as well.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_complete_low_level_drawing_api"><a class="anchor" href="#_complete_low_level_drawing_api"></a>Complete low-level drawing API</h3>
+<div class="paragraph">
+<p>GUIX provides a robust canvas drawing API, allowing the application to render complex graphical shapes.</p>
+</div>
+<div class="paragraph">
+<p>All functions support anti-aliasing on high color depth targets, and all shapes can be filled our outlined, including solid and pixelmap pattern fills. All drawing primitives support brush alpha when running at 16 bpp and higher color depth. Drawing functions include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Arc Draw</p>
+</li>
+<li>
+<p>Circle Draw</p>
+</li>
+<li>
+<p>Line Draw</p>
+</li>
+<li>
+<p>Pie Draw</p>
+</li>
+<li>
+<p>Pixelmap Blend</p>
+</li>
+<li>
+<p>Pixelmap Tile</p>
+</li>
+<li>
+<p>Polygon Draw</p>
+</li>
+<li>
+<p>Text Draw</p>
+</li>
+<li>
+<p>Chord Draw</p>
+</li>
+<li>
+<p>Ellipse Draw</p>
+</li>
+<li>
+<p>Pixel Draw</p>
+</li>
+<li>
+<p>Pixelmap Draw</p>
+</li>
+<li>
+<p>Pixelmap Rotate</p>
+</li>
+<li>
+<p>Rectangle Draw</p>
+</li>
+<li>
+<p>Text Blend</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_default_free_fonts_and_easy_to_add_more"><a class="anchor" href="#_default_free_fonts_and_easy_to_add_more"></a>Default free fonts and easy to add more</h3>
+<div class="paragraph">
+<p>GUIX provides a free set of TrueType fonts. Developers can add additional TrueType fonts as desired.</p>
+</div>
+<div class="paragraph">
+<p>The GUIX font format supports 8bpp anti-aliasing, 4bpp anti-aliasing, and 1bpp monochrome fonts. For the most resource-constrained applications, GUIX pre-renders the TrueType fonts to a compressed bitmap format using our GUIX Studio desktop tool.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_custom_jpg_and_png_decoder_implementation"><a class="anchor" href="#_custom_jpg_and_png_decoder_implementation"></a>Custom JPG and PNG decoder implementation</h3>
+<div class="paragraph">
+<p>Custom JPG and PNG decoder implementation JPG and PNG file decoder implementation. This implementation supports color space conversion, dithering, and runtime creation of GUIX-compatible pixelmap format images.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_extensive_display_and_touchscreen_support"><a class="anchor" href="#_extensive_display_and_touchscreen_support"></a>Extensive display and touchscreen support</h3>
+<div class="paragraph">
+<p>GUIX provides generic display drivers for nearly all color formats, including 1bpp monochrome, 8 bpp palette, 8 bpp 3:3:2 format,</p>
+</div>
+<div class="paragraph">
+<p>16 bpp 565 rgb format, 16 bpp 4:4:4:4 format, 32 bpp x:r:g:b format, and 32 bpp a:r:g:b format. In addition, GUIX is integrated with many of the most popular LCD controllers and hardware accelerators (ST ChromeArt, Renesas Synergy, etc.).</p>
+</div>
+<div class="paragraph">
+<p>GUIX fully supports touchscreen (including gesture support), pen, and virtual keyboard input devices.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_guix_studio_desktop_wysiwyg_tool"><a class="anchor" href="#_guix_studio_desktop_wysiwyg_tool"></a>GUIX Studio desktop WYSIWYG tool</h3>
+<div class="paragraph">
+<p>GUIX Studio provides a complete WYSIWYG screen design environment which allows the user to drag-and-drop graphical elements used to build the GUI screens. GUIX Studio automatically generates C code compatible with the GUIX library, ready to be compiled and run on the target. Developers can produce pre-rendered fonts for use within an application using the integrated GUIX Studio font generation tool. Fonts can be generated in monochrome or anti-aliased formats, and are optimized to save space on the target. Fonts can include any set of characters, including Unicode characters for multi-lingual applications.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/overview/studio_screen_shot.png" alt="Diagram of SGS-TUV Saar certification logo.">
+</div>
+</div>
+<div class="paragraph">
+<p>GUIX Studio facilitates the import of graphics from PNG or JPG files with conversion to compressed GUIX Pixelmaps for use on the target system. Many of the GUIX widget types are designed to incorporate user graphics for a custom look and feel. In addition, GUIX Studio allows customization of the default colors and drawing styles used by the GUIX widgets, allowing developers to tune the appearance of GUIX very easily. Generation and maintenance of application strings is another built-in facility of GUIX Studio. This enables developers to design an application using one language for developing, and quickly and easily add support for additional languages after the product is released. A complete GUIX application can be executed on a PC desktop within the GUIX Studio environment, allowing a quick and easy generation and demonstration of GUI concepts, testing of screen flows, and observation of screen transitions and animations. When completed, a design can be exported as target-ready C data structures, ready to be compiled and linked with the GUIX and ThreadX libraries.</p>
+</div>
+<div class="paragraph">
+<p>GUIX and GUIX Studio support multiple resource themes, allowing an application to be easily reskinned at run-time. Fonts, colors, and pixelmaps can be changed at run-time with one simple API.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_learn_more_about_guix_studio"><a class="anchor" href="#_learn_more_about_guix_studio"></a>Learn more about GUIX Studio</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_complete_win32_simulation"><a class="anchor" href="#_complete_win32_simulation"></a>Complete Win32 simulation</h3>
+<div class="paragraph">
+<p>GUIX runs on a Windows PC, using exactly the same drawing library that runs on the target board. With GUIX, you can build and run a GUI application on the PC, and use the same application code on your target for debugging, rapid prototyping, demonstration, and WYSIWYG target operation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_advanced_technology"><a class="anchor" href="#_advanced_technology"></a>Advanced technology</h3>
+<div class="paragraph">
+<p>GUIX&#8217;s advanced technology incorporates:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Alpha blending</p>
+</li>
+<li>
+<p>Anti-Aliasing</p>
+</li>
+<li>
+<p>Automatic scaling</p>
+</li>
+<li>
+<p>Bitmap compression</p>
+</li>
+<li>
+<p>Canvas blending</p>
+</li>
+<li>
+<p>Custom widget support</p>
+</li>
+<li>
+<p>Deferred drawing support</p>
+</li>
+<li>
+<p>Dithering support</p>
+</li>
+<li>
+<p>Endian neutral programming</p>
+</li>
+<li>
+<p>Hardware accelerator support</p>
+</li>
+<li>
+<p>Multilingual support and UTF-8 encoding</p>
+</li>
+<li>
+<p>Multiple display and canvas support</p>
+</li>
+<li>
+<p>Optimized clipping, drawing, and event handling</p>
+</li>
+<li>
+<p>Runtime JPEG and PNG decoder</p>
+</li>
+<li>
+<p>Skinning and Themes</p>
+</li>
+<li>
+<p>Supports monochrome through 32-bit true-color with alpha graphics formats</p>
+</li>
+<li>
+<p>Transitions, Sprites, and Animation support</p>
+</li>
+<li>
+<p>Win32 simulation</p>
+</li>
+<li>
+<p>Window management including Viewports and Z-order maintenance</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

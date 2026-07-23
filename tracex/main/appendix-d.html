@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Appendix D - Dumping and trace buffer :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/tracex/main/appendix-d.html">
+    <meta name="description" content="Dumping the trace buffer created by ThreadX to a file on the host computer is done via commands and/or utilities provided by the specific development tool being used.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="tracex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">TraceX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">TraceX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">TraceX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-tracex.html">Overview of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">TraceX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - TraceX performance analysis</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Generating trace buffers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - ThreadX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter7.html">Ch. 7 - FileX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter8.html">Ch. 8 - NetX Duo trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter9.html">Ch. 9 - USBX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter10.html">Ch. 10 - Customer user events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter11.html">Ch. 11 - Format of event trace buffer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - Sample tx_port.h</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - The tx_trace.h File</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - DOS command-line utilities</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - Dumping and trace buffer</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">TraceX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">TraceX</a></li>
+    <li>TraceX user guide</li>
+    <li><a href="appendix-d.html">App. D - Dumping and trace buffer</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/tracex/modules/ROOT/pages/appendix-d.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Appendix D - Dumping and trace buffer</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Dumping the trace buffer created by ThreadX to a file on the host computer is done via commands and/or utilities provided by the specific development tool being used. This appendix contains examples of dumping a trace buffer to a host file in some of the more popular development tools used with ThreadX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_benchx_tools"><a class="anchor" href="#_benchx_tools"></a>BenchX Tools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The trace buffer can be dumped to a host file easily with the BenchX tools by selecting the <strong><em>Store Memory To File</em></strong> button within the <strong><em>Memory View</em></strong>, as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image642.jpg" alt="Screenshot of the Memory View in the BenchX tools.">
+</div>
+</div>
+<div class="paragraph">
+<p>At this point, specify the trace buffer address, size, destination file name (including path), and select the <strong><em>Save</em></strong> button as shown below. This will create the binary trace file for viewing within TraceX.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image643.jpg" alt="Screenshot of the the BenchX tools save dialog.">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_realview_tools"><a class="anchor" href="#_realview_tools"></a>RealView Tools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The trace buffer can be dumped to a host file easily with the ARM RealView tools by entering the following command at the command-line prompt in RealView:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">&gt; WRITEFILE,raw trace_file.trx=0x6860..0xE560</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Upon completion, the file <strong><em>trace_file.trx</em></strong> will contain the trace buffer that is located starting at the address 0x6860 and goes up to address 0xE560. This file is ready for viewing by TraceX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_iar_tools"><a class="anchor" href="#_iar_tools"></a>IAR Tools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The trace buffer can be dumped to a host file easily with the IAR tools by simply right-clicking in the memory view and selecting the <strong><em>Memory Save&#8230;&#8203;</em></strong> option, as shown below.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image0_311.jpg" alt="Screenshot of the Memory Save option in the IAR tools.">
+</div>
+</div>
+<div class="paragraph">
+<p>This results in the <strong><em>Memory Save</em></strong> dialog to be displayed. Enter the starting and ending address and the trace file name, then select the <strong><em>Save</em></strong> button. In the example shown below, the IAR tools save the specified trace buffer into Intel HEX records in the file <strong><em>trace_file.hex</em></strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image648.jpg" alt="Screenshot of the IAR tools Memory Save dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p>At this point, we have the trace buffer saved in the <strong><em>trace_file.hex</em></strong> file on the host and is ready for viewing with
+TraceX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_codewarrior_tools"><a class="anchor" href="#_codewarrior_tools"></a>CodeWarrior Tools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The trace buffer can be dumped to a host file easily with the CodeWarrior tools by entering the <strong><em>save</em></strong> command in the Command Window. The following example <strong><em>save</em></strong> command assumes the trace buffer starts at 0x102200 and ends at 0x109F00:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">&gt; save –b p:0x102200..0x109F00 trace_file.trx -a 32bit</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This results in the trace buffer being saved in the file
+<strong><em>trace_file.trx</em></strong> on the host.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mplab_tools"><a class="anchor" href="#_mplab_tools"></a>MPLAB Tools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>MPLAB can create a TraceX-compatible trace file through its Export Table utility, which allows the export of any range of memory to a host file. To use this utility to create a trace file for TraceX, proceed as follows:</p>
+</div>
+<div class="paragraph">
+<p><strong>Step 1</strong> Open a memory window by selecting View -&gt; Memory.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image0_316.jpg" alt="Screenshot of the Memory selected on the View menu.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 2</strong> Right-click within the <strong>Memory View</strong> to display a list of options. Specify <strong>Display Format -1 Byte</strong> to select byte display..</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image650.png" alt="Screenshot of the Memory View with the Display Format option selected.">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image651.jpg" alt="Screenshot of the Go To dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 3</strong> Right-click again within the <strong>Memory View</strong> Window and select <strong>Go To</strong>, which opens a dialog box that enables you to specify the address of the event buffer. This example shows <strong><em>event_buffer</em></strong> being displayed.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image0_312.jpg" alt="Screenshot of the Memory View with the Go To option selected.">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image653.png" alt="Screenshot of an example showing the event_buffer being displayed.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 4</strong> This highlights the contents of the first location of the trace buffer, which is always the string BTXT&#8230;&#8203;.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image0_313.jpg" alt="Screenshot of the first location of the trace buffer.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 5</strong> Now, right-click again to bring up the options menu, and select <strong>Export Table</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image0_314.jpg" alt="Screenshot of the Memory View with the Export Table option selected.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 6</strong> This brings up the <strong>Export Table</strong> dialog, as shown. Specify the range of addresses to export. For an 8K trace buffer, as is the case in this example, specify the range 0xA00006AC to 0xA00026AC, and enter a name for the host file to be created (demo_threadx.trx in this example).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image656.jpg" alt="Screenshot of the Export As dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 7</strong> A file named <strong>demo_threadx.trx</strong> will be created on the host, and this file can be opened by TraceX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ghs_tools"><a class="anchor" href="#_ghs_tools"></a>GHS Tools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The trace buffer can be dumped to a host file easily with the GHS tools by entering the following command at the command-line prompt in the debug command window:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">memdump raw c:releasethreadxdemo_threadx.trx event_buffer 32768</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Upon completion, the file <strong>demo_threadx.trx</strong> will contain the trace buffer that is located in the event_buffer with a size of 32,768 bytes and is ready for viewing by TraceX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_renesas_hew"><a class="anchor" href="#_renesas_hew"></a>Renesas HEW</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The trace buffer can be dumped to a host file easily with the Renasas HEW tools by following the
+three steps (and substeps) below:</p>
+</div>
+<div class="paragraph">
+<p><strong>Step 1</strong> Open Memory Window.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image657.jpg" alt="Screenshot of the Memory Window.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 2</strong> Place cursor within memory window and right click.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image0_315.jpg" alt="Screenshot of the Memory Window with the Save option selected.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 3</strong> Select Save, then in the Save Memory As window do the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Select File format: Binary.</p>
+</li>
+<li>
+<p>Specify Filename: As Desired</p>
+</li>
+<li>
+<p>Specify Start address: trace_buffer</p>
+</li>
+<li>
+<p>Specify End address: (trace_buffer+size)</p>
+</li>
+<li>
+<p>Specify Access size: 1</p>
+</li>
+<li>
+<p>Click Save</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/image659.jpg" alt="Screenshot of the Save Memory As dialog.">
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

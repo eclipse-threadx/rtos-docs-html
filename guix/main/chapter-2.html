@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 2 - Installation and Use of GUIX :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/guix/main/chapter-2.html">
+    <meta name="description" content="This chapter contains a description of various issues related to installation, setup, and use of the high performance user interface product GUIX.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guix" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">GUIX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">GUIX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">GUIX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-guix.html">Overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="guix-studio-quick-start.html">GUIX Studio Quick Start Guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-1.html">Ch. 1 - Introduction to GUIX</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-3.html">Ch. 3 - Functional overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-4.html">Ch. 4 - Description of GUIX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-5.html">Ch. 5 - GUIX display drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-example.html">GUIX example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - GUIX color definitions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - GUIX color formats</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - GUIX widget styles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - GUIX brush, canvas, and gradient attributes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - GUIX event description</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-f.html">App. F - GUIX RTOS binding services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-g.html">App. G - GUIX font structure</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-h.html">App. H - GUIX build-time configuration flags</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-i.html">App. I - GUIX information structures</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-j.html">App. J - Canvas Partial Frame Buffer Feature</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-k.html">App. K - GUIX Widget Status Flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX Studio User Guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix-studio.html">About GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-1.html">Ch. 1 - Introduction to GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-2.html">Ch. 2 - Installation and Use of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-3.html">Ch. 3 - Description of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-4.html">Ch. 4 - GUIX Studio Resources</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-6.html">Ch. 6 - GUIX Studio Generated Code</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-9.html">Ch. 9 - GUIX Studio Command Line</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-10.html">Ch. 10 - Simple Example Project</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-11.html">Ch. 11 - Resource Project File</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">GUIX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">GUIX</a></li>
+    <li>GUIX user guide</li>
+    <li><a href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/guix/modules/ROOT/pages/chapter-2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 2 - Installation and Use of GUIX</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of various issues related to
+installation, setup, and use of the high performance user interface
+product GUIX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_host_considerations"><a class="anchor" href="#_host_considerations"></a>Host Considerations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Embedded development is usually performed on Windows or Linux (Unix)
+host computers. After the application is compiled, linked, and the
+executable is generated on the host, it is downloaded to the target
+hardware for execution.</p>
+</div>
+<div class="paragraph">
+<p>Usually the target download is done from within the development tool&#8217;s
+debugger. After download, the debugger is responsible for providing
+target execution control (go, halt, breakpoint, etc.) as well as access
+to memory and processor registers.</p>
+</div>
+<div class="paragraph">
+<p>Most development tool debuggers communicate with the target hardware via
+on-chip debug (OCD) connections such as JTAG (IEEE 1149.1) and
+Background Debug Mode (BDM). Debuggers also communicate with target
+hardware through In-Circuit Emulation (ICE) connections. Both OCD and
+ICE connections provide robust solutions with minimal intrusion on the
+target resident software.</p>
+</div>
+<div class="paragraph">
+<p>As for resources used on the host, the source code for GUXI is delivered
+in ASCII format and requires approximately 30 Mbytes of space on the
+host computer&#8217;s hard disk.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_target_considerations"><a class="anchor" href="#_target_considerations"></a>Target Considerations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>GUIX requires between 5 KBytes and 80 Kbytes of Read-Only Memory (ROM)
+on the target. Another 5 to 10KBytes of the target&#8217;s Random Access Memory (RAM) are required for the GUIX thread stack and other global data structures.</p>
+</div>
+<div class="paragraph">
+<p>In addition, GUIX requires the use of a ThreadX timer and a ThreadX
+mutex object. These facilities are used for periodic processing needs
+and thread protection inside GUIX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_product_distribution"><a class="anchor" href="#_product_distribution"></a>Product Distribution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>GUIX can be obtained from our public source code repository at <a href="https://github.com/eclipse-threadx/guix/" class="bare">https://github.com/eclipse-threadx/guix/</a>.</p>
+</div>
+<div class="paragraph">
+<p>The following is a list of the important files common to most product distributions:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Filename&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gx_api.h</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This C header file contains all system equates, data structures, and service prototypes.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gx_port.h</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This C header file contains all target-specific and development tool-specific data definitions and structures.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gx.a (or gx.lib)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is the binary version of the GUIX C library. This is normally built by compiling and archiving the provided GUIX library source files, however this library may be provided in pre-built form depending on your hardware target and license type.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<em>All files are in lower-case, making it easy to convert the commands to Linux (Unix) development platforms.</em>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_guix_installation"><a class="anchor" href="#_guix_installation"></a>GUIX Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>GUIX is installed by cloning the GitHub repository to your local machine. The following is typical syntax for creating a clone of the GUIX repository on your PC:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">    git clone https://github.com/eclipse-threadx/guix</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively you can download a copy of the repository using the download button on the GitHub main page.</p>
+</div>
+<div class="paragraph">
+<p>You will also find instructions for building the GUIX library on the front page of the online repository.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>Application software needs access to the GUIX library file, usually called <strong>gx.a</strong> (or <strong>gx.lib</strong>), and the C include files <strong>gx_api.h</strong> and <strong>gx_port.h</strong>. This is accomplished either by setting the appropriate path for the development tools or by copying these files into the application development area.</em>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_guix"><a class="anchor" href="#_using_guix"></a>Using GUIX</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using GUIX is easy. Basically, the application code must include <strong><em>gx_api.h</em></strong> during compilation and link with the GUIX library <strong><em>gx.a</em></strong> (or <em>*gx.lib*)</em>.</p>
+</div>
+<div class="paragraph">
+<p>There are four easy steps required to build a GUIX
+application:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Steps</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Step&nbsp;1:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Include the <strong><em>gx_api.h</em></strong> file in all application files that use GUIX services or data structures.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Step&nbsp;2:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Initialize the GUIX system by calling <strong><em>gx_system_initialize</em></strong> from the <strong><em>tx_application_define</em></strong> function or an application thread.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Step&nbsp;3:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create a display instance, create a canvas for the display, and create the root window and any other windows or widgets necessary.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Step&nbsp;4:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compile application source and link with the GUIX runtime library <strong><em>gx.a</em></strong> (or <strong><em>gx.lib</em></strong>). The resulting image can be downloaded to the target and executed!</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>Troubleshooting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each GUIX port is delivered with a demonstration application that
+executes on specific display hardware. The same basic demonstration is
+delivered with all versions of GUIX. It is always a good idea to get the
+demonstration system running first.</p>
+</div>
+<div class="paragraph">
+<p>If the demonstration system does not run properly, perform the following
+operations to narrow the problem:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Determine how much of the demonstration is running.</p>
+</li>
+<li>
+<p>Increase the stack size of the GUIX thread by changing the
+compile-time constant <strong>GX_THREAD_STACK_SIZE</strong> and recompiling
+the GUIX library</p>
+</li>
+<li>
+<p>Recompile the GUIX library with the appropriate debug options listed
+in the configuration option section.</p>
+</li>
+<li>
+<p>Examine the return status from all API calls.</p>
+</li>
+<li>
+<p>Determine if there is an internal system error by setting a
+breakpoint at the function <strong><em>_gx_system_error_process</em></strong>. There
+error code and caller should give clues as to what might be going
+wrong.</p>
+</li>
+<li>
+<p>Temporarily bypass any recent changes to see if the problem
+disappears or changes.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_options"><a class="anchor" href="#_configuration_options"></a>Configuration Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several configuration options when building the GUIX library and the application using GUIX. These options are used to tune the library size and feature set to best fit your application requirements. For example, if your application will have only one thread utilizing the GUIX API services, the configuration flag <strong>GX_DISABLE_MULTITHREAD_SUPPORT</strong> should be defined to eliminate the overhead associated with protecting critical code sections from pre-emption by multiple threads. The various configuration flags can be defined in the application source, on the command line, or within the <strong><em>gx_user.h</em></strong> include file.</p>
+</div>
+<div class="paragraph">
+<p>Whenever the GUIX library configuration flags are modified, it is
+required to rebuild both the GUIX library and your application modules
+for the configuration changes to take effect.</p>
+</div>
+<div class="paragraph">
+<p>The complete list of configuration flags is documented in Appendix H:
+GUIX Build-Time Configuration Flags.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_guix_version_id"><a class="anchor" href="#_guix_version_id"></a>GUIX Version ID</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The current version of GUIX is available to both the user and the
+application software during runtime. The programmer can obtain the GUIX version from examination of the <strong><em>gx_port.h</em></strong> file. In addition, this file also contains a version history of the corresponding port Application software can obtain the GUIX version by examining the global string <strong><em>_gx_version_id</em></strong> in <strong><em>gx_port.h</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>Application software can also obtain release information from the
+constants shown below defined in <em>*gx_api.h*.</em> These constants
+identify the current product release by name and the product major and
+minor version.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">#define __PRODUCT_GUIX__
+
+#define __GUIX_MAJOR_VERSION__
+
+#define __GUIX_MINOR_VERSION__</code></pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

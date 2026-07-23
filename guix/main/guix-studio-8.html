@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 8: Notes on Editing Specific Widget Types :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/guix/main/guix-studio-8.html">
+    <meta name="description" content="Detailed comments describing editing methods for certain complex widget types.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guix" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">GUIX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">GUIX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">GUIX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-guix.html">Overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="guix-studio-quick-start.html">GUIX Studio Quick Start Guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-1.html">Ch. 1 - Introduction to GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-3.html">Ch. 3 - Functional overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-4.html">Ch. 4 - Description of GUIX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-5.html">Ch. 5 - GUIX display drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-example.html">GUIX example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - GUIX color definitions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - GUIX color formats</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - GUIX widget styles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - GUIX brush, canvas, and gradient attributes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - GUIX event description</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-f.html">App. F - GUIX RTOS binding services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-g.html">App. G - GUIX font structure</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-h.html">App. H - GUIX build-time configuration flags</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-i.html">App. I - GUIX information structures</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-j.html">App. J - Canvas Partial Frame Buffer Feature</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-k.html">App. K - GUIX Widget Status Flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX Studio User Guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix-studio.html">About GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-1.html">Ch. 1 - Introduction to GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-2.html">Ch. 2 - Installation and Use of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-3.html">Ch. 3 - Description of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-4.html">Ch. 4 - GUIX Studio Resources</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-6.html">Ch. 6 - GUIX Studio Generated Code</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-9.html">Ch. 9 - GUIX Studio Command Line</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-10.html">Ch. 10 - Simple Example Project</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-11.html">Ch. 11 - Resource Project File</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">GUIX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">GUIX</a></li>
+    <li>GUIX Studio User Guide</li>
+    <li><a href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/guix/modules/ROOT/pages/guix-studio-8.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 8: Notes on Editing Specific Widget Types</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>GUIX Studio allows the user to easily create and modify GUIX widgets that will compose the application UI screens. Most of these editing methods are intuitive and obvious. For example, to resize a widget you can select the widget with the mouse and drag the widget borders. You can also directly type into the left/top/width/height property fields of the selected widget.</p>
+</div>
+<div class="paragraph">
+<p>Certain widget types require a more advanced editing process, because these widgets are themselves a bit more sophisticated in their feature support.</p>
+</div>
+<div class="paragraph">
+<p>This chapter provides notes on the more advanced editing features for these more complex widget types. These notes will expand as the features of GUIX Studio advance along with the widget types provided within the GUIX library.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rich_text_view"><a class="anchor" href="#_rich_text_view"></a>Rich Text View</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This widget is used to display rich text that supports inline text formatting codes. These formatting codes include bold, italic, and several others. To begin, right-click on the selected parent from the <em>Project View</em> or <em>Target View</em> and select menu <strong>Insert/Text/Rich Text View</strong> to insert a rich text view widget.</p>
+</div>
+<div class="paragraph">
+<p>In addition to the standard set of properties supported by all widget types, the Rich Text View widget type supports additional properties.</p>
+</div>
+<div class="sect2">
+<h3 id="_additional_properties"><a class="anchor" href="#_additional_properties"></a>Additional Properties</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Text Align</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default text alignment</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normal Font</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default text font</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bold Font</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Text font for text tagged as bold</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Italic Font</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Text font for text tagged as italic</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bold Italic Font</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Text font for text tagged as bold and italic</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private Text Copy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should be checked if the widget is to keep its own private copy of any text assigned</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whitespace</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width of margin between the widget and the displayed text, in pixels.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Line Space</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Space between two lines of the text, in pixels.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_the_rich_text_formatting_codes"><a class="anchor" href="#_the_rich_text_formatting_codes"></a>The Rich Text formatting codes</h3>
+<div class="paragraph">
+<p>The following format codes are supported for text formatting.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Tag</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;b&gt;&lt;/b&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Render text font with user specified bold font ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;i&gt;&lt;/i&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Render text font with user specified italic font ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;u&gt;&lt;/u&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Render underlined text</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;f GX_FONT_ID&gt;&lt;/f&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Render text using the specified font ID.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;c GX_COLOR_ID&gt;&lt;/c&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Render text using the specified color ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;hc GX_COLOR_ID&gt;&lt;/hc&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Render text using the specified background color ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;align left/right/center&gt;&lt;/align&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Assign text alignment</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>There are two ways to edit the rich text string from within GUIX Studio:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use the Edit Rich Text dialog, which is the recommended and simplest editing method.</p>
+</li>
+<li>
+<p>Use the String Table Editor dialog, which allows you to manually insert the formatting tags shown in the preceding table.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>After selecting a Rich Text View widget in the <em>Target View</em>, select the <strong>Edit Rich Text</strong> button in the <em>Properties View</em> to invoke the  rich text edit dialog, shown in Figure 8.1.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/edit_rich_text_dialog.png" alt="Screenshot of the GUIX Studio Edit Rich Text dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 8.1</strong></p>
+</div>
+<div class="paragraph">
+<p>The left pane is the rich text edit field. You can use the toolbar icons to help insert tags you require. Select any block of text in the edit field, and then select the toolbar buttons to apply the required styles and colors to the selected text block. The Edit Rich Text dialog is an easy way to insert the formatting codes into the test string. You can also insert these tags manually or even generate them at runtime if needed.</p>
+</div>
+<div class="paragraph">
+<p>The Right pane is the widget preview to show how the text is rendered in the target view. The background color of the widget preview is fixed, which may not match the widget&#8217;s assigned background color in the target view.</p>
+</div>
+<div class="paragraph">
+<p>Resource ID names are used in rich text to reference specific font or color resources. If the resource name of a font or color is changed after it has been referenced by the rich text string, GUIX Studio will automatically update the rich text string to reflect the resource name changes. On the other hand if you delete a font or color resource that is referenced by a rich text widget, you must edit the affected rich text manually to remove or change the resource ID names that have been deleted.</p>
+</div>
+<div class="paragraph">
+<p>When you select the Save button in this dialog, the rich text string you have defined is added to the project string table.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_string_scroll_wheel"><a class="anchor" href="#_string_scroll_wheel"></a>String Scroll Wheel</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A string scroll wheel widget supports the display of an array of strings. These strings may be dynamically assigned, or, in the case that the application supports multiple languages, the assigned strings can be pulled from the active string table.</p>
+</div>
+<div class="paragraph">
+<p>The string scroll wheel widget supports an array of strings. The String Scroll Wheel Edit dialog, shown in Figure 8.2, is provided to allow the user to assign this array of strings.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/string_scroll_wheel_edit.png" alt="Screenshot of the GUIX Studio String Scroll Wheel Edit dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 8.2</strong></p>
+</div>
+<div class="paragraph">
+<p>To invoke this dialog, select a string scroll wheel widget within the <em>Target View</em> or the <em>Project View</em>. Once this widget type is selected, the <em>Properties View</em> will include an <strong>Edit Strings</strong> button. Select this button to invoke the String Scroll Wheel Edit dialog.</p>
+</div>
+<div class="paragraph">
+<p>To assign a string for each text index, you can either select a string ID from the drop-down list, or you can type a new string value in the Text field on the right. When you are done with your changes, any new or modified strings are saved to the active string table.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sprite"><a class="anchor" href="#_sprite"></a>Sprite</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A sprite widget is used to display a sequence of images to provide an animation effect. A sprite widget requires a frame list, which is an array of image IDs and unique parameters applied to each image in the frame. To build this frame list for the sprite widget the Edit Sprite Frames dialog, shown in figure 8.3, is provided:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/edit_sprite_frames.jpg" alt="Screenshot of the GUIX Studio Edit Sprite Frames dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 8.3</strong></p>
+</div>
+<div class="paragraph">
+<p>To invoke this dialog, select a sprite widget within the <em>Target View</em> or the <em>Project View</em>. Once this widget type is selected, the <em>Properties View</em> will include an <strong>Edit Framelist</strong> button. Select this button to invoke the Edit Sprite Frames dialog.</p>
+</div>
+<div class="paragraph">
+<p>The <em>Total number of Sprite Frames</em> field is an input field allowing you to enter the integer total number of frames to be displayed by the sprite widget. Images can be reused within the frame list, meaning not every image must be unique.</p>
+</div>
+<div class="paragraph">
+<p>The <em>Import Frames</em> button allows you to import a bunch of frames from pixelmap folders. Figure 8.4 shows the <strong>Import Sprite Frames</strong> dialog. You can select a folder from left, and then choose pixelmaps you&#8217;d like to import in the right.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/import_sprite_frames.jpg" alt="Screenshot of the GUIX Studio Import Sprite Frames dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 8.4</strong></p>
+</div>
+<div class="paragraph">
+<p>The <em>Sprite Frame ID</em> field is a frame index selection value that ranges from 1 to Total number of Frames. Increment and Decrement this value to move from one sprite frame to the next.</p>
+</div>
+<div class="paragraph">
+<p>The  <em>Apply to All Frames</em> option applies frame property changes to all the sprite frames.</p>
+</div>
+<div class="paragraph">
+<p>Each sprite frame has several parameters. The first is the Background Operation. This field mimics the capabilities of the popular GIF animation format. The choices here include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>No Operation, which means the current frame image is drawn over the previous frame image.</p>
+</li>
+<li>
+<p>Restore First Pixel-map, which means the index 1 pixel-map is drawn before the current pixel-map and</p>
+</li>
+<li>
+<p>Solid Color Fill, which means the sprite background is filled with the sprite background color before the current frame is drawn.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <em>Pixel-map ID</em> field allows you to select any pixel-map previously added to the project resources. The same pixel-map ID can be used for multiple frames. For example your sprite animation might utilize movement of the image (using the x and y offset fields) instead of or in addition to using different sprite images.</p>
+</div>
+<div class="paragraph">
+<p>The <em>Alpha value</em> field is applied to the entire pixel-map drawing. This field only has an effect when running at 8 bpp color depth and higher. Alpha value 0 is fully transparent, and alpha value 255 is opaque.</p>
+</div>
+<div class="paragraph">
+<p>You can specify an offset within the sprite frame at which the current pixel-map will be drawn using the Frame x-offset and Frame y-offset fields. In other words, each image drawn does not have to be the full size of the sprite widget.</p>
+</div>
+<div class="paragraph">
+<p>The Delay period specifies the time to delay before moving to the next sprite frame. This value is in ticks, which for the default GUIX/ThreadX timer configuration each tick represents 50 ms.</p>
+</div>
+<div class="paragraph">
+<p>When you save your changes in the Edit Sprite Frames dialog, GUIX Studio is able to generate the complete frame list array as part of the output specifications file generation.</p>
+</div>
+<div class="sect2">
+<h3 id="_assign_a_sprite_widget_with_gif_resource"><a class="anchor" href="#_assign_a_sprite_widget_with_gif_resource"></a>Assign a sprite widget with GIF resource</h3>
+<div class="paragraph">
+<p>You can add a GIF resource to <strong>Pixelmap</strong> resource group and assign the GIF resource to the sprite widget directly. After GIF resource is set, a frame list will be automatically generated, you can further edit each frame of the frame list through the sprite edit dialog:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/edit_sprite_gif_frames.jpg" alt="Screenshot of the GUIX Studio Edit Sprite Frames dialog for GIF resource.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 8.5</strong></p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

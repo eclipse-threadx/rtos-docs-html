@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Appendix C - FileX data types :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/filex/main/appendix-c.html">
+    <meta name="description" content="Learn about the FileX data types.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="filex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">FileX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">FileX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">FileX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-filex.html">Overview of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">FileX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - I/O drivers for FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - FileX fault tolerant module</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - FileX constants</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - FileX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">FileX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">FileX</a></li>
+    <li>FileX user guide</li>
+    <li><a href="appendix-c.html">App. C - FileX data types</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/filex/modules/ROOT/pages/appendix-c.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Appendix C - FileX data types</h1>
+<div class="sect1">
+<h2 id="_fx_dir_entry"><a class="anchor" href="#_fx_dir_entry"></a>FX_DIR_ENTRY</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct FX_DIR_ENTRY_STRUCT
+{
+    CHAR        *fx_dir_entry_name;
+    CHAR        fx_dir_entry_short_name[FX_MAX_SHORT_NAME_LEN];
+    UINT        fx_dir_entry_long_name_present;
+    UINT        fx_dir_entry_long_name_shorted;
+    UCHAR       fx_dir_entry_attributes;
+    UCHAR       fx_dir_entry_reserved;
+    UCHAR       fx_dir_entry_created_time_ms;
+    UINT        fx_dir_entry_created_time;
+    UINT        fx_dir_entry_created_date;
+    UINT        fx_dir_entry_last_accessed_date;
+    UINT        fx_dir_entry_time;
+    UINT        fx_dir_entry_date;
+    ULONG       fx_dir_entry_cluster;
+    ULONG64     fx_dir_entry_file_size;
+    ULONG64     fx_dir_entry_log_sector;
+    ULONG       fx_dir_entry_byte_offset;
+    ULONG       fx_dir_entry_number;
+    ULONG       fx_dir_entry_last_search_cluster;
+    ULONG       fx_dir_entry_last_search_relative_cluster;
+    ULONG64     fx_dir_entry_last_search_log_sector;
+    ULONG       fx_dir_entry_last_search_byte_offset;
+    ULONG64     fx_dir_entry_next_log_sector;
+
+
+} FX_DIR_ENTRY;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fx_path"><a class="anchor" href="#_fx_path"></a>FX_PATH</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct FX_PATH_STRUCT
+{
+    FX_DIR_ENTRY    fx_path_directory;
+    CHAR            fx_path_string[FX_MAXIMUM_PATH];
+    CHAR            fx_path_name_buffer[FX_MAX_LONG_NAME_LEN];
+    ULONG           fx_path_current_entry;
+} FX_PATH;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fx_cached_sector"><a class="anchor" href="#_fx_cached_sector"></a>FX_CACHED_SECTOR</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef FX_PATH FX_LOCAL_PATH;
+typedef struct FX_CACHED_SECTOR_STRUCT
+{
+    UCHAR            *fx_cached_sector_memory_buffer;
+    ULONG            fx_cached_sector;
+    UCHAR            fx_cached_sector_buffer_dirty;
+    UCHAR            fx_cached_sector_valid;
+    UCHAR            fx_cached_sector_type;
+    UCHAR            fx_cached_sector_reserved;
+    struct           FX_CACHED_SECTOR_STRUCT
+                         *fx_cached_sector_next_used;
+} FX_CACHED_SECTOR;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fx_media"><a class="anchor" href="#_fx_media"></a>FX_MEDIA</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct        FX_MEDIA_STRUCT
+{
+    ULONG        fx_media_id;
+    CHAR        *fx_media_name;
+    UCHAR       *fx_media_memory_buffer;
+    ULONG        fx_media_memory_size;
+    UINT        fx_media_sector_cache_hashed;
+    ULONG        fx_media_sector_cache_size;
+    UCHAR       *fx_media_sector_cache_end;
+    struct        FX_CACHED_SECTOR_STRUCT
+                    *fx_media_sector_cache_list_ptr;
+    ULONG        fx_media_sector_cache_hashed_sector_valid;
+    ULONG        fx_media_sector_cache_dirty_count;
+    UINT        fx_media_bytes_per_sector;
+    UINT        fx_media_sectors_per_track;
+    UINT        fx_media_heads;
+    ULONG64        fx_media_total_sectors;
+    ULONG        fx_media_total_clusters;
+
+    UINT        fx_media_reserved_sectors;
+    UINT        fx_media_root_sector_start;
+    UINT        fx_media_root_sectors;
+    UINT        fx_media_data_sector_start;
+    UINT        fx_media_sectors_per_cluster;
+    UINT        fx_media_sectors_per_FAT;
+    UINT        fx_media_number_of_FATs;
+    UINT        fx_media_12_bit_FAT;
+    UINT        fx_media_32_bit_FAT;
+    ULONG        fx_media_FAT32_additional_info_sector;
+    UINT        fx_media_FAT32_additional_info_last_available;
+
+    #ifdef FX_DRIVER_USE_64BIT_LBA
+        ULONG64        fx_media_hidden_sectors;
+    #else
+        ULONG        fx_media_hidden_sectors;
+    #endif
+
+    ULONG        fx_media_root_cluster_32;
+    UINT        fx_media_root_directory_entries;
+    ULONG        fx_media_available_clusters;
+    ULONG        fx_media_cluster_search_start;
+    VOID        *fx_media_driver_info;
+    UINT        fx_media_driver_request;
+    UINT        fx_media_driver_status;
+    UCHAR       *fx_media_driver_buffer;
+
+    #ifdef FX_DRIVER_USE_64BIT_LBA
+        ULONG64        fx_media_driver_logical_sector;
+    #else
+        ULONG        fx_media_driver_logical_sector;
+    #endif
+
+    ULONG        fx_media_driver_sectors;
+    ULONG        fx_media_driver_physical_sector;
+    UINT        fx_media_driver_physical_track;
+    UINT        fx_media_driver_physical_head;
+    UINT        fx_media_driver_write_protect;
+    UINT        fx_media_driver_free_sector_update;
+    UINT        fx_media_driver_system_write;
+    UINT        fx_media_driver_data_sector_read;
+    UINT        fx_media_driver_sector_type;
+
+    VOID        (*fx_media_driver_entry)(struct        fx_MEDIA_STRUCT *);
+    VOID        (*fx_media_open_notify)(struct        fx_MEDIA_STRUCT *);
+    VOID        (*fx_media_close_notify)(struct        fx_MEDIA_STRUCT *);
+    struct        FX_FILE_STRUCT
+                    *fx_media_opened_file_list;
+    ULONG        fx_media_opened_file_count;
+    struct        FX_MEDIA_STRUCT
+                    *fx_media_opened_next,
+                    *fx_media_opened_previous;
+
+    #ifndef FX_MEDIA_STATISTICS_DISABLE
+        ULONG        fx_media_directory_attributes_reads;
+        ULONG        fx_media_directory_attributes_sets;
+        ULONG        fx_media_directory_creates;
+        ULONG        fx_media_directory_default_gets;
+        ULONG        fx_media_directory_default_sets;
+        ULONG        fx_media_directory_deletes;
+        ULONG        fx_media_directory_first_entry_finds;
+        ULONG        fx_media_directory_first_full_entry_finds;
+        ULONG        fx_media_directory_information_gets;
+        ULONG        fx_media_directory_local_path_clears;
+        ULONG        fx_media_directory_local_path_gets;
+        ULONG        fx_media_directory_local_path_restores;
+        ULONG        fx_media_directory_local_path_sets;
+        ULONG        fx_media_directory_name_tests;
+        ULONG        fx_media_directory_next_entry_finds;
+        ULONG        fx_media_directory_next_full_entry_finds;
+        ULONG        fx_media_directory_renames;
+        ULONG        fx_media_file_allocates;
+        ULONG        fx_media_file_attributes_reads;
+        ULONG        fx_media_file_attributes_sets;
+        ULONG        fx_media_file_best_effort_allocates;
+        ULONG        fx_media_file_closes;
+        ULONG        fx_media_file_creates;
+        ULONG        fx_media_file_deletes;
+        ULONG        fx_media_file_opens;
+        ULONG        fx_media_file_reads;
+        ULONG        fx_media_file_relative_seeks;
+        ULONG        fx_media_file_renames;
+        ULONG        fx_media_file_seeks;
+        ULONG        fx_media_file_truncates;
+        ULONG        fx_media_file_truncate_releases;
+        ULONG        fx_media_file_writes;
+        ULONG        fx_media_aborts;
+        ULONG        fx_media_flushes;
+        ULONG        fx_media_reads;
+        ULONG        fx_media_writes;
+        ULONG        fx_media_directory_entry_reads;
+        ULONG        fx_media_directory_entry_writes;
+        ULONG        fx_media_directory_searches;
+        ULONG        fx_media_directory_free_searches;
+        ULONG        fx_media_fat_entry_reads;
+        ULONG        fx_media_fat_entry_writes;
+        ULONG        fx_media_fat_entry_cache_read_hits;
+        ULONG        fx_media_fat_entry_cache_read_misses;
+        ULONG        fx_media_fat_entry_cache_write_hits;
+        ULONG        fx_media_fat_entry_cache_write_misses;
+        ULONG        fx_media_fat_cache_flushes;
+        ULONG        fx_media_fat_sector_reads;
+        ULONG        fx_media_fat_sector_writes;
+        ULONG        fx_media_logical_sector_reads;
+        ULONG        fx_media_logical_sector_writes;
+        ULONG        fx_media_logical_sector_cache_read_hits;
+        ULONG        fx_media_logical_sector_cache_read_misses;
+        ULONG        fx_media_driver_read_requests;
+        ULONG        fx_media_driver_write_requests;
+        ULONG        fx_media_driver_boot_read_requests;
+        ULONG        fx_media_driver_boot_write_requests;
+        ULONG        fx_media_driver_release_sectors_requests;
+        ULONG        fx_media_driver_flush_requests;
+    #endif
+
+    #ifndef FX_MEDIA_DISABLE_SEARCH_CACHE
+        ULONG        fx_media_directory_search_cache_hits;
+    #endif
+
+    #ifndef FX_SINGLE_THREAD
+        TX_MUTEX        fx_media_protect;
+    #endif
+
+    #ifndef FX_MEDIA_DISABLE_SEARCH_CACHE
+        UINT        fx_media_last_found_directory_valid;
+        FX_DIR_ENTRY        fx_media_last_found_directory;
+        FX_DIR_ENTRY        fx_media_last_found_entry;
+        CHAR        fx_media_last_found_file_name[FX_MAX_LONG_NAME_LEN];
+        CHAR        fx_media_last_found_name[FX_MAX_LAST_NAME_LEN];
+    #endif
+
+    FX_PATH        fx_media_default_path;
+    FX_FAT_CACHE_ENTRY    fx_media_fat_cache[FX_MAX_FAT_CACHE];
+    UCHAR        fx_media_fat_secondary_update_map[FX_FAT_MAP_SIZE];
+    ULONG        fx_media_reserved_for_user;
+    CHAR        fx_media_name_buffer[4*FX_MAX_LONG_NAME_LEN];
+
+    #ifdef FX_RENAME_PATH_INHERIT
+        CHAR        fx_media_rename_buffer[FX_MAXIMUM_PATH];
+        struct        FX_CACHED_SECTOR_STRUCT
+        fx_media_sector_cache[FX_MAX_SECTOR_CACHE];
+        ULONG        fx_media_sector_cache_hash_mask;
+        ULONG        fx_media_disable_burst_cache;
+    #ifdef FX_ENABLE_FAULT_TOLERANT
+        UCHAR        fx_media_fault_tolerant_enabled;
+        UCHAR        fx_media_fault_tolerant_state;
+        USHORT        fx_media_fault_tolerant_transaction_count;
+        ULONG        fx_media_fault_tolerant_start_cluster;
+        ULONG        fx_media_fault_tolerant_clusters;
+        ULONG        fx_media_fault_tolerant_total_logs;
+        UCHAR       *fx_media_fault_tolerant_memory_buffer;
+        ULONG        fx_media_fault_tolerant_memory_buffer_size;
+        ULONG        fx_media_fault_tolerant_file_size;
+        ULONG        fx_media_fault_tolerant_cached_FAT_sector;
+        fx_media_fault_tolerant_cache[FX_FAULT_TOLERANT_CACHE_SIZE &gt;&gt; 2];
+        ULONG        fx_media_fault_tolerant_cached_FAT_sector;
+    #endif
+
+    ULONG        fx_media_fat_reserved;
+    ULONG        fx_media_fat_last;
+    UCHAR        fx_media_FAT_type;
+} FX_MEDIA;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fx_file"><a class="anchor" href="#_fx_file"></a>FX_FILE</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct FX_FILE_STRUCT
+{
+    ULONG         fx_file_id;
+    CHAR *        fx_file_name;
+    ULONG         fx_file_open_mode;
+    UCHAR         fx_file_modified;
+    ULONG         fx_file_total_clusters;
+    ULONG         fx_file_first_physical_cluster;
+    ULONG         fx_file_consecutive_cluster;
+    ULONG         fx_file_last_physical_cluster;
+    ULONG         fx_file_current_physical_cluster;
+    ULONG64     fx_file_current_logical_sector;
+    ULONG         fx_file_current_logical_offset;
+    ULONG         fx_file_current_relative_cluster;
+    ULONG         fx_file_current_relative_sector;
+    ULONG64     fx_file_current_file_offset;
+    ULONG64     fx_file_current_file_size;
+    ULONG64     fx_file_current_available_size;
+
+    #ifdef FX_ENABLE_FAULT_TOLERANT
+        ULONG64     fx_file_maximum_size_used;
+    #endif /*FX_ENABLE_FAULT_TOLERANT */
+
+    FX_MEDIA    *fx_file_media_ptr;
+    struct         FX_FILE_STRUCT
+                    *fx_file_opened_next,
+                    *fx_file_opened_previous;
+    FX_DIR_ENTRY fx_file_dir_entry;
+    CHAR        fx_file_name_buffer[FX_MAX_LONG_NAME_LEN];
+    ULONG         fx_file_disable_burst_cache;
+    VOID        (*fx_file_write_notify)(struct FX_FILE_STRUCT *);
+} FX_FILE;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

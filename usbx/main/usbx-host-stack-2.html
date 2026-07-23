@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 2 - USBX Host Stack Installation :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/usbx/main/usbx-host-stack-2.html">
+    <meta name="description" content="Learn how to install the USBX host stack.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="usbx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">USBX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">USBX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">USBX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-usbx.html">Overview of USBX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-3.html">Ch. 3 - Functional components of USBX device stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-2.html">Ch. 2 - USBX device class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-7.html">Ch. 7 - USBX device class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-6.html">Ch. 6 - USBX CDC-ECM class usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-2.html">Ch. 2 - USBX Host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">USBX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">USBX</a></li>
+    <li>USBX host stack user guide</li>
+    <li><a href="usbx-host-stack-2.html">Ch. 2 - USBX installation</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.0/rtos-docs/usbx/modules/ROOT/pages/usbx-host-stack-2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 2 - USBX Host Stack Installation</h1>
+<div class="sect1">
+<h2 id="_host_considerations"><a class="anchor" href="#_host_considerations"></a>Host Considerations</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_computer_type"><a class="anchor" href="#_computer_type"></a>Computer Type</h3>
+<div class="paragraph">
+<p>Embedded development is usually performed on Windows PC or Unix host computers. After the application is compiled, linked, and located on the host, it is downloaded to the target hardware for execution.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_download_interfaces"><a class="anchor" href="#_download_interfaces"></a>Download Interfaces</h3>
+<div class="paragraph">
+<p>Usually, the target download is done over an RS-232 serial interface, although parallel interfaces, USB, and Ethernet are becoming more popular. See the development tool documentation for available options.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_debugging_tools"><a class="anchor" href="#_debugging_tools"></a>Debugging Tools</h3>
+<div class="paragraph">
+<p>Debugging is done typically over the same link as the program image download. A variety of debuggers exist, ranging from small monitor programs running on the target through Background Debug Monitor (BDM) and In-Circuit Emulator (ICE) tools. The ICE tool provides the most robust debugging of actual target hardware.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_required_hard_disk_space"><a class="anchor" href="#_required_hard_disk_space"></a>Required Hard Disk Space</h3>
+<div class="paragraph">
+<p>The source code for USBX is delivered in ASCII format and requires approximately 500 KBytes of space on the host computer&#8217;s hard disk.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_target_considerations"><a class="anchor" href="#_target_considerations"></a>Target Considerations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>USBX requires between 24 KBytes and 64 KBytes of Read Only Memory (ROM) on the target in host mode. The amount of memory required is dependent on the type of controller used and the USB classes linked to USBX. Another 32 KBytes of the target&#8217;s Random Access Memory (RAM) are required for USBX global data structures and memory pool. This memory pool can also be adjusted depending on the expected number of devices on the USB and the type of USB controller. The USBX device side requires roughly 10-12 K of ROM depending on the type of device controller. The RAM memory usage depends on the type of class emulated by the device.</p>
+</div>
+<div class="paragraph">
+<p>USBX also relies on ThreadX semaphores, mutexes, and threads for multiple thread protection, and I/O suspension and periodic processing for monitoring the USB bus topology.</p>
+</div>
+<div class="sect2">
+<h3 id="_product_distribution"><a class="anchor" href="#_product_distribution"></a>Product Distribution</h3>
+<div class="paragraph">
+<p>USBX can be obtained from our public source code repository at <a href="https://github.com/eclipse-threadx/usbx/" class="bare">https://github.com/eclipse-threadx/usbx/</a>.</p>
+</div>
+<div class="paragraph">
+<p>The following is a list of several important files in the repository:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>ux_api.h</em></strong>: This C header file contains all system equates, data structures, and service prototypes.</p>
+</li>
+<li>
+<p><strong><em>ux_port.h</em></strong>: This C header file contains all development-tool-specific data definitions and structures.</p>
+</li>
+<li>
+<p><strong><em>ux.lib</em></strong>: This is the binary version of the USBX C library. It is distributed with the standard package.</p>
+</li>
+<li>
+<p><strong><em>demo_usbx.c</em></strong>: The C file containing a simple USBX demo</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>All filenames are in lower-case. This naming convention makes it easier to convert the commands to Unix development platforms.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usbx_installation"><a class="anchor" href="#_usbx_installation"></a>USBX Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>USBX is installed by cloning the GitHub repository to your local machine. The following is typical syntax for creating a clone of the USBX repository on your PC:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-powershell hljs" data-lang="powershell">    git clone https://github.com/eclipse-threadx/usbx</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively you can download a copy of the repository using the download button on the GitHub main page.</p>
+</div>
+<div class="paragraph">
+<p>You will also find instructions for building the USBX library on the front page of the online repository.</p>
+</div>
+<div class="paragraph">
+<p>The following general instructions apply to virtually any installation:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Use the same directory in which you previously installed ThreadX on the host hard drive. All USBX names are unique and will not interfere with the previous USBX installation.</p>
+</li>
+<li>
+<p>Add a call to <strong><em>ux_system_initialize</em></strong> at or near the beginning of <strong><em>tx_application_define</em>.</strong> This is where the USBX resources are initialized.</p>
+</li>
+<li>
+<p>Add a call to <strong><em>ux_host_stack_initialize</em>.</strong></p>
+</li>
+<li>
+<p>Add one or more calls to initialize the required USBX.</p>
+</li>
+<li>
+<p>Add one or more calls to initialize the host controllers available in the system.</p>
+</li>
+<li>
+<p>It may be required to modify the tx_low_level_initialize.c file to add low-level hardware initialization and interrupt vector routing. This is specific to the hardware platform and will not be discussed here.</p>
+</li>
+<li>
+<p>Compile application source code and link with the USBX and ThreadX run time libraries (FileX and/or Netx Duo may also be required if the USB storage class and/or USB network classes are to be compiled in), ux.a (or ux.lib) and tx.a (or tx.lib). The resulting can be downloaded to the target and executed.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_options"><a class="anchor" href="#_configuration_options"></a>Configuration Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several configuration options for building the USBX library. All options are located in the <strong><em>ux_user.h</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>The list below details each configuration option.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_PERIODIC_RATE</strong>: This value represents how many ticks per seconds for a specific hardware platform. The default is 1000 indicating one tick per millisecond.</p>
+</li>
+<li>
+<p><strong>UX_MAX_CLASS_DRIVER</strong>: This value is the maximum number of classes that can be loaded by USBX. This value represents the class container and not the number of instances of a class. For instance, if a particular implementation of USBX needs the hub class, the printer class, and the storage class, then the UX_MAX_CLASS_DRIVER value can be set to 3 regardless of the number of devices that belong to these classes.</p>
+</li>
+<li>
+<p><strong>UX_MAX_HCD</strong>: This value represents the number of different host controllers that are available in the system. For USB 1.1 support, this value will mostly be 1. For USB 2.0 support this value can be more than 1. This value represents the number of concurrent host controllers running at the same time. If for instance, there are two instances of OHCI running or one EHCI and one OHCI controllers running, the UX_MAX_HCD should be set to 2.</p>
+</li>
+<li>
+<p><strong>UX_MAX_DEVICES</strong>: This value represents the maximum number of devices that can be attached to the USB. Normally, the theoretical maximum number on a single USB is 127 devices. This value can be scaled down to conserve memory. It should be noted that this value represents the total number of devices regardless of the number of USB buses in the system.</p>
+</li>
+<li>
+<p><strong>UX_MAX_ED</strong>: This value represents the maximum number of EDs in the controller pool. This number is assigned to one controller only. If multiple instances of controllers are present, this value is used by each individual controller.</p>
+</li>
+<li>
+<p><strong>UX_MAX_TD and UX_MAX_ISO_TD</strong>: This value represents the maximum number of regular and isochronous TDs in the controller pool. This number is assigned to one controller only. If multiple instances of controllers are present, this value is used by each individual controller.</p>
+</li>
+<li>
+<p><strong>UX_THREAD_STACK_SIZE</strong>: This value is the size of the stack in bytes for the USBX threads. It can be typically 1024 bytes or 2048 bytes depending on the processor used and the host controller.</p>
+</li>
+<li>
+<p><strong>UX_HOST_ENUM_THREAD_STACK_SIZE</strong>: This value is the stack size of the USB host enumeration thread. If this symbol I not set, the USBX host enumeration thread stack size is set to <strong>UX_THREAD_STACK_SIZE</strong>.</p>
+</li>
+<li>
+<p><strong>UX_HOST_HCD_THREAD_STACK_SIZE</strong>: This value is the stack size of the USB host HCD thread. If this symbol I not set, the USBX host HCD thread stack size is set to <strong>UX_THREAD_STACK_SIZE</strong>.</p>
+</li>
+<li>
+<p><strong>UX_THREAD_PRIORITY_ENUM</strong>: This is the ThreadX priority value for the USBX enumeration threads that monitors the bus topology.</p>
+</li>
+<li>
+<p><strong>UX_THREAD_PRIORITY_CLASS</strong>: This is the ThreadX priority value for the standard USBX threads.</p>
+</li>
+<li>
+<p><strong>UX_THREAD_PRIORITY_KEYBOARD</strong>: This is the ThreadX priority value for the USBX HID keyboard class.</p>
+</li>
+<li>
+<p><strong>UX_THREAD_PRIORITY_HCD</strong>: This is the ThreadX priority value for the host controller thread.</p>
+</li>
+<li>
+<p><strong>UX_NO_TIME_SLICE</strong>: This value actually defines the time slice that will be used for threads. For example, if defined to 0, the ThreadX target port does not use time slices.</p>
+</li>
+<li>
+<p><strong>UX_MAX_HOST_LUN</strong>: This value represents the maximum number of SCSI logical units represented in the host storage class driver.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_STORAGE_INCLUDE_LEGACY_PROTOCOL_SUPPORT</strong>: If defined, this value includes code to handle storage devices that use the CB or CBI protocol (such as floppy disks). It is off by default because these protocols are obsolete, being superseded by the Bulk Only Transport (BOT protocol, which virtually all modern storage devices use.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_HID_KEYBOARD_EVENTS_KEY_CHANGES_MODE</strong>: If defined, this value causes ux_host_class_hid_keyboard_key_get to only report key changes that is, key presses and key releases. By default, it only reports when a key is down.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_HID_KEYBOARD_EVENTS_KEY_CHANGES_MODE_REPORT_KEY_DOWN_ONLY</strong>: Only used if <strong>UX_HOST_CLASS_HID_KEYBOARD_EVENTS_KEY_CHANGES_MODE</strong> is defined. If defined, causes ux_host_class_hid_keyboard_key_get to only report key pressed/down changes; key released/up changes are not reported.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_HID_KEYBOARD_EVENTS_KEY_CHANGES_MODE_REPORT_LOCK_KEYS</strong>: Only used if <strong>UX_HOST_CLASS_HID_KEYBOARD_EVENTS_KEY_CHANGES_MODE</strong> is defined. If defined, causes ux_host_class_hid_keyboard_key_get to report lock key (CapsLock/NumLock/ScrollLock) changes.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_HID_KEYBOARD_EVENTS_KEY_CHANGES_MODE_REPORT_MODIFIER_KEYS</strong>: Only used if <strong>UX_HOST_CLASS_HID_KEYBOARD_EVENTS_KEY_CHANGES_MODE</strong> is defined. If defined, causes ux_host_class_hid_keyboard_key_get to report modifier key (Ctrl/Alt/Shift/GUI) changes.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_CDC_ECM_NX_PKPOOL_ENTRIES</strong>: If defined, this value represents the number of packets in the CDC-ECM host class. The default is 16.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_source_code_tree"><a class="anchor" href="#_source_code_tree"></a>Source Code Tree</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The USBX files are provided in several directories.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/usbx-host-stack/source-code-tree.png" alt="Source Code Tree">
+</div>
+</div>
+<div class="paragraph">
+<p>In order to make the files recognizable by their names, the following convention has been adopted:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">File Suffix Name</th>
+<th class="tableblock halign-left valign-top">File description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ux_host_stack</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">usbx host stack core files</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ux_host_class</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">usbx host stack classes files</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ux_hcd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">usbx host stack controller driver files</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ux_device_stack</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">usbx device stack core files</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ux_device_class</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">usbx device stack classes files</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ux_dcd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">usbx device stack controller driver files</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ux_otg</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">usbx otg controller driver related files</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ux_pictbridge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">usbx pictbridge files</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ux_utility</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">usbx utility functions</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">demo_usbx</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">demonstration files for USBX</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_initialization_of_usbx_resources"><a class="anchor" href="#_initialization_of_usbx_resources"></a>Initialization of USBX resources</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>USBX has its own memory manager. The memory needs to be allocated to USBX before the host or device side of USBX is initialized. USBX memory manager can accommodate systems where memory can be cached.</p>
+</div>
+<div class="paragraph">
+<p>The following function initializes USBX memory resources with 128K of regular memory and no separate pool for cache safe memory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Initialize USBX Memory */
+
+ux_system_initialize(memory_pointer,(128*1024),UX_NULL,0);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The prototype for the ux_system_initialize is as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_system_initialize(
+    VOID *regular_memory_pool_start,
+    ULONG regular_memory_size,
+    VOID *cache_safe_memory_pool_start,
+    ULONG cache_safe_memory_size);</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters"><a class="anchor" href="#_input_parameters"></a>Input parameters:</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>regular_memory_pool_start</strong> Beginning of the regular memory pool.</p>
+</li>
+<li>
+<p><strong>regular_memory_size</strong> Size of the regular memory pool.</p>
+</li>
+<li>
+<p><strong>cache_safe_memory_pool_start</strong> Beginning of the cache safe memory pool.</p>
+</li>
+<li>
+<p></p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>cache_safe_memory_size</strong> Size of the cache safe memory pool.</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Not all systems require the definition of cache safe memory. In such a system, the values passed during the initialization for the memory pointer will be set to UX_NULL and the size of the pool to 0. USBX will then use the regular memory pool in lieu of the cache safe pool.</p>
+</div>
+<div class="paragraph">
+<p>In a system where the regular memory is not cache safe and a controller requires to perform DMA memory (like OHCI, EHCI controllers amongst others) it is necessary to define a memory pool in a cache safe zone.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_uninitialization_of_usbx_resources"><a class="anchor" href="#_uninitialization_of_usbx_resources"></a>Uninitialization of USBX resources</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>USBX can be terminated by releasing its resources. Prior to terminating usbx, all classes and controller resources need to be terminated properly. The following function uninitializes USBX memory resources :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Unitialize USBX Resources */
+
+ux_system_uninitialize();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The prototype for the ux_system_initialize is as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_system_uninitialize(VOID);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_definition_of_usb_host_controllers"><a class="anchor" href="#_definition_of_usb_host_controllers"></a>Definition of USB Host Controllers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is required to define at least one USB host controller for USBX to operate in host mode. The application initialization file should contain this definition. The following line performs the definition of a generic host controller.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ux_host_stack_hcd_register("ux_hcd_controller",
+        ux_hcd_controller_initialize, 0xd0000, 0x0a);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The ux_host_stack_hcd_register has the following prototype.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_hcd_register(
+    UCHAR *hcd_name,
+    UINT (*hcd_initialize_function)(struct UX_HCD_STRUCT *),
+    ULONG hcd_param1, ULONG hcd_param2);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The ux_host_stack_hcd_register function has the following parameters.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hcd_name</strong>: string of the controller name</p>
+</li>
+<li>
+<p><strong>hcd_initialize_function</strong>: initialization function of the controller</p>
+</li>
+<li>
+<p><strong>hcd_param1</strong>: usually the IO value or Memory used by the controller</p>
+</li>
+<li>
+<p><strong>hcd_param2</strong>: usually the IRQ used by the controller</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In our previous example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"ux_hcd_controller" is the name of the controller</p>
+</li>
+<li>
+<p>"ux_hcd_controller_initialize" is the initialization routine for the host controller</p>
+</li>
+<li>
+<p>0xd0000 is the address at which the host controller registers are visible in memory</p>
+</li>
+<li>
+<p>and 0x0a is the IRQ used by the host controller.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Following is an example of the initialization of USBX in host mode with one host controller and several classes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* Initialize USBX. */
+ux_system_initialize(memory_ptr, (128*1024),0,0);
+
+/* The code below is required for installing the USBX host stack. */
+status = ux_host_stack_initialize(UX_NULL);
+
+/* If status equals UX_SUCCESS, host stack has been initialized. */
+
+/* Register all the host classes for this USBX implementation. */
+status = ux_host_class_register("ux_host_class_hub", ux_host_class_hub_entry);
+
+/* If status equals UX_SUCCESS, host class has been registered. */
+status = ux_host_class_register("ux_host_class_storage", ux_host_class_storage_entry);
+
+/* If status equals UX_SUCCESS, host class has been registered. */
+status = ux_host_class_register("ux_host_class_printer", ux_host_class_printer_entry);
+
+/* If status equals UX_SUCCESS, host class has been registered. */
+status = ux_host_class_register("ux_host_class_audio", ux_host_class_audio_entry);
+
+/* If status equals UX_SUCCESS, host class has been registered. */
+
+/* Register all the USB host controllers available in this system. */
+status = ux_host_stack_hcd_register("ux_hcd_controller", ux_hcd_controller_initialize, 0x300000, 0x0a);
+
+/* If status equals UX_SUCCESS, USB host controllers have been registered. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_definition_of_host_classes"><a class="anchor" href="#_definition_of_host_classes"></a>Definition of Host Classes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is required to define one or more host classes with USBX. A USB class is required to drive a USB device after the USB stack has configured the USB device. A USB class is specific to the device. One or more classes may be required to drive a USB device depending on the number of interfaces contained in the USB device descriptors.</p>
+</div>
+<div class="paragraph">
+<p>This is an example of the registration of the HUB class.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">status = ux_host_stack_class_register("ux_host_class_hub", ux_host_class_hub_entry);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The function ux_host_class_register has the following prototype.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_class_register(
+    UCHAR *class_name,
+    UINT (*class_entry_address) (struct UX_HOST_CLASS_COMMAND_STRUCT *));</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>class_name</strong> is the name of the class</p>
+</li>
+<li>
+<p><strong>class_entry_address</strong> is the entry point of the class</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In the example of the HUB class initialization:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"ux_host_class_hub" is the name of the hub class</p>
+</li>
+<li>
+<p>ux_host_class_hub_entry is the entry point of the HUB class.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_access_to_host_class_function_instance"><a class="anchor" href="#_access_to_host_class_function_instance"></a>Access to Host Class Function Instance</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After class registration and host controller driver (HCD) registration, the USB devices connected to USB port can be detected and enumerated. During enumeration, registered class checks connected device information, if the right information is found memory is allocated for class function instance and the instance is then activated. The instance is used by application to do class function specific operations.</p>
+</div>
+<div class="paragraph">
+<p>When USB device is removed from USB port, the activated class function instance is then deactivated.</p>
+</div>
+<div class="paragraph">
+<p>There are two ways to access the host instances: from registered class and/or through host change callback notification.</p>
+</div>
+<div class="sect2">
+<h3 id="_get_instance_through_registered_class"><a class="anchor" href="#_get_instance_through_registered_class"></a>Get instance through registered class</h3>
+<div class="paragraph">
+<p>When class function instance is activated, it&#8217;s linked to the class who owns the instance. So through class the instance can be accessed. E.g., to check if <code>storage</code> instance is available:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">    /* Find the main storage container (class)  */
+    status =  ux_host_stack_class_get(_ux_system_host_class_storage_name, &amp;ux_class);
+    if (status != UX_SUCCESS)
+        return(status);
+
+    /* Find the storage instance under container (class)  */
+    status =  ux_host_stack_class_instance_get(ux_class, 0, (void **) &amp;storage);
+    if (status == UX_SUCCESS)
+    {
+        /* Check if storage state, storage specific resources are ready.  */
+        if (storage -&gt; ux_host_class_storage_state == UX_HOST_CLASS_INSTANCE_LIVE &amp;&amp;
+            ux_class -&gt; ux_host_class_ext != UX_NULL &amp;&amp;
+            ux_class -&gt; ux_host_class_media != UX_NULL)
+            return(UX_SUCCESS);
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="usbx-host-stack-4.md#ux_host_stack_class_get"><code>ux_host_stack_class_get</code></a> is used to get a registered class, given class name used on registration.</p>
+</div>
+<div class="paragraph">
+<p><a href="usbx-host-stack-4.md#ux_host_stack_class_instance_get"><code>ux_host_stack_class_instance_get</code></a> is used to get function instance from specific registered class.</p>
+</div>
+<div class="paragraph">
+<p>In example, the state of the instance and some other function related resources is checked, to confirm the instance is ready to use.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_instance_through_host_change_callback_notification"><a class="anchor" href="#_get_instance_through_host_change_callback_notification"></a>Get instance through host change callback notification</h3>
+<div class="paragraph">
+<p>There is an optional host change callback function which is assigned on host stack initialization. If the function is available, it&#8217;s invoked when function instance is activated and in good state with all required resources available. Inside the callback the instance is passed and inside application callback user can save it for further operations.</p>
+</div>
+<div class="paragraph">
+<p>For more details, see <a href="usbx-host-stack-4.md#ux_host_stack_initialize"><strong>ux_host_stack_initialize</strong></a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>Troubleshooting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>USBX is delivered with a demonstration file and a simulation environment. It is always a good idea to get the demonstration platform running first&#8212;&#8203;either on the target hardware or a specific demonstration platform.</p>
+</div>
+<div class="paragraph">
+<p>If the demonstration system does not work, try the following things to narrow the problem.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usbx_version_id"><a class="anchor" href="#_usbx_version_id"></a>USBX Version ID</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The current version of USBX is available both to the user and the application software during run-time. The programmer can obtain the USBX version from examination of the <strong><em>ux_port.h</em></strong> file. In addition, this file also contains a version history of the corresponding port. Application software can obtain the USBX version by examining the global string <strong><em>_ux_version_id</em></strong>, which is defined in <strong><em>ux_port.h</em></strong>.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
