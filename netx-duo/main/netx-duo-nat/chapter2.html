@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 2 - Installation and use of NAT :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-nat/chapter2.html">
+    <meta name="description" content="This chapter contains a description how to install, set up, and use the NetX Duo NAT services.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo NAT user guide</li>
+    <li><a href="chapter2.html">Ch. 2 - Installation and use of NAT</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-nat/chapter2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 2 - Installation and use of NAT</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description how to install, set up, and use the NetX Duo NAT services.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_nat_installation"><a class="anchor" href="#_netx_duo_nat_installation"></a>NetX Duo NAT Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo NAT is available at <a href="https://github.com/eclipse-threadx/netxduo" class="bare">https://github.com/eclipse-threadx/netxduo</a>. The NetX Duo NAT package includes one source file and one header file, a demonstration application file, and a PDF file for this document, as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>nx_nat.c</strong> C Source file for NetX Duo NAT</p>
+</li>
+<li>
+<p><strong>nx_nat.h</strong> C Header file for NetX Duo NAT</p>
+</li>
+<li>
+<p><strong>demo_netx_nat.c</strong> Example host NetX Duo C source file</p>
+</li>
+<li>
+<p><strong>nx_nat.docx</strong> Description of the NetX Duo NAT User Guide (this document)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Copy the NetX Duo NAT source code files to the same directory where NetX Duo and ThreadX are installed. For example, if NetX Duo and ThreadX are installed in the directory "<em>\threadx\mcf5485\green</em>" then <em>nx_nat.c</em>, <em>nx_nat.h and the modified NetX Duo files</em> should be copied into this directory. Copy the modified NetX Duo files over the existing NetX Duo files. Copy the Ethernet controller driver files into this directory as well.</p>
+</div>
+<div class="paragraph">
+<p>To build a NetX Duo NAT application:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The NetX Duo library <em>nxduo.a</em> must be built with NX_NAT_ENABLED defined. This can be done in <em>nx_user.h</em>, (make sure NX_INCLUDE_USER_DEFINE_FILE is also defined to ensure that configuration options in <em>nx_user.h</em> are included in the build.</p>
+</li>
+<li>
+<p>The application project must include <em>nx_nat.h</em> after <em>tx_api.h</em> and <em>nx_api.h. The latter two header files are necessary</em> to use ThreadX and NetX Duo services.</p>
+</li>
+<li>
+<p>The application then enables NAT on a previously created IP instance using the <em>nx_nat_enable</em> service.</p>
+</li>
+<li>
+<p>The application code can dynamically enable/disable NAT by calling the <em>nx_nat_enable</em> and <em>nx_nat_disable</em> service.</p>
+</li>
+<li>
+<p>The application project code is compiled and linked with the NAT enabled NetX Duo library to create the executable.</p>
+</li>
+<li>
+<p>To support NAT connections using TCP, UDP or ICMP protocols, NetX Duo must be enabled to support that protocol. This is done by calling <em>nx_tcp_enable, nx_udp_enable</em> and <em>nx_icmp_enable</em> for the previously created IP instance respectively.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_small_example_demo_nat_setup"><a class="anchor" href="#_small_example_demo_nat_setup"></a>Small Example Demo NAT Setup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An example of how an application sets up NetX Duo NAT is shown in the <em>tx_application_define</em> function in Figure 4 below. Unlike most NetX Duo demo files distributed on the installation CD, this demo runs on an actual processor board with two Ethernet controllers, instead of a Windows PC using the virtual network driver <em>_nx_ram_network_driver</em>(). The NAT device is connected to the local domain through a local switch on its local interface, and to the external network through second switch on its external interface.</p>
+</div>
+<div class="paragraph">
+<p>NetX Duo basic configuration is shown in demo_netx_nat.c. The private network is defined as 192.168.2.xx and has two local host nodes. The global network is defined as 192.168.0.xx and defines its gateway for out of network packets as 192.168.0.1. The NetX Duo IP instances are created on lines 118-171 and invoke the 'ram' driver; nat_ip instance attached two interfaces act as an NAT router, local_ip instance attached on interface act as local host; external_ip instance attached one interface act as external host.</p>
+</div>
+<div class="paragraph">
+<p>The NAT is created in line 252 and invokes the cache to store dynamic translation entries. Enable the NAT feature in line319, static translation entrie (inbound entry) is created in lines 362 to allow external host to access to local host.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/*
+   demo_netx_nat.c
+
+   This is a small demo of NAT (Network Address Translation) on the high-performance
+   NetX TCP/IP stack.  This demo relies on ThreadX, NetX and NAT APIs to perform network
+   address translation for IP packets traveling between private and external networks.
+   this demo concentrates on the ICMP ping operation.
+*/
+
+#include   "tx_api.h"
+#include   "nx_api.h"
+#include   "nx_nat.h"
+
+extern void    test_control_return(UINT status);
+#if defined NX_NAT_ENABLE &amp;&amp; defined __PRODUCT_NETXDUO__ &amp;&amp; (NX_MAX_PHYSICAL_INTERFACES &gt;= 2)
+
+#define     DEMO_STACK_SIZE         2048
+
+/* Define the ThreadX and NetX object control blocks...  */
+
+static TX_THREAD                    ntest_0;
+
+/* Set up the NAT components. */
+
+/* Create a NAT instance, packet pool and translation table. */
+
+NX_NAT_DEVICE                       nat_server;
+NX_IP                               nat_ip;
+NX_IP                               local_ip;
+NX_IP                               external_ip;
+NX_PACKET_POOL                      nat_packet_pool;
+UINT                                error_counter = 0;
+
+
+/* Configure the NAT network parameters. */
+
+/* Set NetX IP packet pool packet size. This should be less than the Maximum Transmit Unit (MTU) of
+   the driver (allow enough room for the Ethernet header plus padding bytes for frame alignment).  */
+#define NX_NAT_PACKET_SIZE                          1536
+
+
+/* Set the size of the NAT IP packet pool.  */
+#define NX_NAT_PACKET_POOL_SIZE                     (NX_NAT_PACKET_SIZE * 10)
+
+/* Set NetX IP helper thread stack size. */
+#define NX_NAT_IP_THREAD_STACK_SIZE                 2048
+
+/* Set the server IP thread priority */
+#define NX_NAT_IP_THREAD_PRIORITY                   2
+
+/* Set ARP cache size of a NAT ip instance. */
+#define NX_NAT_ARP_CACHE_SIZE                       1024
+
+/* Set NAT entries memory size. */
+#define NX_NAT_ENTRY_CACHE_SIZE                     1024
+
+/* Define NAT IP addresses, local host private IP addresses and external host IP address. */
+#define NX_NAT_LOCAL_IPADR              (IP_ADDRESS(192, 168, 2, 1))
+#define NX_NAT_LOCAL_HOST1              (IP_ADDRESS(192, 168, 2, 3))
+#define NX_NAT_LOCAL_HOST2              (IP_ADDRESS(192, 168, 2, 10))
+#define NX_NAT_LOCAL_GATEWAY            (IP_ADDRESS(192, 168, 2, 1))
+#define NX_NAT_LOCAL_NETMASK            (IP_ADDRESS(255, 255, 255, 0))
+#define NX_NAT_EXTERNAL_IPADR           (IP_ADDRESS(192, 168, 0, 10))
+#define NX_NAT_EXTERNAL_HOST            (IP_ADDRESS(192, 168, 0, 100))
+#define NX_NAT_EXTERNAL_GATEWAY         (IP_ADDRESS(192, 168, 0, 1))
+#define NX_NAT_EXTERNAL_NETMASK         (IP_ADDRESS(255, 255, 255, 0))
+
+/* Create NAT structures for creating NAT tables with static
+   entries for local server hosts. */
+NX_NAT_TRANSLATION_ENTRY            server_inbound_entry_icmp;
+
+/* Define thread prototypes.  */
+static void     ntest_0_entry(ULONG thread_input);
+extern void    _nx_ram_network_driver(struct NX_IP_DRIVER_STRUCT *driver_req);
+
+/* Define main entry point.  */
+
+int main()
+{
+
+    /* Enter the ThreadX kernel.  */
+    tx_kernel_enter();
+}
+
+
+/* Define what the initial system looks like.  */
+
+void    tx_application_define(void *first_unused_memory)
+{
+
+    UINT     status;
+    UCHAR    *pointer;
+
+    /* Initialize the NetX system. */
+    nx_system_initialize();
+
+    /* Setup the pointer to unallocated memory.  */
+    pointer =  (UCHAR *) first_unused_memory;
+
+    /* Create the main thread.  */
+    tx_thread_create(&amp;ntest_0, "thread 0", ntest_0_entry, 0,
+                     pointer, DEMO_STACK_SIZE,
+                     4, 4, TX_NO_TIME_SLICE, TX_AUTO_START);
+    pointer =  pointer + DEMO_STACK_SIZE;
+
+    /* Create NAT packet pool. */
+    status =  nx_packet_pool_create(&amp;nat_packet_pool, "NAT Packet Pool",
+                                    NX_NAT_PACKET_SIZE, pointer,
+                                    NX_NAT_PACKET_POOL_SIZE);
+
+    /* Update pointer to unallocated (free) memory. */
+    pointer = pointer + NX_NAT_PACKET_POOL_SIZE;
+
+    /* Check status.  */
+    if (status)
+        return;
+
+    /* Create IP instances for NAT server (global network) */
+    status = nx_ip_create(&amp;nat_ip, "NAT IP Instance", NX_NAT_EXTERNAL_IPADR, NX_NAT_EXTERNAL_NETMASK,
+                          &amp;nat_packet_pool, _nx_ram_network_driver, pointer,
+                          NX_NAT_IP_THREAD_STACK_SIZE, NX_NAT_IP_THREAD_PRIORITY);
+
+    /* Update pointer to unallocated (free) memory. */
+    pointer =  pointer + NX_NAT_IP_THREAD_STACK_SIZE;
+
+    /* Check status.  */
+    if (status)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Set the private interface(private network).  */
+    status += nx_ip_interface_attach(&amp;nat_ip, "Private Interface", NX_NAT_LOCAL_IPADR,
+        NX_NAT_LOCAL_NETMASK, _nx_ram_network_driver);
+
+    /* Check status.  */
+    if (status)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Create IP instances for Local network IP instance */
+    status = nx_ip_create(&amp;local_ip, "Local IP Instance", NX_NAT_LOCAL_HOST1, NX_NAT_LOCAL_NETMASK,
+                          &amp;nat_packet_pool, _nx_ram_network_driver, pointer,
+                          NX_NAT_IP_THREAD_STACK_SIZE, NX_NAT_IP_THREAD_PRIORITY);
+
+    /* Update pointer to unallocated (free) memory. */
+    pointer =  pointer + NX_NAT_IP_THREAD_STACK_SIZE;
+
+    /* Check status.  */
+    if (status)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Create IP instances for external network IP instance */
+    status = nx_ip_create(&amp;external_ip, "External IP Instance", NX_NAT_EXTERNAL_HOST,
+                        NX_NAT_EXTERNAL_NETMASK,
+                        &amp;nat_packet_pool, _nx_ram_network_driver, pointer,
+                        NX_NAT_IP_THREAD_STACK_SIZE, NX_NAT_IP_THREAD_PRIORITY);
+
+    /* Update pointer to unallocated (free) memory. */
+    pointer =  pointer + NX_NAT_IP_THREAD_STACK_SIZE;
+
+    /* Check status.  */
+    if (status)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Set the global network gateway for NAT IP instance.  */
+    status = nx_ip_gateway_address_set(&amp;nat_ip, NX_NAT_EXTERNAL_GATEWAY);
+
+    /* Check status.  */
+    if (status)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Set the global network gateway for Local IP instance.  */
+    status = nx_ip_gateway_address_set(&amp;local_ip, NX_NAT_LOCAL_GATEWAY);
+
+    /* Check status.  */
+    if (status)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Set the global network gateway for External IP instance.  */
+    status = nx_ip_gateway_address_set(&amp;external_ip, NX_NAT_EXTERNAL_GATEWAY);
+
+    /* Check status.  */
+    if (status)
+    {
+        error_counter++;
+        return;
+    }
+
+
+    /* Enable ARP and supply ARP cache memory for NAT IP instance. */
+    status =  nx_arp_enable(&amp;nat_ip, (void **) pointer,
+                            NX_NAT_ARP_CACHE_SIZE);
+
+    /* Check status.  */
+    if (status)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Update pointer to unallocated (free) memory. */
+    pointer = pointer + NX_NAT_ARP_CACHE_SIZE;
+
+    /* Enable ARP and supply ARP cache memory for Local IP instance. */
+    status =  nx_arp_enable(&amp;local_ip, (void **) pointer,
+                            NX_NAT_ARP_CACHE_SIZE);
+
+    /* Check status.  */
+    if (status)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Update pointer to unallocated (free) memory. */
+    pointer = pointer + NX_NAT_ARP_CACHE_SIZE;
+
+    /* Enable ARP and supply ARP cache memory for External IP instance. */
+    status =  nx_arp_enable(&amp;external_ip, (void **) pointer,
+                            NX_NAT_ARP_CACHE_SIZE);
+
+    /* Check status.  */
+    if (status)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Update pointer to unallocated (free) memory. */
+    pointer = pointer + NX_NAT_ARP_CACHE_SIZE;
+
+    /* Enable ICMP. */
+    nx_icmp_enable(&amp;nat_ip);
+    nx_icmp_enable(&amp;local_ip);
+    nx_icmp_enable(&amp;external_ip);
+
+    /* Create a NetX NAT server and cache with a global interface index.  */
+    status =  nx_nat_create(&amp;nat_server, &amp;nat_ip, 0, pointer, NX_NAT_ENTRY_CACHE_SIZE);
+
+    /* Check status.  */
+    if (status)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Update pointer to unallocated (free) memory. */
+    pointer = pointer + NX_NAT_ENTRY_CACHE_SIZE;
+}
+
+/* Define the test threads.  */
+
+static void    ntest_0_entry(ULONG thread_input)
+{
+
+UINT        status;
+NX_PACKET   *my_packet;
+
+    /***********************************/
+    /*       Disable NAT feature       */
+    /***********************************/
+    /* Local Host ping External Host address.  */
+    status =  nx_icmp_ping(&amp;local_ip, NX_NAT_EXTERNAL_HOST,
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 28, &amp;my_packet, 100);
+
+    /* Check status.  */
+    if (status == NX_SUCCESS)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Check the NAT forwarded count.  */
+#ifndef NX_DISABLE_NAT_INFO
+    if ((nat_server.forwarded_packets_received != 0) ||
+        (nat_server.forwarded_packets_sent != 0) ||
+        (nat_server.forwarded_packets_dropped != 0))
+    {
+        error_counter++;
+        return;
+    }
+#endif
+
+    /* External Host ping NAT External address, NAT IP instance will response the request.  */
+    status = nx_icmp_ping(&amp;external_ip, NX_NAT_EXTERNAL_IPADR,
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 28, &amp;my_packet, 100);
+
+    /* Check status.  */
+    if ((status != NX_SUCCESS) || (my_packet == NX_NULL) || (my_packet -&gt; nx_packet_length != 28))
+    {
+        error_counter++;
+        return;
+
+    /* Check the NAT forwarded count.  */
+#ifndef NX_DISABLE_NAT_INFO
+    if ((nat_server.forwarded_packets_received != 0) ||
+        (nat_server.forwarded_packets_sent != 0) ||
+        (nat_server.forwarded_packets_dropped != 0))
+    {
+        error_counter++;
+        return;
+    }
+#endif
+    }
+
+    /***********************************/
+    /*       Enable NAT feature        */
+    /***********************************/
+
+    /* Enable the NAT service.  */
+    nx_nat_enable(&amp;nat_server);
+
+    /* Local Host ping External Host address.  */
+    status =  nx_icmp_ping(&amp;local_ip, NX_NAT_EXTERNAL_HOST,
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 28, &amp;my_packet, 100);
+
+    if ((status != NX_SUCCESS) || (my_packet == NX_NULL) || (my_packet -&gt; nx_packet_length != 28))
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Check the NAT forwarded count.  */
+#ifndef NX_DISABLE_NAT_INFO
+    if ((nat_server.forwarded_packets_received != 2) ||
+        (nat_server.forwarded_packets_sent != 2) ||
+        (nat_server.forwarded_packets_dropped != 0))
+    {
+        error_counter++;
+        return;
+    }
+#endif
+
+    /* External Host ping NAT External address, NAT IP instance will response the request.  */
+    status =  nx_icmp_ping(&amp;external_ip, NX_NAT_EXTERNAL_IPADR,
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 28, &amp;my_packet, 100);
+
+    if ((status != NX_SUCCESS) || (my_packet == NX_NULL) || (my_packet -&gt; nx_packet_length != 28))
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Check the NAT forwarded count.  NAT receive the ping request,
+        but can not forward this packet to local network.  discard it.
+#ifndef NX_DISABLE_NAT_INFO
+    if ((nat_server.forwarded_packets_received != 3) ||
+        (nat_server.forwarded_packets_sent != 2) ||
+        (nat_server.forwarded_packets_dropped != 1))
+    {
+        error_counter++;
+        return;
+    }
+#endif
+
+    /**********************************************/
+    /*       Create an inbound entry for ICMP     */
+    /**********************************************/
+
+    /* Calling NAT API to create a inbound entry.  */
+    status = nx_nat_inbound_entry_create(&amp;nat_server, &amp;server_inbound_entry_icmp,
+        NX_NAT_LOCAL_HOST1, 0, 0, NX_PROTOCOL_ICMP);
+
+    if (status != NX_SUCCESS)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* External Host ping NAT External address, LOCAL HOST1 will
+        response all inbound icmp request from external network.  */
+    status =  nx_icmp_ping(&amp;external_ip, NX_NAT_EXTERNAL_IPADR,
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 28, &amp;my_packet, 100);
+
+    if ((status != NX_SUCCESS) || (my_packet == NX_NULL) || (my_packet -&gt; nx_packet_length != 28))
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Check the NAT forwarded count.  */
+#ifndef NX_DISABLE_NAT_INFO
+    if ((nat_server.forwarded_packets_received != 5) ||
+        (nat_server.forwarded_packets_sent != 4) ||
+        (nat_server.forwarded_packets_dropped != 1))
+    {
+        error_counter++;
+        return;
+    }
+#endif
+}
+#endif</code></pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

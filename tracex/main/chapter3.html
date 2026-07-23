@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 3 - Description of TraceX :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/tracex/main/chapter3.html">
+    <meta name="description" content="This chapter describes the overall functionality of the TraceX system analysis tool, including the overall functionality of its GUI.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="tracex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">TraceX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">TraceX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">TraceX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-tracex.html">Overview of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">TraceX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of TraceX</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - TraceX performance analysis</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Generating trace buffers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - ThreadX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter7.html">Ch. 7 - FileX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter8.html">Ch. 8 - NetX Duo trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter9.html">Ch. 9 - USBX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter10.html">Ch. 10 - Customer user events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter11.html">Ch. 11 - Format of event trace buffer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - Sample tx_port.h</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - The tx_trace.h File</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - DOS command-line utilities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - Dumping and trace buffer</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">TraceX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">TraceX</a></li>
+    <li>TraceX user guide</li>
+    <li><a href="chapter3.html">Ch. 3 - Description of TraceX</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/tracex/modules/ROOT/pages/chapter3.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 3 - Description of TraceX</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter describes the overall functionality of the TraceX system analysis tool, including the overall functionality of its GUI.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_display_overview"><a class="anchor" href="#_display_overview"></a>Display Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Figure 4</strong> shows the main display window of the TraceX system analysis tool. The layout is straightforward&#8212;&#8203;the execution contexts are represented by the vertical elements on the left side; e.g., initialization, interrupt, idle, and the various thread entries. The events that take place in each context are displayed horizontally on the same context line. For example, the <strong>QR</strong> events shown below show that <strong><em>thread 2</em></strong> is making successive calls to <strong><em>tx_queue_receive</em></strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_10.png" alt="Screenshot of the main display window of the TraceX system analysis tool.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 5</strong></p>
+</div>
+<div class="paragraph">
+<p>Context changes are represented by the vertical black lines that connect the context lines. The currently selected event is represented by a solid red vertical line. In this example, event 494 is selected.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_title_bar"><a class="anchor" href="#_title_bar"></a>Title Bar</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The TraceX title bar provides several pieces of useful information. First is the current version of TraceX. Second is the full path of the currently opened trace file. The example in <strong>Figure 6</strong> shows <strong><em>TraceX</em></strong> version <strong><em>6.0.0</em></strong> is displaying the <strong><em>demo_threadx.trx</em></strong> trace file.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_11.png" alt="Screenshot of the TraceX title bar.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 6</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tool_bar"><a class="anchor" href="#_tool_bar"></a>Tool Bar</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The TraceX tool bar provides several buttons to open trace files and control elements of their display.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_12.png" alt="Screenshot of the TraceX tool bar.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 7</strong></p>
+</div>
+<div class="paragraph">
+<p>The TraceX tool bar buttons&#8212;&#8203;from left to right&#8212;&#8203;are defined as follows:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Button</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_13.png" alt="Open trace file button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Open a trace file</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_14.png" alt="Open User Guide button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Open this User Guide</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_15.png" alt="Generate execution profile button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Generate execution profile</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_16.png" alt="Generate performance statistics button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Generate performance statistics</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_17.png" alt="Generate Thread Stack usage button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Generate Thread Stack usage</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_18.png" alt="Display selected event button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Display currently selected event</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_19.png" alt="Search button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Search for events</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_20.png" alt="Zoom in button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Zoom in.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_21.png" alt="Display zoom button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Select percentage of display zoom, where 100% means the entire trace file is displayed within the current view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_22.png" alt="Zoom out button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Zoom out.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_23.png" alt="Select first event button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Select first event.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_24.png" alt="Display previous event page button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Display previous event page.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_25.png" alt="Display previous event button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Display previous event.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_26.png" alt="Next/previous navigation button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Determine how the next/previous navigation buttons operate. If <strong><em>Event</em></strong> is selected, navigation is done on the next/previous event. If <strong><em>Context</em></strong> is selected, navigation is done on the next/previous event on the specified context. If <strong><em>Object</em></strong> is selected, navigation is done on the next/previous event of the specified object; e.g., events associated with a specific queue. If <strong><em>Switches</em></strong> is selected, navigation is done on the next/previous change in context. If <strong><em>ID</em></strong> is selected, navigation is done on the next/previous event of the specified event ID.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_27.png" alt="Display next event button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Display next event.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_28.png" alt="Display next event page button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Display next event page.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/screen_shot_29.png" alt="Select last event button"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Select last event.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_display_mode_tabs"><a class="anchor" href="#_display_mode_tabs"></a>Display Mode Tabs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TraceX displays system events in two different ways: <em>sequential</em> and <em>time relative</em>. The default mode is sequential and that is the mode shown in <strong>Figure 8</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Changing the mode is as simple as selecting the <strong><em>Sequential View</em></strong> or <strong><em>Time View</em></strong> tabs in the TraceX window. <strong>Figure 8</strong> shows the <strong><em>Sequential View</em></strong> and <strong><em>Time View</em></strong> tabs.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_30.png" alt="Screenshot of the Sequential View and Time View tabs.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 8</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sequential_view_mode"><a class="anchor" href="#_sequential_view_mode"></a>Sequential View Mode</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The sequential view mode is selected by the <strong><em>Sequential View</em></strong> tab shown in <strong>Figure 8</strong>. This is the default mode. In this mode, events are shown im../mediately following each other, regardless of the elapsed time between them. Note also the ruler above the display area in <strong>Figure 8</strong>. It shows the relative event number from the beginning of the trace.</p>
+</div>
+<div class="paragraph">
+<p>This mode is the default mode and is useful in getting a good overview of what is going on in the system.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_time_view_mode"><a class="anchor" href="#_time_view_mode"></a>Time View Mode</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The time view mode is selected by the <strong><em>Time View</em></strong> button. <strong>Figure 9</strong> shows the same event trace as <strong>Figure 8</strong> except in time view mode. In this mode, events are shown in a time relative manner, with the solid green bar being used to show execution between events. This mode is useful to see where the bulk of processing is taking place in the system, which can help developers tune their system for greater performance and/or responsiveness.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_31.png" alt="Screenshot of the Time View tab.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 9</strong></p>
+</div>
+<div class="paragraph">
+<p>Note also the ruler above the event display in <strong>Figure 9</strong>. This ruler shows relative ticks from the beginning of the trace, as derived from the time stamp instrumented in the event trace logging inside of ThreadX. If the time stamps are too close (low frequency timer), the events will run together. Conversely, if the time stamps are too far apart (high frequency timer), then the events will be too far apart. Choosing the right frequency time stamp is an important consideration in making the time relative view meaningful.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_system_summary_line"><a class="anchor" href="#_system_summary_line"></a>System Summary Line</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TraceX also provides a single summary line (the top context in <strong>Figure 10</strong>) that includes all events on the same line. This makes it easy to see an overview of a complex system. The summary bar is especially beneficial in systems that have many threads. Without such a summary line, you would have to follow complex system interactions using the vertical scroll bar to follow the context of execution.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_32.png" alt="Screenshot of the System Summary Line in the Sequential View tab.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 10</strong></p>
+</div>
+<div class="paragraph">
+<p>The summary line contains a summary of the context as well as the corresponding event summary underneath. In the example shown in
+<strong>Figure 10,</strong> it is easy to see that <strong><em>thread 2</em></strong> is executing and interrupted. The interrupt results in preemption by <strong><em>thread 3</em></strong>,
+<strong><em>thread 6</em></strong>, <strong><em>thread 4</em></strong>, and <strong><em>thread 7</em></strong>, after which <strong><em>thread 2</em></strong> resumes execution.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_system_contexts"><a class="anchor" href="#_system_contexts"></a>System Contexts</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TraceX lists the system contexts on the left-hand side of the display, as shown in <strong>Figure 11</strong>. Events that occur in a particular context are displayed on the horizontal line to the right of that context. In this way, you can easily ascertain which context the event occurred as well as follow that context line to see all the events that occurred in a particular context.</p>
+</div>
+<div class="paragraph">
+<p>The first tow context entries are always the <strong><em>Interrupt</em></strong> and <strong><em>Initialize/Idle</em></strong> contexts. <strong><em>Interrupt</em></strong> context represents all system events made from Interrupt Service Routines (IRS). <strong><em>Initialize/Idle</em></strong> context represents two contexts in ThreadX. Events that occur during <strong><em>tx_application_define</em></strong>, are <strong><em>Initialize/Idle</em></strong> context. If the system is idle and thus no events are occurring, the green bar representing <strong><em>Running</em></strong> in the time view is drawn on the <strong><em>Initialize/Idle</em></strong> context.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_33.png" alt="Screenshot of the system contexts on the left-hand side of the display.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 11</strong></p>
+</div>
+<div class="paragraph">
+<p>In the example in <strong>Figure 11</strong>, there are nine thread contexts, starting from the <strong><em>System Timer Thread</em></strong> context. Additional information about an individual context is available by placing the mouse on that context. The additional information includes the thread&#8217;s starting stack address, ending stack address, total size, percent used, relative execution percentage, number of suspension, resumptions, and its highest and lowest priority during the trace. <strong>Figure 12</strong> shows information for <strong><em>thread 0</em></strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_34.png" alt="Screenshot of the information for thread 0.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 12</strong></p>
+</div>
+<div class="paragraph">
+<p>Contexts may also be moved to group those of greater interest. This is accomplished by dragging and dropping the context or right-clicking on the context. Right-clicking on the context yields a dialog for moving the context to the top or the bottom.</p>
+</div>
+<div class="paragraph">
+<p>Selecting <strong><em>Move to top</em></strong> results in the <strong><em>thread 3</em></strong> context being moved to the top of the context list, as shown in <strong>Figure 13</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_35.png" alt="Screenshot of the context being moved to the top of the context list.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 13</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_thread_status_information"><a class="anchor" href="#_thread_status_information"></a>Thread Status Information</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When enabled, TraceX displays the status of each thread via a colored line on the thread&#8217;s context. A green line indicates that the thread is in a "ready" state, while a line of any other color indicates the thread is suspended. For suspended threads, the color of the line indicates the type of ThreadX object that the thread is suspended on. For example, in <strong>Figure 13</strong> the green line on the <strong><em>System Timer Thread&#8217;s</em></strong> context starting at event 147 shows that the <strong><em>System Timer Thread</em></strong> is ready. Prior to event 147 and after event 154, the absence of the green line indicates that the <strong><em>System Timer Thread</em></strong> is ready. Prior to event 147 and after event 154, the absence of the green line indicates that the <strong><em>System Timer Thread</em></strong> is suspended.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_36.png" alt="Screenshot of the status of each thread via a colored line on the thread&#8217;s context.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 14</strong></p>
+</div>
+<div class="paragraph">
+<p>There are three modes of thread status display, available via the <strong><em>Options -&gt; Status Lines</em></strong> menu. The <strong><em>Ready Only</em></strong> option only shows the ready (green) status lines, but does not display any suspension status lines. This is the default option for TraceX. The <strong><em>All On</em></strong> option enables the display of all status lines (ready and suspension).</p>
+</div>
+<div class="paragraph">
+<p>Finally, the <strong><em>All Off</em></strong> option disables the display of all status lines.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_event_information_display"><a class="anchor" href="#_event_information_display"></a>Event Information Display</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TraceX provides detailed information on some 600 run-time events, including ThreadX, FileX, NetX Duo, and USBX API calls and internal events. TraceX also supports up to an additional 61,439 unique user-defined events.</p>
+</div>
+<div class="paragraph">
+<p>Regardless of whether sequential or time display mode is selected, a mouse-over on any event in the display area results in detailed event information displayed near the event. The mouse-over of event 143 in the demonstration <strong><em>demo_threadx.trx</em></strong> trace file is shown in <strong>Figure 15</strong>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_37.png" alt="Screenshot of the mouse-over of event 143 in a sample trace file">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 15</strong></p>
+</div>
+<div class="paragraph">
+<p>Each event displayed contains standard information about <strong><em>Context</em></strong> and both the <strong><em>Relative Time</em></strong> and <strong><em>Time Stamp</em></strong>. The Context field shows what context the event took place in. There are exactly four contexts: thread, idle, ISR, and initialization. When an event takes place in a thread context, the thread name and its priority at that time is gathered and displayed as shown above. The <strong><em>Relative Time</em></strong> shows the relative number of timer ticks from the beginning of the trace. The <strong><em>Raw Time Stamp</em></strong> displays the raw time source of the event. Finally, all event-specific information is displayed. This information is detailed throughout the remainder of this chapter.</p>
+</div>
+<div class="paragraph">
+<p>Detailed event information is also available by double clicking on any event. Double clicking on event 143 is shown in <strong>Figure 16</strong>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_38.png" alt="Screenshot of the detailed event information when an event is double clicked.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 16</strong></p>
+</div>
+<div class="paragraph">
+<p>Being able to view multiple events at once gives the user a much richer view of what happened. Seeing them side by side is quite useful since many events are interrelated. This is accomplished by double clicking on multiple events.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_current_event_display"><a class="anchor" href="#_current_event_display"></a>Current Event Display</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TraceX displays the current event&#8212;&#8203;in a separate window&#8212;&#8203;when selected by the user via <strong><em>View -&gt; Current Event</em></strong> or clicking on the current event button on the toolbar. After selected, TraceX displays the currently selected event in a stand-alone window and refreshes this window whenever another event is selected.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_event_searching"><a class="anchor" href="#_event_searching"></a>Event Searching</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TraceX provides an extensive event search capability. The event ID and information fields of each event are the primary search parameters. Not specifying a value for a search parameter indicates that parameter effectively removes that parameter from of the search. In addition, the search can be done such that any parameter found will satisfy the search or all parameters must be found to satisfy the search. The search may also be restricted to a particular context or cover all contexts in the trace. Invoking the event search is done by selecting the <strong><em>Search by Value</em></strong> button on the toolbar, as shown in <strong>Figure 17</strong>. When selected the search dialog is displayed, which specifies all the parameters for the search. The <strong><em>Next</em></strong> and <strong><em>Previous</em></strong> buttons in the search dialog can then be used to find the next and previous events that match the specified search criteria. <strong>Figure 17</strong> shows the search dialog.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_39.png" alt="Screenshot of the event search.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 17</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_40.png" alt="Screenshot of the search dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 18</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zooming_in_and_out"><a class="anchor" href="#_zooming_in_and_out"></a>Zooming In and Out</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, TraceX displays the events at their full size. You may zoom in or zoom out as desired. Zooming out is useful to see the overall events captured in the trace, while zooming in is useful in conditions where the events overlap because of the resolution of the time stamp source. <strong>Figure 19</strong> shows the <strong><em>demo_threadx.trx</em></strong> file zoomed out so that 100% of the trace file is shown.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_41.png" alt="Screenshot of a sample file zoomed out so that 100% of the trace file is shown.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 19</strong></p>
+</div>
+<div class="paragraph">
+<p>When zoomed out at 100% to show the entire trace within the current display page, it is easy to see all the context execution captured in the trace as well as the general events occurring within those contexts. Notice in <strong>Figure 16</strong> that <strong><em>thread 1</em></strong> and <strong><em>thread 2</em></strong> execute most often. The blue coloring for their events also suggests that these threads are making queue service calls (queue events are blue in color).</p>
+</div>
+<div class="paragraph">
+<p>Restoring to a full icon view is equally easy; Either the zoom-in button may be selected repeatedly or some factor of 100 may be entered.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_delta_ticks_between_events"><a class="anchor" href="#_delta_ticks_between_events"></a>Delta Ticks Between Events</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Determining the number of ticks between various events in TraceX is easy&#8212;&#8203;click on the starting event and drag the mouse to the ending event. The delta number of ticks between the events shows up in the upper right-hand corner of the display, as shown in <strong>Figure 17</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_42.png" alt="Screenshot of the delta number of ticks between the events.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 17</strong></p>
+</div>
+<div class="paragraph">
+<p>The delta ticks shown in <strong>Figure 17</strong> show that 5032 ticks have elapsed between event 125 and event 154. This could also be calculated manually by looking at the relative time stamps in each event and subtracting, but using the GUI is easy and instantaneous.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_actual_time_display"><a class="anchor" href="#_actual_time_display"></a>Actual Time Display</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When enabled, TraceX displays the actual time in microseconds in <strong><em>Time View</em></strong> and for the various delta time information displayed by TraceX. By default, the actual time display is disabled. To enable the actual time display, the number of ticks per microsecond must be entered via the <strong><em>Options -&gt; Ticks per Microsecond</em></strong> menu selection (the value to enter is determined by the hardware timer source used for the TraceX event logging on the target).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_priority_inversions"><a class="anchor" href="#_priority_inversions"></a>Priority Inversions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TraceX automatically displays priority inversions detected in the trace file. Priority inversions are defined as conditions where a higher-priority thread is blocked trying to obtain a mutex that is currently owned by a lower-priority thread. This condition is termed <em>deterministic</em>, because the system was set up to operate in this manner. To inform the user, TraceX shows <em>deterministic</em> priority inversion ranges as a light salmon color.</p>
+</div>
+<div class="paragraph">
+<p>TraceX also displays <em>non-deterministic</em> priority inversions. These priority inversions differ from the <em>deterministic</em> priority inversions in that another thread of a different priority level has executed in the middle of what was a <em>deterministic</em> priority inversion, thereby making the time within the priority inversion somewhat <em>non-deterministic</em>. This condition is often unknown to the user and can be very serious. In order to alert the user of this condition, TraceX shows <em>non-deterministic</em> priority inversions as a brighter salmon color. <strong>Figure 18</strong> shows both <em>deterministic</em> and <em>non-deterministic</em> priority inversions.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/screen_shot_43.png" alt="Screenshot of the priority inversion in a trace file.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 18</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Figure 18</strong> shows a <em>deterministic</em> priority inversion from event 398 through event 402. In this range, the higher-priority <strong><em>thread 0</em></strong> blocks on a mutex owned by a lower-priority <strong><em>thread 1</em></strong>. At event 402, <strong><em>thread 1</em></strong> releases the mutex and thus ends the priority
+inversion.</p>
+</div>
+<div class="paragraph">
+<p>The brighter shaded area shows a <em>non-deterministic</em> priority inversion between event 408 through event 420. What makes this <em>non-deterministic</em> is that while <strong><em>thread 1</em></strong> holds the mutex that higher-priority <strong><em>thread 0</em></strong> is blocked on, an interrupt occurs that resumes <strong><em>thread 2</em></strong>, which then executes and lengthens the time the system is in priority inversion. This condition can be quite serious and difficult to identify; however, with TraceX it is easily identified.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

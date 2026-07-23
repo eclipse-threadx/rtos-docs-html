@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 6: USBX device controller driver (DCD) Porting Considerations :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/usbx/main/usbx-device-stack-supplemental-6.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="usbx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">USBX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">USBX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">USBX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-usbx.html">Overview of USBX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-3.html">Ch. 3 - Functional components of USBX device stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-2.html">Ch. 2 - USBX device class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-7.html">Ch. 7 - USBX device class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-6.html">Ch. 6 - USBX CDC-ECM class usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-2.html">Ch. 2 - USBX Host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">USBX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">USBX</a></li>
+    <li>USBX device stack supplemental</li>
+    <li><a href="usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/usbx/modules/ROOT/pages/usbx-device-stack-supplemental-6.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 6: USBX device controller driver (DCD) Porting Considerations</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This guide is about how to implement device controller driver (DCD) of specific hardware for USBX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_device_controller_driver_dcd"><a class="anchor" href="#_device_controller_driver_dcd"></a>Device Controller Driver (DCD)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The device controller driver is a driver layer to provide a unique way to access different USB hardware peripherals.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dcd_for_usbx_device_stack"><a class="anchor" href="#_dcd_for_usbx_device_stack"></a>DCD for USBX Device Stack</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The USBX device stack accesses device controller through a unique struct of device controller driver (DCD).
+After USBX system initialization (<code>ux_system_initialize</code>), the USBX DCD struct (<code>UX_SLAVE_DCD</code>) is allocated and can be referenced by
+<code>_ux_system_slave &#8594; ux_system_slave_dcd</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dcd_for_specific_usb_controller_hardware"><a class="anchor" href="#_dcd_for_specific_usb_controller_hardware"></a>DCD for specific USB controller hardware</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For different USB controller hardware the DCD struct is initialized by specific initialize function, called in application.
+The actual implements are then linked for USBX device stack to communicate, so that the USB flow can be performed on actual physical device.
+There are three parts in such a interface:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>APIs for application</p>
+</li>
+<li>
+<p>APIs for USBX stack</p>
+</li>
+<li>
+<p>USB events (callbacks) to call USBX stack</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_apis_for_application"><a class="anchor" href="#_apis_for_application"></a>APIs for application</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_ux_dcd_xxxxx_initialize">_ux_dcd_xxxxx_initialize</a></p>
+</li>
+<li>
+<p><a href="#ux_dcd_xxxxx_uninitialize">ux_dcd_xxxxx_uninitialize</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_dcd_xxxxx_initialize"><a class="anchor" href="#_ux_dcd_xxxxx_initialize"></a>Initialize API (_ux_dcd_xxxxx_initialize)</h3>
+<div class="paragraph">
+<p>The initialize function for specific DCD is called by USBX application, after <code>ux_system_initialize</code>, <code>ux_device_stack_initialize</code> and <code>ux_device_stack_class_register</code>.
+It allocates necessary resources for the driver.
+Usually DCD operates directly on hardware, so the initialize function initialize hardware and connect USB.</p>
+</div>
+<div class="paragraph">
+<p>Implement example is as following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/**************************************************************************/
+/*                                                                        */
+/*  DESCRIPTION                                                           */
+/*                                                                        */
+/*    This function initializes the USB device controller of the XXXXX    */
+/*    microcontroller in USBX device system.                              */
+/*                                                                        */
+/*  INPUT                                                                 */
+/*                                                                        */
+/*    dcd_io                                Driver specific parameter 1   */
+/*    parameter                             Driver specific parameter 2   */
+/*                                                                        */
+/*  OUTPUT                                                                */
+/*                                                                        */
+/*    Completion Status                                                   */
+/*                                                                        */
+/*  CALLED BY                                                             */
+/*                                                                        */
+/*    Application                                                         */
+/*                                                                        */
+/**************************************************************************/
+UINT  _ux_dcd_xxx_initialize(ULONG dcd_io, ULONG parameter)
+{
+
+UX_SLAVE_DCD            *dcd;
+UX_DCD_XXXXX            *dcd_xxxxx;
+
+
+    UX_PARAMETER_NOT_USED(dcd_io);
+
+    /* Get the pointer to the DCD.  */
+    dcd =  &amp;_ux_system_slave -&gt; ux_system_slave_dcd;
+
+    /* The controller initialized here is of XXXXX type.  */
+    dcd -&gt; ux_slave_dcd_controller_type =  UX_DCD_XXXXX_SLAVE_CONTROLLER;
+
+    /* Allocate memory for this XXXXX DCD instance.  */
+    dcd_xxxxx =  _ux_utility_memory_allocate(UX_NO_ALIGN, UX_REGULAR_MEMORY, sizeof(UX_DCD_XXXXX));
+
+    /* Check if memory was properly allocated.  */
+    if(dcd_xxxxx == UX_NULL)
+        return(UX_MEMORY_INSUFFICIENT);
+
+    /* Set the pointer to the XXXXX DCD.  */
+    dcd -&gt; ux_slave_dcd_controller_hardware =  (VOID *) dcd_xxxxx;
+
+    /* Initialize the function collector for this DCD.  */
+    dcd -&gt; ux_slave_dcd_function =  _ux_dcd_xxxxx_function;
+
+    /* Set the generic DCD owner for the XXXXX DCD.  */
+    dcd_xxxxx -&gt; ux_dcd_xxxxx_dcd_owner =  dcd;
+
+    /* Initialize XXXXX DCD.  */
+    /* TODO: Initialize XXXXX DCD struct fields.  */
+    /* TODO: if not initialized in application (after invoking this function),
+             initialize controller hardware and attach to host.  */
+
+    /* Set the state of the controller to OPERATIONAL now.  */
+    dcd -&gt; ux_slave_dcd_status =  UX_DCD_STATUS_OPERATIONAL;
+
+    /* Return successful completion.  */
+    return(UX_SUCCESS);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ux_dcd_xxxxx_uninitialize"><a class="anchor" href="#ux_dcd_xxxxx_uninitialize"></a>Uninitialize API (_ux_dcd_xxxxx_uninitialize) (optional)</h3>
+<div class="paragraph">
+<p>The uninitialize function for specific DCD is optional,
+since the USB device system is usually enabled and always ready to serve.
+In some cases, it is called by USBX application,
+if the application needs a way to disconnect USB, completely free resources and uninitialize hardware.</p>
+</div>
+<div class="paragraph">
+<p>Code example is as following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/**************************************************************************/
+/*                                                                        */
+/*  DESCRIPTION                                                           */
+/*                                                                        */
+/*    This function uninitializes the USB device controller in USBX       */
+/*    device system.                                                      */
+/*                                                                        */
+/*  INPUT                                                                 */
+/*                                                                        */
+/*    dcd_io                                Driver specific parameter 1   */
+/*    parameter                             Driver specific parameter 2   */
+/*                                                                        */
+/*  OUTPUT                                                                */
+/*                                                                        */
+/*    Completion Status                                                   */
+/*                                                                        */
+/*  CALLED BY                                                             */
+/*                                                                        */
+/*    Application                                                         */
+/*                                                                        */
+/**************************************************************************/
+UINT  _ux_dcd_xxxxx_uninitialize(ULONG dcd_io, ULONG parameter)
+{
+
+UX_SLAVE_DCD            *dcd;
+UX_DCD_XXXXX            *dcd_xxxxx;
+
+
+    UX_PARAMETER_NOT_USED(dcd_io);
+    UX_PARAMETER_NOT_USED(parameter);
+
+    /* Get the pointer to the DCD.  */
+    dcd =  &amp;_ux_system_slave -&gt; ux_system_slave_dcd;
+
+    /* Set the state of the controller to HALTED now.  */
+    dcd -&gt; ux_slave_dcd_status =  UX_DCD_STATUS_HALTED;
+
+    /* Get controller driver.  */
+    dcd_xxxxx = (UX_DCD_XXXXX *)dcd -&gt; ux_slave_dcd_controller_hardware;
+
+    /* Free XXXXX driver.  */
+    {
+        _ux_utility_memory_free(dcd_xxxxx);
+        dcd -&gt; ux_slave_dcd_controller_hardware = UX_NULL;
+    }
+
+    /* TODO: If not uninitialized in application (after invoking this function),
+             detach from host and uninitialize the controller.  */
+
+    return(UX_SUCCESS);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_stack_apis_for_usbx"><a class="anchor" href="#_stack_apis_for_usbx"></a>Stack APIs for USBX</h3>
+<div class="sect3">
+<h4 id="_ux_dcd_xxxxx_function"><a class="anchor" href="#_ux_dcd_xxxxx_function"></a>ux_dcd_xxxxx_function</h4>
+<div class="paragraph">
+<p>In USBX device stack, the commands sent to controller is in a single API call defined as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT ux_dcd_xxxxx_function(UX_SLAVE_DCD *dcd, UINT cmd, VOID *param);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The commands should be implemented as following:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">command</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">parameter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DCD_TRANSFER_REQUEST/UX_DCD_TRANSFER_RUN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_TRANSFER*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Issue a transfer/run transfer state machine</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DCD_TRANSFER_ABORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_TRANSFER*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Abort on going transfer</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DCD_CREATE_ENDPOINT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_ENDPOINT*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create a physical endpoint</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DCD_DESTROY_ENDPOINT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_ENDPOINT*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Destroy a physical endpoint</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DCD_RESET_ENDPOINT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_ENDPOINT*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reset an endpoint</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DCD_STALL_ENDPOINT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_ENDPOINT*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stall an endpoint</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DCD_ENDPOINT_STATUS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Return status of endpoint (index/address)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DCD_SET_DEVICE_ADDRESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set the device address</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DCD_CHANGE_STATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG (UX_DEVICE_REMOTE_WAKEUP)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Change USB state (to remote wakeup)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DCD_ISR_PENDING/UX_DCD_TASKS_RUN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">For standalone, run background task state machine</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Note for command <code>UX_DCD_CHANGE_STATE</code>, parameter of <code>UX_DEVICE_REMOTE_WAKEUP</code> should be accepted and send remote wakeup signal to host.</p>
+</div>
+<div class="paragraph">
+<p>Implement example is as following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/**************************************************************************/
+/*                                                                        */
+/*  DESCRIPTION                                                           */
+/*                                                                        */
+/*    This function dispatches the DCD function internally to the XXXXX   */
+/*    controller in USBX device system.                                   */
+/*                                                                        */
+/*    Following commands are supported:                                   */
+/*    - UX_DCD_TRANSFER_REQUEST/UX_DCD_TRANSFER_RUN                       */
+/*      - control transfer: mandatory for all devices;                    */
+/*      - bulk/interrupt/isochronous transfer: optional if needed, e.g.,  */
+/*        bulk is needed by CDC, Mass Storage classes,                    */
+/*        interrupt is needed by HID class,                               */
+/*        isochronous is needed by audio/video classes, etc.              */
+/*    - UX_DCD_TRANSFER_ABORT                                             */
+/*    - UX_DCD_CREATE_ENDPOINT                                            */
+/*    - UX_DCD_DESTROY_ENDPOINT                                           */
+/*    - UX_DCD_RESET_ENDPOINT                                             */
+/*    - UX_DCD_ENDPOINT_STATUS                                            */
+/*    - UX_DCD_SET_DEVICE_ADDRESS                                         */
+/*    - UX_DCD_CHANGE_STATE                                               */
+/*      - UX_DEVICE_REMOTE_WAKEUP: optional if remote wakeup is supported */
+/*    - UX_DCD_ISR_PENDING/UX_DCD_TASKS_RUN                               */
+/*                                                                        */
+/*  INPUT                                                                 */
+/*                                                                        */
+/*    dcd                                   Pointer to device controller  */
+/*    function                              Function requested            */
+/*    parameter                             Pointer to function parameters*/
+/*                                                                        */
+/*  OUTPUT                                                                */
+/*                                                                        */
+/*    Completion Status                                                   */
+/*                                                                        */
+/*  CALLS                                                                 */
+/*                                                                        */
+/*                                                                        */
+/*  CALLED BY                                                             */
+/*                                                                        */
+/*    USBX Device Stack                                                   */
+/*                                                                        */
+/**************************************************************************/
+UINT  _ux_dcd_xxxxx_function(UX_SLAVE_DCD *dcd, UINT function, VOID *parameter)
+{
+
+UINT                status = UX_FUNCTION_NOT_SUPPORTED;
+UX_DCD_XXXXX        *dcd_xxxxx;
+
+
+    /* Check the status of the controller.  */
+    if (dcd -&gt; ux_slave_dcd_status == UX_UNUSED)
+    {
+
+        /* Error trap. */
+        _ux_system_error_handler(UX_SYSTEM_LEVEL_THREAD, UX_SYSTEM_CONTEXT_DCD, UX_CONTROLLER_UNKNOWN);
+
+        /* If trace is enabled, insert this event into the trace buffer.  */
+        UX_TRACE_IN_LINE_INSERT(UX_TRACE_ERROR, UX_CONTROLLER_UNKNOWN, 0, 0, 0, UX_TRACE_ERRORS, 0, 0)
+
+        return(UX_CONTROLLER_UNKNOWN);
+    }
+
+    /* Get the pointer to the XXXXX DCD.  */
+    dcd_xxxxx =  (UX_DCD_XXXXX *) dcd -&gt; ux_slave_dcd_controller_hardware;
+
+    /* Look at the function and route it.  */
+    switch(function)
+    {
+
+    case UX_DCD_TRANSFER_REQUEST:
+
+        /* TODO: controller level transfer state machine/transfer request, parameter: UX_SLAVE_TRANSFER *transfer. */
+        /* Transfer types to support:
+           Control: mandatory for all devices;
+           Bulk: optional, for functions that need bulk endpoint (like CDC-ACM, Mass Storage, etc.);
+           Interrupt: optional, for function that need interrupt endpoint (like HID, CDC-ACM, etc.);
+           Isochronous: optional, for function that need Isochronous endpoint (like audio, video, etc.).
+         */
+#if defined(UX_DEVICE_STANDALONE)
+        /* Must be non-blocking;
+           in start state: start background transfer and return UX_STATE_NEXT;
+           in pending state: return UX_STATE_WAIT;
+           in done state: confirm transfer fields including completion code are updated and return UX_STATE_NEXT. */
+        /* ......  */
+#else
+        /* control request: start background transfer for data stage followed by status stage.
+        /* non-control: it's blocking, start background transfer and wait transfer-&gt;ux_slave_transfer_request_semaphore. */
+        /* ......  */
+#endif
+        break;
+
+    case UX_DCD_TRANSFER_ABORT:
+        /* TODO: controller level transfer abort, parameter: UX_SLAVE_TRANSFER *transfer. */
+        /* ......  */
+        break;
+
+    case UX_DCD_CREATE_ENDPOINT:
+
+        /* TODO: controller level endpoint create, parameter: UX_SLAVE_ENDPOINT *endpoint. */
+        /* ......  */
+        break;
+
+    case UX_DCD_DESTROY_ENDPOINT:
+
+        /* TODO: controller level endpoint destroy, parameter: UX_SLAVE_ENDPOINT *endpoint. */
+        /* ......  */
+        break;
+
+    case UX_DCD_RESET_ENDPOINT:
+
+        /* TODO: controller level endpoint reset to clear halt and reset toggle, parameter: UX_SLAVE_ENDPOINT *endpoint.  */
+        /* ......  */
+        break;
+
+    case UX_DCD_STALL_ENDPOINT:
+
+        /* TODO: controller level endpoint stall, parameter: UX_SLAVE_ENDPOINT *endpoint. */
+        /* ......  */
+        break;
+
+    case UX_DCD_SET_DEVICE_ADDRESS:
+
+        /* TODO: update hardware to set address of the device, parameter: ULONG address.  */
+        /* ......  */
+        break;
+
+    case UX_DCD_CHANGE_STATE:
+
+        /* TODO: actively change USB state in controller level, parameter: ULONG state. It could be:
+           - UX_DEVICE_REMOTE_WAKEUP: send remote wakeup signal on USB bus (if device needs the feature). */
+        /* ......  */
+        break;
+
+    case UX_DCD_ENDPOINT_STATUS:
+
+        /* TODO: get endpoint status (stall).. */
+        /* If UX_DEVICE_BIDIRECTIONAL_ENDPOINT_SUPPORT is defined parameter is ULONG endpoint_address,
+           which kept endpoint direction, in this case both 0x81 and 0x01 are accepted as different
+           endpoints addresses.
+           Otherwise, parameter is ULONG endpoint_index, which removes endpoint direction, in this case
+           address of 0x81 and 0x01 both pass index 0x01 as parameter, so the index must be unique. */
+        /* ......  */
+        break;
+
+#if defined(UX_DEVICE_STANDALONE)
+    case UX_DCD_TASKS_RUN:
+
+        /* TODO: controller level background tasks running. */
+        /* ......  */
+        status = UX_SUCCESS;
+        break;
+#endif
+
+    default:
+
+        /* Error trap. */
+        _ux_system_error_handler(UX_SYSTEM_LEVEL_THREAD, UX_SYSTEM_CONTEXT_DCD, status);
+
+        /* If trace is enabled, insert this event into the trace buffer.  */
+        UX_TRACE_IN_LINE_INSERT(UX_TRACE_ERROR, status, 0, 0, 0, UX_TRACE_ERRORS, 0, 0)
+
+        break;
+    }
+
+    /* Return completion status.  */
+    return(status);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_events_calls_to_usbx"><a class="anchor" href="#_events_calls_to_usbx"></a>Events CALLs to USBX</h3>
+<div class="paragraph">
+<p>Following USBX device stack function should be called in event handling:</p>
+</div>
+<div class="sect3">
+<h4 id="_ux_device_stack_control_request_processux_slave_transfer"><a class="anchor" href="#_ux_device_stack_control_request_processux_slave_transfer"></a>_ux_device_stack_control_request_process(UX_SLAVE_TRANSFER *)</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Control SETUP received and IN (device to host) data is expected</p>
+</li>
+<li>
+<p>Control SETUP received and there is no OUT (host to device) data</p>
+</li>
+<li>
+<p>Control SETUP received and OUT data also received</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>E.g., for a DCD based on STM32 HAL, the code reference could be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">void HAL_PCD_SetupStageCallback(PCD_HandleTypeDef *hpcd)
+{
+    /* ...... */
+
+    /* Check if the transaction is IN.  */
+    if (*transfer_request -&gt; ux_slave_transfer_request_setup &amp; UX_REQUEST_IN)
+    {
+
+        /* ...... */
+
+        /* Call the Control Transfer dispatcher.  */
+        _ux_device_stack_control_request_process(transfer_request);
+
+    }
+    else
+    {
+        /* ....... */
+
+        /* We are in a OUT transaction. Check if there is a data payload. If so, wait for the payload
+           to be delivered.  */
+        if (*(transfer_request -&gt; ux_slave_transfer_request_setup + 6) == 0 &amp;&amp;
+            *(transfer_request -&gt; ux_slave_transfer_request_setup + 7) == 0)
+        {
+
+            /* Call the Control Transfer dispatcher.  */
+            _ux_device_stack_control_request_process(transfer_request);
+
+            /* TODO: start background control request status phase.  */
+            /* ...... */
+        }
+        else
+        {
+            /* TODO: start background control request data OUT transfer,
+                     when transfer/partial transfer is done, HAL_PCD_DataOutStageCallback is triggered.  */
+            /* ...... */
+        }
+    }
+}
+
+void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
+{
+    /* Endpoint 0 is the control endpoint.  */
+    if (epnum == 0U)
+    {
+        /* Check if we have received something on control endpoint during data phase .  */
+        if (ed -&gt; ux_dcd_stm32_ed_state == UX_DCD_STM32_ED_STATE_DATA_RX)
+        {
+                /* Are we done with this transfer ? */
+                if ((transfer_request -&gt; ux_slave_transfer_request_actual_length ==
+                     transfer_request -&gt; ux_slave_transfer_request_requested_length) ||
+                    (transfer_length != endpoint -&gt; ux_slave_endpoint_descriptor.wMaxPacketSize))
+                {
+                    /* ...... */
+
+                    _ux_device_stack_control_request_process(transfer_request);
+                }
+        }
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ux_device_stack_disconnectvoid"><a class="anchor" href="#_ux_device_stack_disconnectvoid"></a>_ux_device_stack_disconnect(void)</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>A USB bus reset happen in not reset states.</p>
+</li>
+<li>
+<p>A USB bus disconnect happen in not reset states</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>E.g., for a DCD based on STM32 HAL, the code reference could be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd)
+{
+    /* If the device is attached or configured, we need to disconnect it.  */
+    if (_ux_system_slave -&gt; ux_system_slave_device.ux_slave_device_state !=  UX_DEVICE_RESET)
+    {
+
+        /* Disconnect the device.  */
+        _ux_device_stack_disconnect();
+    }
+
+    /* Put the device in attached default state.  */
+    /* ...... */
+}
+void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
+{
+
+    /* Check if the device is attached or configured.  */
+    if (_ux_system_slave -&gt; ux_system_slave_device.ux_slave_device_state !=  UX_DEVICE_RESET)
+    {
+
+        /* Disconnect the device.  */
+        _ux_device_stack_disconnect();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ux_system_slave_ux_system_slave_speed_and_ux_system_slave_ux_system_slave_device_ux_slave_device_state"><a class="anchor" href="#_ux_system_slave_ux_system_slave_speed_and_ux_system_slave_ux_system_slave_device_ux_slave_device_state"></a>_ux_system_slave &#8594; ux_system_slave_speed and _ux_system_slave &#8594; ux_system_slave_device.ux_slave_device_state</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Updated when USB bus reset is done</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>E.g., for a DCD based on STM32 HAL, the code reference could be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd)
+{
+
+    /* ...... */
+
+    /* Set USB Current Speed */
+    switch(hpcd -&gt; Init.speed)
+    {
+    case PCD_SPEED_HIGH:
+
+        /* We are connected at high speed.  */
+        _ux_system_slave -&gt; ux_system_slave_speed =  UX_HIGH_SPEED_DEVICE;
+        break;
+
+    case PCD_SPEED_FULL:
+
+        /* We are connected at full speed.  */
+        _ux_system_slave -&gt; ux_system_slave_speed =  UX_FULL_SPEED_DEVICE;
+        break;
+
+    default:
+
+        /* We are connected at full speed.  */
+        _ux_system_slave -&gt; ux_system_slave_speed =  UX_FULL_SPEED_DEVICE;
+        break;
+    }
+
+    /* ...... */
+
+    /* Mark the device as attached now.  */
+    _ux_system_slave -&gt; ux_system_slave_device.ux_slave_device_state =  UX_DEVICE_ATTACHED;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Appendix H - GUIX Build-Time Configuration flags :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/guix/main/appendix-h.html">
+    <meta name="description" content="Learn about GUIX build-time configuration flags.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guix" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">GUIX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">GUIX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">GUIX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-guix.html">Overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="guix-studio-quick-start.html">GUIX Studio Quick Start Guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-1.html">Ch. 1 - Introduction to GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-3.html">Ch. 3 - Functional overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-4.html">Ch. 4 - Description of GUIX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-5.html">Ch. 5 - GUIX display drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-example.html">GUIX example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - GUIX color definitions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - GUIX color formats</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - GUIX widget styles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - GUIX brush, canvas, and gradient attributes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - GUIX event description</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-f.html">App. F - GUIX RTOS binding services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-g.html">App. G - GUIX font structure</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="appendix-h.html">App. H - GUIX build-time configuration flags</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-i.html">App. I - GUIX information structures</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-j.html">App. J - Canvas Partial Frame Buffer Feature</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-k.html">App. K - GUIX Widget Status Flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX Studio User Guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix-studio.html">About GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-1.html">Ch. 1 - Introduction to GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-2.html">Ch. 2 - Installation and Use of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-3.html">Ch. 3 - Description of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-4.html">Ch. 4 - GUIX Studio Resources</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-6.html">Ch. 6 - GUIX Studio Generated Code</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-9.html">Ch. 9 - GUIX Studio Command Line</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-10.html">Ch. 10 - Simple Example Project</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-11.html">Ch. 11 - Resource Project File</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">GUIX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">GUIX</a></li>
+    <li>GUIX user guide</li>
+    <li><a href="appendix-h.html">App. H - GUIX build-time configuration flags</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/guix/modules/ROOT/pages/appendix-h.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Appendix H - GUIX Build-Time Configuration flags</h1>
+<div class="paragraph">
+<p>GUIX support several conditional compilation options and configuration values. The default setting for these conditionals and configuration values can be overridden by pre-defining the value, either in your gx_user.h header file or on your compiler command line.</p>
+</div>
+<div class="paragraph">
+<p><strong>GX_DISABLE_THREADX_BINDING</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Undefined</p>
+</li>
+<li>
+<p>Description: This conditional can be used to disable the default ThreadX RTOS binding. If you want to run GUIX with an RTOS other than ThreadX, you should #define GX_DISABLE_THREADX_BINDING and provide your own RTOS binding services.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_SYSTEM_TIMER_MS</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 20</p>
+</li>
+<li>
+<p>Description: This value defines the desired GUIX timer interval or precision.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>TX_TIMER_TICKS_PER_SECOND</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 100</p>
+</li>
+<li>
+<p>Description: This value defines the number of TX timer interrupt frequencies. Since the default ThreadX interval timer is 10 ms, this value defaults to a 100-Hz frequency.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_DISABLE_MULTITHREAD_SUPPORT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined</p>
+</li>
+<li>
+<p>Description: This compile-time conditional can be used to disable the GUIX API support for multiple threads invoking the GUIX API concurrently. If only one application thread will ever utilize the GUIX API, you should define this flag to reduce the system overhead associated with protecting critical code sections.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_DISABLE_UTF8_SUPPORT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not Defined.</p>
+</li>
+<li>
+<p>Description: This compile-time conditional can be used to remove the GUIX internal support for UTF8 format string encoding. If you are using only character values M- 0xff in your application, turning on this #define will reduce the code size and overhead associated with supporting UTF8 format string encoding.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_DISABLE_ARC_DRAWING_SUPPORT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: This conditional can be used to reduce the GUIX library code size and GX_DISPLAY structure size by removing support for the arc-drawing functions circle, arc, pie, and ellipse. These functions are not required by the default GUIX widget set.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_DISABLE_SOFTWARE_DECODER_SUPPORT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: This conditional can be defined to remove the GUIX library runtime jpeg and png software decoder support. If your application does not require runtime decode of jpg or png files meaning your application does not use RAW format pixelmaps produced by Studio and does not read image files from an external filesystem, you can turn on this #define to reduce the GUIX library footprint.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_DISABLE_BINARY_RESOURCE_SUPPORT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined</p>
+</li>
+<li>
+<p>Description: This conditional can be used to remove the GUIX library support for loading binary resource data. Binary resources can be used to do runtime binding of resource data with your GUIX application. If you are using only C source code format resource files, you can define this conditional to reduce your GUIX library footprint.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_DISABLE_BRUSH_ALPHA_SUPPORT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: When running at 16 bpp and higher color depths, GUIX optionally supports drawing non-arc graphics, pixelmaps, and fonts with an alpha value defined by the drawing context brush. Supporting this drawing mode introduces a small runtime overhead and library footprint increase, which can be eliminated by defining this flag if you do not require alpha-blending drawing support. Note that pixelmaps with alpha channel, anti-aliased fonts, and other anti-aliasing drawing modes are still supported regardless of this conditional setting.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_DISABLE_THREADX_TIMER_SOURCE</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: This conditional can be used to disable the ThreadX timer source. You should define GX_DISABLE_THREADX_TIMER_SOURCE if you want to use a different timer source.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_ENABLE_ARM_HELIUM</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: This conditional can be used to enable ARM Helium instructions for JPEG decoding, resulting in enhanced performance.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_ENABLE_CANVAS_PARTIAL_FRAME_BUFFER</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: This conditional can be used to enable partial frame buffer support for canvas. When this conditional is defined, you are able to define a canvas buffer that is smaller than the canvas size. This is useful when the system has limited memory.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_CANVAS_REFRESH_DIRECTION_HORIZONTAL</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: This conditional is used when canvas partial frame buffer feature is enabled. This conditional can be used to enable horizontal refresh direction for canvas, specifically from left to right.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_CANVAS_REFRESH_DIRECTION_VERTICAL</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: This conditional is used when canvas partial frame buffer feature is enabled. This conditional can be used to enable vertical refresh direction for canvas, specifically from top to bottom.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_REPEAT_BUTTON_INITIAL_TICS</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 10.</p>
+</li>
+<li>
+<p>Description: If a button has style GX_STYLE_BUTTON_REPEAT, this value defines how long the button
+waits before beginning to send repeated GX_EVENT_CLICKED events.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_MAX_QUEUE_EVENTS</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 48.</p>
+</li>
+<li>
+<p>Description: Defines the size of the GUIX event queue in units of event structure entries. If the event queue overflows, events being pushed into the queue are discarded and GX_SYSTEM_ERROR is returned by the gx_system_event_send() function.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_MAX_DIRTY_AREAS</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 64.</p>
+</li>
+<li>
+<p>Description: Defines the maximum number of unique dirty list entries that can be maintained by one canvas. When the dirty list overflows, GUIX will default to marking the canvas root window as dirty, which is less efficient than drawing individual child widgets.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_MAX_CONTEXT_NESTING</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 8.</p>
+</li>
+<li>
+<p>Description: Defines the maximum nesting of the drawing context stack. This is equivalent to the maximum nesting of parent/child/child/child widgets within the UI definition.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_MAX_INPUT_CAPTURE_NESTING</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 4.</p>
+</li>
+<li>
+<p>Description: Defines the size of the stack used to maintain the list of widgets that have captures the user input (mouse and keyboard).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_SYSTEM_THREAD_PRIORITY</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 16.</p>
+</li>
+<li>
+<p>Description: Defines the priority of the GUIX thread created during gx_system_initialize().</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_SYSTEM_THREAD_TIMESLICE</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 10.</p>
+</li>
+<li>
+<p>Description: Defines the GUIX thread timeslice in terms of RTOS timer ticks. If other threads are defined with the same priority as the GUIX thread, this value determines how often those competing threads are granted CPU control.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_CURSOR_BLINK_INTERVAL</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 20.</p>
+</li>
+<li>
+<p>Description: Defines the rate at which the input cursor blinks for text input widgets. This value is in terms of GUIX timer ticks, which by default is defines as 50 ms, so a value of 20 indicates that the input cursor blinks once per second.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_MULTI_LINE_INDEX_CACHE_SIZE</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 32.</p>
+</li>
+<li>
+<p>Description: Defines the size of the list-start index cache maintained by the multi-line text view and multi-line text input widgets. This cache is used to accomplish fast vertical scrolling of multi line text widgets. For best performance, the cache size should be set greater than the number of visible rows of the largest multi line text widget defined by the application. For example, if the most visible rows for any text widget are 20 rows, the application might define a cache size
+of 32 (the default), which allows GUIX to scroll vertically without recalculating all line start indexes.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_MULTI_LINE_TEXT_BUTTON_MAX_LINES</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 4.</p>
+</li>
+<li>
+<p>Description: The multi-line text button control block maintains a pointer to each line of text to be displayed by the button. This value determines the number of text pointers needed by the worst case multi-line text button.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_POLYGON_MAX_EDGE_NUM</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 10.</p>
+</li>
+<li>
+<p>Description: This value determines the most complex polygon that can be drawn by GUIX. The polygon drawing algorithm determines the lines needed to define the polygon edges, and this definition defines the maximum number of edges that can be supported.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_NUMERIC_SCROLL_WHEEL_STRING_BUFFER_SIZE</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 16.</p>
+</li>
+<li>
+<p>Description: For a number scroll wheel, the scroll wheel widget converts integer values to ascii strings. This value determines the maximum length of the string required to display the assigned integer values.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_DEFAULT_CIRCULAR_GAUGE_ANIMATION_DELAY</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 5.</p>
+</li>
+<li>
+<p>Description: Defines the number of GUIX timer ticks (50 ms) between updates of a circular gauge configured to animate the needle movement between last and current angular position.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_NUMERIC_PROMPT_BUFFER_SIZE</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 16.</p>
+</li>
+<li>
+<p>Description: A numeric prompt allocates a buffer to convert an integer value assigned to the prompt to an ascii string. This definition defines the size of this character buffer.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_ANIMATION_POOL_SIZE</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 6.</p>
+</li>
+<li>
+<p>Description: GUIX defines an animation pool from which animation information structures can be dynamically allocated and returned, using gx_system_animation_get and gx_system_animation_free()
+APIs. This definition defines the size of this animation control block pool.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_MOUSE_SUPPORT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: This definition enables support for mouse input. Software mouse requires that the display driver draw and track the mouse cursor, which adds extra overhead to the display driver. This definition should only be defined when a mouse (not a touch screen) must be supported.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_HARDWARE_MOUSE_SUPPORT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: When this definition is defined, the GUIX display driver utilizes hardware mouse cursor drawing support. This reduces the memory required to capture the canvas memory beneath the mouse cursor and improves system performance for those hardware targets support a mouse overlay graphics layer.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_FONT_KERNING_SUPPORT</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: This definition can be defined to enable font kerning support. Font kerning improves glyph spacing for certain glyph combinations. This support adds a small amount of overhead to the
+runtime string drawing functions, and also adds a small amount of size to the font data structures.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_WIDGET_USER_DATA</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: If defined, this adds a user-defined data field to the GX_WIDGET control block. This data field can be assigned using the properties view within GUIX Studio. This data field is ignored by GUIX internally, but can be used by application software for many purposes.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GUIX_5_4_0_COMPATIBILITY</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: Not defined.</p>
+</li>
+<li>
+<p>Description: Certain GUI APIs were modified after release 5.4.0 to add support for disabled text colors and to improve the accuracy of certain math functions by using fixed-point match parameters. These changes make GUIX library releases after 5.4.0 incompatible with previous releases. However, by turning on this #define, the library can be built such that the APIs fully compatible with releases &lt;= 5.4.0, meaning that no changes are needed in existing applications to compile with the latest GUIX library release.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>GX_MAX_STRING_LENGTH</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Default: 102400</p>
+</li>
+<li>
+<p>Description: Defines the maximum length of a string, which is used to test invalid strings. If the input string is exceeding the maximum string length, it will be regard as invalid.</p>
+</li>
+</ul>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

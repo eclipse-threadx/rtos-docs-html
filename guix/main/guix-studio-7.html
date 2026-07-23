@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 7: Defining Screen Flow :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/guix/main/guix-studio-7.html">
+    <meta name="description" content="GUIX Studio supports automatic generation and execution of screen transition logic.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guix" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">GUIX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">GUIX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">GUIX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-guix.html">Overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="guix-studio-quick-start.html">GUIX Studio Quick Start Guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-1.html">Ch. 1 - Introduction to GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-3.html">Ch. 3 - Functional overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-4.html">Ch. 4 - Description of GUIX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-5.html">Ch. 5 - GUIX display drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-example.html">GUIX example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - GUIX color definitions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - GUIX color formats</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - GUIX widget styles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - GUIX brush, canvas, and gradient attributes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - GUIX event description</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-f.html">App. F - GUIX RTOS binding services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-g.html">App. G - GUIX font structure</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-h.html">App. H - GUIX build-time configuration flags</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-i.html">App. I - GUIX information structures</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-j.html">App. J - Canvas Partial Frame Buffer Feature</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-k.html">App. K - GUIX Widget Status Flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX Studio User Guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix-studio.html">About GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-1.html">Ch. 1 - Introduction to GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-2.html">Ch. 2 - Installation and Use of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-3.html">Ch. 3 - Description of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-4.html">Ch. 4 - GUIX Studio Resources</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-6.html">Ch. 6 - GUIX Studio Generated Code</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-9.html">Ch. 9 - GUIX Studio Command Line</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-10.html">Ch. 10 - Simple Example Project</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-11.html">Ch. 11 - Resource Project File</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">GUIX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">GUIX</a></li>
+    <li>GUIX Studio User Guide</li>
+    <li><a href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/guix/modules/ROOT/pages/guix-studio-7.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 7: Defining Screen Flow</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>GUIX Studio supports automatic generation and execution of screen transition logic. The user defines the screen transition logic by creating and editing a graphical screen flow diagram. When a screen flow diagram is added to the project, it enables two important features: 1) The application can be executed from within the Studio environment and 2) Studio automatically generates event handlers and screen transition logic to implement the designated screen flow within the generated specifications.c file, removing this burden from the application program.</p>
+</div>
+<div class="paragraph">
+<p>Running the application on your desktop from within the Studio environment is a handy feature which saves time in that you are not required to go through a compile/link cycle to execute your application. There are of course limitations to what can be done without compiling the application. Custom drawing functions, custom event handlers, and complex event handling are not available when running the application from within the GUIX Studio environment. Still, this capability allows you to auto-generate screen transition logic, and program animations to be executed to transition from one screen to another. These effects and animations can be observed directly from within the GUIX Studio environment.</p>
+</div>
+<div class="paragraph">
+<p>Note that when you define screen flow, triggers, and actions which we will describe in the following paragraphs, you are not only enabling the execution of your UI from within the Studio environment, but you are also enabling GUIX Studio to generate logic within your specifications file that will handle events and take actions based on those events, such as transitioning from one screen to another.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuring_screen_flow"><a class="anchor" href="#_configuring_screen_flow"></a>Configuring Screen Flow</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before an application can be executed from within the Studio environment a few things must be defined. First, the top level screen or screens that should be displayed at program startup must be indicated by selecting the "Visible at Startup" property in the Studio properties view. This flag indicates that this screen should initially be displayed when the program starts. More than one screen can have this designation if desired.</p>
+</div>
+<div class="paragraph">
+<p>After defining the screen(s) which are visible at startup, the user can define how the UI application will flow from screen to screen. GUIX Studio provides a graphical screen flow diagram to define screen transition logic. Simply select the menu selection <strong><em>Configure, Screen Flow</em></strong> to bring up screen flow edit dialog, see the screen shot in <strong><em>Figure 30</em></strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/config_screen_flow.png" alt="Screenshot of the GUIX Studio Screen Flow dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 30</strong></p>
+</div>
+<div class="paragraph">
+<p>Each top-level screen defined in the project will be shown as a box showing the screen name. This box is a placeholder representing each top-level screen defined in the project. These boxes can be moved and resized as desired. When a transition from one top-level screen to another has been defined, a connection line with an arrow head between two screens will be shown to indicate transitions from one screen to another.</p>
+</div>
+<div class="paragraph">
+<p>The tree view in left-side of the screen-flow diagram shows each top-level screen and you are able to select which top-level screens should be drawn in the screen-flow diagram.</p>
+</div>
+<div class="paragraph">
+<p>The screen-flow diagram is scrollable. You are able to drag any screen block down and right outside the visible area to enlarge the scrollable window. Once your scrollable window is enlarged, you are able to zoom out to make it fit the visible area by scrolling the mouse wheel down. If the scrollable window is zoomed out, you are able to make it big enough to hold all of blocks by scrolling the mouse wheel up.</p>
+</div>
+<div class="paragraph">
+<p>To define transitions for a screen, right click on the placeholder for that screen to bring up a Edit Trigger List dialog, see <strong><em>Figure 31</em></strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/edit_trigger_list.png" alt="Screenshot of the GUIX Studio Edit Trigger List dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 31</strong></p>
+</div>
+<div class="paragraph">
+<p>The trigger edit dialog list the events that the user has defined that will trigger a screen transition, which is why we call these events triggers. Triggers are normally signals generated by one or more child widgets of the selected screen.</p>
+</div>
+<div class="paragraph">
+<p>To define a new trigger, select the <strong><em>Add New Trigger</em></strong> button in the Edit Trigger List  dialog to bring up Add Trigger dialog shown in <strong><em>Figure 32</em></strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/add_trigger_for.png" alt="Screenshot of the GUIX Studio Add Trigger dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 32</strong></p>
+</div>
+<div class="paragraph">
+<p>You are able to define the event type that will trigger a new set of actions, and define the actions that will be executed when that trigger event is received.</p>
+</div>
+<div class="paragraph">
+<p>Once you define the event type that you want to use to trigger a new animation screen transition, save this new trigger and it will be displayed in the Edit Trigger List dialog.</p>
+</div>
+<div class="paragraph">
+<p>You can modify this event (without modifying the related actions to be taken) by selecting the event in the Edit Trigger List dialog and selecting the <strong><em>Edit Trigger Event</em></strong> button.</p>
+</div>
+<div class="paragraph">
+<p>Likewise, you can remove any trigger event from the list by selecting the event and clicking on the <strong><em>Delete Selected Trigger</em></strong> button.</p>
+</div>
+<div class="paragraph">
+<p>To specify the animation or screen transition that should occur based on a particular trigger event, select that trigger event and click the <strong><em>Edit Action(s)</em></strong> button. Note that you can fire off more than one action based on each defined trigger.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>Edit Action(s)</strong> button brings up the Edit Actions for Trigger dialog, shown in Figure 33:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/edit_actions_for_trigger.png" alt="Screenshot of the GUIX Studio Edit Actions for Trigger dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 33</strong></p>
+</div>
+<div class="paragraph">
+<p>This dialog allows you to define any number of actions to implement based on this trigger event. You can give each action a meaningful name to help you associate each action definition with a visual animation or transition. In the example above, we defined two actions named "fade_in_text_screen" and "fade_out_button_screen".</p>
+</div>
+<div class="paragraph">
+<p>The define a new action to implement, click the Add New Action button, which brings up the Select Action dialog, Figure 34:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/select_action.png" alt="Screenshot of the GUIX Studio Select Action dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 34</strong></p>
+</div>
+<div class="paragraph">
+<p>Available action types include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Animation</strong>: Start an animation with specified information.</p>
+</li>
+<li>
+<p><strong>Attach</strong>: Attach the target screen to the parent screen, if the parent screen is not specified, the target screen will be attached to the root window.</p>
+</li>
+<li>
+<p><strong>Detach</strong>: Detach the target screen from its parent.</p>
+</li>
+<li>
+<p><strong>Hide</strong>: Hide the target screen.</p>
+</li>
+<li>
+<p><strong>Screen Stack Pop</strong>: Pop a screen from the internal screen stack.</p>
+</li>
+<li>
+<p><strong>Screen Stack Push</strong>: Push a screen pointer to the internal screen stack.</p>
+</li>
+<li>
+<p><strong>Screen Stack Reset</strong>: Remove all screen pointers from the internal screen stack.</p>
+</li>
+<li>
+<p><strong>Show</strong>: Show the target screen.</p>
+</li>
+<li>
+<p><strong>Toggle</strong>: Attach the target screen to the current screen&#8217;s parent, and detach the current screen from its parent.</p>
+</li>
+<li>
+<p><strong>Window Execute</strong>: Modally executes the target screen.</p>
+</li>
+<li>
+<p><strong>Window Execute Stop</strong>: Exit modally execution of the current screen.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Once you have defined an action to take based on the selected trigger event, that action will be displayed in the Edit Actions for Trigger dialog. You can select this action to modify the parameters of that action as shown in Figure 35.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/edit_actions_for_trigger.png" alt="Screenshot of the GUIX Studio Edit Actions for Trigger dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 35</strong></p>
+</div>
+<div class="paragraph">
+<p>If the action type is an animation, a set of animation parameters are displayed on the right to allow you to define a slide and/or fade type animation to be executed. When an animation action is completed, you can also determine if the animation should be automatically detached from it&#8217;s parent and/or pushed to the internal screen stack, which is often useful when defining multi-layer menu systems.</p>
+</div>
+<div class="paragraph">
+<p>For slide and fade animations, you can also define the Easing Function to use by Selecting the Easing Func Select button. Easing functions are various curves designed to more closely mimic real life movement events. Selecting this button brings up the <strong>Select Easing Function</strong> dialog, Figure 36:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/easing_function_select.png" alt="Screenshot of the GUIX Studio Select Easing Function dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 36</strong></p>
+</div>
+<div class="paragraph">
+<p>If you are defining multiple actions to associate with one trigger event, it can be useful to assign each action a meaningful name. Action names must follow C syntax naming rules, as these names will be used within the generated specifications file to define event and action tables.</p>
+</div>
+<div class="paragraph">
+<p>When you define trigger events and actions within GUIX Studio, automated event handlers are generated within your project specifications file to handle these events and execute the specified actions. This means that you do NOT need to handle these events in your application code, although the trigger events are still passed to any custom event handlers you have defined. In other words the Studio generated event handlers augment, rather than replace, your own custom event handlers.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_running_the_application"><a class="anchor" href="#_running_the_application"></a>Running the Application</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once startup screens and a screen flow diagram have been created, you can run your application within Studio by selecting the "Run Application"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/image68.jpg" alt="Screenshot of the Run Application button.">
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">button on the toolbar, selecting Edit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Run Application from the project menu, or by selecting the Run button at the bottom of the Edit Screen Flow dialog.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When you run the application, you will see the screen(s) you have designated as "Visible At Startup" display within a new window. The child widgets on these screen are fully operational. You can click on buttons, operate sliders and scroll wheels, etc.. If you have defined custom drawing functions or customer event handling for any of these widgets, you will of course NOT see this when running the application in this mode. But if you have defined a screen flow diagram with trigger events and actions, those triggers will be operational and your screens will transition as you have defined, including any animations that you may have defined.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

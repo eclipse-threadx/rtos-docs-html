@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 4 - Description of USBX Host Services :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/usbx/main/usbx-host-stack-4.html">
+    <meta name="description" content="Learn about the USBX Host Services.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="usbx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">USBX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">USBX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">USBX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-usbx.html">Overview of USBX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-3.html">Ch. 3 - Functional components of USBX device stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-2.html">Ch. 2 - USBX device class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-7.html">Ch. 7 - USBX device class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-6.html">Ch. 6 - USBX CDC-ECM class usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-2.html">Ch. 2 - USBX Host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">USBX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">USBX</a></li>
+    <li>USBX host stack user guide</li>
+    <li><a href="usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/usbx/modules/ROOT/pages/usbx-host-stack-4.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 4 - Description of USBX Host Services</h1>
+<div class="sect1">
+<h2 id="_ux_host_stack_initialize"><a class="anchor" href="#_ux_host_stack_initialize"></a>ux_host_stack_initialize</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initialize USBX for host operation.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_initialize(
+    UINT (*system_change_function)
+    (ULONG, UX_HOST_CLASS *,VOID *));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This function will initialize the USB host stack and return immediately. The supplied memory area will be setup for USBX internal use. If UX_SUCCESS is returned, USBX is ready for host controller and class registration.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameter"><a class="anchor" href="#_input_parameter"></a>Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>system_change_function</em>: Pointer to optional callback routine for notifying application of instance changes.
+The change callback function is as following:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT demo_ux_system_host_change_function(ULONG change_code, UX_HOST_CLASS *ux_class, VOID *param);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The possible changes notification parameters are:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">UX Change Code</th>
+<th class="tableblock halign-left valign-top">Pointer to Class</th>
+<th class="tableblock halign-left valign-top">Pointer to Instance</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DEVICE_INSERTION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class (<code>UX_HOST_CLASS*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Instance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Registered class created and activated a function instance</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DEVICE_REMOVAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class (<code>UX_HOST_CLASS*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Instance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Function instance is deactivated</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HID_CLIENT_INSERTION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class (<code>UX_HOST_CLASS*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HID Client (<code>UX_HOST_CLASS_HID_CLIENT*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HID class client (keyboard, mouse, remote control &#8230;&#8203;) is activated</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HID_CLIENT_REMOVAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class (<code>UX_HOST_CLASS*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HID Client (<code>UX_HOST_CLASS_HID_CLIENT*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HID class client is deactivated</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_STORAGE_MEDIA_INSERTION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class (<code>UX_HOST_CLASS*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Storage Media (<code>UX_HOST_CLASS_STORAGE_MEDIA*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Storage media is ready (only available for No-FileX mode)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_STORAGE_MEDIA_REMOVAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class (<code>UX_HOST_CLASS*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Storage Media (<code>UX_HOST_CLASS_STORAGE_MEDIA*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Storage media is removed (only available for No-FileX mode)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DEVICE_CONNECTION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Null (<code>UX_NULL</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Device (<code>UX_DEVICE*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Device is connected</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DEVICE_DISCONNECTION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Null (<code>UX_NULL</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Device (<code>UX_DEVICE*</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Device is disconnected</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value"><a class="anchor" href="#_return_value"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) Successful initialization.</p>
+</li>
+<li>
+<p><strong>UX_MEMORY_INSUFFICIENT</strong> (0x12) A memory allocation failed.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* Initialize USBX for host operation, without notification. */
+status = ux_host_stack_initialize(UX_NULL);
+
+/* If status equals UX_SUCCESS, USBX has been successfully initialized for host operation. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_endpoint_transfer_abort"><a class="anchor" href="#_ux_host_stack_endpoint_transfer_abort"></a>ux_host_stack_endpoint_transfer_abort</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Abort all transactions attached to a transfer request for an endpoint.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_endpoint_transfer_abort(UX_ENDPOINT *endpoint);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This function will cancel all transactions active or pending for a specific transfer request attached to an endpoint and return immediately. If the transfer request has a callback function attached, the callback function will be called with the UX_TRANSACTION_ABORTED status.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameter_2"><a class="anchor" href="#_input_parameter_2"></a>Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>endpoint</em>: Pointer to an endpoint.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) No errors.</p>
+</li>
+<li>
+<p><strong>UX_ENDPOINT_HANDLE_UNKNOWN</strong> (0x53) Endpoint handle is not valid.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UX_HOST_CLASS_PRINTER *printer;
+UINT status;
+
+/* Get the instance for this class. */
+printer = (UX_HOST_CLASS_PRINTER *) command -&gt;
+    ux_host_class_command_instance;
+
+/* The printer is being shut down. */
+
+printer -&gt; printer_state = UX_HOST_CLASS_INSTANCE_SHUTDOWN;
+
+/* We need to abort transactions on the bulk out pipe. */
+status = ux_host_stack_endpoint_transfer_abort
+    (printer -&gt; printer_bulk_out_endpoint);
+
+/* If status equals UX_SUCCESS, the operation was successful */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_class_get"><a class="anchor" href="#_ux_host_stack_class_get"></a>ux_host_stack_class_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get the pointer to a class container.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_class_get(
+    UCHAR *class_name,
+    UX_HOST_CLASS **class);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This function returns a pointer to the class container immediately. A class needs to obtain its container from the USB stack to search for instances when a class or an application wants to open a device.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The C string of class_name must be NULL-terminated and the length of it (without the NULL-terminator itself) must be no larger than UX_MAX_CLASS_NAME_LENGTH.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters"><a class="anchor" href="#_parameters"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>class_name</em>: Pointer to the class name.</p>
+</li>
+<li>
+<p><em>class</em>: A pointer updated by the function call that contains the class container for the name of the class.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) No errors, on return the class field is filed with the pointer to the class container.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_UNKNOWN</strong> (0x59) Class is unknown by the stack.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UX_HOST_CLASS *printer_container;
+UINT status;
+
+/* Get the container for this class. */
+status = ux_host_stack_class_get("ux_host_class_printer", &amp;printer_container);
+
+/* If status equals UX_SUCCESS, the operation was successful */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_class_register"><a class="anchor" href="#_ux_host_stack_class_register"></a>ux_host_stack_class_register</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Register a USB class to the USB stack.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_class_register(
+    UCHAR *class_name,
+    UINT (*class_entry_address) (struct UX_HOST_CLASS_COMMAND_STRUCT *));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This function registers a USB class to the USB stack and returns immediately. The class must
+specify an entry point for the USB stack to send commands such as the following.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_HOST_CLASS_COMMAND_QUERY</strong></p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_COMMAND_ACTIVATE</strong></p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_COMMAND_DESTROY</strong></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The C string of <em>class_name</em> must be NULL-terminated and the length of it (without the NULL-terminator itself) must be no larger than <strong>UX_MAX_CLASS_NAME_LENGTH</strong>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_2"><a class="anchor" href="#_parameters_2"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>class_name</em>: Pointer to the name of the class, valid entries are found in the file ux_system_initialize.c under the USB Classes of USBX.</p>
+</li>
+<li>
+<p><em>class_entry_address</em>: Address of the entry function of the class.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) Class installed successfully.</p>
+</li>
+<li>
+<p><strong>UX_MEMORY_ARRAY_FULL</strong> (0x1a) No more memory to store this class.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_ALREADY_INSTALLED</strong> (0x58) Host class already installed.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example:</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* Register all the classes for this implementation. */
+status = ux_host_stack_class_register("ux_host_class_hub", ux_host_class_hub_entry);
+
+/* If status equals UX_SUCCESS, class was successfully installed. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_class_instance_create"><a class="anchor" href="#_ux_host_stack_class_instance_create"></a>ux_host_stack_class_instance_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create a new class instance for a class container.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_class_instance_create(
+    UX_HOST_CLASS *class,
+    VOID *class_instance);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>This function creates a new class instance for a class container and returns immediately. The instance of a class is not contained in the class code to reduce the class complexity. Rather, each class instance is attached to the class container located in the main stack.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_3"><a class="anchor" href="#_parameters_3"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>class</em>: Pointer to the class container.</p>
+</li>
+<li>
+<p><em>class_instance</em>: Pointer to the class instance to be created.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_2"><a class="anchor" href="#_return_value_2"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The class instance was attached to the class container.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+UX_HOST_CLASS_PRINTER *printer;
+
+/* Obtain memory for this class instance. */
+
+printer = ux_memory_allocate(UX_NO_ALIGN, sizeof(UX_HOST_CLASS_PRINTER));
+
+if (printer == UX_NULL)
+    return(UX_MEMORY_INSUFFICIENT);
+
+/* Store the class container into this instance. */
+printer -&gt; printer_class = command -&gt; ux_host_class;
+
+/* Create this class instance. */
+status = ux_host_stack_class_instance_create(printer -&gt; printer_class, (VOID *)printer);
+
+/* If status equals UX_SUCCESS, the class instance was successfully created and attached to the class container. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_class_instance_destroy"><a class="anchor" href="#_ux_host_stack_class_instance_destroy"></a>ux_host_stack_class_instance_destroy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Destroy a class instance for a class container.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_class_instance_destroy(
+    UX_HOST_CLASS *class,
+    VOID *class_instance);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This function destroys a class instance for a class container and returns immediately.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_4"><a class="anchor" href="#_parameters_4"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>class</em>: Pointer to the class container.</p>
+</li>
+<li>
+<p><em>class_instance</em>: Pointer to the instance to destroy.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The class instance was destroyed.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) The class instance is not attached to the class container.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_6"><a class="anchor" href="#_example_6"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+UX_HOST_CLASS_PRINTER *printer;
+
+/* Get the instance for this class. */
+printer = (UX_HOST_CLASS_PRINTER *) command -&gt; ux_host_class_command_instance;
+
+/* The printer is being shut down. */
+printer -&gt; printer_state = UX_HOST_CLASS_INSTANCE_SHUTDOWN;
+
+/* Destroy the instance. */
+status = ux_host_stack_class_instance_destroy(printer -&gt; printer_class, (VOID *) printer);
+
+/* If status equals UX_SUCCESS, the class instance was successfully destroyed. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_class_instance_get"><a class="anchor" href="#_ux_host_stack_class_instance_get"></a>ux_host_stack_class_instance_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get a class instance pointer for a specific class.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_class_instance_get(
+    UX_HOST_CLASS *class,
+    UINT class_index,
+    VOID **class_instance);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This function returns a class instance pointer for a specific class immediately. The instance of a class is not contained in the class code to reduce the class complexity. Rather, each class instance is attached to the class container. This function is used to search for class instances within a class container.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_5"><a class="anchor" href="#_parameters_5"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>class</em>: Pointer to the class container.</p>
+</li>
+<li>
+<p><em>class_index</em>: An index to be used by the function call within the list of attached classes to the container.</p>
+</li>
+<li>
+<p><em>class_instance</em>: Pointer to the instance to be returned by the function call.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The class instance was found.</p>
+</li>
+<li>
+<p><strong>UX_HOST_CLASS_INSTANCE_UNKNOWN</strong> (0x5b) There are no more class instances attached to the class container.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_7"><a class="anchor" href="#_example_7"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+UX_HOST_CLASS_PRINTER *printer;
+
+/* Obtain memory for this class instance. */
+printer = ux_memory_allocate(UX_NO_ALIGN, sizeof(UX_HOST_CLASS_PRINTER));
+
+if (printer == UX_NULL) return(UX_MEMORY_INSUFFICIENT);
+
+/* Search for instance index 2. */
+status = ux_host_stack_class_instance_get(class, 2, (VOID *) printer);
+
+/* If status equals UX_SUCCESS, the class instance was found. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_device_configuration_get"><a class="anchor" href="#_ux_host_stack_device_configuration_get"></a>ux_host_stack_device_configuration_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get a pointer to a configuration container.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_device_configuration_get(
+    UX_DEVICE *device,
+    UINT configuration_index,
+    UX_CONFIGURATION *configuration);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>This function returns a configuration container based on a device handle and a configuration index, immediately.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_6"><a class="anchor" href="#_parameters_6"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>device</em>: Pointer to the device container that owns the configuration requested.</p>
+</li>
+<li>
+<p><em>configuration_index</em>: Index of the configuration to be searched.</p>
+</li>
+<li>
+<p><em>configuration</em>: Address of the pointer to the configuration container to be returned.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The configuration was found.</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_HANDLE_UNKNOWN</strong> (0x50) The device container does not exist.</p>
+</li>
+<li>
+<p><strong>UX_CONFIGURATION_HANDLE_UNKNOWN</strong> (0x51) The configuration handle for the index does not exist.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+UX_HOST_CLASS_PRINTER *printer;
+
+/* If the device has been configured already, we don't need to do it
+again. */
+
+if (printer -&gt; printer_device -&gt; ux_device_state == UX_DEVICE_CONFIGURED)
+    return(UX_SUCCESS);
+
+/* A printer normally has one configuration, retrieve 1st configuration only. */
+
+status = ux_host_stack_device_configuration_get(printer -&gt; printer_device,
+    0, configuration);
+
+/* If status equals UX_SUCCESS, the configuration was found. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_device_configuration_select"><a class="anchor" href="#_ux_host_stack_device_configuration_select"></a>ux_host_stack_device_configuration_select</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Select a specific configuration for a device.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_device_configuration_select (UX_CONFIGURATION *configuration);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>This function selects a specific configuration for a device. When this configuration is set to the device, by default, each device interface and its associated alternate setting 0 is activated on the device. If the device/interface class wishes to change the setting of a particular interface. It issues a <strong>ux_host_stack_configuration_set</strong> service call and wait it end to continue.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_7"><a class="anchor" href="#_parameters_7"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>configuration</em>: Pointer to the configuration container that is to be enabled for this device.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_7"><a class="anchor" href="#_return_values_7"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The configuration selection was successful.</p>
+</li>
+<li>
+<p><strong>UX_CONFIGURATION_HANDLE_UNKNOWN</strong> (0x51) The configuration handle does not exist.</p>
+</li>
+<li>
+<p><strong>UX_OVER_CURRENT_CONDITION</strong> (0x43) An over current condition exists on the bus for this configuration.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+UX_HOST_CLASS_PRINTER *printer;
+
+/* If the device has been configured already, we don't need to do it again. */
+if (printer -&gt; printer_device -&gt; ux_device_state == UX_DEVICE_CONFIGURED)
+    return(UX_SUCCESS);
+
+/* A printer normally has one configuration - retrieve 1st configuration only. */
+status = ux_host_stack_device_configuration_get(printer -&gt; printer_device, 0,configuration);
+
+/* If status equals UX_SUCCESS, the configuration selection was successful. */
+
+/* If valid configuration, ask USBX to set this configuration. */
+status = ux_host_stack_device_configuration_select(configuration);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_device_get"><a class="anchor" href="#_ux_host_stack_device_get"></a>ux_host_stack_device_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get a pointer to a device container.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_device_get(
+    ULONG device_index,
+    UX_DEVICE *device);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>This function returns a device container based on its index immediately. The device index starts with 0. Note that the index is a ULONG because we could have several controllers and a byte index might not be enough. The device index should not be confused with the device address that is bus specific.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_8"><a class="anchor" href="#_parameters_8"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>device_index</em>: Index of the device.</p>
+</li>
+<li>
+<p><em>device</em>: Address of the pointer for the device container to return.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_8"><a class="anchor" href="#_return_values_8"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The device container exists and is returned</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_HANDLE_UNKNOWN</strong> (0x50) Device unknown</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* Locate the first device in USBX. */
+status = ux_host_stack_device_get(0, device);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_interface_endpoint_get"><a class="anchor" href="#_ux_host_stack_interface_endpoint_get"></a>ux_host_stack_interface_endpoint_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get an endpoint container.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_interface_endpoint_get(
+    UX_INTERFACE *interface,
+    UINT endpoint_index,
+    UX_ENDPOINT *endpoint);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This function returns an endpoint container based on the interface handle and an endpoint index immediately. It is assumed that the alternate setting for the interface has been selected or the default setting is being used prior to the endpoint(s) being searched.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_9"><a class="anchor" href="#_parameters_9"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>interface</em>: Pointer to the interface container that contains the endpoint requested.</p>
+</li>
+<li>
+<p><em>endpoint_index</em>: Index of the endpoint in this interface.</p>
+</li>
+<li>
+<p><em>endpoint</em>: Address of the endpoint container to be returned.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_9"><a class="anchor" href="#_return_values_9"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The endpoint container exists and is returned.</p>
+</li>
+<li>
+<p><strong>UX_INTERFACE_HANDLE_UNKNOWN</strong> (0x52) Interface specified does not exist.</p>
+</li>
+<li>
+<p><strong>UX_ENDPOINT_HANDLE_UNKNOWN</strong> (0x53) Endpoint index does not exist.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_11"><a class="anchor" href="#_example_11"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+UX_HOST_CLASS_PRINTER *printer;
+
+for(endpoint_index = 0;
+    endpoint_index &lt; printer -&gt; printer_interface -&gt;
+        ux_interface_descriptor.bNumEndpoints;
+    endpoint_index++)
+{
+    status = ux_host_stack_interface_endpoint_get (printer -&gt; printer_interface,
+        endpoint_index, &amp;endpoint);
+
+    if (status == UX_SUCCESS)
+    {
+        /* Check if endpoint is bulk and OUT. */
+        if (((endpoint -&gt; ux_endpoint_descriptor.bEndpointAddress &amp;
+            UX_ENDPOINT_DIRECTION) == UX_ENDPOINT_OUT) &amp;&amp;
+            ((endpoint -&gt; ux_endpoint_descriptor.bmAttributes &amp;
+            UX_MASK_ENDPOINT_TYPE) == UX_BULK_ENDPOINT))
+        return(UX_SUCCESS);
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_hcd_register"><a class="anchor" href="#_ux_host_stack_hcd_register"></a>ux_host_stack_hcd_register</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Register a USB controller to the USB stack.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_hcd_register(
+    UCHAR *hcd_name,
+    UINT (*hcd_function)(struct UX_HCD_STRUCT *),
+    ULONG hcd_param1, ULONG hcd_param2);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>This function registers a USB controller to the USB stack and returns immediately. It mainly allocates the memory used by this controller and passes the initialization command to the controller.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The C string of hcd_name must be NULL-terminated and the length of it (without the NULL-terminator itself) must be no larger than <strong>UX_MAX_HCD_NAME_LENGTH</strong>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_10"><a class="anchor" href="#_parameters_10"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>hcd_name</em>: Name of the host controller</p>
+</li>
+<li>
+<p><em>hcd_function</em>: The function in the host controller responsible for the initialization.</p>
+</li>
+<li>
+<p><em>hcd_param1</em>: The IO or memory resource used by the hcd.</p>
+</li>
+<li>
+<p><em>hcd_param2</em>: The IRQ used by the host controller.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_10"><a class="anchor" href="#_return_values_10"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The controller was initialized properly.</p>
+</li>
+<li>
+<p><strong>UX_MEMORY_INSUFFICIENT</strong> (0x12) Not enough memory for this controller.</p>
+</li>
+<li>
+<p><strong>UX_PORT_RESET_FAILED</strong> (0x31) The reset of the controller failed.</p>
+</li>
+<li>
+<p><strong>UX_CONTROLLER_INIT_FAILED</strong> (0x32) The controller failed to initialize properly.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_12"><a class="anchor" href="#_example_12"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* Initialize a host controller mapped at address 0xd0000 and using IRQ 10. */
+
+status = ux_host_stack_hcd_register("ux_hcd_controller",
+    ux_hcd_controller_initialize, 0xd0000, 0x0a);
+
+/* If status equals UX_SUCCESS, the controller was initialized properly. */
+
+/* Note that the application must also setup a call to the
+    interrupt handler for the controller.
+    The function for the controller is called _ux_hch_controller_interrupt_handler. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_configuration_interface_get"><a class="anchor" href="#_ux_host_stack_configuration_interface_get"></a>ux_host_stack_configuration_interface_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get an interface container pointer.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_configuration_interface_get (
+    UX_CONFIGURATION *configuration,
+    UINT interface_index,
+    UINT alternate_setting_index,
+    UX_INTERFACE **interface);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This function returns an interface container based on a configuration handle, an interface index, and an alternate setting index, immediately.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_11"><a class="anchor" href="#_parameters_11"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>configuration</em>: Pointer to the configuration container that owns the interface.</p>
+</li>
+<li>
+<p><em>interface_index</em>: Interface index to be searched.</p>
+</li>
+<li>
+<p><em>alternate_setting_index</em>: Alternate setting within the interface to search.</p>
+</li>
+<li>
+<p><em>interface</em>: Address of the interface container pointer to be returned.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_11"><a class="anchor" href="#_return_values_11"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The interface container for the interface index and the alternate setting was found and returned.</p>
+</li>
+<li>
+<p><strong>UX_CONFIGURATION_HANDLE_UNKNOWN</strong> (0x51) The configuration does not exist.</p>
+</li>
+<li>
+<p><strong>UX_INTERFACE_HANDLE_UNKNOWN</strong> (0x52) The interface does not exist.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_13"><a class="anchor" href="#_example_13"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* Search for the default alternate setting on the first interface for the printer. */
+status = ux_host_stack_configuration_interface_get(configuration, 0, 0,
+    &amp;printer -&gt; printer_interface);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_interface_setting_select"><a class="anchor" href="#_ux_host_stack_interface_setting_select"></a>ux_host_stack_interface_setting_select</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Select an alternate setting for an interface.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_14"><a class="anchor" href="#_prototype_14"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_interface_setting_select(UX_INTERFACE *interface);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_14"><a class="anchor" href="#_description_14"></a>Description</h3>
+<div class="paragraph">
+<p>This function selects a specific alternate setting for a given interface belonging to the selected configuration. This function is used to change from the default alternate setting to a new setting or to go back to the default alternate setting. When a new alternate setting is selected, the previous endpoint characteristics are invalid and should be reloaded. It issues a <strong>_ux_host_stack_interface_set</strong> service call, where transfer request is issued an waited before continue.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameter_3"><a class="anchor" href="#_input_parameter_3"></a>Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>interface</em>: Pointer to the interface container whose alternate setting is to be selected.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_12"><a class="anchor" href="#_return_values_12"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The alternate setting for this interface has been successfully selected.</p>
+</li>
+<li>
+<p><strong>UX_INTERFACE_HANDLE_UNKNOWN</strong> (0x52) The interface does not exist.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_14"><a class="anchor" href="#_example_14"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* Select a new alternate setting for this interface. */
+status = ux_host_stack_interface_setting_select(interface);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_transfer_request_abort"><a class="anchor" href="#_ux_host_stack_transfer_request_abort"></a>ux_host_stack_transfer_request_abort</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Abort a pending transfer request.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_15"><a class="anchor" href="#_prototype_15"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_transfer_request_abort(UX_TRANSFER REQUEST *transfer request);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_15"><a class="anchor" href="#_description_15"></a>Description</h3>
+<div class="paragraph">
+<p>This function aborts a pending transfer request that has been previously submitted and returns immediately. This function only cancels a specific transfer request. The call back to the function will have the UX_TRANSFER REQUEST_STATUS_ABORT status.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_12"><a class="anchor" href="#_parameters_12"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>transfer request</em>: Pointer to the transfer request to be aborted.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_13"><a class="anchor" href="#_return_values_13"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The USB transfer for this transfer request was
+canceled.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_15"><a class="anchor" href="#_example_15"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* The following example illustrates this service. */
+status = ux_host_stack_transfer_request_abort(transfer request);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ux_host_stack_transfer_request"><a class="anchor" href="#_ux_host_stack_transfer_request"></a>ux_host_stack_transfer_request</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Request a USB transfer.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_16"><a class="anchor" href="#_prototype_16"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_host_stack_transfer_request(UX_TRANSFER REQUEST *transfer request);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_16"><a class="anchor" href="#_description_16"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs a USB transaction. On entry the transfer request gives the endpoint pipe selected for this transaction and the parameters associated with the transfer (data payload, length of transaction). For Control pipe, the transaction is blocking and will only return when the three phases of the control transfer have been completed or if there is a previous error. For other pipes, the USB stack will schedule the transaction on the USB but will not wait for its completion. Each transfer request for non-blocking pipes has to specify a completion routine handler.</p>
+</div>
+<div class="paragraph">
+<p>When the function call returns, the status of the transfer request should be examined as it contains the result of the transaction.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameter_4"><a class="anchor" href="#_input_parameter_4"></a>Input Parameter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>transfer_request</em>: Pointer to the transfer request. The transfer request contains all the necessary information required for the transfer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_14"><a class="anchor" href="#_return_values_14"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) The USB transfer for this transfer request was scheduled properly. The status code of the transfer request should be examined when the transfer request completes.</p>
+</li>
+<li>
+<p><strong>UX_MEMORY_INSUFFICIENT</strong> (0x12) Not enough memory to allocate the necessary controller resources.</p>
+</li>
+<li>
+<p><strong>UX_TRANSFER_NOT_READY</strong> (0x25) The device was in an invalid state&#8201;&#8212;&#8201;must be ATTACHED,ADDRESSED, or CONFIGURED.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_16"><a class="anchor" href="#_example_16"></a>Example:</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT status;
+
+/* Create a transfer request for the SET_CONFIGURATION request. No data for this request. */
+transfer_request -&gt; ux_transfer_request_requested_length = 0;
+transfer_request -&gt; ux_transfer_request_function = UX_SET_CONFIGURATION;
+transfer_request -&gt; ux_transfer_request_type =
+    | UX_REQUEST_OUT           |
+    | UX_REQUEST_TYPE_STANDARD |
+    UX_REQUEST_TARGET_DEVICE;
+
+transfer_request -&gt; ux_transfer_request_value = (USHORT)
+    configuration -&gt; ux_configuration_descriptor.bConfigurationValue;
+transfer_request -&gt; ux_transfer_request_index = 0;
+
+/* Send request to HCD layer. */
+status = ux_host_stack_transfer_request(transfer_request);
+
+/* If status equals UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

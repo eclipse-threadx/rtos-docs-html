@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 11 - Format of event trace buffer :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/tracex/main/chapter11.html">
+    <meta name="description" content="ThreadX provides built-in event trace support for all ThreadX services, thread state changes, and user-defined events.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="tracex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">TraceX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">TraceX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">TraceX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-tracex.html">Overview of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">TraceX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - TraceX performance analysis</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Generating trace buffers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - ThreadX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter7.html">Ch. 7 - FileX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter8.html">Ch. 8 - NetX Duo trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter9.html">Ch. 9 - USBX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter10.html">Ch. 10 - Customer user events</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter11.html">Ch. 11 - Format of event trace buffer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - Sample tx_port.h</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - The tx_trace.h File</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - DOS command-line utilities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - Dumping and trace buffer</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">TraceX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">TraceX</a></li>
+    <li>TraceX user guide</li>
+    <li><a href="chapter11.html">Ch. 11 - Format of event trace buffer</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/tracex/modules/ROOT/pages/chapter11.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 11 - Format of event trace buffer</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX provides built-in event trace support for all ThreadX services, thread state changes, and user-defined events. To use event trace, simply build the ThreadX, NetX Duo, and FileX libraries with <strong>TX_ENABLE_EVENT_TRACE</strong> defined and enable tracing by calling the <strong><em>tx_trace_enable</em></strong> function. This chapter describes that process.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_event_trace_format"><a class="anchor" href="#_event_trace_format"></a>Event Trace Format</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The format of the ThreadX event trace buffer is divided into three sections, namely the control header, object registry, and the trace entries. The following describes the general layout of the ThreadX event trace buffer:</p>
+</div>
+<div class="paragraph">
+<p><strong>Control Header</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Object Registry Entry 0</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>&#8230;&#8203;</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Object Register Entry "n"</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Event Trace Entry 0</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>&#8230;&#8203;</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Event Trace Entry "n"</strong></p>
+</div>
+<div class="sect2">
+<h3 id="_event_trace_control_header"><a class="anchor" href="#_event_trace_control_header"></a>Event Trace Control Header</h3>
+<div class="paragraph">
+<p>The control header defines the exact layout of the event trace buffer. This includes how many ThreadX objects can be registered as well as how many events can be recorded. In addition, the control header defines where each of the elements of the trace buffer resides. The following data structure defines the control header:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct TX_TRACE_CONTROL_HEADER_STRUCT
+{
+    ULONG    tx_trace_control_header_id;
+    ULONG    tx_trace_control_header_timer_valid_mask;
+    ULONG    tx_trace_control_header_trace_base_address;
+    ULONG    tx_trace_control_header_object_registry_start_pointer;
+    USHORT   tx_trace_control_header_reserved1;
+    USHORT   tx_trace_control_header_object_registry_name_size;
+    ULONG    tx_trace_control_header_object_registry_end_pointer;
+    ULONG    tx_trace_control_header_buffer_start_pointer;
+    ULONG    tx_trace_control_header_buffer_end_pointer;
+    ULONG    tx_trace_control_header_buffer_current_pointer;
+    ULONG    tx_trace_control_header_reserved2;
+    ULONG    tx_trace_control_header_reserved3;
+    ULONG    tx_trace_control_header_reserved4;
+} TX_TRACE_CONTROL_HEADER;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_control_header_id"><a class="anchor" href="#_control_header_id"></a>Control Header ID</h3>
+<div class="paragraph">
+<p>The control header ID consists of the 32-bit HEX value of 0x54585442, which corresponds to the ASCII characters <strong><em>TXTB</em></strong>. Since this value is written as a 32-bit unsigned variable, it can also be used to detect the endianness of the event trace buffer. For example, if the value in the first four byes of memory is 0x54, 0x58, 0x54, 0x42, the event trace buffer was written in big endian format. Otherwise, the event trace buffer was written in little endian format.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_timer_valid_mask"><a class="anchor" href="#_timer_valid_mask"></a>Timer Valid Mask</h3>
+<div class="paragraph">
+<p>The timer valid mask defines how many bits of the timestamp in the actual event trace entries are valid. For example, if the time-stamp source has 16-bits, the value in this field should be 0xFFFF. A 32-bit time-stamp source would have a value of 0xFFFFFFFF. This value is defined by the <strong><em>TX_TRACE_TIME_MASK</em></strong> constant in <strong><em>tx_port.h</em></strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_trace_base_address"><a class="anchor" href="#_trace_base_address"></a>Trace Base Address</h3>
+<div class="paragraph">
+<p>The trace buffer base address is the address the application specified as the start of the trace buffer in the <strong><em>tx_trace_enable</em></strong> call. This address is maintained for the sole use of the analysis tool to derive bufferrelative offsets for the various elements in the buffer. For example, the buffer relative offset of the current event in the trace buffer is calculated by simple subtraction of the base address from the current event address.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_registry_start_and_end_pointers"><a class="anchor" href="#_registry_start_and_end_pointers"></a>Registry Start and End Pointers</h3>
+<div class="paragraph">
+<p>The registry start pointer points to the address of the first object registry entry, while the registry end pointer points to the address im../mediately following the last register entry. These values are setup during the <em>tx_trace_enable</em> processing and are not changed throughout the duration of tracing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_registry_name_size"><a class="anchor" href="#_registry_name_size"></a>Registry Name Size</h3>
+<div class="paragraph">
+<p>The registry name size defines maximum size in bytes for each object name in the registry entry and is defined by the symbol
+<strong><em>TX_TRACE_OBJECT_REGISTRY_NAME</em></strong>. The default value is 32 and is defined in <strong><em>tx_trace.h</em></strong>. The object name corresponds to the name given by the application when the object was created. For example, the object registry name for a thread is the name supplied by the application to the <strong><em>tx_thread_create</em></strong>call.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_buffer_start_and_end_pointers"><a class="anchor" href="#_buffer_start_and_end_pointers"></a>Buffer Start and End Pointers</h3>
+<div class="paragraph">
+<p>The event trace buffer start pointer points to the address of the first trace entry, while the registry end pointer points to the address im../mediately following the last trace entry. These values are setup during the <strong><em>tx_trace_enable&lt;/</em></strong> processing and are not changed throughout the duration of tracing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_current_buffer_pointer"><a class="anchor" href="#_current_buffer_pointer"></a>Current Buffer Pointer</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The event trace buffer current pointer points to the address of the oldest trace entry. Since the trace entries are maintained in a circular list, the current buffer pointer is also represents the next trace entry to be written.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_event_trace_object_registry"><a class="anchor" href="#_event_trace_object_registry"></a>Event Trace Object Registry</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The event trace object registry contains <strong><em>n</em></strong> object registry entries that correspond to the objects created by the application. The main purpose of the object registry is for external analysis tools to correlate actual object names with the object addresses of the trace buffer entries. The number of registry entries is specified by the application in the <strong><em>tx_trace_enable</em></strong> call.</p>
+</div>
+<div class="paragraph">
+<p>Each object register entry contains information about a specific ThreadX object previously created by the application. The following data structure defines each object registry entry:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct TX_TRACE_OBJECT_REGISTRY_ENTRY_STRUCT
+{
+    UCHAR    tx_trace_object_registry_entry_object_available**;
+    UCHAR    tx_trace_object_registry_entry_object_type**;
+    UCHAR    tx_trace_object_registry_entry_object_reserved1;
+    UCHAR    tx_trace_object_registry_entry_object_reserved2;
+    ULONG    tx_trace_thread_registry_entry_object_pointer;
+    ULONG    tx_trace_object_registry_entry_object_parameter_1;
+    ULONG    tx_trace_object_registry_entry_object_parameter_2;
+    UCHAR    tx_trace_thread_registry_entry_object_name[TX_TRACE_OBJECT_REGISTRY_NAME];
+
+} TX_TRACE_OBJECT_REGISTRY_ENTRY;</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_object_available_flag"><a class="anchor" href="#_object_available_flag"></a>Object Available Flag</h3>
+<div class="paragraph">
+<p>The object available flag is set to 1 if the object registry entry is available. Otherwise, if the value is
+not 1, the object registry entry is not available. Note that the entry could still contain valid information even though it is available.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_object_entry_type"><a class="anchor" href="#_object_entry_type"></a>Object Entry Type</h3>
+<div class="paragraph">
+<p>The object entry type identifies the type of object in this entry. The following is a list of the valid object types:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Value</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Object Type</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not Valid</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Thread</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timer</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Queue</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Semaphore</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mutex</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Event Flags Group</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Block Pool</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Byte Pool</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">../media</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">File</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IP</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Packet Pool</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TCP Socket</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UDP Socket</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15-20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reserved</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USB Host Stack Device</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USB Host Stack Interface</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">23</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USB Host Endpoint</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USB Host Class</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USB Device</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USB Device Interface</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">27</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USB Device Endpoint</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USB Device Class</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_object_pointer"><a class="anchor" href="#_object_pointer"></a>Object Pointer</h3>
+<div class="paragraph">
+<p>The object pointer specifies the object address that is used for accessing the object using the ThreadX API.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_object_reserved_fields"><a class="anchor" href="#_object_reserved_fields"></a>Object Reserved Fields</h3>
+<div class="paragraph">
+<p>For all objects other than threads, these reserved fields should be 0. For threads, the priority of the thread at the time it is entered into the registry is placed in these two reserved fields.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_object_parameters"><a class="anchor" href="#_object_parameters"></a>Object Parameters</h3>
+<div class="paragraph">
+<p>The object parameters contain supplemental information about the object. The following describes the supplemental information for each ThreadX object:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Object Type</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Parameter 1</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Parameter 2</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Thread</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stack Start</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stack Size</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Initial Ticks</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reschedule Ticks</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Queue</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Queue Size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message Size</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Semaphore</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Initial Instances</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mutex</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Inheritance Flag</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Event Flags Group</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Block Pool</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total Blocks</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Block Size</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Byte Pool</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total Bytes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">../media</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fat Cache Size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sector Cache Size</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">File</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stack Start</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stack Size</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Packet Pool</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Packet Size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Packets</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TCP Socket</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IP address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Window Size</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UDP Socket</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IP address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RX Queue Max</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_object_name"><a class="anchor" href="#_object_name"></a>Object Name</h3>
+<div class="paragraph">
+<p>The object name contains the name of the ThreadX object. The name is the name provided to ThreadX at the time the object was created. By default, the object name has a maximum of 32 characters. Actual names greater than 32 characters are truncated.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_event_trace_entries"><a class="anchor" href="#_event_trace_entries"></a>Event Trace Entries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The event trace entries are found in the bottom portion of the event trace buffer. The entries are maintained in a circular list, with the current entry pointer pointing to the oldest entry. The number of entries in the list is calculated by the <strong><em>tx_trace_enable</em></strong> call.</p>
+</div>
+<div class="paragraph">
+<p>Each object register entry contains information about a specific ThreadX trace event. The following data structure defines each trace event entry:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct TX_TRACE_BUFFER_ENTRY_STRUCT
+{
+    ULONG     tx_trace_buffer_entry_thread_pointer;
+    ULONG     tx_trace_buffer_entry_thread_priority;
+    ULONG     tx_trace_buffer_entry_event_id;
+    ULONG     tx_trace_buffer_entry_time_stamp;
+    ULONG     tx_trace_buffer_entry_information_field_1;
+    ULONG     tx_trace_buffer_entry_information_field_2;
+    ULONG     tx_trace_buffer_entry_information_field_3;
+    ULONG     tx_trace_buffer_entry_information_field_4;
+} TX_TRACE_BUFFER_ENTRY;</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_thread_pointer"><a class="anchor" href="#_thread_pointer"></a>Thread Pointer</h3>
+<div class="paragraph">
+<p>The thread pointer contains the address of the thread running at the time of this event. If the event occurred during
+initialization (no thread running), the value of this pointer is 0xF0F0F0F0. If the event occurred during an Interrupt Service Routine (ISR), the value of this pointer is 0xFFFFFFFF. If the entry has not yet been used, the value of this pointer is 0.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_thread_priority"><a class="anchor" href="#_thread_priority"></a>Thread Priority</h3>
+<div class="paragraph">
+<p>The thread priority field contains the thread priority and preemption-threshold of the thread that was running at the time of this event. If an interrupt context is present (thread pointer is 0xFFFFFFFF), the value of this field is not the priority but instead the value of <strong><em>_tx_thread_current_ptr</em></strong> at the time of the event. Otherwise, the value of this field is 0.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_event_id"><a class="anchor" href="#_event_id"></a>Event ID</h3>
+<div class="paragraph">
+<p>The event ID specifies the event that took place. Valid ThreadX trace event IDs range from 1 through 1024. Values starting at 1025 and above are reserved for user-specific events. Please refer to the <strong><em>tx_trace.h</em></strong> file for the complete definition of ThreadX event IDs.&lt;/td&gt;</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_information_fields_1_4"><a class="anchor" href="#_information_fields_1_4"></a>Information Fields (1-4)</h3>
+<div class="paragraph">
+<p>The information fields contain additional information about the specific event. Please refer to the <strong><em>tx_trace.h</em></strong> file for the complete description of the information fields for each of the defined ThreadX event IDs.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

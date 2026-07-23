@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Appendix B - FileX constants :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/filex/main/appendix-b.html">
+    <meta name="description" content="Learn about the FileX constants.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="filex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">FileX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">FileX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">FileX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-filex.html">Overview of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">FileX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - I/O drivers for FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - FileX fault tolerant module</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - FileX services</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - FileX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - FileX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">FileX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">FileX</a></li>
+    <li>FileX user guide</li>
+    <li><a href="appendix-b.html">App. B - FileX constants</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/filex/modules/ROOT/pages/appendix-b.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Appendix B - FileX constants</h1>
+<div class="sect1">
+<h2 id="_alphabetic_listings"><a class="anchor" href="#_alphabetic_listings"></a>Alphabetic Listings</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Constant (by alphabetic)</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_12_BIT_FAT_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4086</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_12BIT_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_16_BIT_FAT_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65525</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ACCESS_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x06</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ALREADY_CREATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ARCHIVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BAD_CLUSTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFF7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BAD_CLUSTER_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFF7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BASE_YEAR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1980</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BIGDOS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x06</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BOOT_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BOOT_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BOOT_SECTOR_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">512</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BOOT_SIG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x026</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BUFFER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BYTES_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_CALLER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DATA_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DAY_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_ENTRY_DONE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_ENTRY_FREE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xE5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_ENTRY_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_EXT_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_NAME_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_NOT_EMPTY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_RESERVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIRECTORY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIRECTORY_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIRECTORY_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVE_NUMBER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x024</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_ABORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_BOOT_READ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_BOOT_WRITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_FLUSH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_INIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_READ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_RELEASE_SECTORS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_UNINIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_WRITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_BOOT_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">120</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_BYTE_PER_SECTOR_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">108</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_CLUSTER_COUNT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">92</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_CLUSTER_HEAP_OFFSET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">88</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_DRIVE_SELECT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">111</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_FAT_LENGTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">84</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_FAT_OFFSET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_FILE_SYSTEM_REVISION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">104</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_FIRST_CLUSTER_OF_ROOT_DIR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">96</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_MUST_BE_ZERO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_NUMBER_OF_FATS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">110</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_PARTITION_OFFSET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_PERCENT_IN_USE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">112</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_RESERVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">113</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_SECTOR_PER_CLUSTER_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">109</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_VOLUME_FLAGS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">106</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_VOLUME_LENGTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">72</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_VOLUME_SERIAL_NUMBER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_END_OF_FILE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x09</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ERROR_FIXED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x92</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ERROR_NOT_FIXED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x93</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FALSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_CACHE_DEPTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_CACHE_HASH_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_CHAIN_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_ENTRY_START</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_MAP_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">128</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_READ_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x03</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAULT_TOLERANT_CACHE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1024</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_ABORTED_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x46494C41UL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_CLOSED_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x46494C43UL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_CORRUPT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x08</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x46494C45UL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_SIZE_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x08</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_SYSTEM_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x036</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FREE_CLUSTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HEADS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HIDDEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HIDDEN_SECTORS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HOUR_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HOUR_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HUGE_SECTORS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INITIAL_DATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4761</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INITIAL_TIME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_ATTR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x95</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_DAY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_HOUR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x15</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_MINUTE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_MONTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_NAME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_OPTION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x24</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_PATH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0D</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_SECOND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_STATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x97</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_YEAR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_IO_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x90</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_JUMP_INSTR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LAST_CLUSTER_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFF8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LAST_CLUSTER_1_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFF8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LAST_CLUSTER_2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LAST_CLUSTER_2_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LONG_NAME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LONG_NAME_ENTRY_LEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LOST_CLUSTER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_12BIT_CLUST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FF0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_EX_FAT_NAME_LEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">255</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_FAT_CACHE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">256</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_LAST_NAME_LEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">256</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_LONG_NAME_LEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">256</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_SECTOR_CACHE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">256</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_SHORT_NAME_LEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_HOUR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">23</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_MINUTE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">59</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_MONTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_PATH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">256</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_SECOND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">59</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_YEAR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2107</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_ABORTED_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4D454441UL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_CLOSED_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4D454443UL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4D454449UL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_INVALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_NOT_OPEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x015</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MINUTE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x3F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MINUTE_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MONTH_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MONTH_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NO_FAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NO_MORE_ENTRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NO_MORE_SPACE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_A_FILE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x05</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_AVAILABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x94</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_DIRECTORY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0E</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_ENOUGH_MEMORY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x91</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_IMPLEMENTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x22</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_OPEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x07</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_USED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NULL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NUMBER_OF_FATS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x010</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_OEM_NAME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x003</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_OPEN_FOR_READ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_OPEN_FOR_READ_FAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_OPEN_FOR_WRITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_PTR_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_READ_CONTINU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x96</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_READ_ONLY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x025</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFF0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED_1_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFF0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED_2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFF6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED_2_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFF6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00E</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ROOT_CLUSTER_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ROOT_DIR_ENTRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x011</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECOND_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTOR_CACHE_DEPTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTOR_CACHE_HASH_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTOR_CACHE_HASH_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTOR_INVALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x89</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTORS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x013</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTORS_CLUSTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00D</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTORS_PER_FAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x016</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTORS_PER_FAT_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x024</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTORS_PER_TRK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x018</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SEEK_BACK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SEEK_BEGIN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SEEK_END</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SEEK_FORWARD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SIG_BYTE_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x55</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SIG_BYTE_2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xAA</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SIG_OFFSET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1FE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SIGN_EXTEND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xF000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SUCCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SYSTEM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_TRUE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_UNKNOWN_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_VOLUME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x08</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_VOLUME_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x027</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_VOLUME_LABEL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_WRITE_PROTECT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x23</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_YEAR_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x7F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_YEAR_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_listings_by_value"><a class="anchor" href="#_listings_by_value"></a>Listings by Value</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Constant (by value)</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_ENTRY_DONE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_READ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FALSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FREE_CLUSTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INITIAL_TIME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_JUMP_INSTR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NULL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_OPEN_FOR_READ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SEEK_BEGIN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SUCCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_UNKNOWN_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BOOT_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BOOT_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_WRITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_CHAIN_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_USED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_OPEN_FOR_WRITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_READ_ONLY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SEEK_END</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_TRUE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIRECTORY_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HIDDEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_INVALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_FLUSH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_ENTRY_START</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_OPEN_FOR_READ_FAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SEEK_FORWARD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_12BIT_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_EXT_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIRECTORY_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_ABORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_CACHE_HASH_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_READ_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x03</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_OEM_NAME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x003</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTOR_CACHE_HASH_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SEEK_BACK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DATA_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_INIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_CACHE_DEPTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LOST_CLUSTER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTOR_CACHE_DEPTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SYSTEM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_BOOT_READ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MINUTE_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MONTH_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_A_FILE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x05</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ACCESS_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x06</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BIGDOS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x06</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_RELEASE_SECTORS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_BOOT_WRITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_OPEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x07</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_NAME_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_RESERVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_UNINIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_CORRUPT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x08</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_SIZE_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x08</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_VOLUME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x08</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_END_OF_FILE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x09</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_YEAR_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NO_MORE_SPACE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_MUST_BE_ZERO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ALREADY_CREATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BYTES_SECTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HOUR_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_NAME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_MONTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_PATH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0D</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTORS_CLUSTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00D</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LONG_NAME_ENTRY_LEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_SHORT_NAME_LEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_DIRECTORY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0E</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED_SECTORS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00E</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LONG_NAME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MONTH_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NO_MORE_ENTRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_NOT_EMPTY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIRECTORY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_FAT_CACHE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_SECTOR_CACHE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NUMBER_OF_FATS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x010</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTOR_CACHE_HASH_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_NOT_OPEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ROOT_DIR_ENTRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x011</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_YEAR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_MONTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTORS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x013</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_DAY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_HOUR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x15</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x015</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_MINUTE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTORS_PER_FAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x016</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_SECOND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_HOUR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">23</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_PTR_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTORS_PER_TRK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x018</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_ATTR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HEADS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HIDDEN_SECTORS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DAY_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HOUR_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECOND_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ARCHIVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_CALLER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_ENTRY_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_HUGE_SECTORS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BUFFER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_LONG_NAME_LEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">33</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_IMPLEMENTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x22</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_WRITE_PROTECT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x23</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVE_NUMBER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x024</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_OPTION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x24</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTORS_PER_FAT_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x024</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x025</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BOOT_SIG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x026</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_VOLUME_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x027</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_VOLUME_LABEL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ROOT_CLUSTER_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_SYSTEM_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x036</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_MINUTE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">59</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_SECOND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">59</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MINUTE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x3F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_PARTITION_OFFSET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_VOLUME_LENGTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">72</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_FAT_OFFSET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_FAT_LENGTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">84</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SIG_BYTE_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x55</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_CLUSTER_HEAP_OFFSET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">88</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_CLUSTER_COUNT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">92</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_FIRST_CLUSTER_OF_ROOT_DIR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">96</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_VOLUME_SERIAL_NUMBER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_FILE_SYSTEM_REVISION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">104</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_VOLUME_FLAGS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">106</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_BYTE_PER_SECTOR_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">108</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_SECTOR_PER_CLUSTER_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">109</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_NUMBER_OF_FATS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">110</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_DRIVE_SELECT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_PERCENT_IN_USE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">112</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_RESERVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">113</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_EF_BOOT_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">120</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_YEAR_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x7F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_MAP_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">128</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SECTOR_INVALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x89</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_IO_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x90</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_ENOUGH_MEMORY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x91</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ERROR_FIXED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x92</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ERROR_NOT_FIXED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x93</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NOT_AVAILABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x94</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x95</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_READ_CONTINUE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x96</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INVALID_STATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x97</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SIG_BYTE_2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xAA</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DIR_ENTRY_FREE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xE5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NO_FAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_EX_FAT_NAME_LEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">255</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_PATH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">256</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SIG_OFFSET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1FE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BOOT_SECTOR_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">512</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAULT_TOLERANT_CACHE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1024</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BASE_YEAR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1980</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAXIMUM_YEAR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2107</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_12BIT_CLUST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FF0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_12_BIT_FAT_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4086</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_INITIAL_DATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4761</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SIGN_EXTEND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xF000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFF0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_16_BIT_FAT_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65525</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED_2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFF6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BAD_CLUSTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFF7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LAST_CLUSTER_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFF8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LAST_CLUSTER_2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED_1_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFF0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RESERVED_2_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFF6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_BAD_CLUSTER_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFF7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LAST_CLUSTER_1_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFF8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_LAST_CLUSTER_2_32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_ABORTED_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x46494C41UL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_CLOSED_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x46494C43UL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FILE_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x46494C45UL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_ABORTED_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4D454441UL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_CLOSED_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4D454443UL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4D454449UL</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

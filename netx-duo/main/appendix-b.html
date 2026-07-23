@@ -1,0 +1,3647 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Appendix B - NetX Duo Constants :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/appendix-b.html">
+    <meta name="description" content="Explore the NetX Duo Constants.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">NetX Duo</a></li>
+    <li>NetX Duo user guide</li>
+    <li><a href="appendix-b.html">App. B - NetX Duo constants</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/netx-duo/modules/ROOT/pages/appendix-b.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Appendix B - NetX Duo Constants</h1>
+<div class="sect1">
+<h2 id="_alphabetic_listing"><a class="anchor" href="#_alphabetic_listing"></a>Alphabetic Listing</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Constant</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ALL_HOSTS_ADDRESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFE000001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ALL_ROUTERS_ADDRESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFE000002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ALREADY_BOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x22</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ALREADY_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x15</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ALREADY_RELEASED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x31</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ALREADY_SUSPENDED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x40</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ANY_PORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_EXPIRATION_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_HARDWARE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x06</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_HARDWARE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_MAX_QUEUE_DEPTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_MAXIMUM_RETRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_MESSAGE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_OPTION_REQUEST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_OPTION_RESPONSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_PROTOCOL_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_PROTOCOL_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0800</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_TIMER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_UPDATE_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x2F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_TABLE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_CALLER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_CARRY_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_CONNECTION_PENDING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x48</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DELETE_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DELETED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x05</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISCONNECT_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x41</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DONT_FRAGMENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00004000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DRIVER_TX_DONE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xDDDDDDDD</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DUPLICATE_LISTEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x34</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENTRY_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_FALSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_FOREVER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_FRAG_OFFSET_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00001FFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_FRAGMENT_OKAY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_ADDRESS_MASK_REP_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_ADDRESS_MASK_REQ_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_DEBUG_LOG_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_DEST_UNREACHABLE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_ECHO_REPLY_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_ECHO_REQUEST_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_FRAGMENT_NEEDED_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_HOST_PROHIBIT_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_HOST_SERVICE_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_HOST_UNKNOWN_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_HOST_UNREACH_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_NETWORK_PROHIBIT_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_NETWORK_SERVICE_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_NETWORK_UNKNOWN_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_NETWORK_UNREACH_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_PACKET (IPv6 enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">56</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_PACKET (IPv6 disabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_PARAMETER_PROB_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_PORT_UNREACH_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_PROTOCOL_UNREACH_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_REDIRECT_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_SOURCE_ISOLATED_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_SOURCE_QUENCH_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_SOURCE_ROUTE_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_TIME_EXCEEDED_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_TIMESTAMP_REP_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_TIMESTAMP_REQ_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_ADDRESS_UNREACHABLE_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_BEYOND_SCOPE_OF_SOURCE_ADDRESS_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_COMMUNICATION_WITH_DESTINATION_PROHIBITED_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_DEST_UNREACHABLE_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_DEST_UNREACHABLE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_ECHO_REPLY_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">129</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_ECHO_REQUEST_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">128</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_MINIMUM_IPV4_PATH_MTU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">576</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_MINIMUM_IPV6_PATH_MTU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1280</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_NEIGHBOR_ADVERTISEMENT_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">136</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_NEIGHBOR_SOLICITATION_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">135</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_NO_ROUTE_TO_DESTINATION_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_NO_SLLA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_OPTION_TYPE_PREFIX_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_OPTION_REDIRECTED_HEADER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_OPTION_TYPE_MTU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_OPTION_TYPE_SRC_LINK_ADDR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_OPTION_TYPE_TRG_LINK_ADDR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_PACKET_TOO_BIG_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_PARAMETER_PROBLEM_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_PATH_MTU_INFINITE_TIMEOUT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_REDIRECT_MESSAGE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">137</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_REJECT_ROUTE_TO_DESTINATION_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_ROUTER_ADVERTISEMENT_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">134</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_ROUTER_SOLICITATION_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">133</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_SOURCE_ADDRESS_FAILED_I_E_POLICY_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_TIME_EXCEED_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HEADER_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HOST_RESPONSE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HOST_V2_JOIN_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x16000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HOST_V2_LEAVE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x17000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HOST_VERSION_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HOST_VERSION_2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_MAX_RESP_TIME_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00FF0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_MAX_UPDATE_TIME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_ROUTER_QUERY_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_TTL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_TYPE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0F000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_VERSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMPV2_TYPE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFF000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IN_PROGRESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x37</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INIT_PACKET_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_IMPLEMENTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_SUPPORTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INVALID_INTERFACE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INVALID_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INVALID_PORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x46</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INVALID_RELISTEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x47</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INVALID_SOCKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ADDRESS_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ADDRESS_RESOLVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ALIGN_FRAGS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ALL_EVENTS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ARP_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0008</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ARP_REC_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000010</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_A_HOSTID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00FFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_A_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x80000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_A_NETID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x7F000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_A_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_B_HOSTID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000FFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_B_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xC0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_B_NETID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x3FFF0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_B_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x80000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_C_HOSTID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x000000FF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_C_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xE0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_C_NETID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1FFFFF00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_C_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xC0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_D_GROUP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_D_HOSTID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_D_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xF0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_D_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xE0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_DEBUG_LOG_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_DONT_FRAGMENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00004000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_DRIVER_DEFERRED_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000800</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_DRIVER_PACKET_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000200</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_FRAGMENT_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00003FFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ICMP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00010000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ICMP_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000004</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x49502020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_IGMP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00020000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_IGMP_ENABLE_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000400</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_IGMP_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0040</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_IGMP_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000040</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_INITIALIZE_DONE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_INTERNAL_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_LENGTH_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0F000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_LIMITED_BROADCAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_LINK_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0004</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_LOOPBACK_FIRST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x7F000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_LOOPBACK_LAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x7FFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MAX_DATA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00080000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MAX_RELIABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00040000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MIN_COST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00020000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MIN_DELAY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00100000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MORE_FRAGMENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00002000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MULTICAST_LOWER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x5E000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MULTICAST_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x007FFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MULTICAST_UPPER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_NORMAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_NORMAL_LENGTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_OFFSET_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00001FFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PACKET (IPv6 enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">56</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PACKET (IPv6 disabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PACKET_SIZE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000FFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PERIODIC_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PERIODIC_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PROTOCOL_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00FF0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_RARP_COMPLETE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0080</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_RARP_REC_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_RECEIVE_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000008</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TCP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00060000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TCP_CLEANUP_DEFERRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00001000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TCP_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TCP_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000080</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TCP_FAST_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TIME_TO_LIVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000080</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TIME_TO_LIVE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFF000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TIME_TO_LIVE_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TOS_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00FF0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_UDP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00110000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_UDP_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0010</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_UNFRAG_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_VERSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x45000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_INVALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_LINKLOCAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_SITELOCAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_GLOBAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000004</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ALL_NODE_MCAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000010</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ALL_ROUTER_MCAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_SOLICITED_NODE_MCAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000040</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_UNICAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x80000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_MULTICAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x40000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_UNSPECIFIED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x20000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_LOOPBACK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV4_ICMP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV4_IGMP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV4_TCP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">56</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV4_UDP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">44</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ICMP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">56</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_IGMP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">56</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_TCP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">76</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_UDP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NEXT_HEADER_HOP_BY_HOP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NEXT_HEADER_ROUTING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">43</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NEXT_HEADER_FRAGMENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">44</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NEXT_HEADER_ICMPV6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">58</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NO_NEXT_HEADER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">59</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NEXT_HEADER_DESTINATION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">60</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_TCP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_UDP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_ICMPV6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">58</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_ICMP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_IPV4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_IPV6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">41</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDR_STATE_UNKNOWN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDR_STATE_TENTATIVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDR_STATE_PREFERRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDR_STATE_DEPRECATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x03</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDR_STATE_VALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_NOT_ROUTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_SOLICITATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_UNSOLICITATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_STATIC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_DEFAULT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x40</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_VALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x80</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_ARP_RESPONSE_SEND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_ARP_SEND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_DEFERRED_PROCESSING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_DISABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_ALLOC_ERRORS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_DUPLEX_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_ERROR_COUNT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_RX_COUNT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_SPEED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_STATUS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_TX_COUNT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_INITIALIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_INTERFACE_ATTACH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_MULTICAST_JOIN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_MULTICAST_LEAVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_PACKET_BROADCAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_PACKET_SEND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_RARP_SEND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_UNINITIALIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_USER_COMMAND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">50</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LOWER_16_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000FFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_LISTEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x33</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_LISTEN_REQUESTS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_MULTICAST_GROUPS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_PORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MORE_FRAGMENTS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00002000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_FREE_PORTS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x45</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_MAPPING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_MORE_ENTRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_RESPONSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x29</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_WAIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_BOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x24</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_CLOSED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x35</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_CONNECTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x38</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_CREATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x27</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_IMPLEMENTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_LISTEN_STATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_SUCCESSFUL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x43</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NULL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_OPTION_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0a</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_OVERFLOW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x03</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_ALLOCATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xAAAAAAAA</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_DEBUG_LOG_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_ENQUEUED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xEEEEEEEE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_FREE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_POOL_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x5041434B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_READY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xBBBBBBBB</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PHYSICAL_HEADER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PHYSICAL_TRAILER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_POOL_DELETED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x30</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_POOL_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x06</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PORT_UNAVAILABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x23</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PTR_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x07</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_HARDWARE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x06</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_HARDWARE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_MESSAGE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_OPTION_REQUEST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0003</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_OPTION_RESPONSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0004</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_PROTOCOL_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_PROTOCOL_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0800</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RECEIVE_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RESERVED_CODE0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RESERVED_CODE1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x25</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RESERVED_CODE2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ROUTE_TABLE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ROUTE_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SEARCH_PORT_START</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">49152</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SHIFT_BY_16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SIZE_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x09</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SOCKET_UNBOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x26</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SOCKETS_BOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x28</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_STILL_BOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x42</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SUCCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ACK_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00100000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ACK_TIMER_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_CLIENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_CLOSE_WAIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_CLOSED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_CLOSING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_CONTROL_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00170000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_EOL_KIND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ESTABLISHED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_FAST_TIMER_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_FIN_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00010000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_FIN_WAIT_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_FIN_WAIT_2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_HEADER_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xF0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_HEADER_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_HEADER_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x50000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x54435020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_KEEPALIVE_INITIAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7200</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_KEEPALIVE_RETRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_KEEPALIVE_RETRY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">75</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_LAST_ACK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_LISTEN_STATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MAXIMUM_RETRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MAXIMUM_TX_QUEUE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MSS_KIND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MSS_OPTION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02040000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MSS_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1460</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_NOP_KIND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_OPTION_END</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01010100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_PACKET (IPv6 enabled)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">76</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_PACKET (IPv6 disabled)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">56</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_PORT_TABLE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_PORT_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_PSH_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00080000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_RETRY_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_RST_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00040000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_SERVER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_SYN_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00020000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_SYN_HEADER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x70000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_SYN_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_SYN_SENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_TIMED_WAIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_TRANSMIT_TIMER_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_URG_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00200000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TRUE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TX_QUEUE_DEPTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x49</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UDP_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x55445020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UDP_PACKET (IPv6 enabled)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UDP_PACKET (IPv6 disabled)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">44</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UDP_PORT_TABLE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UDP_PORT_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UNDERFLOW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UNHANDLED_COMMAND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x44</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_WAIT_ABORTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_WAIT_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x08</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_WAIT_FOREVER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_WINDOW_OVERFLOW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x39</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ANY_PORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_EXPIRATION_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_FALSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_ECHO_REPLY_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_NETWORK_UNREACH_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_NO_ROUTE_TO_DESTINATION_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_INVALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NEXT_HEADER_HOP_BY_HOP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_PACKET_SEND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_WAIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NULL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RECEIVE_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_RETRY_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDR_STATE_UNKNOWN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_NOT_ROUTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SUCCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_EOL_KIND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_FRAGMENT_OKAY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_A_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_D_HOSTID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_NORMAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_FOREVER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_HOST_UNREACH_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_COMMUNICATION_WITH_DESTINATION_PROHIBITED_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_DEST_UNREACHABLE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_NO_SLLA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_OPTION_TYPE_SRC_LINK_ADDR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HOST_VERSION_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_TTL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INIT_PACKET_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_ICMP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_INITIALIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_CLIENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_CLOSED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_TRANSMIT_TIMER_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TRUE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PERIODIC_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_LINKLOCAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_HARDWARE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_OPTION_REQUEST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_INITIALIZE_DONE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_HARDWARE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDR_STATE_TENTATIVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_SOLICITATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_NOP_KIND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_PROTOCOL_UNREACH_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_BEYOND_SCOPE_OF_SOURCE_ADDRESS_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_OPTION_TYPE_TRG_LINK_ADDR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_PACKET_TOO_BIG_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HOST_VERSION_2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_LISTEN_STATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_SERVER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_UNFRAG_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_SITELOCAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_OPTION_RESPONSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ADDRESS_RESOLVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDR_STATE_PREFERRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_UNSOLICITATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MSS_KIND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UNDERFLOW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_DEST_UNREACHABLE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_PORT_UNREACH_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_ADDRESS_UNREACHABLE_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_OPTION_TYPE_PREFIX_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_TIME_EXCEED_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_DISABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_SYN_SENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_OPTION_REQUEST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0003</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDR_STATE_DEPRECATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x03</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_OVERFLOW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x03</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_MAX_QUEUE_DEPTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_FRAGMENT_NEEDED_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_SOURCE_QUENCH_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_DEST_UNREACHABLE_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_OPTION_REDIRECTED_HEADER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_PARAMETER_PROBLEM_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_IPV4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_PACKET_BROADCAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PHYSICAL_TRAILER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_SYN_RECEIVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ICMP_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000004</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_GLOBAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000004</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_LINK_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0004</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_OPTION_RESPONSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0004</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_PROTOCOL_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDR_STATE_VALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_STATIC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_MAPPING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_PROTOCOL_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_REDIRECT_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_SOURCE_ROUTE_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_OPTION_TYPE_MTU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_SOURCE_ADDRESS_FAILED_I_E_POLICY_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_NORMAL_LENGTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_ARP_SEND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ACK_TIMER_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ESTABLISHED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DELETED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x05</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_NETWORK_UNKNOWN_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_REJECT_ROUTE_TO_DESTINATION_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_TCP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_ARP_RESPONSE_SEND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_CLOSE_WAIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_HARDWARE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x06</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_POOL_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x06</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_HARDWARE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x06</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_HOST_UNKNOWN_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_RARP_SEND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_MULTICAST_GROUPS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_FIN_WAIT_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PTR_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x07</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_ECHO_REQUEST_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_SOURCE_ISOLATED_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ALIGN_FRAGS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_MULTICAST_JOIN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_FIN_WAIT_2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HEADER_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_RECEIVE_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000008</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ARP_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0008</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_WAIT_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x08</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_NETWORK_PROHIBIT_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_MULTICAST_LEAVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_CLOSING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SIZE_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x09</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_UPDATE_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_HOST_PROHIBIT_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_MAX_UPDATE_TIME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_STATUS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_LISTEN_REQUESTS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_FAST_TIMER_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_KEEPALIVE_RETRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MAXIMUM_RETRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_TIMED_WAIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ALL_NODE_MCAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000010</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_OPTION_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_NETWORK_SERVICE_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_TIME_EXCEEDED_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_SPEED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_LAST_ACK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_HOST_SERVICE_CODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_PARAMETER_PROB_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_DUPLEX_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_TIMESTAMP_REQ_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_ERROR_COUNT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_TIMESTAMP_REP_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_RX_COUNT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_TX_COUNT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_GET_ALLOC_ERRORS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PHYSICAL_HEADER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SHIFT_BY_16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ARP_REC_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000010</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_UDP_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0010</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DELETE_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_ADDRESS_MASK_REQ_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_UDP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_UNINITIALIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_CALLER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_MAXIMUM_RETRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_ADDRESS_MASK_REP_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_DEFERRED_PROCESSING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INVALID_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INVALID_SOCKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_INTERFACE_ATTACH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MAXIMUM_TX_QUEUE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x14</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ALREADY_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x15</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENTRY_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_MORE_ENTRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TIME_TO_LIVE_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_TIMER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RESERVED_CODE0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_WAIT_ABORTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_MESSAGE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_MESSAGE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_HEADER_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ROUTE_TABLE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_PORT_TABLE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UDP_PORT_TABLE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1F</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ROUTE_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_PORT_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UDP_PORT_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ALL_ROUTER_MCAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_RARP_REC_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TCP_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_INTERNAL_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ADDRESS_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ALREADY_BOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x22</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PORT_UNAVAILABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x23</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV4_ICMP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV4_IGMP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_BOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x24</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RESERVED_CODE1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x25</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SOCKET_UNBOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x26</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_CREATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x27</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SOCKETS_BOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x28</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_RESPONSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x29</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_IPV6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">41</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NEXT_HEADER_ROUTING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">43</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV4_UDP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">44</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NEXT_HEADER_FRAGMENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">44</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UDP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">44</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_POOL_DELETED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x30</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ALREADY_RELEASED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x31</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LINK_USER_COMMAND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">50</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RESERVED_CODE2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_LISTEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x33</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DUPLICATE_LISTEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x34</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_CLOSED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x35</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_LISTEN_STATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x36</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IN_PROGRESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x37</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_CONNECTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x38</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV4_TCP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">56</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ICMP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">56</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_IGMP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">56</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">56</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_WINDOW_OVERFLOW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x39</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NEXT_HEADER_ICMPV6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">58</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_ICMPV6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">58</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NO_NEXT_HEADER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">59</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PROTOCOL_NEXT_HEADER_DESTINATION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">60</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_UDP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_SOLICITED_NODE_MCAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000040</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_IGMP_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000040</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_IGMP_ENABLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0040</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ALREADY_SUSPENDED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x40</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_DEFAULT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x40</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISCONNECT_FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x41</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_STILL_BOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x42</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_SUCCESSFUL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x43</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UNHANDLED_COMMAND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x44</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NO_FREE_PORTS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x45</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INVALID_PORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x46</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INVALID_RELISTEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x47</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_CONNECTION_PENDING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x48</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TX_QUEUE_DEPTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x49</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_IMPLEMENTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_SUPPORTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_KEEPALIVE_RETRY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">75</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_INVALID_INTERFACE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_TCP_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">76</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_DEBUG_LOG_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMP_DEBUG_LOG_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_DEBUG_LOG_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_DEBUG_LOG_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PERIODIC_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_DEBUG_LOG_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_DEBUG_LOG_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_DEBUG_LOG_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UDP_DEBUG_LOG_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TCP_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000080</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TIME_TO_LIVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000080</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_RARP_COMPLETE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0080</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ROUTE_TYPE_VALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x80</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NOT_IMPLEMENTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x4A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_C_HOSTID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x000000FF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MULTICAST_UPPER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TCP_FAST_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_DRIVER_PACKET_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000200</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_IGMP_ENABLE_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000400</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_DRIVER_DEFERRED_EVENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000800</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_PROTOCOL_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0800</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RARP_PROTOCOL_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0800</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TCP_CLEANUP_DEFERRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00001000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_ECHO_REQUEST_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">128</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_ECHO_REPLY_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">129</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_ROUTER_SOLICITATION_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">133</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_ROUTER_ADVERTISEMENT_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">134</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_NEIGHBOR_SOLICITATION_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">135</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_NEIGHBOR_ADVERTISEMENT_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">136</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_REDIRECT_MESSAGE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">137</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_MINIMUM_IPV4_PATH_MTU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">576</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_MINIMUM_IPV6_PATH_MTU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1280</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_KEEPALIVE_INITIAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7200</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_FRAG_OFFSET_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00001FFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_OFFSET_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00001FFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MORE_FRAGMENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00002000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MORE_FRAGMENTS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00002000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_FRAGMENT_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00003FFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MSS_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16384</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DONT_FRAGMENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00004000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_DONT_FRAGMENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00004000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_SEARCH_PORT_START</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">49152</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_B_HOSTID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000FFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PACKET_SIZE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000FFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LOWER_16_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000FFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_PORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ICMP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00010000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_FIN_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00010000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_CARRY_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_IGMP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00020000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MIN_COST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00020000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_SYN_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00020000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MAX_RELIABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00040000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_RST_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00040000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TCP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00060000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MAX_DATA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00080000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_PSH_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00080000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MIN_DELAY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00100000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ACK_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00100000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_UDP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00110000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_CONTROL_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00170000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_URG_BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00200000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MULTICAST_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x007FFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PROTOCOL_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00FF0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TOS_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00FF0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_ROUTER_QUERY_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_OPTION_END</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01010402</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HOST_RESPONSE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MSS_OPTION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02040000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_TYPE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0F000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_LENGTH_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0F000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_MAX_RESP_TIME_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00FF0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_A_HOSTID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00FFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_D_GROUP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0FFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_VERSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_LOOPBACK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x10000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HOST_V2_JOIN_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x16000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_HOST_V2_LEAVE_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x17000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_UNSPECIFIED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x20000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_C_NETID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1FFFFF00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_B_NETID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x3FFF0000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_MULTICAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x40000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_VERSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x45000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x49502020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_HEADER_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x50000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_POOL_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x5041434B</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x54435020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_UDP_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x55445020</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MULTICAST_LOWER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x5E000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_A_NETID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x7F000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_SYN_HEADER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x70000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_LOOPBACK_FIRST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x7F000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_LOOPBACK_LAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x7FFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_A_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x80000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_B_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x80000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_UNICAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x80000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_ALLOCATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xAAAAAAAA</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_READY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xBBBBBBBB</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_B_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xC0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_C_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xC0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DRIVER_TX_DONE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xDDDDDDDD</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_C_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xE0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_D_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xE0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_ENQUEUED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xEEEEEEEE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMP_VERSION_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xF0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_CLASS_D_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xF0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_HEADER_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xF0000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ALL_HOSTS_ADDRESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFE000001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IGMPV2_TYPE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFF000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_TIME_TO_LIVE_MASK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFF000000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_PATH_MTU_INFINITE_TIMEOUT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ALL_EVENTS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_LIMITED_BROADCAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_FREE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFFFFFF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_WAIT_FOREVER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFFFFFF</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

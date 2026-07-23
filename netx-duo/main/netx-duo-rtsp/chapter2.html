@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 2 - Installation and use of NetX Duo RTSP Server :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-rtsp/chapter2.html">
+    <meta name="description" content="This chapter contains a description of various issues related to installation, set up, and usage of the NetX Duo RTSP Server services.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo RTSP user guide</li>
+    <li><a href="chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-rtsp/chapter2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 2 - Installation and use of NetX Duo RTSP Server</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of various issues related to installation, setup, and usage of the NetX Duo RTSP Server services.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_product_distribution"><a class="anchor" href="#_product_distribution"></a>Product Distribution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo RTSP Server is available at <a href="https://github.com/eclipse-threadx/netxduo" class="bare">https://github.com/eclipse-threadx/netxduo</a>. The package includes one source file and one header file, as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>nx_rtsp_server.h</strong> Header file for NetX Duo RTSP Server</p>
+</li>
+<li>
+<p><strong>nx_rtsp_server.c</strong> C Source file for NetX Duo RTSP Server</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_rtsp_server_installation"><a class="anchor" href="#_netx_duo_rtsp_server_installation"></a>NetX Duo RTSP Server Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to use the NetX Duo RTSP Server API, the entire distribution mentioned previously should be copied to the same directory where NetX Duo is installed. For example, if NetX Duo is installed in the directory "<em>\threadx\arm7\green</em>" then the <em>nx_rtsp_server.h</em> and <em>nx_rtsp_server.c</em> files should be copied into this directory for RTSP Server applications.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_netx_duo_rtsp_server"><a class="anchor" href="#_using_netx_duo_rtsp_server"></a>Using NetX Duo RTSP Server</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using the NetX Duo RTSP Server is easy. Basically, the application code must include <em>nx_rtsp_server.h</em> for after it includes <em>tx_api.h</em>, and <em>nx_api.h</em>, in order to use ThreadX and NetX Duo respectively. The build project must include the RTSP source code <em>nx_rtsp_server.c</em> and the host application file, and of course the ThreadX and NetX library files. This is all that is required to use NetX Duo RTSP Server.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Since RTSP utilizes NetX Duo TCP services, TCP must be enabled with the <em>nx_tcp_enable</em> call prior to using RTSP.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_small_example_system_of_netx_duo_rtsp_server"><a class="anchor" href="#_small_example_system_of_netx_duo_rtsp_server"></a>Small Example System of NetX Duo RTSP Server</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An example of how to use NetX Duo RTSP Server is described below.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This is provided for demonstration purposes only and is not guaranteed to compile and run as is.</p>
+</div>
+<div class="paragraph">
+<p>Please refer to the NetX Duo RTSP Server release code distribution for  demo source code file(s) that will properly build in the native Eclipse ThreadX environment.  Also be aware that these demos are intentionally kept very simple as they are intended to introduce NetX Duo RTSP Server application to new users.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In this example, the RTSP server is created and started in the <em>sample_entry</em>. The RTSP server is created with the <em>nx_rtsp_server_create</em> API, and the <em>rtsp_disconnect_callback</em> is registered in this API. The RTSP server is started with the <em>nx_rtsp_server_start</em> API. The callback functions are registered with the <em>nx_rtsp_server_describe_callback_set</em>, <em>nx_rtsp_server_setup_callback_set</em>, <em>nx_rtsp_server_play_callback_set</em>, <em>nx_rtsp_server_teardown_callback_set</em>, <em>nx_rtsp_server_pause_callback_set</em>, and <em>nx_rtsp_server_set_parameter_callback_set</em> APIs.</p>
+</div>
+<div class="paragraph">
+<p>In the <em>rtsp_describe_callback</em>, the <em>nx_rtsp_server_sdp_set</em> is called to set SDP string to the DESCRIBE response, then the RTSP server sends the DESCRIBE response to the RTSP client.</p>
+</div>
+<div class="paragraph">
+<p>In the <em>rtsp_setup_callback</em>, the client transport information is passed to create the corresponding media session, and the server transport information is set back to the transport_ptr parameter, then the RTSP server sends the SETUP response to the RTSP client. If using NetX Duo RTP service, there are commented reference codes to create the RTP sessions.</p>
+</div>
+<div class="paragraph">
+<p>In the <em>rtsp_play_callback</em>, the RTP information is set to the PLAY response, and the play event is triggered to start the stream transmission, then the RTSP server sends the PALY response to the RTSP client. If using NetX Duo RTP service, there are commented reference codes to get the RTP information.</p>
+</div>
+<div class="paragraph">
+<p>In the <em>rtsp_pause_callback</em>, the pause event is triggered to pause the stream transmission, then the RTSP server sends the PAUSE response to the RTSP client.</p>
+</div>
+<div class="paragraph">
+<p>In the <em>rtsp_set_parameter_callback</em>, the parameters are checked and updated, then the RTSP server sends the SET_PARAMETER response to the RTSP client.</p>
+</div>
+<div class="paragraph">
+<p>In the <em>rtsp_teardown_callback</em>, the teardown event is triggered to teardown the stream transmission and release the resources, then the RTSP server sends the TEARDOWN response to the RTSP client.</p>
+</div>
+<div class="paragraph">
+<p>In the <em>rtsp_disconnect_callback</em>, the teardown event is triggered to teardown the stream transmission and release the resources.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* This is the test control routine the NetX RTSP module.  All tests are dispatched from this routine.  */
+
+#include "tx_api.h"
+#include "nx_api.h"
+#include "nx_rtsp_server.h"
+
+
+/* Define the stack size for demo tasks. */
+#define DEMO_TEST_STACK_SIZE              2048
+#define DEMO_RTSP_SERVER_STACK_SIZE       2048
+static UCHAR test_thread_stack[DEMO_TEST_STACK_SIZE];
+static UCHAR rtsp_server_stack[DEMO_RTSP_SERVER_STACK_SIZE];
+
+/* Define events for the test task */
+#define DEMO_ALL_EVENTS                   ((ULONG)0xFFFFFFFF)
+#define DEMO_PLAY_EVENT                   ((ULONG)0x00000001)
+#define DEMO_PAUSE_EVENT                  ((ULONG)0x00000002)
+#define DEMO_TEARDOWN_EVENT               ((ULONG)0x00000003)
+
+/* The RTSP server listening port.  */
+#ifndef DEMO_RTSP_SERVER_PORT
+#define DEMO_RTSP_SERVER_PORT             554
+#endif
+
+/* The RTSP server thread priority.  */
+#ifndef DEMO_RTSP_SERVER_PRIORITY
+#define DEMO_RTSP_SERVER_PRIORITY         3
+#endif
+
+/* File name shown in rtsp SETUP request */
+#ifndef DEMO_RTSP_VIDEO_FILE_NAME
+#define DEMO_RTSP_VIDEO_FILE_NAME         "trackID=0"
+#endif
+
+#ifndef DEMO_RTSP_AUDIO_FILE_NAME
+#define DEMO_RTSP_AUDIO_FILE_NAME         "trackID=1"
+#endif
+
+/* Declare the prototypes for the test entry points. */
+TX_THREAD            test_thread;
+NX_RTSP_SERVER       rtsp_0;
+
+/* Declare events to use in tasks. */
+TX_EVENT_FLAGS_GROUP demo_test_events;
+
+/* Define an error counter.  */
+ULONG                error_counter;
+
+static VOID test_server_entry(ULONG thread_input);
+static UINT rtsp_describe_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length);
+static UINT rtsp_setup_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, NX_RTSP_TRANSPORT *transport_ptr);
+static UINT rtsp_play_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *range_ptr, UINT range_length);
+static UINT rtsp_teardown_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length);
+static UINT rtsp_pause_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *range_ptr, UINT range_length);
+static UINT rtsp_set_parameter_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, ULONG parameter_length);
+static UINT rtsp_disconnect_callback(NX_RTSP_CLIENT *rtsp_client_ptr);
+
+
+/* Define what the initial system looks like.  */
+void sample_entry(NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, VOID *dns_ptr, UINT (*unix_time_callback)(ULONG *unix_time))
+{
+
+UINT   status;
+
+    /* Create RTSP server. */
+    status = nx_rtsp_server_create(&amp;rtsp_0, "RTSP Server", sizeof("RTSP Server") - 1, ip_ptr, pool_ptr,
+                                   rtsp_server_stack, DEMO_RTSP_SERVER_STACK_SIZE, DEMO_RTSP_SERVER_PRIORITY, DEMO_RTSP_SERVER_PORT, rtsp_disconnect_callback);
+    if (status)
+        error_counter++;
+
+    /* Set callback functions. */
+    nx_rtsp_server_describe_callback_set(&amp;rtsp_0, rtsp_describe_callback);
+    nx_rtsp_server_setup_callback_set(&amp;rtsp_0, rtsp_setup_callback);
+    nx_rtsp_server_play_callback_set(&amp;rtsp_0, rtsp_play_callback);
+    nx_rtsp_server_teardown_callback_set(&amp;rtsp_0, rtsp_teardown_callback);
+    nx_rtsp_server_pause_callback_set(&amp;rtsp_0, rtsp_pause_callback);
+    nx_rtsp_server_set_parameter_callback_set(&amp;rtsp_0, rtsp_set_parameter_callback);
+
+    /* Start RTSP server. */
+    status = nx_rtsp_server_start(&amp;rtsp_0);
+    if (status)
+        error_counter++;
+
+    printf("RTSP server started!\r\n");
+
+    /* Create a helper thread for the server. */
+    status = tx_thread_create(&amp;test_thread, "Test thread", test_server_entry, 0,
+                              test_thread_stack, DEMO_TEST_STACK_SIZE,
+                              4, 4, TX_NO_TIME_SLICE, TX_AUTO_START);
+    if (status)
+        error_counter++;
+
+    /* Create event for the play thread */
+    status = tx_event_flags_create(&amp;demo_test_events, "Demo events");
+    if (status)
+        error_counter++;
+}
+
+static VOID test_server_entry(ULONG thread_input)
+{
+ULONG events = 0;
+
+    while (1)
+    {
+
+        tx_event_flags_get(&amp;demo_test_events, DEMO_ALL_EVENTS, TX_OR_CLEAR, &amp;events, TX_WAIT_FOREVER);
+
+        if (events &amp; DEMO_PLAY_EVENT)
+        {
+            /* Start the stream transmission here.  */
+        }
+
+        if (events &amp; DEMO_PAUSE_EVENT)
+        {
+            /* Pause the stream transmission here.  */
+        }
+
+        if (events &amp; DEMO_TEARDOWN_EVENT)
+        {
+            /* Stop stream transmission and release the resource here.  */
+        }
+    }
+}
+
+/* SDP string options */
+static CHAR *sdp =
+"v=0\r\ns=H264 video with AAC audio, streamed by the NetX RTSP Server\r\n\
+m=video 0 RTP/AVP 96\r\n\
+a=rtpmap:96 H264/90000\r\n\
+a=fmtp:96 profile-level-id=42A01E; packetization-mode=1\r\n\
+a=control:trackID=0\r\n\
+m=audio 0 RTP/AVP 97\r\n\
+a=rtpmap:97 mpeg4-generic/44100/1\r\n\
+a=fmtp:97 mode=AAC-hbr; SizeLength=13\r\n\
+a=control:trackID=1\r\n";
+
+
+static UINT rtsp_describe_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length)
+{
+UINT status;
+
+    /* Set the SDP string.  */
+    status = nx_rtsp_server_sdp_set(rtsp_client_ptr, sdp, strlen(sdp));
+    return(status);
+}
+
+static UINT rtsp_setup_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, NX_RTSP_TRANSPORT *transport_ptr)
+{
+UINT status;
+UINT rtp_port, rtcp_port, rtp_ssrc;
+
+    /* Get the server RTP and RTCP ports.  */
+    /* User implementation here to set value to rtp_port and rtcp_port.  */
+    /* If using NetX Duo RTP service, RTP API (see details from the RTP user guide) is called as follows.  */
+    /* status = nx_rtp_sender_port_get(&amp;rtp_0, &amp;rtp_port, &amp;rtcp_port);
+      if (status)
+      {
+        return(status);
+      }  */
+
+    if (strstr(uri, DEMO_RTSP_VIDEO_FILE_NAME))
+    {
+
+        /* Setup the video session.  */
+        /* User implementation here to use the client transport info to create the video session.  */
+        /* If using NetX Duo RTP service, RTP API (see details from the RTP user guide) is called as follows.  */
+        /* status = nx_rtp_sender_session_create(&amp;rtp_0, &amp;rtp_session_video, DEMO_RTP_PAYLOAD_TYPE_VIDEO,
+                                                 &amp;(transport_ptr -&gt; client_ip_address), transport_ptr -&gt; client_rtp_port, transport_ptr -&gt; client_rtcp_port);
+           if (status)
+           {
+               return(status);
+           }  */
+
+        /* Obtain generated SSRC.  */
+        /* User implementation here to set value to rtp_ssrc.  */
+        /* If using NetX Duo RTP service, RTP API (see details from the RTP user guide) is called as follows.  */
+        /* status = nx_rtp_sender_session_ssrc_get(&amp;rtp_session_video, &amp;rtp_ssrc);
+           if (status)
+           {
+               return(status);
+           }  */
+    }
+    else if (strstr(uri, DEMO_RTSP_AUDIO_FILE_NAME))
+    {
+
+        /* Setup the audio session.  */
+        /* User implementation here to use the client transport info to create the audio session.  */
+        /* If using NetX Duo RTP service, RTP API (see details from the RTP user guide) is called as follows.  */
+        /* status = nx_rtp_sender_session_create(&amp;rtp_0, &amp;rtp_session_audio, DEMO_RTP_PAYLOAD_TYPE_AUDIO,
+                                                 &amp;(transport_ptr -&gt; client_ip_address), transport_ptr -&gt; client_rtp_port, transport_ptr -&gt; client_rtcp_port);
+           if (status)
+           {
+               return(status);
+           }  */
+
+        /* Obtain generated SSRC.  */
+        /* User implementation here to set value to rtp_ssrc.  */
+        /* If using NetX Duo RTP service, RTP API (see details from the RTP user guide) is called as follows.  */
+        /* status = nx_rtp_sender_session_ssrc_get(&amp;rtp_session_audio, &amp;rtp_ssrc);
+           if (status)
+           {
+               return(status);
+           }  */
+    }
+    else
+    {
+
+        return(NX_NOT_SUCCESSFUL);
+    }
+
+    /* Set the server RTP and RTCP ports, and RTP SSRC back.  */
+    transport_ptr -&gt; server_rtp_port = rtp_port;
+    transport_ptr -&gt; server_rtcp_port = rtcp_port;
+    transport_ptr -&gt; rtp_ssrc = rtp_ssrc;
+
+    return(NX_SUCCESS);
+}
+
+static UINT rtsp_play_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *range_ptr, UINT range_length)
+{
+UINT status;
+UINT video_seq, audio_seq, video_rtptime, audio_rtptime;
+
+    /* Retrieve the video sequence number.  */
+    /* User implementation here to set value to video_seq.  */
+    /* If using NetX Duo RTP service, RTP API (see details from the RTP user guide) is called as follows.  */
+    /* nx_rtp_sender_session_sequence_number_get(&amp;rtp_session_video, &amp;video_seq);  */
+
+    /* Assign recorded timestamps.  */
+    /* User implementation here to set value to video_rtptime.  */
+
+    /* Set RTP information into RTSP client */
+    status = nx_rtsp_server_rtp_info_set(rtsp_client_ptr, DEMO_RTSP_VIDEO_FILE_NAME, sizeof(DEMO_RTSP_VIDEO_FILE_NAME) - 1, video_seq, video_rtptime);
+    if (status)
+    {
+        return(status);
+    }
+
+    /* Retrieve the sequence number through rtp sender functions */
+    /* User implementation here to set value to audio_seq.  */
+    /* If using NetX Duo RTP service, RTP API (see details from the RTP user guide) is called as follows.  */
+    /* nx_rtp_sender_session_sequence_number_get(&amp;rtp_session_audio, &amp;audio_seq);  */
+
+    /* Assign recorded timestamps */
+    /* User implementation here to set value to audio_rtptime.  */
+
+    /* Set RTP information into RTSP client */
+    status = nx_rtsp_server_rtp_info_set(rtsp_client_ptr, DEMO_RTSP_AUDIO_FILE_NAME, sizeof(DEMO_RTSP_VIDEO_FILE_NAME) - 1, audio_seq, audio_rtptime);
+    if (status)
+    {
+        return(status);
+    }
+
+    /* Trigger the play event */
+    tx_event_flags_set(&amp;demo_test_events, DEMO_PLAY_EVENT, TX_OR);
+
+    return(NX_SUCCESS);
+}
+
+static UINT rtsp_teardown_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length)
+{
+
+    /* Trigger the tear down event */
+    tx_event_flags_set(&amp;demo_test_events, DEMO_TEARDOWN_EVENT, TX_OR);
+    return(NX_SUCCESS);
+}
+
+static UINT rtsp_pause_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *range_ptr, UINT range_length)
+{
+
+    /* Trigger the pause event */
+    tx_event_flags_set(&amp;demo_test_events, DEMO_PAUSE_EVENT, TX_OR);
+    return(NX_SUCCESS);
+}
+
+static UINT rtsp_set_parameter_callback(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, ULONG parameter_length)
+{
+
+    /* User implementation here to check and update parameters.  */
+    return(NX_SUCCESS);
+}
+
+static UINT rtsp_disconnect_callback(NX_RTSP_CLIENT *rtsp_client_ptr)
+{
+
+    /* Trigger the tear down event */
+    tx_event_flags_set(&amp;demo_test_events, DEMO_TEARDOWN_EVENT, TX_OR);
+    return(NX_SUCCESS);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_options"><a class="anchor" href="#_configuration_options"></a>Configuration Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several configuration options for building NetX Duo RTSP server. The default values are listed but can be redefined prior to inclusion of <em>nx_rtsp_server.h</em>. The following list describes each in detail:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_RTSP_SERVER_MAX_CLIENTS</strong> The max number of concurrent clients the server supports. By default, this value is defined as 2.</p>
+</li>
+<li>
+<p><strong>NX_RTSP_SERVER_TIME_SLICE</strong> RTSP Server time slice. By default, this value is defined as <em>TX_NO_TIME_SLICE</em>.</p>
+</li>
+<li>
+<p><strong>NX_RTSP_SERVER_PACKET_TIMEOUT</strong> The timeout for the packet allocation and data appending. By default, this value is defined as 1 second ( 1 * <em>NX_IP_PERIODIC_RATE</em>).</p>
+</li>
+<li>
+<p><strong>NX_RTSP_SERVER_ACCEPT_TIMEOUT</strong> The timeout for the RTSP Server socket accepting. By default, this value is defined as 10 seconds ( 10 * <em>NX_IP_PERIODIC_RATE</em>).</p>
+</li>
+<li>
+<p><strong>NX_RTSP_SERVER_SEND_TIMEOUT</strong> The timeout for the packet sending. By default, this value is defined as 1 second ( 1 * <em>NX_IP_PERIODIC_RATE</em>).</p>
+</li>
+<li>
+<p><strong>NX_RTSP_SERVER_ACTIVITY_TIMEOUT</strong> The in seconds for RTSP client activity. By default, this value is defined as 60 seconds.</p>
+</li>
+<li>
+<p><strong>NX_RTSP_SERVER_TYPE_OF_SERVICE</strong> The type of service for RTSP TCP requests. By default, this value is defined as <em>NX_IP_NORMAL</em>.</p>
+</li>
+<li>
+<p><strong>NX_RTSP_SERVER_FRAGMENT_OPTION</strong> The fragment option for RTSP TCP requests. By default, this value is defined as <em>NX_FRAGMENT_OKAY</em>.</p>
+</li>
+<li>
+<p><strong>NX_RTSP_SERVER_TIME_TO_LIVE</strong> The TTL for RTSP TCP requests. By default, this value is defined as <em>NX_IP_TIME_TO_LIVE</em>.</p>
+</li>
+<li>
+<p><strong>NX_RTSP_SERVER_WINDOW_SIZE</strong> The window size for RTSP TCP requests. By default, this value is defined as 8192.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

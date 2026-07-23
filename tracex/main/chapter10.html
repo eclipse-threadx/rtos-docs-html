@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 10 - Customer user events :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/tracex/main/chapter10.html">
+    <meta name="description" content="This chapter contains a description of how to create user-defined events and custom icons and information fields for such events.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="tracex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">TraceX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">TraceX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">TraceX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-tracex.html">Overview of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">TraceX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - TraceX performance analysis</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Generating trace buffers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - ThreadX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter7.html">Ch. 7 - FileX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter8.html">Ch. 8 - NetX Duo trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter9.html">Ch. 9 - USBX trace events</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter10.html">Ch. 10 - Customer user events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter11.html">Ch. 11 - Format of event trace buffer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - Sample tx_port.h</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - The tx_trace.h File</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - DOS command-line utilities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - Dumping and trace buffer</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">TraceX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">TraceX</a></li>
+    <li>TraceX user guide</li>
+    <li><a href="chapter10.html">Ch. 10 - Customer user events</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/tracex/modules/ROOT/pages/chapter10.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 10 - Customer user events</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of how to create user-defined events and custom icons and information fields for such events. This chapter includes the following sections:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_inserting_user_defined_events"><a class="anchor" href="#_inserting_user_defined_events"></a>Inserting User-Defined Events</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX provides the ability for developers to log their own user-defined events, providing even more useful information that can be viewed graphically by TraceX. User-defined event numbers range from</p>
+</div>
+<div class="paragraph">
+<p><strong>TX_TRACE_USER_EVENT_START</strong> (4096) through <strong>TX_TRACE_USER_EVENT_END</strong> (65535), inclusive. The placement of
+the events in the trace buffer is done via the <strong><em>tx_trace_user_event_insert</em></strong>, defined in Chapter 5. The
+following example calls insert two user-defined events into the current trace buffer on the target, namely user-defined event 4096 and event 4098:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">tx_trace_user_event_insert(4096, 1, 2, 3, 4);
+tx_trace_user_event_insert(4098,0x100,0x200,0x300,0x400);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_default_display_of_user_defined_events"><a class="anchor" href="#_default_display_of_user_defined_events"></a>Default Display of User-Defined Events</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/tx-events/image0.png" alt="User-defined event icon">
+</div>
+</div>
+<div class="paragraph">
+<p>By default, TraceX displays all user events with a default user-defined Event icon as described in Chapter 6. Figure 28 shows the default user-defined event icon for events 452 and 453, which were placed in the event buffer via the previous
+<strong><em>tx_trace_user_event_insert</em></strong> examples.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/media/user-guide/10.1.png" alt="Screenshot of the default display of user-defined events."></span>
+<strong>FIGURE 28</strong></p>
+</div>
+<div class="paragraph">
+<p>Detailed information is also available for user-defined Events. Figure 28 shows the detailed event information for event 452, which has event number 4096 and shows the specified four information fields.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/media/user-guide/10.2.png" alt="Screenshot of the detailed display of user-defined events."></span>
+<strong>FIGURE 29</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_defining_custom_user_defined_event_icons"><a class="anchor" href="#_defining_custom_user_defined_event_icons"></a>Defining Custom User-Defined Event Icons</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TraceX also provides the user the ability to create custom user-defined event icons and custom information field labels. This capability is achieved by adding event icon specifications to the <strong><em>tracex_custom.trxc</em></strong> configuration file. This file is located in the <strong><em>CustomEvents</em></strong> subdirectory of your user-defined TraceX installation directory. An example directory path is shown in Figure 30.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/media/user-guide/custom_events_folder.png" alt="Screenshot of an example directory path."></span>
+<strong>FIGURE 30</strong></p>
+</div>
+<div class="paragraph">
+<p>The <strong><em>tracex_custom.trxc</em></strong> custom event configuration file is a simple ASCII text file containing zero or more custom event definitions. The format of the file is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">//Comments
+**Start **
+[custom event definition(s)] **End **</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each line between Start and End is used to define a single custom event. TraceX provides a template version of this file with no custom events defined (nothing between the "Start" and "End" labels). The
+format of a custom event definition is as follows:</p>
+</div>
+<div class="paragraph">
+<p><strong>number, name, abbreviation, top_color, bottom_color, label1, label2, label2, label4</strong></p>
+</div>
+<div class="paragraph">
+<p>where:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>number: Defines the user-defined event number, between 4096 and 65535, inclusive.&lt;/th&gt;</p>
+</li>
+<li>
+<p>name: Defines the logical name for the user-defined event.&lt;/td&gt;</p>
+</li>
+<li>
+<p>abbreviation: Defines the two-letter user-defined event abbreviation.&lt;/td&gt;</p>
+</li>
+<li>
+<p>top_color: Defines the RGB value for the top-half of the icon, which is a three-digit number in parenthesis. Some typical
+RGB definitions are</p>
+<div class="ulist">
+<ul>
+<li>
+<p>BLACK = (0,0,0)</p>
+</li>
+<li>
+<p>WHITE = (255,255,255)</p>
+</li>
+<li>
+<p>RED = (255,0,0)</p>
+</li>
+<li>
+<p>GREEN = (0,255,0)</p>
+</li>
+<li>
+<p>BLUE = (0,0,255)</p>
+</li>
+<li>
+<p>YELLOW = (255,255,0)</p>
+</li>
+<li>
+<p>CYAN = (0,255,255)</p>
+</li>
+<li>
+<p>MAGENTA = (255,0,255)<br>
+Using the RBG specification gives the user a broad range of colors for each user-defined icon. For more information on RBG color definition, see: <a href="https://en.wikipedia.org/wiki/RGB#Digital_representations" class="bare">https://en.wikipedia.org/wiki/RGB#Digital_representations</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>bottom_color: Defines the RGB value for the bottom half of the icon, which is a three-digit number in parenthesis.</p>
+</li>
+<li>
+<p>label1: Label for <strong><em>info_field_1</em></strong>, as specified in the <strong><em>tx_trace_user_event_insert</em></strong> call.</p>
+</li>
+<li>
+<p>label2: Label for <strong><em>info_field_2</em></strong>, as specified in the <strong><em>tx_trace_user_event_insert</em></strong> call.</p>
+</li>
+<li>
+<p>label3: Label for <strong><em>info_field_3</em></strong>, as specified in the <strong><em>tx_trace_user_event_insert</em></strong> call.</p>
+</li>
+<li>
+<p>label4: Label for <strong><em>info_field_4</em></strong>, as specified in the <strong><em>tx_trace_user_event_insert</em></strong> call.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Example definitions for each of the two user-defined events used in this chapter are shown in Figure 10.4. The first definition is for event 4096 at line 5 of the <strong><em>tracex_custom.trxc</em></strong> file. This definition gives user-defined event 4096 the name <strong>First_User_Event</strong>, specifies a two-letter abbreviation of <strong>FE</strong>, makes the top portion of the icon red, the bottom portion of the icon green, and names the information fields as <strong>First_Info1</strong>, <strong>First_Info2</strong>, <strong>First_Info3</strong>, and <strong>First_Info4</strong>. User-defined event 4098 is defined similarly at line 6 of <strong><em>tracex_custom.trxc</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/media/user-guide/10.4.png" alt="Screenshot of the example definitions for the user-defined events."></span>
+<strong>FIGURE 31</strong></p>
+</div>
+<div class="paragraph">
+<p>Since the <strong><em>tracex_custom.trxc</em></strong> file is read by TraceX during initialization, TraceX must be exited and restarted before the custom icon definitions can take effect. Figure 32 shows the TraceX display of user-defined events 452 and 453 with the custom event icons defined in <strong><em>tracex_custom.trxc</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/media/user-guide/10.5.png" alt="Screenshot of the TraceX display of user defined events with the custom event icons."></span>
+<strong>FIGURE 32</strong></p>
+</div>
+<div class="paragraph">
+<p>The additional information in the custom event definition is shown when the event you select using a double-click, mouse-over, or clicking the current event button. Figure 33 shows the double-click selection on event 452. The event name and information fields all match the sample definition that was added to <strong><em>tracex_custom.trxc</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/media/user-guide/10.6.png" alt="Screenshot of the double-click selection on an event."></span>
+<strong>FIGURE 33</strong></p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

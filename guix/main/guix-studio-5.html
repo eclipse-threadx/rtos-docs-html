@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 5: GUIX Studio Screen Designer :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/guix/main/guix-studio-5.html">
+    <meta name="description" content="Designing application screens is the primary purpose of GUIX Studio.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guix" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">GUIX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">GUIX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">GUIX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-guix.html">Overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="guix-studio-quick-start.html">GUIX Studio Quick Start Guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-1.html">Ch. 1 - Introduction to GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-3.html">Ch. 3 - Functional overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-4.html">Ch. 4 - Description of GUIX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-5.html">Ch. 5 - GUIX display drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-example.html">GUIX example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - GUIX color definitions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - GUIX color formats</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - GUIX widget styles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - GUIX brush, canvas, and gradient attributes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - GUIX event description</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-f.html">App. F - GUIX RTOS binding services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-g.html">App. G - GUIX font structure</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-h.html">App. H - GUIX build-time configuration flags</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-i.html">App. I - GUIX information structures</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-j.html">App. J - Canvas Partial Frame Buffer Feature</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-k.html">App. K - GUIX Widget Status Flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX Studio User Guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix-studio.html">About GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-1.html">Ch. 1 - Introduction to GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-2.html">Ch. 2 - Installation and Use of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-3.html">Ch. 3 - Description of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-4.html">Ch. 4 - GUIX Studio Resources</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-6.html">Ch. 6 - GUIX Studio Generated Code</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-9.html">Ch. 9 - GUIX Studio Command Line</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-10.html">Ch. 10 - Simple Example Project</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-11.html">Ch. 11 - Resource Project File</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">GUIX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">GUIX</a></li>
+    <li>GUIX Studio User Guide</li>
+    <li><a href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/guix/modules/ROOT/pages/guix-studio-5.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 5: GUIX Studio Screen Designer</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Designing application screens is the primary purpose of GUIX Studio. Screen design is accomplished through all the various views described previously in Chapter 3. However, the main element of screen design in GUIX Studio is the <strong><em>Target View</em></strong>, which is where all the screen elements are shown visually and in exactly the same manner they will appear on the embedded target display. These screen elements can be selected, moved, resized, etc. via simple mouse and button operations. In addition, alignment and Z-order button operations are available on selected object(s). The following sub-sections describe various features of GUIX Studio screen design.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creatingconfiguring_projects"><a class="anchor" href="#_creatingconfiguring_projects"></a>Creating/Configuring Projects</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Creating projects in GUIX Studio is straightforward&#8201;&#8212;&#8201;select the <strong><em>New Project</em></strong> button or the menu selection <strong><em>Project, New Project</em></strong>. Next, GUIX Studio presents the <strong><em>Configure Project</em></strong> dialog. From this dialog, basic display settings, as well as path information for where to locate code generated by GUIX Studio is specified.</p>
+</div>
+<div class="paragraph">
+<p>When a new project is created, the configure project dialog is presented. This is where the developer specifies the number of hardware displays available on the target and the properties each display. Properties include the display&#8217;s logical name, x/y resolution, color depth and format, and other display properties. GUIX Studio supports multiple displays in the same project. If additional displays are required, the <strong><em>Number of Displays</em></strong> field should be changed to match the number of displays on the embedded device. The maximum number of displays in a project is 4. <strong><em>Figure 21</em></strong> shows the Configure Project dialog.</p>
+</div>
+<div class="paragraph">
+<p>Modifying the project and/or display settings is accomplished by either the menu option <strong><em>Configure, Project/Display</em></strong> or by selecting the project or display, right-clicking, and selecting <strong><em>Configure, Project/Display</em></strong>. In either case, the <strong><em>Configure Project</em></strong> dialog is presented to facilitate changes to the project settings and/or display(s).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/config_project.png" alt="Screenshot of the Configure Project dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 21</strong></p>
+</div>
+<div class="paragraph">
+<p>The Directories group is where you can specify the default output directories for the C source and header files produced by Studio. These directories are normally saved relative the project location to make it easy to move projects from one computer to another or from one filesystem to another.</p>
+</div>
+<div class="paragraph">
+<p>The Additional Headers field is where you can specify custom header files. If more than one header file is needed, use semicolons to delimit the list.</p>
+</div>
+<div class="paragraph">
+<p>When you invoke the Studio "Generate Application" or "Generate Resources" commands, these are the default directories into which those source files will be written. Of course, you can override these directory locations at any time by entering new locations in the Output Directory dialog.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_selecting_widgets"><a class="anchor" href="#_selecting_widgets"></a>Selecting Widgets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Selecting widgets is done by either clicking on the widget in the <strong><em>Project View</em></strong> widget tree or by clicking on the widget visible in the <strong><em>Target View</em></strong> area. When a single widget is selected, its properties are displayed in the <strong><em>Property View</em></strong> area. <strong><em>Figure 22</em></strong> shows the widget "<strong><em>button</em></strong>" selected.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/select_button.png" alt="Screenshot of the selected widget.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 22</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_properties"><a class="anchor" href="#_using_properties"></a>Using Properties</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As mentioned previously, the properties for a selected widget are presented in the <strong><em>Properties View</em></strong>. All widgets have a common set of properties as well as some properties that are specific to the particular widget type. For example, a button widget has a <strong><em>Pushed</em></strong> property while a window widget does not. The following are the common set of widget properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Widget Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of widget, for reference</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Widget Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of widget, passed to the widget create function and used for variable naming in the generated source files.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Widget ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ID of widget. This ID value is used to generate signals from child widgets to their parent screens.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Left</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Left-most coordinate of widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Top</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Top-most coordinate of widget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width of widget in pixels</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Height</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Height of widget in pixels</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Border</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of widget border</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Transparent</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should be checked if the widget is partially transparent</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Draw Selected</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should be checked if the widget should initially draw itself in the selected state.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should be checked if the widget can be selected or clicked by the end user.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accepts Focus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should be checked if the widget accepts focus.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Runtime Allocate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should be checked if the widget control block should be allocated dynamically.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normal Fill</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normal fill color resource id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selected Fill</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selected fill color resource id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Draw Function</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User-defined custom drawing function Name. If this field is blank, the standard drawing function for that widget type is used.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Event Function</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User-defined custom event handling function name. If blank, the standard event handling for this widget type is used.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong><em>Figure 23</em></strong> shows the properties of a simple window widget.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/image57.jpg" alt="Screenshot of the properties of a simple window widget.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 23</strong></p>
+</div>
+<div class="paragraph">
+<p>Many widget types have additional properties specific to each widget type.</p>
+</div>
+<div class="paragraph">
+<p>For example, in Figure 23 above, the Window widget type supports a Wallpaper pixelmap Id, and a style setting indicating if the wallpaper should be centered or tiled.</p>
+</div>
+<div class="paragraph">
+<p>Text widgets support a string ID field, along with text alignment styles and a font specification. The additional widget properties are normally intuitive once you have read the description of each widget type and the available styles and Create function parameters for that widget type.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_manipulating_widgets"><a class="anchor" href="#_manipulating_widgets"></a>Manipulating Widgets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To manipulate a widget, is first must be selected. This is done by either clicking directly on the widget in the <strong><em>Target View</em></strong> or by selecting it in the <strong><em>Project View</em></strong> widget tree. Once selected, the widget will have a dashed outline. In this state, it may be moved by clicking on the widget and dragging it to the desired location on its parent. If the widget is a top-level widget, dragging the widget is effectively setting the widget&#8217;s initial position on the target display. Of course, it is always possible to move or resize any widget at any time using the GUIX API.</p>
+</div>
+<div class="paragraph">
+<p>To resize the widget&#8217;s height, position the mouse on the top edge of the widget and wait for the mouse pointer to change to an up-down arrow. At this point, the widget height may be changed by moving the mouse while the right mouse button is depressed. The width of the mouse may be resized in a similar fashion by positioning the mouse pointer on the left edge of the widget. <strong><em>Figure 24</em></strong> shows the "<strong><em>button</em></strong>" widget resized and moved to the left/top area of the parent window.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/resize_button.png" alt="Screenshot of the button widget.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 24</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_manipulating_multiple_widgets"><a class="anchor" href="#_manipulating_multiple_widgets"></a>Manipulating Multiple Widgets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Selecting multiple widgets is accomplished by clicking on multiple widgets in the target view while holding the <strong><em>Ctrl</em></strong> key down. Doing this will show each of the widgets selected with a dashed-outline around it. Note that when selecting multiple widgets each widget in the selection group must a child of the same parent.</p>
+</div>
+<div class="paragraph">
+<p>Once multiple widgets are selected, they may be simultaneously moved by clicking inside one on the selected widgets and moving the mouse with the right mouse button pushed down. In addition, the alignment buttons on the <strong><em>Tool Bar</em></strong> may be used to align the group of selected widgets. <strong><em>Figure 25</em></strong> shows both the "<strong><em>button</em></strong>" and "<strong><em>new button</em></strong>" widgets selected and <strong><em>Figure 26</em></strong> shows the result of the <strong><em>Align-Left</em></strong> button selection while these widgets are selected.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/multiple_select.png" alt="Screenshot of the button and new button widgets selected">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 25</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/align_left.png" alt="Screenshot of the result of the Align-Left button selection.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 26</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cutcopypaste_operations"><a class="anchor" href="#_cutcopypaste_operations"></a>Cut/Copy/Paste Operations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A selected widget in the <strong><em>Target View</em></strong> may be cut, copied, and pasted in standard fashion. Widgets and screens can be copied within one project, or copied from one project and pasted into another.The <strong><em>Tool Bar</em></strong> has buttons for cut, copy, and paste. There are also the same options in the Edit menu option. Note that when pasting a widget, the parent widget should be selected before pasting the new widget. <strong><em>Figure 27</em></strong> shows the result of selecting the "<strong><em>button</em></strong>" widget, copying it, and pasting the copy in the same window.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/copy_paste_button.png" alt="Screenshot of the cut/copy/paste operations.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 27</strong></p>
+</div>
+<div class="paragraph">
+<p>Copy/Paste within one project is generally straightforward because the resources that might be required by the copied widget(s) are always present when you are working within one project. However, if you copy a widget from project A and paste that widget into project B, some problems with resource dependencies can arise.</p>
+</div>
+<div class="paragraph">
+<p>When you copy widget(s) within Studio, the Studio application makes a list of the resources required by the copied widgets, and generates a portable resource dependency table in the form of XML which is copied to the windows clipboard, along with the actual copied widget information. When you paste the widget(s) into a different project, Studio first examines the resource dependency list and adds the needed resources to the open project if they do not already exist. Studio identifies matching resources by the resource ID names, and for string resources Studio also compares the string content. If matching resources are found, Studio updates the resource IDs of the pasted widgets to properly use the resources in the new project. If the resources are not found, they are added.</p>
+</div>
+<div class="paragraph">
+<p>When Studio adds a resource to your project as part of a widget paste operation, Studio is really adding a link to the resource in the case of font and pixelmap resources. This link is generated from the source project, and you will receive warning messages if those resources cannot be found relative to the project location of the project into which you are pasting. The resource links will be added to the project regardless, but you may need to manually copy fonts and image files into the proper locations under your new project tree to eliminate resource loading errors. Studio does not copy .ttf, .png, or .jpg files from one location to another.</p>
+</div>
+<div class="paragraph">
+<p>The easy way to avoid any problems in this regard is to keep a consistent directory structure between projects that you want to share. If you want to move things from Project A to Project B easily, then keep the graphics images and fonts used by both projects in a consistent sub-directory of each project folder.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_changing_z_order"><a class="anchor" href="#_changing_z_order"></a>Changing Z-Order</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Widgets can easily be moved in front of or behind other widgets. This is accomplished by selecting the widget and selecting either the <strong><em>Move to Front</em></strong> or <strong><em>Move to Back</em></strong> buttons on the <strong><em>Tool Bar</em></strong>. <strong><em>Figure 28</em></strong> shows the moving the second button to the back.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/change_z_order.png" alt="Screenshot of the button z-order.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 28</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_assigning_colors_fonts_and_pixelmaps"><a class="anchor" href="#_assigning_colors_fonts_and_pixelmaps"></a>Assigning Colors, Fonts, and Pixelmaps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to selecting colors, fonts, and pixelmaps in the Properties View for a selected widget, a shorthand drag-and-drop method of assigning resources to widgets is also supported. To use this feature, simply left click on a resource such as a color of font in the resource view, and drag the resource over the desired widget in the target view. Drop the resource by releasing the left mouse button over the widget.</p>
+</div>
+<div class="paragraph">
+<p>Color resources are always assigned to the widget normal background color when using the drag and drop method. Other colors such as selected color or selected text color must be assigned using the Properties View.</p>
+</div>
+<div class="paragraph">
+<p>Similarly, pixelmap resources are assigned to the "normal" or "fill" pixelmap field of a widget that supports pixelmap display. To assign other fields to a widget that supports multiple pixelmaps, you must use the Properties View.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_templates"><a class="anchor" href="#_using_templates"></a>Using templates</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Any screen or collection of child widgets that you design in Studio can be used as a template for new screens and new child controls. You can base a template on a Window type widget, which is the normal use case, or any other widget types. Using a template is similar to copying and pasting a widget, except anything derived from a template is automatically modified when the template upon which it is based is modified. You are not allowed to modify the template widget properties when working with a derived screen or inherited instance of the template. However, when you modify the template properties in any way, all instances that reference that template are automatically updated, since they are derived from that template.</p>
+</div>
+<div class="paragraph">
+<p>Another advantage of using templates for repeated items is that the Studio generated specifications file will usually be smaller in size than if you recreated the repeating items each time they are used.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To designate that a screen or collection of child widgets is to be used as a template, you turn on the "Template" checkbox in the widget properties view. Once you turn on the "Template" checkbox, the template widget will appear in the ***Insert</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template*** pull down menu(s).</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">As an example of using a template, you might define a window that is used as a button bar. This window may itself contain have several child buttons, and this button bar is used frequently on various screens. You can define a small standalone window within your Studio project that holds the required child buttons, and give this window the name "button_bar". Then select this window and turn on the "Template" property. Next select a screen on which you wish to add this button bar. Use the Insert</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">button_bar menu command to insert an instance of the button_bar window on your screen. Note that you can reposition the button bar, but you are not allowed to change most properties. However you can use the button_bar widget (and any children) just like any other pre-defined GUIX widget types. To modify the button_bar, you must select the button_bar template to make your changes.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Another example of a typical template usage is an application that includes many similar screens. For example the application might have 10 different screens that all share a common title bar, fill color, size, etc. In this case, you could define a template screen that includes your title bar child widgets and configures the screen size, fill color, and other properties. Once this template screen is defined, you can then derive your 10 different screens from this template. When you use the Insert</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;base_screen&gt; menu command, your screen will start out with all the child widgets and settings of your template screen. Note that each screen you derive from the template screen is not a copy of the template, but is truly a derived instance of the template screen. You can then customize each derived screen to hold whatever additional content is required.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Note that in addition to saving size the generated specifications file, using templates can make it easier to manage changes to your application appearance. In the above example, suppose you are required to change the background color of your 10 similar screens. Rather than being required to select each screen and change the fill color settings, you only have to select the base template and change its fill color, and this change will immediately be reflected in all derived screens.</p>
+</div>
+<div class="paragraph">
+<p>A further comment regarding templates: you must insure that the event processing flow is maintained, meaning that if you provide an event handler for both a base screen (for handling the common widget events) and for a derived screen, the derived screen event handler should call the base_screen event handler in the default case. This will allow the base screen event handler to process events generated by widgets common to all screens derived from this template base.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_record_and_playback_macro"><a class="anchor" href="#_record_and_playback_macro"></a>Record and Playback Macro</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Macro record and playback functions help you record and playback
+keystrokes and mouse events.</p>
+</div>
+<div class="paragraph">
+<p>Recording to a macro file is accomplished by selecting the <strong><em>Record Macro</em></strong> toolbar button or the menu selecting <strong><em>Edit, Record Macro</em></strong>. GUIX Studio will presents the <strong><em>Record Macro</em></strong> dialog which allows you to specify the pathname for your macro file. After making this selection, click the <strong><em>Record</em></strong> button to start recording. After you have finished recording, again select the <strong><em>Record Macro</em></strong> toolbar button or use the pull-down menu selecting <strong><em>Edit, End Macro</em></strong> to end macro recording.</p>
+</div>
+<div class="paragraph">
+<p>Playback of a macro file is accomplished by selecting the <strong><em>Playback Macro</em></strong> toolbar button using the main pull-down menu to select the <strong><em>Edit, Playback Macro</em></strong> command. GUIX Studio presents the <strong><em>Playback Macro</em></strong> dialog, which allows you to specify the previously recorded macro file to be run.</p>
+</div>
+<div class="paragraph">
+<p>When recording macros that choose input or output files, such as adding a font or image, it is important to use the keyboard to type the file name, rather than using the mouse to select from the file browser. Since the macro recorder records mouse and keyboard events, and since your file browser may change over time, it is more reliable to type the filename than to select the file graphically.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zooming_target_view"><a class="anchor" href="#_zooming_target_view"></a>Zooming Target View</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Zoom In function help you to get a close-up view of the target screen.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">You are able to choose the percentage zoom setting that you want in ***Configure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target View</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Zoom<strong>* menu option. The </strong><em>Tool Bar</em>** also has buttons for zoom in/out.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gridsnap_settings"><a class="anchor" href="#_gridsnap_settings"></a>Grid/Snap Settings</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <strong><em>Grid and Snap Settings</em></strong> dialog contains some settings and options for grid and snap. <strong><em>Figure 29</em></strong> shows the <strong><em>Grid and Snap Setting</em></strong> dialog when menu ***Configure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target View</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Grid/Snap*** is selected.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/image63.jpg" alt="Screenshot of the Grid and Snap Settings.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 29</strong></p>
+</div>
+<div class="paragraph">
+<p>Turn on <strong><em>Show Grid</em></strong> option will display grid on target screen, you can specify grid increment (in pixels) in <strong><em>Grid Spacing</em></strong> field and minimum snap distance in <strong><em>Snap Spacing</em></strong> field. The <strong><em>Snap to Grid</em></strong> and <strong><em>Snap to Widget</em></strong> options help you to get the proper position for a widget. Turning on these options activate snaps.</p>
+</div>
+<div class="paragraph">
+<p>When <strong><em>Snap to Grid</em></strong> option is enabled:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If you drag an object with the mouse in target view, the object center would snap to grid position.</p>
+</li>
+<li>
+<p>If you drag the edge of an object to resize, the edge that you are dragging would snap to grid position.</p>
+</li>
+<li>
+<p>If you select an object and use up/left/down/right keys, selected widget would move by snap distance.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When <strong><em>Snap to Widget</em></strong> option is enabled:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The selected widget would snap to the suggested aligned position when it is moving near a position that would align with another widget.</p>
+</li>
+<li>
+<p>ALT key could be used to disable "Snap to Widget" feature temporarily.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

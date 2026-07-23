@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 2 - Installation and use of the NetX Duo DHCP server :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-dhcp-server/chapter2.html">
+    <meta name="description" content="This chapter contains a description of various issues related to installation, setup, and usage of the NetX Duo DHCP component.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo DHCP server user guide</li>
+    <li><a href="chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-dhcp-server/chapter2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 2 - Installation and use of the NetX Duo DHCP server</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of various issues related to installation, setup, and usage of the NetX Duo DHCP component.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_product_distribution"><a class="anchor" href="#_product_distribution"></a>Product Distribution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The NetX Duo DHCP Server is available at <a href="https://github.com/eclipse-threadx/netxduo" class="bare">https://github.com/eclipse-threadx/netxduo</a>. The package includes two source files and a PDF file that contains this document, as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>nxd_dhcp_server.h</strong> Header file for NetX Duo DHCP Server</p>
+</li>
+<li>
+<p><strong>nxd_dhcp_server.c</strong> C Source file for NetX Duo DHCP Server</p>
+</li>
+<li>
+<p><strong>nxd_dhcp_server.pdf</strong> User Guide for NetX Duo DHCP Server</p>
+</li>
+<li>
+<p><strong>demo_netxduo_dhcp.c</strong> NetX Duo DHCP Server demonstration</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dhcp_installation"><a class="anchor" href="#_dhcp_installation"></a>DHCP Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to use NetX Duo DHCP Server, the entire distribution mentioned previously should be copied to the same directory where NetX Duo is installed. For example, if NetX Duo is installed in the directory "<em>\threadx\arm7\green</em>" then the <em>nxd_dhcp_server.h</em> and <em>nxd_dhcp_server.c</em> files should be copied into this directory.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_netx_duo_dhcp_server"><a class="anchor" href="#_using_netx_duo_dhcp_server"></a>Using NetX Duo DHCP Server</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using NetX Duo DHCP Server is easy. Basically, the application code must include <em>nx_dhcp_server.h</em> after it includes <em>tx_api.h</em> and <em>nx_api.h</em>, in order to use ThreadX and NetX Duo, respectively. Once <em>nxd_dhcp_server.h</em> is included, the application code is then able to make the DHCP function calls specified later in this guide. The application must also include <em>nxd_dhcp_server.c</em> in the build process. This file must be compiled in the same manner as other application files and its object form must be linked along with the files of the application. For more details on using NetX Duo DHCP Server, see the following sections <strong>Requirements of the NetX Duo DHCP</strong> <strong>Server</strong> and <strong>Constraints of the NetX Duo DHCP Server</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Note that since DHCP utilizes NetX Duo UDP services, UDP must be enabled with the <em>nx_udp_enable</em> call prior to using DHCP.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_requirements_of_the_netx_duo_dhcp_server"><a class="anchor" href="#_requirements_of_the_netx_duo_dhcp_server"></a>Requirements of the NetX Duo DHCP Server</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The NetX Duo DHCP Server requires a UDP socket port assigned to the well known DHCP port 67. To create the DHCP Server, the application must create a packet pool with packet payload at least 548 bytes plus IP, UDP and Ethernet headers (which total 44 bytes with 4 byte alignment).</p>
+</div>
+<div class="paragraph">
+<p>It is assumed that the Server and Client are both using Ethernet hardware address settings:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Hardware type 1</p>
+</li>
+<li>
+<p>Hardware length 6</p>
+</li>
+<li>
+<p>Hops 0</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_multiple_client_sessions"><a class="anchor" href="#_multiple_client_sessions"></a>Multiple Client Sessions</h3>
+<div class="paragraph">
+<p>The NetX Duo DHCP Server can handles multiple Client sessions by keeping a table of active DHCP clients and what 'state' the Client is in e.g. DHCP states INIT, BOOT, SELECTING, REQUESTING, RENEWING etc. If the session time out expires before receiving the next Client message, unless that Client is bound to an IP lease, the Server will clear the Client session data and return the assigned IP address back to the available pool. If the Server receives multiple DISCOVER messages from the same Client the Server resets the session time out and keeps the IP address reserved for the Client to accept in a subsequent REQUEST message.</p>
+</div>
+<div class="paragraph">
+<p>The NetX Duo DHCP Server also accepts the single state Client DHCP request e.g. the Client only sends a REQUEST message. This assumes the Client has been previously assigned an IP lease from the DHCP server.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setting_interface_specific_network_parameters_server_responses"><a class="anchor" href="#_setting_interface_specific_network_parameters_server_responses"></a>Setting Interface Specific Network Parameters Server Responses</h3>
+<div class="paragraph">
+<p>The application can set the router, subnet mask and DNS server parameters for each interface it handles DHCP Client requests, using the <em>nx_dhcp_set_interface_network_parameters</em> service. Otherwise these parameters are defaulted to the IP gateway on the Server&#8217;s primary interface, its DHCP network subnet, and DHCP Server IP address, respectively.</p>
+</div>
+<div class="paragraph">
+<p>The DHCP server includes these parameters in the option data of DHCP messages it sends to DHCP clients.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_assigning_ip_addresses_to_the_client"><a class="anchor" href="#_assigning_ip_addresses_to_the_client"></a>Assigning IP addresses to the Client</h3>
+<div class="paragraph">
+<p>If the Client DISCOVER message does not specify a requested IP address, the DHCP Server can use one from its own pool. If the Server has no available IP addresses it will send the Client a NACK message.</p>
+</div>
+<div class="paragraph">
+<p>The NetX Duo DHCP Server will grant the requested IP address in the Client REQUEST message as long as the IP address is available and can be found in the Server IP address database. The application creates the Server&#8217;s list of available IP addresses for assigning to DHCP Clients using the <em>nx_dhcp_create_server_ip_address_list</em> service. If the Server does not have the requested IP addresses or it is assigned to another host it will send the Client a NACK message.</p>
+</div>
+<div class="paragraph">
+<p>When the DHCP Server receives a Client request, it identifies that Client uniquely using the Client MAC address in the Client MAC address field in the DHCP message. If the Client changes it&#8217;s MAC address or is moved elsewhere onto another subnet it should send a RELEASE message to the Server to return the IP address back to the available pool, and request a new IP address in the INIT state.</p>
+</div>
+<div class="paragraph">
+<p>See the <strong>Small Example System</strong> section for details. The number of IP addresses saved to the DHCP Server instance is limited to the size of the server address array in the DHCP Server control block, and defined by the configurable option NX_DHCP_IP_ADDRESS_MAX_LIST_SIZE.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ip_address_lease_times"><a class="anchor" href="#_ip_address_lease_times"></a>IP Address Lease Times</h3>
+<div class="paragraph">
+<p>The DHCP Server will also accept the request Client lease time if that lease time is less than the Server default lease time which is defined in configurable option NX_DHCP_DEFAULT_LEASE_TIME. Renewal and rebind times assigned to the Client are 50% and 85% of the lease time, respectively, unless the lease time is infinity (0xFFFFFFFF), in which case renewal and rebind times are also set to infinity.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dhcp_server_timeouts"><a class="anchor" href="#_dhcp_server_timeouts"></a>DHCP Server Timeouts</h3>
+<div class="paragraph">
+<p>The DHCP Server has a user configurable session timeout, NX_DHCP_CLIENT_SESSION_TIMEOUT, for waiting for the next DHCP Client message unless the session is completed. The time out is reset when the Server receives the next message from the Client regardless if is the same message previously sent.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_error_handling"><a class="anchor" href="#_internal_error_handling"></a>Internal error handling</h3>
+<div class="paragraph">
+<p>The DHCP Server receives and processes DHCP Client packets in the <em>nx_dhcp_listen_for_messages</em> function. This function will discontinue processing the current DHCP Client packet if the packet is invalid, or the DHCP Server encounters an internal error. n<em>x_dhcp_listen_for_messages</em> returns an error status. The DHCP Server thread relinquishes control briefly of the ThreadX scheduler before calling this function to receive the next DHCP Client message. In the current release there is no logging support for error status returns from <em>nx_dhcp_listen_for_messages.</em></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_option_55_parameter_request_list"><a class="anchor" href="#_option_55_parameter_request_list"></a>Option 55: Parameter Request List</h3>
+<div class="paragraph">
+<p>The NetX Duo DHCP Server must be configured with a set of options to load to Parameter Request Option (55) list in the OFFER and DHCPACK messages it transmits back to the Client. These options should include network critical configuration data for the Client network and by default is defined to be router IP address, subnet mask, and DNS server. The option list is a space delimited list and defined in the user configurable NX_DHCP_DEFAULT_SERVER_OPTION_LIST. Note the number of options specified in this list must equal NX_DHCP_DEFAULT_OPTION_LIST_SIZE which is also user defined.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_constraints_of_the_netx_duo_dhcp_server"><a class="anchor" href="#_constraints_of_the_netx_duo_dhcp_server"></a>Constraints of the NetX Duo DHCP Server</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_dhcp_messages"><a class="anchor" href="#_dhcp_messages"></a>DHCP Messages</h3>
+<div class="paragraph">
+<p>The NetX Duo DHCP Server does not verify that an IP address has not been assigned elsewhere on the network before granting the IP address to the Client. If there are multiple DHCP servers, this can indeed be the case. <em>As per RFC 2131, it is the Client&#8217;s responsibility to verify the IP address is unique on its network</em> (e.g. pinging the address). If it is not, the Server should receive a DECLINE message with the IP address to update its database from the Client.</p>
+</div>
+<div class="paragraph">
+<p>The NetX Duo DHCP Server does not issue FORCE_RENEW messages. It is up to the DHCP Client to renew its IP address lease. However, the DHCP Server monitors the time remaining on all the assigned IP addresses in its database. When an IP address lease expires that IP address is returned to the pool of available IP addresses. Hence it is up to the Client to actively renew/rebind its IP address lease.</p>
+</div>
+<div class="paragraph">
+<p>Session data is cleared as soon as the Client either is granted ("bound") to an IP lease (or an existing one is renewed). If a Client packet proves bogus, or the Client times out between responses, session data is cleared.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_saving_data_between_reboots"><a class="anchor" href="#_saving_data_between_reboots"></a>Saving Data Between Reboots</h3>
+<div class="paragraph">
+<p>The NetX Duo DHCP Server saves Client data including DHCP request parameters in a Client record table. This table is not stored in non-volatile memory, so if the DHCP Server host must reboot that information is not saved between reboots.</p>
+</div>
+<div class="paragraph">
+<p>The NetX Duo DHCP Server saves IP address lease data in a IP address table. This table is not stored in non-volatile memory, so if the DHCP Server host must reboot that information is not saved between reboots.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_relay_agents"><a class="anchor" href="#_relay_agents"></a>Relay Agents</h3>
+<div class="paragraph">
+<p>The NetX Duo DHCP Server is configured with a zero IP address for the 'Relay agent' field because it does not support out of network DHCP requests.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_small_example_system"><a class="anchor" href="#_small_example_system"></a>Small Example System</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An example of how easy it is to use the NetX Duo DHCP Server is described below. In this example, the DHCP include file <em>nxd_dhcp_server.h</em> is brought in at line 5. DHCP Server thread stack size, IP thread stack size and test thread stack size are all defined in lines 7-13.</p>
+</div>
+<div class="paragraph">
+<p>First, an optional test thread task for stopping, restarting and eventually deleting the DHCP server is created with the "<em>test_thread_entry</em>" function at line 57. A DHCP Server control block "<em>dhcp_server</em>" is defined as a global variable at line 20. Note that the server packet pool is created with packets having a payload at least as large as the standard DHCP message (548 bytes plus IP and UDP header bytes). After successfully creating an IP instance for the DHCP Server, the application creates the DHCP Server in line 96. Next, the application enables the Server IP instance to be UDP enabled. Before starting the DHCP Server, the available IP address list is created in line 137 using the <strong>nx_dhcp_create_server_ip_address_list</strong> service. The network configuration parameters are set in the following line 138 using the <strong>nx_dhcp_set_interface_network_parameters</strong> service, DHCP Server services become available when the application calls the <em>nx_dhcp_server_start</em> at line 141. The test thread task demonstrates the use of stopping and restarting the DHCP server.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* This is a small demo of NetX Duo DHCP Server for the high-performance NetX Duo TCP/IP stack.  */
+
+#include   "tx_api.h"
+#include   "nx_api.h"
+#include   "nxd_dhcp_server.h"
+
+#define     DEMO_TEST_STACK_SIZE         2048
+#define     DEMO_SERVER_STACK_SIZE  2048
+#define     SERVER_IP_ADDRESS_LIST  "192.168.2.10 192.168.2.11 192.168.2.12"
+#define     PACKET_PAYLOAD          1000
+#define     PACKET_POOL_SIZE        (PACKET_PAYLOAD * 10)
+#define     SERVER_IP_THREAD_STACK    2048
+
+
+/* Define the ThreadX and NetX Duo object control blocks...  */
+
+TX_THREAD test_thread;
+NX_PACKET_POOL server_pool;
+NX_IP server_ip;
+NX_DHCP_SERVER dhcp_server;
+
+
+/* Define the counters used in the demo application...  */
+
+ULONG state_changes;
+
+
+/* Define thread prototypes.  */
+
+void test_thread_entry(ULONG thread_input);
+void nx_etherDriver_mcf5485(struct NX_IP_DRIVER_STRUCT *driver_req);
+
+
+/* Define main entry point.  */
+
+int main()
+{
+    /* Enter the ThreadX kernel.  */
+    tx_kernel_enter();
+}
+
+
+/* Define what the initial system looks like.  */
+
+void    tx_application_define(void *first_unused_memory)
+{
+    CHAR    *pointer;
+    UINT    status;
+
+
+    /* Setup the working pointer.  */
+    pointer =  (CHAR *) first_unused_memory;
+
+    /* Create the test thread.  */
+    status = tx_thread_create(&amp;test_thread, "test thread", test_thread_entry, 0,
+            pointer, TEST_STACK_SIZE,  1, 1, TX_NO_TIME_SLICE, TX_DONT_START);
+
+    if (status)
+    {
+        printf("Error with DHCP test thread create. Status 0x%x\r\n", status);
+        return;
+    }
+
+    pointer =  pointer + DEMO_STACK_SIZE;
+
+    /* Initialize the NetX Duosystem.  */
+    nx_system_initialize();
+
+    /* Create the DHCP Server packet pool.  */
+    status =  nx_packet_pool_create(&amp;server_pool, "NetX Main Packet Pool", PACKET_PAYLOAD,
+        pointer, PACKET_POOL_SIZE);
+    pointer = pointer + PACKET_POOL_SIZE;
+
+    /* Check for pool creation error.  */
+    if (status)
+    {
+        printf("Error with DHCP server packet pool create. Status 0x%x\r\n", status);
+        return;
+    }
+
+    /* Create the DHCP Server IP instance.  */
+    status = nx_ip_create(&amp;server_ip, "NetX DHCP Server IP", NX_DHCP_SERVER_IP_ADDRESS,
+        0xFFFFFF00UL,  &amp;server_pool, nx_etherDriver_mcf5485, pointer,
+        R_IP_THREAD_STACK, 1);
+
+    pointer =  pointer + DEMO_IP_THREAD_STACK;
+
+    /* Check for IP create errors.  */
+    if (status)
+    {
+        printf("Error with DHCP server IP task create. Status 0x%x\r\n", status);
+        return;
+    }
+
+    /* Create the DHCP Server instance.  */
+    status =  nx_dhcp_server_create(&amp;dhcp_server, &amp;server_ip, pointer,
+                                     DEMO_SERVER_STACK_SIZE,"DHCP Server", &amp;server_pool);
+
+    if (status)
+    {
+        printf("Error with DHCP server create. Status 0x%x\r\n", status);
+        return;
+    }
+
+    pointer = pointer + DEMO_SERVER_STACK_SIZE;
+
+    /* Enable ARP and supply ARP cache memory for IP Instance 0.  */
+    status =  nx_arp_enable(&amp;server_ip, (void *) pointer, 1024);
+    pointer = pointer + 1024;
+
+    /* Check for ARP enable errors.  */
+    if (status)
+    {
+        printf("Error with ARP enable. Status 0x%x\r\n", status);
+        return;
+    }
+
+    /* Enable UDP traffic.  */
+    status =  nx_udp_enable(&amp;server_ip);
+
+    /* Check for UDP enable errors.  */
+    if (status)
+    {
+        printf("Error with ICMP enable. Status 0x%x\r\n", status);
+        return;
+    }
+
+    /* Enable ICMP to enable the ping utility.  */
+    status =  nx_icmp_enable(&amp;server_ip);
+
+    /* Check for errors.  */
+    if (status)
+    {
+        printf("Error with ICMP enable. Status 0x%x\r\n", status);
+    }
+
+   status = nx_dhcp_create_server_ip_address_list(&amp;dhcp_server, iface_index,
+                                 START_IP_ADDRESS_LIST, END_IP_ADDRESS_LIST, &amp;addresses_added);
+
+   status = nx_dhcp_set_interface_network_parameters(&amp;dhcp_server, iface_index,
+                               NX_DHCP_SUBNET_MASK, IP_ADDRESS(10,0,0,1),
+                               IP_ADDRESS(10,0,0,1));
+
+    /* Start the DHCP Server.  */
+   status =  nx_dhcp_server_start(&amp;dhcp_server);
+
+    tx_thread_resume(&amp;test_thread);
+}
+
+/* Define the test thread.  */
+void    test_thread_entry(ULONG thread_input)
+{
+    UINT status;
+    UINT keep_spinning;
+
+
+    /* Just let the test thread be idle till we're ready to shut things down. */
+    keep_spinning = 1;
+    while(keep_spinning)
+    {
+        tx_thread_sleep(300);
+    }
+
+    printf("Stopping the server...\n");
+    status = nx_dhcp_server_stop(&amp;dhcp_server);
+    if (status)
+    {
+        printf("Error with DHCP server stop. Status 0x%x\r\n", status);
+        return;
+    }
+
+    tx_thread_sleep(500);
+
+    printf("Starting the server...\n");
+    status = nx_dhcp_server_start(&amp;dhcp_server);
+    if (status)
+    {
+        printf("Error with DHCP server start. Status 0x%x\r\n", status);
+        return;
+    }
+
+
+    tx_thread_sleep(600);
+
+    printf("Stopping the server for good...\n");
+    status = nx_dhcp_server_stop(&amp;dhcp_server);
+    if (status)
+    {
+        printf("Error with DHCP server stop. Status 0x%x\r\n", status);
+        return;
+    }
+
+    tx_thread_sleep(200);
+
+
+    printf("Deleting the server...\n");
+    status = nx_dhcp_server_delete(&amp;dhcp_server);
+    if (status)
+    {
+        printf("Error with DHCP server delete. Status 0x%x\r\n", status);
+        return;
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_options"><a class="anchor" href="#_configuration_options"></a>Configuration Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several configuration options for building NetX Duo DHCP Server. The following list describes each in detail:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_DISABLE_ERROR_CHECKING</strong>: This option removes the basic DHCP error checking. It it typically used after the application is debugged.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_SERVER_THREAD_PRIORITY</strong>: This option specifies the priority of the DHCP Server thread. By default, this value specifies that the DHCP thread runs at priority 2.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_TYPE_OF_SERVICE</strong>: This option specifies the type of service required for the DHCP UDP requests. By default, this value is defined as NX_IP_NORMAL to indicate normal IP packet service.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_FRAGMENT_OPTION</strong>: Fragment enable for DHCP UDP requests. By default, this value is set to NX_DONT_FRAGMENT to disable UDP fragmenting.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_TIME_TO_LIVE</strong>: Specifies the number of routers the packet can pass before it is discarded. The default value is 0x80.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_QUEUE_DEPTH</strong>: Specifies the number of packets that the DHCP Server socket keeps before flushing the queue. The default value is 5.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_PACKET_ALLOCATE_TIMEOUT</strong>: Specifies the timeout in timer ticks for the NetX Duo DHCP Server to wait for allocate a packet from its packet pool. The default value is set to NX_IP_PERIODIC_RATE.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_SUBNET_MASK</strong> This is the subnet mask the DHCP Client should be configured with. The default value is set to 0xFFFFFF00.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_FAST_PERIODIC_TIME_INTERVAL</strong>: This is timeout period in timer ticks for the DHCP Server fast timer to check on session time remaining and handle sessions that have timed out.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_SLOW_PERIODIC_TIME_INTERVAL</strong>: This is timeout period in timer ticks for the DHCP Server slow timer to check on IP address lease time remaining and handle lease that have timed out.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_CLIENT_SESSION_TIMEOUT</strong>: This is timeout period in timer ticks the DHCP Server will wait to receive the next DHCP Client message.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_DEFAULT_LEASE_TIME</strong>: This is IP Address lease time in seconds assigned to the DHCP Client, and the basis for computing the renewal and rebind times also assigned to the Client. The default value is set to 0xFFFFFFFF (infinity).</p>
+</li>
+<li>
+<p><strong>NX_DHCP_IP_ADDRESS_MAX_LIST_SIZE</strong>: This is size of the DHCP Server array for holding available IP addresses for assigning to the Client. The default value is 20.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_CLIENT_RECORD_TABLE_SIZE</strong>: This is size of the DHCP Server array for holding Client records. The default value is 50.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_CLIENT_OPTIONS_MAX</strong>: This is size of the array in the DHCP Client instance for holding the all the requested options in the parameter request list in the current session. The default value is 12.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_OPTIONAL_SERVER_OPTION_LIST</strong>: This is the buffer holding the DHCP Server&#8217;s default list of options to supply to the current DHCP Client in the parameter request list. The default is "1 3 6."</p>
+</li>
+<li>
+<p><strong>NX_DHCP_OPTIONAL_SERVER_OPTION_SIZE</strong>: This is the size of the array to hold the DHCP Server&#8217;s default list of options. The default value is 3.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_SERVER_HOSTNAME_MAX</strong>: This is size of the buffer for holding the Server host name. The default value is 32.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_CLIENT_HOSTNAME_MAX</strong>: This is size of the buffer for holding the Client host name in the current DHCP Server Client session. The default value is 32.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

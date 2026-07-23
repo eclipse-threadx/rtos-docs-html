@@ -1,0 +1,4110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 4 - NetX Duo Crypto API description :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-crypto/chapter4.html">
+    <meta name="description" content="NetX Duo Crypto API description">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo Crypto user guide</li>
+    <li><a href="chapter4.html">Ch. 4 - NetX Duo Crypto API description</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-crypto/chapter4.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 4 - NetX Duo Crypto API description</h1>
+<div class="sect1">
+<h2 id="_nx_crypto_initialize"><a class="anchor" href="#_nx_crypto_initialize"></a>nx_crypto_initialize</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the NetX Secure Library</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_crypto_initialize(VOID);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the NetX Duo Crypto library module. Before using any of the other cryptographic functions, the application must call this function to perform initialization and to validate the integrity of the library. Failure to call this function before using other NetX Duo Crypto services will result in errors being returned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters"><a class="anchor" href="#_parameters"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>None</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialized NetX Duo Crypto library. The library functions are now ready, and can be used.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library fails to initialize, or fails the integrity check. Application cannot use this library.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_module_state_get"><a class="anchor" href="#_nx_crypto_module_state_get"></a>nx_crypto_module_state_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieve the current status of the FIPS-enabled module</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_crypto_module_state_get(VOID);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This service is only available in the FIPS build library. It returns the state of the current state of the NetX Duo Crypto library.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_2"><a class="anchor" href="#_parameters_2"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>None</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>NX_CRYPTO_LIBRARY_STATE_UNINITIALIZED 0x00000001</p>
+</li>
+<li>
+<p>NX_CRYPTO_LIBRARY_STATE_POST_IN_PROGRESS 0x00000002</p>
+</li>
+<li>
+<p>NX_CRYPTO_LIBRARY_STATE_INTEGRITY_TEST_FAILED 0x00000004</p>
+</li>
+<li>
+<p>NX_CRYPTO_LIBRARY_STATE_FUNCTIONAL_TEST_FAILED 0x00000008</p>
+</li>
+<li>
+<p>NX_CRYPTO_LIBRARY_STATE_OPERATIONAL 0x80000000</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_aes_init"><a class="anchor" href="#_nx_crypto_method_aes_init"></a>_nx_crypto_method_aes_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the AES crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_aes_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the AES control block with the given key string. Once the AES control block is initialized, subsequent AES operation will be using the same key and key size.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple AES control blocks, each represents a session. A key is assigned to a control block. Subsequent encryption or decryption operation can reference to the same AES control block without the need to re-initialize the AES control block. If the key for the session is changed, application needs to re-initialize AES control block with the updated key.</p>
+</div>
+<div class="paragraph">
+<p>Calling <strong>nx_crypto_method_aes_init</strong> automatically updates a previously configured key and key size to the new key.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_3"><a class="anchor" href="#_parameters_3"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid AES crypto method control block. The following pre-defined AES crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>crypto_method_aes_cbc_128</em></strong></p>
+</li>
+<li>
+<p><strong><em>crypto_method_aes_cbc_192</em></strong></p>
+</li>
+<li>
+<p><strong><em>crypto_method_aes_cbc_256</em></strong></p>
+</li>
+<li>
+<p><strong><em>crypto_method_aes_ctr_128</em></strong></p>
+</li>
+<li>
+<p><strong><em>crypto_method_aes_ctr_192</em></strong></p>
+</li>
+<li>
+<p><strong><em>crypto_method_aes_ctr_256</em></strong></p>
+</li>
+<li>
+<p><strong><em>crypto_method_aes_xcbc_128</em></strong></p>
+</li>
+<li>
+<p><strong><em>crypto_method_aes_ccm_8_128</em></strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> Points to a buffer containing the AES key</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the key, in bits. Valid values are:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_AES_KEY_SIZE_128_BITS</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_AES_KEY_SIZE_192_BITS</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_AES_KEY_SIZE_256_BITS</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent, and is not being used in this implementation. Application shall pass NULL for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the AES control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For AES, the metadata size must be <em>sizeof(NX_AES)</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the AES control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR (0x07)</strong> Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_UNSUPPORTED_KEY_SIZE</strong> (0x20002) Key size is not a valid for AES.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_aes_operation"><a class="anchor" href="#_nx_crypto_method_aes_operation"></a>_nx_crypto_method_aes_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform an AES operation (encryption or decryption).</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_aes_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs AES encryption or decryption operation. The AES control block must have been initialized with <em><em>nx_crypto_method_aes_init</em>. The AES algorithm to be performed is based on the algorithm specified in the _method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>The input buffer size must be a multiple of 16 bytes. The size of the decrypted data is the same size of the input data size. If the encrypted data was padded to achieve an even multiple of the AES block size, the padding will be included in the output buffer and must be handled by the application.</p>
+</div>
+<div class="paragraph">
+<p>This operation does not keep state information, and does not alter the key material in the AES control block.</p>
+</div>
+<div class="paragraph">
+<p>When the op is NX_CRYPTO_SET_ADDITIONAL_DATA and algoritm is AES-CCM8, the input points to additional data and input_length_in_byte is the length of additional data.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_4"><a class="anchor" href="#_parameters_4"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid opertions are:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><em>NX_CRYPTO_ENCRYPT</em></p>
+</li>
+<li>
+<p><em>NX_CRYPTO_DECRYPT</em></p>
+</li>
+<li>
+<p><em>NX_CRYPTO_AUTHENTICATE (AES-XCBC only)</em></p>
+</li>
+<li>
+<p><em>NX_CRYPTO_SET_ADDITIONAL_DATA (AES-CCM8 only)</em></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid AES crypto method. The crypto method used here must be the same used in the <em>nx_crypto_method_aes_init.</em></p>
+</li>
+<li>
+<p><em>input_data</em> Points to a buffer containing encrypted text data. There are not restrictions on input buffer.</p>
+</li>
+<li>
+<p><em>input_data_size</em> Size of the input data, in bytes. The input data size must be a multiple of 16 bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> Pointer to the Initial Vector. There are no restrictions on the IV buffer.</p>
+</li>
+<li>
+<p><em>iv_size</em> Size of the Initial Vector block, in bytes This field must be 16.</p>
+</li>
+<li>
+<p><em>output_buffer</em> Pointer to the memory area for AES to store the clear text data. Application must allocate space for the output buffer. Output buffer may overlap with input buffer. The output buffer may overlap with the input buffer if they share the same starting address.</p>
+</li>
+<li>
+<p><em>output_buffer_size</em> Size of the output buffer in bytes. Output buffer size must be at least the same of the input buffer size, and the output buffer size must be a multiple of 16 bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the AES control block used in <em>_nx_crypto_method_aes_init*.*</em></p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For AES, the metadata size must <em>sizeof(NX_AES)</em></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> - This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the AES operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid AES algorithm being specified**.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_aes_cleanup"><a class="anchor" href="#_nx_crypto_method_aes_cleanup"></a>_nx_crypto_method_aes_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the AES control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_aes_cleanup(VOID* crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the AES control block after it determines this AES session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_5"><a class="anchor" href="#_parameters_5"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_metadata</em> Pointer to the AES control block used in <em>_nx_crypto_method_aes_init*.*</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the AES session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_3des_init"><a class="anchor" href="#_nx_crypto_method_3des_init"></a>_nx_crypto_method_3des_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initialize the 3DES control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_3des_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the Triple DES (3DES) control block with the given three key strings. The key strings must be 8 bytes each. The three DES keys must be concatenated into contiguous memory of 24-byte buffer. For FIPS-compliant build, the three keys must be different from each or the function will return the NX_CRYPTO_INVALID_KEY error. Once the 3DES control block is initialized, subsequent 3DES operations will use the same keys.</p>
+</div>
+<div class="paragraph">
+<p>An application may create multiple 3DES control blocks, each representing a session. A key is assigned to a control block and subsequent encryption or decryption operations can reference the same control block without needing to re-initialize. If the key for a session is changed, the application will need to re-initialize the control block with the updated key.</p>
+</div>
+<div class="paragraph">
+<p>Calling <em>_nx_crypto_method_3des_init</em> automatically updates a previously configured key to the new keys.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_6"><a class="anchor" href="#_parameters_6"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid 3DES crypto method control block. The
+following pre-defined 3DES crypto method is available: <strong><em>crypto_method_3des</em></strong></p>
+</li>
+<li>
+<p><em>key</em> Points to a buffer containing the three (3) DES key</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Must be 192 (3 keys, each 64 bits).</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle identifies the 3DES control block being initialized. Subsequent 3DES operations (encryption, decryption, and cleanup) use this handle to access the 3DES control block</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the 3DES control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For 3DES, the metadata size must be <em>sizeof(NX_3DES)</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value"><a class="anchor" href="#_return_value"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the 3DES control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR (0x07)</strong> Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_UNSUPPORTED_KEY_SIZE</strong> (0x20002) Key size is not a valid for 3DES.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_3des_operation"><a class="anchor" href="#_nx_crypto_method_3des_operation"></a>_nx_crypto_method_3des_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Encrypt or Decrypt with 3DES.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_3des_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT
+    status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs 3DES encryption or decryption operation. The 3DES control block must have been initialized with <em><em>nx_crypto_method_3des_init</em>. The 3DES algorithm to be performed is based on the algorithm specified in the _method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>The input buffer size must be a multiple of 8 bytes. The size of the decrypted data is the same size of the input data size. If the encrypted data was padded to achieve an even multiple of the 3DES block size, the padding will be included in the output buffer and must be handled by the application.</p>
+</div>
+<div class="paragraph">
+<p>This operation does not keep state information, and does not alter the key material in the 3DES control block.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_7"><a class="anchor" href="#_parameters_7"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid operations are:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_ENCRYPT</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_DECRYPT</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> The handle initialized by <strong>_nx_crypto_method_3des_init</strong>.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid 3DES crypto method. The crypto method used here must be the same used in the <strong><em>nx_crypto_method_3des_init</em></strong>.</p>
+</li>
+<li>
+<p><em>input_data</em> Points to a buffer containing encrypted text data. There are not restrictions on input buffer.</p>
+</li>
+<li>
+<p><em>input_data_size</em> Size of the input data, in bytes. The input data
+size must be a multiple of 8 bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> Pointer to the Initial Vector. There are no restrictions on the IV buffer.</p>
+</li>
+<li>
+<p><em>iv_size</em> Size of the Initial Vector block, in bytes This field must be 8.</p>
+</li>
+<li>
+<p><em>output_buffer</em> Pointer to the memory area for 3DES to store the clear text data. Application must allocate space for the output buffer. Output buffer may overlap with input buffer. The output buffer may overlap with the input buffer if they share the same starting address.</p>
+</li>
+<li>
+<p><em>output_buffer_size</em> Size of the output buffer in bytes. Output buffer size must be at least the same of the input buffer size, and the output buffer size must be a multiple of 8 bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the 3DES control block used in <em>_nx_crypto_method_3des_init</em>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For 3DES, the metadata size must be <em>sizeof(NX_3DES)</em></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs 3DES encryption. The 3DES control block must have been initialized with <em>_nx_crypto_moethod_3des_init</em>. This operation does not keep state information, and does not alter the key material in the 3DES control block. Note that padding is not added by this function so the caller will need to handle padding before invoking the encryption operation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the 3DES control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR (0x07)</strong> Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_3des_cleanup"><a class="anchor" href="#_nx_crypto_method_3des_cleanup"></a>_nx_crypto_method_3des_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the 3DES control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_3des_cleanup(VOID *crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the 3DES control block after it determines this 3DES session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_8"><a class="anchor" href="#_parameters_8"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>handle</em> The handle initialized by <em>_nx_crypto_method_3des_init</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_7"><a class="anchor" href="#_return_values_7"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the 3DES
+session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an
+invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_drbg_init"><a class="anchor" href="#_nx_crypto_method_drbg_init"></a>_nx_crypto_method_drbg_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the DRBG crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_drbg_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the DRBG control block with the given key string. Once the DRBG control block is initialized, subsequent DRBG operation shall be using the same control block.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple DRBG control blocks, each represents a session. Initializing the DRBG control block starts a new hash computation session. Re-initializing the DRBG control block abandons the current session and stars a new one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_9"><a class="anchor" href="#_parameters_9"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid DRBG crypto method control block. The following pre-defined crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_method_drbg</em></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> This field is not used for DRBG.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> This field is not used for DRBG.</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent and is not being used in this implementation. Application shall pass NULL for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the DRBG control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For DRBG, the
+metadata size must be <strong>sizeof(NX_CRYPTO_DRBG)</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_8"><a class="anchor" href="#_return_values_8"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the DRBG control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_drbg_operation"><a class="anchor" href="#_nx_crypto_method_drbg_operation"></a>_nx_crypto_method_drbg_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform DRBG operation</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT __nx_crypto_method_drbg_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT
+    status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs DRBG operation. The DRBG control block must have been initialized with <em><em>nx_crypto_method_drbg_init</em>. The DRBG algorithm to be performed is based on the algorithm specified in the _method</em> control block. By default AES-128 is used for DRBG.</p>
+</div>
+<div class="paragraph">
+<p>When the operation is NX_CRYPTO_DRBG_OPTIONS_SET, the input points to NX_CRYPTO_DRBG_OPTIONS structure. When the operation is NX_CRYPTO_DRBG_INSTANTIATE, the key points to nonce, input points to personalization string. When the operation is NX_CRYPTO_DRBG_RESEED or NX_CRYPTO_DRBG_GENERATE, the input points to additional input.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_10"><a class="anchor" href="#_parameters_10"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid operation is:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_DRBG_OPTIONS_SET</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_DRBG_INSTANTIATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_DRBG_RESEED</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_DRBG_GENERATE</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid DRBG crypto method. The crypto method used here must be the same used in the <em><strong>_nx_crypto_method_drbg_init</em></strong>.</p>
+</li>
+<li>
+<p><em>key</em> Pointer to the the nonce for the instantiate operation. This field is not used for other operations.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the nonce, in bits. This field is not used for other operations.</p>
+</li>
+<li>
+<p><em>input</em> When op is <strong>NX_CRYPTO_DRBG_OPTIONS_SET</strong>, this field points to DRBG options. When op is <strong>NX_CRYPTO_DRBG_INSTANTIATE</strong>, this field points to personalization string. When op is <strong>NX_CRYPTO_DRBG_RESEED</strong> or <strong>NX_CRYPTO_DRBG_GENERATE</strong>, this field points to additional input data.</p>
+</li>
+<li>
+<p><em>input_length_in_byte</em> Size of the input data, in bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> This field is not used for DRBG.</p>
+</li>
+<li>
+<p><em>output</em> When op is <strong>NX_CRYPTO_DRBG_GENERATE</strong>, this field points to the memory area for the generated DRBG. Otherwise, this field is not used.</p>
+</li>
+<li>
+<p><em>output_length_in_byte</em> Size of the output buffer in bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the DRBG control block used in <em>_nx_crypto_method_drbg_init</em>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For DRBG, the metadata size must <em>sizeof(NX_CRYPTO_DRBG)</em></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_9"><a class="anchor" href="#_return_values_9"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the DRBG operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an
+invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid DRBG algorithm being specified.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_BUFFER_SIZE</strong> (0x20005) Invalid output buffer size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_drbg_cleanup"><a class="anchor" href="#_nx_crypto_method_drbg_cleanup"></a>_nx_crypto_method_drbg_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the DRBG control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_drbg_cleanup(VOID* crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the DRBG control block after it determines this DRBG session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_11"><a class="anchor" href="#_parameters_11"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_metadata</em> Pointer to the DRBG control block used in <em>_nx_crypto_method_drbg_init</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_10"><a class="anchor" href="#_return_values_10"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the DRBG session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_ecdh_init"><a class="anchor" href="#_nx_crypto_method_ecdh_init"></a>_nx_crypto_method_ecdh_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the ECDH crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_ecdh_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the ECDH control block with the given key string. Once the ECDH control block is initialized, subsequent ECDH operation shall be using the same control block.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple ECDH control blocks, each represents a session. Initializing the ECDH control block starts a new hash computation session. Re-initializing the ECDH control block abandons the current session and stars a new one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_12"><a class="anchor" href="#_parameters_12"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid ECDH crypto method control block. The
+following pre-defined crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>crypto_method_ecdh</em></strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> This field is not used for ECDH.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> This field is not used for ECDH.</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent and is not being used in this implementation. Application shall pass NULL for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the ECDH control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For ECDH, the metadata size must be <em>sizeof(NX_CRYPTO_ECDH)</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_11"><a class="anchor" href="#_return_values_11"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the ECDH control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_ecdh_operation"><a class="anchor" href="#_nx_crypto_method_ecdh_operation"></a>_nx_crypto_method_ecdh_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform ECDH operation</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_ecdh_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT
+    status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_14"><a class="anchor" href="#_description_14"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs ECDH operation. The ECDH control block must have been initialized with <em><em>nx_crypto_method_ecdh_init</em>. The ECDH algorithm to be performed is based on the algorithm specified in the _method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>When the operation is NX_CRYPTO_EC_CURVE_SET, the input points to Elliptic Curve crypto method. When the operation is NX_CRYPTO_EC_KEY_PAIR_GENERATE, the output points to NX_CRYPTO_EXTENDED_OUTPUT structure and the key pair is copied to nx_crypto_extended_output_data. When the operation is NX_CRYPTO_DH_SETUP, the public key is returned to nx_crypto_extended_output_data. When the operation is NX_CRYPTO_DH_KEY_PAIR_IMPORT, the input points to public key and key points to private key. When the operation is NX_CRYPTO_DH_PRIVATE_KEY_EXPORT, the private key is copied to nx_crypto_extended_output_data. When the operation is NX_CRYPTO_DH_CALCULATE, the input points to remote public key and the shared secret is copied to nx_crypto_extended_output_data.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_13"><a class="anchor" href="#_parameters_13"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid operation is:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_EC_CURVE_SET</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_DH_SETUP</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_DH_CALCULATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_DH_KEY_PAIR_IMPOPRT</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_DH_KEY_PAIR_GENERATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_DH_PRIVATE_KEY_EXPORT</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid ECDH crypto method. The crypto method used here must be the same used in the <em>_nx_crypto_method_ecdh_init.</em></p>
+</li>
+<li>
+<p><em>key</em> When op is NX_CRYPTO_DH_IMPORT_KEY_PAIR, this field points to private key. Otherwise, this field is not used for ECDH.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the key, in bits.</p>
+</li>
+<li>
+<p><em>input</em> When op is <strong>NX_CRYPTO_EC_CURVE_SET</strong>, this field points to Elliptic Curve crypto method. When op is <strong>NX_CRYPTO_DH_SETUP</strong>, this field is not used. When op is <strong>NX_CRYPTO_DH_CALCULATE</strong>, this field points to a buffer containing input text data. When op is <strong>NX_CRYPTO_DH_IMPORT_KEY_PAIR</strong>, this field points to public key.</p>
+</li>
+<li>
+<p><em>input_length_in_byte</em> Size of the input data, in bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> This field is not used for ECDH.</p>
+</li>
+<li>
+<p><em>output</em> When op is <strong>NX_CRYPTO_EC_CURVE_SET</strong> or <strong>NX_CRYPTO_DH_IMPORT_KEY_PAIR</strong>, this field is not used. When op is <strong>NX_CRYPTO_DH_SETUP</strong>, this field points to the memory area for the generated ECDH public key. When op is <strong>NX_CRYPTO_DH_CALCULATE</strong>, this field points to the memory area for the generated ECDH shared secret.</p>
+</li>
+<li>
+<p><em>output_length_in_byte</em> Size of the output buffer in bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the ECDH control block used in <em>_nx_crypto_method_ecdh_init</em>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For ECDH, the metadata size must <em>sizeof(NX_CRYPTO_ECDH)</em></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_12"><a class="anchor" href="#_return_values_12"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the ECDH operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid ECDH algorithm being specified.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_BUFFER_SIZE</strong> (0x20005) Invalid output buffer size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_ecdh_cleanup"><a class="anchor" href="#_nx_crypto_method_ecdh_cleanup"></a>_nx_crypto_method_ecdh_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the ECDH control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_14"><a class="anchor" href="#_prototype_14"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_ecdh_cleanup(VOID* crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_15"><a class="anchor" href="#_description_15"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the ECDH control block after it determines this ECDH session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_14"><a class="anchor" href="#_parameters_14"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_metadata</em> Pointer to the ECDH control block used in <em>_nx_crypto_method_ecdh_init</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_13"><a class="anchor" href="#_return_values_13"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the ECDH session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_ecdsa_init"><a class="anchor" href="#_nx_crypto_method_ecdsa_init"></a>_nx_crypto_method_ecdsa_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the ECDSA crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_15"><a class="anchor" href="#_prototype_15"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_ecdsa_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_16"><a class="anchor" href="#_description_16"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the ECDSA control block with the given key string. Once the ECDSA control block is initialized, subsequent ECDSA operation shall be using the same control block.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple ECDSA control blocks, each represents a session. Initializing the ECDSA control block starts a new hash computation session. Re-initializing the ECDSA control block abandons the current session and stars a new one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_15"><a class="anchor" href="#_parameters_15"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid ECDSA crypto method control block. The following pre-defined crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>crypto_method_ecdsa</em></strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> This field is not used for ECDSA.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> This field is not used for ECDSA.</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent and is not being used in this implementation. Application shall pass <em>NULL</em> for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the ECDSA control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For ECDSA, the metadata size must be <em>sizeof(NX_CRYPTO_ECDSA)</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_14"><a class="anchor" href="#_return_values_14"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the ECDSA control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_ecdsa_operation"><a class="anchor" href="#_nx_crypto_method_ecdsa_operation"></a>_nx_crypto_method_ecdsa_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform ECDSA operation</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_16"><a class="anchor" href="#_prototype_16"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_ecdsa_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT
+    status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_17"><a class="anchor" href="#_description_17"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs ECDSA operation. The ECDSA control block must have been initialized with <em><em>nx_crypto_method_ecdsa_init</em>. The ECDSA algorithm to be performed is based on the algorithm specified in the _method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>When the operation is NX_CRYPTO_EC_CURVE_SET, the input points to Elliptic Curve crypto method. When the operation is NX_CRYPTO_EC_KEY_PAIR_GENERATE, the output points to NX_CRYPTO_EXTENDED_OUTPUT structure and the key pair is copied to nx_crypto_extended_output_data.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_16"><a class="anchor" href="#_parameters_16"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid operation is:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_EC_CURVE_SET</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_AUTHENTICATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_VERIFY</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid ECDSA crypto method. The crypto method used here must be the same used in the <em>_*nx_crypto_method_ecdsa_init*.</em></p>
+</li>
+<li>
+<p><em>key</em> Points to the key when op is NX_CRYPTO_VERIFY. There are not restrictions on key buffer. This field is not used for other values of op.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the key, in bits.</p>
+</li>
+<li>
+<p><em>input</em> When op is <strong>NX_CRYPTO_EC_CURVE_SET</strong>, this field points to Elliptic Curve crypto method. Otherwise, this field points to a buffer containing input text data.</p>
+</li>
+<li>
+<p><em>input_length_in_byte</em> Size of the input data, in bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> This field is not used for ECDSA.</p>
+</li>
+<li>
+<p><em>output</em> When op is <strong>NX_CRYPTO_EC_CURVE_SET</strong>, this field is not used. When op is <strong>NX_CRYPTO_AUTHENTICATE</strong>, this field points to the memory area for the generated ECDSA signature. When op is <strong>NX_CRYPTO_VERIFY</strong>, this field points to the memory area for the verified ECDSA signature.</p>
+</li>
+<li>
+<p><em>output_length_in_byte</em> Size of the output buffer in bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the ECDSA control block used in <em>_nx_crypto_method_ecdsa_init</em>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For ECDSA, the metadata size must <em>sizeof(NX_CRYPTO_ECDSA)</em></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_15"><a class="anchor" href="#_return_values_15"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the ECDSA operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid ECDSA algorithm being specified.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_BUFFER_SIZE</strong> (0x20005) Invalid output buffer size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_ecdsa_cleanup"><a class="anchor" href="#_nx_crypto_method_ecdsa_cleanup"></a>_nx_crypto_method_ecdsa_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the ECDSA control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_17"><a class="anchor" href="#_prototype_17"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_ecdsa_cleanup(VOID* crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_18"><a class="anchor" href="#_description_18"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the ECDSA control block after it determines this ECDSA session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_17"><a class="anchor" href="#_parameters_17"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_metadata</em> Pointer to the ECDSA control block used in <em>_nx_crypto_method_ecdsa_init</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_16"><a class="anchor" href="#_return_values_16"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the ECDSA session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_hmac_md5_init"><a class="anchor" href="#_nx_crypto_method_hmac_md5_init"></a>_nx_crypto_method_hmac_md5_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the HMAC MD5 crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_18"><a class="anchor" href="#_prototype_18"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_hmac_md5_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_19"><a class="anchor" href="#_description_19"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the HMAC MD5 control block with the given key string. Once the HMAC MD5 control block is initialized, subsequent HMAC MD5 operation shall be using the same control block.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple HMAC MD5 control blocks, each represents a session. Initializing the HMAC MD5 control block starts a new hash computation session. Re-initializing the HMAC MD5 control block abandons the current session and stars a new one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_18"><a class="anchor" href="#_parameters_18"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid HMAC MD5 crypto method control block.
+The following pre-defined crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>crypto_method_hmac_md5</em></strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> Points to the key. There are not restrictions on key buffer.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the key, in bits.</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent and is not being used in this implementation. Application shall pass NULL for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the HMAC MD5 control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For HMAC MD5, the metadata size must be <em>sizeof(NX_CRYPTO_MD5_HMAC)</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_17"><a class="anchor" href="#_return_values_17"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the HMAC MD5 control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_hmac_md5_operation"><a class="anchor" href="#_nx_crypto_method_hmac_md5_operation"></a>_nx_crypto_method_hmac_md5_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform an HMAC MD5 hash operation.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_19"><a class="anchor" href="#_prototype_19"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_hmac_md5_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT
+    status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_20"><a class="anchor" href="#_description_20"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs HMAC MD5 hash operation. The HMAC MD5 control block must have been initialized with <em><em>nx_crypto_method_hmac_md5_init</em>. The HMAC MD5 algorithm to be performed is based on the algorithm specified in the _method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>For the final <em>NX_CRYPTO_HASH_CALCULATE</em> operation, the output buffer size must be 16 bytes.</p>
+</div>
+<div class="paragraph">
+<p>This operation does not keep state information, and does not alter the key material in the HMAC MD5 control block.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_19"><a class="anchor" href="#_parameters_19"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid operation is:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_HASH_INITIALIZE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_UPDATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_CALCULATE</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid HMAC MD5 crypto method. The crypto method used here must be the same used in the <em>*nx_crypto_method_hmac_md5_init*.</em></p>
+</li>
+<li>
+<p><em>key</em> Points to the key. There are not restrictions on key buffer.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the key, in bits.</p>
+</li>
+<li>
+<p><em>input_data</em> Points to a buffer containing input text data. There are not restrictions on input buffer.</p>
+</li>
+<li>
+<p><em>input_data_size</em> Size of the input data, in bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> This field is not used for HMAC MD5.</p>
+</li>
+<li>
+<p><em>iv_size</em> This field is not used for HMAC MD5.</p>
+</li>
+<li>
+<p><em>output_buffer</em> Pointer to the memory area for the generated HMAC MD5 hash.</p>
+</li>
+<li>
+<p><em>output_buffer_size</em> Size of the output buffer in bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the HMAC MD5 control block used in <em>_nx_crypto_method_hmac_md5_init</em>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For HMAC MD5, the metadata size must <strong>sizeof(NX_CRYPTO_MD5_HMAC)</strong></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_18"><a class="anchor" href="#_return_values_18"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the HMAC MD5 operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid HMAC MD5 algorithm being specified.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_BUFFER_SIZE</strong> (0x20005) Invalid output buffer size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_hmac_sha1_init"><a class="anchor" href="#_nx_crypto_method_hmac_sha1_init"></a>_nx_crypto_method_hmac_sha1_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the HMAC SHA1 crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_20"><a class="anchor" href="#_prototype_20"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_hmac_sha1_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_21"><a class="anchor" href="#_description_21"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the HMAC SHA1 control block with the given key string. Once the HMAC SHA1 control block is initialized, subsequent HMAC SHA1 operation shall be using the same control block.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple HMAC SHA1 control blocks, each represents a session. Initializing the HMAC SHA1 control block starts a new hash computation session. Re-initializing the HMAC SHA1 control block abandons the current session and stars a new one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_20"><a class="anchor" href="#_parameters_20"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid HMAC SHA1 crypto method control block. The following pre-defined crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>crypto_method_hmac_sha1</em></strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> Points to the key. There are not restrictions on key buffer.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the key, in bits.</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent and is not being used in this implementation. Application shall pass NULL for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the HMAC SHA1 control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For HMAC SHA1, the metadata size must be <strong>sizeof(NX_CRYPTO_SHA1_HMAC)</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_19"><a class="anchor" href="#_return_values_19"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the HMAC SHA1control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_hmac_sha1_operation"><a class="anchor" href="#_nx_crypto_method_hmac_sha1_operation"></a>_nx_crypto_method_hmac_sha1_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform HMAC SHA1 hash operation</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_21"><a class="anchor" href="#_prototype_21"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_hmac_sha1_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT
+    status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_22"><a class="anchor" href="#_description_22"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs HMAC SHA1 hash operation. The HMAC SHA1 control block must have been initialized with <em><em>nx_crypto_method_hmac_sha1_init</em>. The HMAC SHA1 algorithm to be performed is based on the algorithm specified in the _method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>For the final <em>NX_CRYPTO_HASH_CALCULATE</em> operation, the output buffer size must be 20 bytes.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_21"><a class="anchor" href="#_parameters_21"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid operation is:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_HASH_INITIALIZE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_UPDATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_CALCULATE</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid HMAC SHA1 crypto method. The crypto method used here must be the same used in the <em>_nx_crypto_method_hmac_sha1_init.</em></p>
+</li>
+<li>
+<p><em>key</em> Points to the key. There are not restrictions on key buffer.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the key, in bits.</p>
+</li>
+<li>
+<p><em>input_data</em> Points to a buffer containing input text data. There are not restrictions on input buffer.</p>
+</li>
+<li>
+<p><em>input_data_size</em> Size of the input data, in bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> This field is not used for HMAC SHA1.</p>
+</li>
+<li>
+<p><em>iv_size</em> This field is not used for HMAC SHA1.</p>
+</li>
+<li>
+<p><em>output_buffer</em> Pointer to the memory area for the generated HMAC SHA1 hash.</p>
+</li>
+<li>
+<p><em>output_buffer_size</em> Size of the output buffer in bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the HMAC SHA1 control block used in <em>_nx_crypto_method_hmac_sha1_init</em>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For HMAC SHA1, the metadata size must <em>sizeof(NX_CRYPTO_SHA1_HMAC)</em></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_20"><a class="anchor" href="#_return_values_20"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the HMAC SHA1 operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid HMAC SHA1 algorithm being specified.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_BUFFER_SIZE</strong> (0x20005) Invalid output buffer size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_hmac_sha1_cleanup"><a class="anchor" href="#_nx_crypto_method_hmac_sha1_cleanup"></a>_nx_crypto_method_hmac_sha1_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the HMAC SHA1 control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_22"><a class="anchor" href="#_prototype_22"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_hmac_sha1_cleanup(VOID* crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_23"><a class="anchor" href="#_description_23"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the HMAC SHA1 control block after it determines this HMAC SHA1 session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_22"><a class="anchor" href="#_parameters_22"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_metadata</em> Pointer to the HMAC SHA1 control block used in <em>_nx_crypto_method_hmac_sha1_init</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_21"><a class="anchor" href="#_return_values_21"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the HMAC SHA1 session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_hmac_sha256_init"><a class="anchor" href="#_nx_crypto_method_hmac_sha256_init"></a>_nx_crypto_method_hmac_sha256_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the HMAC SHA256 crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_23"><a class="anchor" href="#_prototype_23"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_hmac_sha256_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_24"><a class="anchor" href="#_description_24"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the HMAC SHA256 control block with the given key string. Once the HMAC SHA256 control block is initialized, subsequent HMAC SHA256 operation shall be using the same control block.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple HMAC SHA256 control blocks, each represents a session. Initializing the HMAC SH256 control block starts a new hash computation session. Re-initializing the HMAC SHA256 control block abandons the current session and stars a new one with a new key.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_23"><a class="anchor" href="#_parameters_23"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid HMAC SHA256 crypto method control block. The following pre-defined crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>crypto_method_hmac_sha224</em></strong></p>
+</li>
+<li>
+<p><strong><em>crypto_method_hmac_sha256</em></strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> Points to the key. There are not restrictions on key buffer.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the key, in bits.</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent and is not being used in this implementation. Application shall pass NULL for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the HMAC SHA256 control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For HMAC SHA256, the metadata size must be <strong>sizeof(NX_CRYTPO_SHA256_HMAC)</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_22"><a class="anchor" href="#_return_values_22"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the HMAC SHA256 control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_hmac_sha256_operation"><a class="anchor" href="#_nx_crypto_method_hmac_sha256_operation"></a>_nx_crypto_method_hmac_sha256_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform HMAC SHA256 hash operation</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_24"><a class="anchor" href="#_prototype_24"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_hmac_sha256_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT
+    status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_25"><a class="anchor" href="#_description_25"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs HMAC SHA256 hash operation. The HMAC SHA256 control block must have been initialized with <em><em>nx_crypto_method_hmac_sha256_init</em>. The HMAC SHA256 algorithm to be performed is based on the algorithm specified in the _method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>For the final <em>NX_CRYPTO_HASH_CALCULATE</em> operation, the output buffer size must be 32 bytes for SHA256, or 28 bytes for SHA224.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_24"><a class="anchor" href="#_parameters_24"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid operation is:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_HASH_INITIALIZE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_UPDATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_CALCULATE</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid HMAC SHA256 crypto method. The crypto method used here must be the same used in the <em>_nx_crypto_method_hmac_sha256_init.</em></p>
+</li>
+<li>
+<p><em>key</em> Points to the key. There are not restrictions on key buffer.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the key, in bits.</p>
+</li>
+<li>
+<p><em>input_data</em> Points to a buffer containing input text data. There are not restrictions on input buffer.</p>
+</li>
+<li>
+<p><em>input_data_size</em> Size of the input data, in bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> This field is not used for HMAC SHA256.</p>
+</li>
+<li>
+<p><em>iv_size</em> This field is not used for HMAC SHA256.</p>
+</li>
+<li>
+<p><em>output_buffer</em> Pointer to the memory area for the generated HMAC SHA256 hash.</p>
+</li>
+<li>
+<p><em>output_buffer_size</em> Size of the output buffer in bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the HMAC SHA256 control block used in <em>_nx_crypto_method_hmac_sha256_init</em>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For HMAC SHA256, the metadata size must <em>sizeof(NX_CRYPTO_SHA256_HMAC)</em></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_23"><a class="anchor" href="#_return_values_23"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the HMAC SHA256 operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid HMAC SHA256 algorithm being specified.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_BUFFER_SIZE</strong> (0x20005) Invalid output buffer size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_hmac_sha256_cleanup"><a class="anchor" href="#_nx_crypto_method_hmac_sha256_cleanup"></a>_nx_crypto_method_hmac_sha256_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the HMAC SHA256 control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_25"><a class="anchor" href="#_prototype_25"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_hmac_sha256_cleanup(VOID* crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_26"><a class="anchor" href="#_description_26"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the HMAC SHA256 control block after it determines this HMAC SHA256 session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_25"><a class="anchor" href="#_parameters_25"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_metadata</em> Pointer to the HMAC SHA256 control block used in <em>_nx_crypto_method_hmac_sha256_init</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_24"><a class="anchor" href="#_return_values_24"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the HMAC SHA256 session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_hmac_sha512_init"><a class="anchor" href="#_nx_crypto_method_hmac_sha512_init"></a>_nx_crypto_method_hmac_sha512_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the HMAC SHA512 crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_26"><a class="anchor" href="#_prototype_26"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_hmac_sha512_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_27"><a class="anchor" href="#_description_27"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the HMAC SHA512 control block with the given key string. Once the HMAC SHA512 control block is initialized, subsequent HMAC SHA512 operation shall be using the same control block.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple HMAC SHA512 control blocks, each represents a session. Initializing the HMAC SH512 control block starts a new hash computation session. Re-initializing the HMAC SHA512 control block abandons the current session and stars a new one with a new key.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_26"><a class="anchor" href="#_parameters_26"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid HMAC SHA512 crypto method control block. The following pre-defined crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>crypto_method_hmac_sha384</em></strong></p>
+</li>
+<li>
+<p><strong><em>crypto_method_hmac_sha512</em></strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> Points to the key. There are not restrictions on key buffer.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the key, in bits.</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent, and is not being used in this implementation. Application shall pass NULL for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the HMAC SHA512 control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For HMAC SHA512, the metadata size must be <em>sizeof(NX_CRYPTO_SHA512_HMAC)</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_25"><a class="anchor" href="#_return_values_25"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the HMAC SHA512 control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_hmac_sha512_operation"><a class="anchor" href="#_nx_crypto_method_hmac_sha512_operation"></a>_nx_crypto_method_hmac_sha512_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform HMAC SHA512 hash operation</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_27"><a class="anchor" href="#_prototype_27"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_hmac_sha512_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT
+    status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_28"><a class="anchor" href="#_description_28"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs HMAC SHA512 hash operation. The HMAC SHA512 control block must have been initialized with <em><em>nx_crypto_method_hmac_sha512_init</em>. The HMAC SHA512 algorithm to be performed is based on the algorithm specified in the _method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>For the final <em>NX_CRYPTO_HASH_CALCULATE</em> operation, the output buffer size must be 64 bytes for SHA512, or 48 bytes for SHA384.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_27"><a class="anchor" href="#_parameters_27"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid operation is:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_HASH_INITIALIZE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_UPDATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_CALCULATE</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid HMAC SHA512 crypto method. The crypto method used here must be the same used in the <em>_nx_crypto_method_hmac_sha512_init.</em></p>
+</li>
+<li>
+<p><em>key</em> Points to the key. There are not restrictions on key buffer.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> Size of the key, in bits.</p>
+</li>
+<li>
+<p><em>input_data</em> Points to a buffer containing input text data. There are not restrictions on input buffer.</p>
+</li>
+<li>
+<p><em>input_data_size</em> Size of the input data, in bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> This field is not used for HMAC SHA512.</p>
+</li>
+<li>
+<p><em>iv_size</em> This field is not used for HMAC SHA512.</p>
+</li>
+<li>
+<p><em>output_buffer</em> Pointer to the memory area for the generated HMAC SHA512 hash.</p>
+</li>
+<li>
+<p><em>output_buffer_size</em> Size of the output buffer in bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the HMAC SHA512 control block used in <em>_nx_crypto_method_hmac_sha512_init</em>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For HMAC SHA512, the metadata size must <em>sizeof(NX_CRYPTO_SHA512_HMAC)</em></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_26"><a class="anchor" href="#_return_values_26"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the HMAC SHA512 operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid HMAC SHA512 algorithm being specified.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_BUFFER_SIZE</strong> (0x20005) Invalid output buffer size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_hmac_sha512_cleanup"><a class="anchor" href="#_nx_crypto_method_hmac_sha512_cleanup"></a>_nx_crypto_method_hmac_sha512_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the HMAC SHA512 control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_28"><a class="anchor" href="#_prototype_28"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_hmac_sha512_cleanup(VOID* crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_29"><a class="anchor" href="#_description_29"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the HMAC SHA512 control block after it determines this HMAC SHA512 session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_28"><a class="anchor" href="#_parameters_28"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_metadata</em> Pointer to the HMAC SHA512 control block used in <em>_nx_crypto_method_hmac_sha512_init</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_27"><a class="anchor" href="#_return_values_27"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the HMAC SHA512 session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_md5_init"><a class="anchor" href="#_nx_crypto_method_md5_init"></a>_nx_crypto_method_md5_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the MD5 crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_29"><a class="anchor" href="#_prototype_29"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_md5_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_30"><a class="anchor" href="#_description_30"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the MD5 control block with the given key string. Once the MD5 control block is initialized, subsequent MD5 operation shall be using the same control block.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple MD5 control blocks, each represents a session. Initializing the MD5 control block starts a new hash computation session. Re-initializing the MD5 control block abandons the current session and stars a new one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_29"><a class="anchor" href="#_parameters_29"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid MD5 crypto method control block. The following pre-defined crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>crypto_method_md5</em></strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> This field is not used for MD5.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> This field is not used for MD5</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent and is not being used in this implementation. Application shall pass NULL for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the MD5 control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For MD5, the metadata size must be <strong>sizeof(NX_CRYPTO_MD5)</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_28"><a class="anchor" href="#_return_values_28"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the MD5 control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_md5_operation"><a class="anchor" href="#_nx_crypto_method_md5_operation"></a>_nx_crypto_method_md5_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform an MD5 hash operation.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_30"><a class="anchor" href="#_prototype_30"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_md5_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT
+    status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_31"><a class="anchor" href="#_description_31"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs MD5 hash operation. The MD5 control block must have been initialized with <em><em>nx_crypto_method_md5_init</em>. The MD5 algorithm to be performed is based on the algorithm specified in the _method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>For the final <em>NX_CRYPTO_HASH_CALCULATE</em> operation, the output buffer size must be 16 bytes.</p>
+</div>
+<div class="paragraph">
+<p>This operation does not keep state information and does not alter the key material in the MD5 control block.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_30"><a class="anchor" href="#_parameters_30"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid operation is:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_HASH_INITIALIZE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_UPDATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_CALCULATE</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid MD5 crypto method. The crypto method used here must be the same used in the <em>_nx_crypto_method_md5_init.</em></p>
+</li>
+<li>
+<p><em>input_data</em> Points to a buffer containing input text data. There are not restrictions on input buffer.</p>
+</li>
+<li>
+<p><em>input_data_size</em> Size of the input data, in bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> This field is not used for MD5.</p>
+</li>
+<li>
+<p><em>iv_size</em> This field is not used for MD5.</p>
+</li>
+<li>
+<p><em>output_buffer</em> Pointer to the memory area for the generated MD5 hash.</p>
+</li>
+<li>
+<p><em>output_buffer_size</em> Size of the output buffer in bytes. For MD5 the buffer size must be 16 bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the MD5 control block used in <em>_nx_crypto_method_md5_init</em>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For MD5, the metadata size must <em>sizeof(NX_CRYPTO_MD5)</em></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_29"><a class="anchor" href="#_return_values_29"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the MD5 operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid MD5 algorithm being specified.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_BUFFER_SIZE</strong> (0x20005) Invalid output buffer size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_md5_cleanup"><a class="anchor" href="#_nx_crypto_method_md5_cleanup"></a>_nx_crypto_method_md5_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the MD5 control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_31"><a class="anchor" href="#_prototype_31"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_md5_cleanup(VOID* crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_32"><a class="anchor" href="#_description_32"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the MD5 control block after it determines this MD5 session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_31"><a class="anchor" href="#_parameters_31"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_metadata</em> Pointer to the MD5 control block used in <em>_nx_crypto_method_md5_init</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_30"><a class="anchor" href="#_return_values_30"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the MD5 session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_sha1_init"><a class="anchor" href="#_nx_crypto_method_sha1_init"></a>_nx_crypto_method_sha1_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the SHA1 crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_32"><a class="anchor" href="#_prototype_32"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_sha1_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_33"><a class="anchor" href="#_description_33"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the SHA1 control block with the given key string. Once the SHA1 control block is initialized, subsequent SHA1 operation shall be using the same control block.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple SHA1 control blocks, each represents a session. Initializing the SHA1 control block starts a new hash computation session. Re-initializing the SHA1 control block abandons the current session and stars a new one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_32"><a class="anchor" href="#_parameters_32"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid SHA1 crypto method control block. The following pre-defined crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>crypto_method_sha1</em></strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> This field is not used for SHA1.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> This field is not used for SHA1</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent and is not being used in this implementation. Application shall pass NULL for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the SHA1 control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For SHA1, the metadata size must be <em>sizeof(NX_CRYPTO_SHA1)</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_31"><a class="anchor" href="#_return_values_31"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the SHA1control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_sha1_operation"><a class="anchor" href="#_nx_crypto_method_sha1_operation"></a>_nx_crypto_method_sha1_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform SHA1 hash operation</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_33"><a class="anchor" href="#_prototype_33"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_sha1_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT
+    status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_34"><a class="anchor" href="#_description_34"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs SHA1 hash operation. The SHA1 control block must have been initialized with <em><em>nx_crypto_method_sha1_init</em>. The SHA1 algorithm to be performed is based on the algorithm specified in the _method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>For the final <em>NX_CRYPTO_HASH_CALCULATE</em> operation, the output buffer size must be 20 bytes.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_33"><a class="anchor" href="#_parameters_33"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>op</strong>* Type of operation to perform. Valid operation is:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_HASH_INITIALIZE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_UPDATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_CALCULATE</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid SHA1 crypto method. The crypto method used here must be the same used in the <em>*nx_crypto_method_sha1_init*.</em></p>
+</li>
+<li>
+<p><em>input_data</em> Points to a buffer containing input text data. There are not restrictions on input buffer.</p>
+</li>
+<li>
+<p><em>input_data_size</em> Size of the input data, in bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> This field is not used for SHA1.</p>
+</li>
+<li>
+<p><em>iv_size</em> This field is not used for SHA1.</p>
+</li>
+<li>
+<p><em>output_buffer</em> Pointer to the memory area for the generated SHA1 hash.</p>
+</li>
+<li>
+<p><em>output_buffer_size</em> Size of the output buffer in bytes. For SHA1 the buffer size must be 20 bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the SHA1 control block used in <em>_nx_crypto_method_sha1_init</em>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For SHA1, the metadata size must <em>sizeof(NX_CRYPTO_SHA1)</em></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_32"><a class="anchor" href="#_return_values_32"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the SHA1 operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid SHA1 algorithm being specified.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_BUFFER_SIZE</strong> (0x20005) Invalid output buffer size.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_sha1_cleanup"><a class="anchor" href="#_nx_crypto_method_sha1_cleanup"></a>_nx_crypto_method_sha1_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the SHA1 control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_34"><a class="anchor" href="#_prototype_34"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_sha1_cleanup(VOID* crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_35"><a class="anchor" href="#_description_35"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the SHA1 control block after it determines this SHA1 session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_34"><a class="anchor" href="#_parameters_34"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_metadata</em> Pointer to the SHA1 control block used in <em>_nx_crypto_method_sha1_init</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_33"><a class="anchor" href="#_return_values_33"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the SHA1 session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_sha256_init"><a class="anchor" href="#_nx_crypto_method_sha256_init"></a>_nx_crypto_method_sha256_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the SHA256 crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_35"><a class="anchor" href="#_prototype_35"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_sha256_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_36"><a class="anchor" href="#_description_36"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the SHA256 control block with the given key string. Once the SHA256 control block is initialized, subsequent SHA256 operation shall be using the same control block.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple SHA256 control blocks, each represents a session. Initializing the SHA256 control block starts a new hash computation session. Re-initializing the SHA256 control block abandons the current session and stars a new one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_35"><a class="anchor" href="#_parameters_35"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid SHA256 crypto method control block. The following pre-defined crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>crypto_method_sha256</strong></p>
+</li>
+<li>
+<p><strong>crypto_method_sha224</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> This field is not used for SHA256.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> This field is not used for SHA256</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent and is not being used in this implementation. Application shall pass NULL for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the SHA256 control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For SHA256, the metadata size must be <em>sizeof(NX_CRYPTO_SHA256)</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_34"><a class="anchor" href="#_return_values_34"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the SHA256 control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_sha256_operation"><a class="anchor" href="#_nx_crypto_method_sha256_operation"></a>_nx_crypto_method_sha256_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform SHA256 hash operation</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_36"><a class="anchor" href="#_prototype_36"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_sha256_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT
+    status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_37"><a class="anchor" href="#_description_37"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs SHA256 hash operation. The SHA256 control block must have been initialized with <em><strong>_nx_crypto_method_sha256_init</em></strong>. The SHA256 algorithm to be
+performed is based on the algorithm specified in the <em>method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>For the final <em>NX_CRYPTO_HASH_CALCULATE</em> operation, the output buffer size must be 32 bytes for SHA256, or 28 bytes for SHA224.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_36"><a class="anchor" href="#_parameters_36"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid operation is:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_HASH_INITIALIZE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_UPDATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_CALCULATE</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid SHA256 crypto method. The crypto method used here must be the same used in the <em>_nx_crypto_method_sha256_init.</em></p>
+</li>
+<li>
+<p><em>input_data</em> Points to a buffer containing input text data. There are not restrictions on input buffer.</p>
+</li>
+<li>
+<p><em>input_data_size</em> Size of the input data, in bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> This field is not used for SHA256.</p>
+</li>
+<li>
+<p><em>iv_size</em> This field is not used for SHA256.</p>
+</li>
+<li>
+<p><em>output_buffer</em> Pointer to the memory area for the generated SHA256 hash.</p>
+</li>
+<li>
+<p><em>output_buffer_size</em> Size of the output buffer in bytes. For SHA256 the buffer size must be 32 bytes. For SHA224 the buffer size must be 28 bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the SHA2 control block used in <strong><em>_nx_crypto_method_sha2_init</em></strong>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For SHA256, the metadata size must <strong>sizeof(NX_CRYPTO_SHA256)</strong></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_35"><a class="anchor" href="#_return_values_35"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the SHA256 operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid SHA256 algorithm being specified.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_BUFFER_SIZE</strong> (0x20005) Invalid output buffer size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_sha256_cleanup"><a class="anchor" href="#_nx_crypto_method_sha256_cleanup"></a>_nx_crypto_method_sha256_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the SHA256 control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_37"><a class="anchor" href="#_prototype_37"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_sha256_cleanup(VOID* crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_38"><a class="anchor" href="#_description_38"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the SHA256 control block after it determines this SHA256 session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_37"><a class="anchor" href="#_parameters_37"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_metadata</em> Pointer to the SHA256 control block used in <em>_nx_crypto_method_sha256_init</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_36"><a class="anchor" href="#_return_values_36"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the SHA256 session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_sha512_init"><a class="anchor" href="#_nx_crypto_method_sha512_init"></a>_nx_crypto_method_sha512_init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initializes the SHA512 crypto control block</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_38"><a class="anchor" href="#_prototype_38"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_sha512_init(
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    VOID **handle,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_39"><a class="anchor" href="#_description_39"></a>Description</h3>
+<div class="paragraph">
+<p>This function initializes the SHA512 control block with the given key string. Once the SHA512 control block is initialized, subsequent SHA512 operation shall be using the same control block.</p>
+</div>
+<div class="paragraph">
+<p>Application may create multiple SHA512 control blocks, each represents a session. Initializing the SHA512 control block starts a new hash computation session. Re-initializing the SHA512 control block abandons the current session and stars a new one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_38"><a class="anchor" href="#_parameters_38"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>method</em> Pointer to a valid SHA512 crypto method control block. The following pre-defined crypto methods are available:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>crypto_method_sha512</em></strong></p>
+</li>
+<li>
+<p><strong>crypto_method_sha384</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>key</em> This field is not used for SHA512.</p>
+</li>
+<li>
+<p><em>key_size_in_bits</em> This field is not used for SHA512</p>
+</li>
+<li>
+<p><em>handle</em> This service returns a handle to the caller. The handle is implementation-dependent and is not being used in this implementation. Application shall pass NULL for the handle.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to a valid memory space for the SHA512 control block. The starting address of the memory space must be 4-byte aligned.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For SHA512, the metadata size must be <strong>sizeof(NX_CRYPTO_SHA512)</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_37"><a class="anchor" href="#_return_values_37"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successful initialization of the SHA512 control block with the key and key size.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid pointer to the key, or invalid crypto_metadata or crypto_metadata_size, or crypto_metadata is not 4-byte aligned.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_sha512_operation"><a class="anchor" href="#_nx_crypto_method_sha512_operation"></a>_nx_crypto_method_sha512_operation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform SHA512 hash operation</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_39"><a class="anchor" href="#_prototype_39"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_sha512_operation(UINT op,
+    VOID *handle,
+    struct NX_CRYPTO_METHOD_STRUCT *method,
+    UCHAR *key,
+    NX_CRYPTO_KEY_SIZE key_size_in_bits,
+    UCHAR *input,
+    ULONG input_length_in_byte,
+    UCHAR *iv_ptr,
+    UCHAR *output,
+    ULONG output_length_in_byte,
+    VOID *crypto_metadata,
+    ULONG crypto_metadata_size,
+    VOID *packet_ptr,
+    VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_40"><a class="anchor" href="#_description_40"></a>Description</h3>
+<div class="paragraph">
+<p>This function performs SHA512 hash operation. The SHA512 control block must have been initialized with <em><em>nx_crypto_method_sha512_init</em>. The SHA512 algorithm to be performed is based on the algorithm specified in the _method</em> control block.</p>
+</div>
+<div class="paragraph">
+<p>For the final <em>NX_CRYPTO_HASH_CALCULATE</em> operation, the output buffer size must be 64 bytes for SHA512, or 48 bytes for SHA384.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_39"><a class="anchor" href="#_parameters_39"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>op</em> Type of operation to perform. Valid operation is:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_HASH_INITIALIZE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_UPDATE</strong></p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_HASH_CALCULATE</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><em>handle</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>method</em> Pointer to the valid SHA512 crypto method. The crypto method used here must be the same used in the <em><strong>_nx_crypto_method_sha512_init</em></strong>.</p>
+</li>
+<li>
+<p><em>input_data</em> Points to a buffer containing input text data. There are not restrictions on input buffer.</p>
+</li>
+<li>
+<p><em>input_data_size</em> Size of the input data, in bytes.</p>
+</li>
+<li>
+<p><em>iv_ptr</em> This field is not used for SHA512.</p>
+</li>
+<li>
+<p><em>iv_size</em> This field is not used for SHA512.</p>
+</li>
+<li>
+<p><em>output_buffer</em> Pointer to the memory area for the generated SHA512 hash.</p>
+</li>
+<li>
+<p><em>output_buffer_size</em> Size of the output buffer in bytes. For SHA512 the buffer size must be 64 bytes. For SHA384 the buffer size must be 48 bytes.</p>
+</li>
+<li>
+<p><em>crypto_metadata</em> Pointer to the SHA512 control block used in <em>_nx_crypto_method_sha512_init</em>.</p>
+</li>
+<li>
+<p><em>crypto_metadata_size</em> Size, in bytes, of the crypto_metadata area. For SHA512, the metadata size must <strong>sizeof(NX_CRYPTO_SHA512)</strong></p>
+</li>
+<li>
+<p><em>packet_ptr</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+<li>
+<p><em>nx_crypto_hw_process_callback</em> This field is not used in the software implementation of NetX Duo Crypto library. Any values passed in are silently ignored.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_38"><a class="anchor" href="#_return_values_38"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully executed the SHA512 operation.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x07) Invalid input pointer or invalid length.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_ALGORITHM</strong> (0x20004) Invalid SHA512 algorithm being specified.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_BUFFER_SIZE</strong> (0x20005) Invalid output buffer size.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_crypto_method_sha512_cleanup"><a class="anchor" href="#_nx_crypto_method_sha512_cleanup"></a>_nx_crypto_method_sha512_cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clean up the SHA512 control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_40"><a class="anchor" href="#_prototype_40"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT _nx_crypto_method_sha512_cleanup(VOID* crypto_metadata);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_41"><a class="anchor" href="#_description_41"></a>Description</h3>
+<div class="paragraph">
+<p>Application calls this function to clean up the SHA512 control block after it determines this SHA512 session is no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_40"><a class="anchor" href="#_parameters_40"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>crypto_metadata</em> Pointer to the SHA512 control block used in <em>_nx_crypto_method_sha512_init</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_39"><a class="anchor" href="#_return_values_39"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_CRYPTO_SUCCESS</strong> (0x00) Successfully cleaned up the SHA512 session.</p>
+</li>
+<li>
+<p><strong>NX_CRYPTO_INVALID_LIBRARY</strong> (0x20001) The crypto library is in an invalid state and cannot be used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 7: USBX Host Class Implementation Considerations :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/usbx/main/usbx-host-stack-supplemental-7.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="usbx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">USBX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">USBX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">USBX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-usbx.html">Overview of USBX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-3.html">Ch. 3 - Functional components of USBX device stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-2.html">Ch. 2 - USBX device class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-7.html">Ch. 7 - USBX device class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-6.html">Ch. 6 - USBX CDC-ECM class usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-2.html">Ch. 2 - USBX Host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">USBX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">USBX</a></li>
+    <li>USBX host stack supplemental</li>
+    <li><a href="usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/usbx/modules/ROOT/pages/usbx-host-stack-supplemental-7.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 7: USBX Host Class Implementation Considerations</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This guide is about how to implement host class modules for specific host classes/functions in USBX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_host_class_layer_ux_host_class"><a class="anchor" href="#_host_class_layer_ux_host_class"></a>Host Class Layer (ux_host_class)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The host class layer is the class layer above host stack layer.
+It provides a unique way for different classes/functions to communicate with USBX host stack,
+and provides class/function specific APIs for the application usages.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usbx_host_class"><a class="anchor" href="#_usbx_host_class"></a>USBX Host Class</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The USBX host stack accesses host class/function modules through a unique struct of <code>UX_HOST_CLASS</code>.
+It&#8217;s the container for specific class modules. It&#8217;s allocated on USBX host stack initialization, and can be referenced as <code>_ux_system_host &#8594; ux_system_host_class_array</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usbx_host_class_module_for_specific_classfunction"><a class="anchor" href="#_usbx_host_class_module_for_specific_classfunction"></a>USBX Host Class Module for specific class/function</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For different USB class/function the host class struct is linked to specific class entry function, called by USBX host stack.
+The actual implements then handles the commands from USBX host stack, to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>query if the class/function is supported;</p>
+</li>
+<li>
+<p>activate/deactivate the class/function;</p>
+</li>
+<li>
+<p>destroy the class/function anyway.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The host class module may also provide application APIs and/or callbacks to perform class specific data/control exchange with application.</p>
+</div>
+<div class="sect2">
+<h3 id="_usbx_host_class_entry_for_host_stack"><a class="anchor" href="#_usbx_host_class_entry_for_host_stack"></a>USBX Host Class Entry for Host Stack</h3>
+<div class="paragraph">
+<p>The host class/function module must provide an entry function. It&#8217;s a parameter for <code>ux_host_stack_class_register</code> to register the class module on host stack. It dispatches commands from USBX host stack for standard enumeration actions.</p>
+</div>
+<div class="paragraph">
+<p>The prototype for the function is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT  _ux_host_class_xxxxx_entry(UX_HOST_CLASS_COMMAND *command);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The command data is encapsulated in a struct of <code>UX_HOST_CLASS_COMMAND</code>, where <code>ux_host_class_command_request</code> holds the host stack command to process and others are parameters for the command, the possible commands are:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1112%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">_usage</th>
+<th class="tableblock halign-left valign-top">_request</th>
+<th class="tableblock halign-left valign-top">_container</th>
+<th class="tableblock halign-left valign-top">_instance</th>
+<th class="tableblock halign-left valign-top">_class_ptr</th>
+<th class="tableblock halign-left valign-top">_pid/_vid</th>
+<th class="tableblock halign-left valign-top">_class/_subclass/_protocol</th>
+<th class="tableblock halign-left valign-top">_iad_class/_iad_subclass/_iad_protocol</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_USAGE_PIDVID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_QUERY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(UX_DEVICE*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Query if class module want to own the device by its idVendor/idProduct in device descriptor</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_USAGE_DCSP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_QUERY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(UX_DEVICE*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Query if class module want to own the device by its bDeviceClass/bDeviceSubClass/bDeviceProtocol in device descriptor, other information can also be referenced</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_USAGE_CSP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_QUERY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(UX_INTERFACE*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Query if class module want to own the interface by its bInterfaceClass/bInterfaceSubClass/bInterfaceProtocol in configuration descriptor, other information can also be referenced</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_USAGE_DCSP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_ACTIVATE/_ACTIVATE_START</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(UX_DEVICE*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(UX_HOST_CLASS*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Activate/start activating a new device class instance</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_USAGE_CSP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_ACTIVATE/_ACTIVATE_START</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(UX_INTERFACE*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(UX_HOST_CLASS*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Activate/start activating a new interface class instance</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_ACTIVATE_WAIT (standalone)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(UX_DEVICE*)/(UX_INTERFACE*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(VOID*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(UX_HOST_CLASS*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Standalone mode only, run device/interface class module instance activating state machine</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_DEACTIVATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(VOID*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deactivate the specific instance (on device/interface)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HOST_CLASS_COMMAND_DESTROY (optional)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(UX_HOST_CLASS*)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Destroy instance on class unregistering</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The function entry implement example is as following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/**************************************************************************/
+/*                                                                        */
+/*  DESCRIPTION                                                           */
+/*                                                                        */
+/*    This function is the entry point of the XXXXX class. It will be     */
+/*    called by the USBX stack enumeration module when there is a new     */
+/*    device on the bus or when there is a device extraction.             */
+/*                                                                        */
+/*  INPUT                                                                 */
+/*                                                                        */
+/*    command                               Pointer to class command      */
+/*                                                                        */
+/*  OUTPUT                                                                */
+/*                                                                        */
+/*    Completion Status                                                   */
+/*                                                                        */
+/*  CALLS                                                                 */
+/*                                                                        */
+/*  CALLED BY                                                             */
+/*                                                                        */
+/*    USBX Host Stack                                                   */
+/*                                                                        */
+/**************************************************************************/
+UINT  _ux_host_class_xxxxx_entry(UX_HOST_CLASS_COMMAND *command)
+{
+
+UINT        status;
+
+
+    /* The command request will tell us we need to do here, either a enumeration
+       query, an activation or a deactivation, etc.  */
+    switch (command -&gt; ux_host_class_command_request)
+    {
+
+    case UX_HOST_CLASS_COMMAND_QUERY:
+
+        /* TODO: check if the module want to own the device/interface and activate instance later. */
+        if (/* take the ownership.  */)
+            return(UX_SUCCESS);
+        else
+            return(UX_NO_CLASS_MATCH);
+
+    case UX_HOST_CLASS_COMMAND_ACTIVATE:
+
+        /* TODO: activate the host class/function instance.  */
+        /* The activate command is used when the device inserted has found a parent and is ready to complete the enumeration.  */
+        /* The instance for the device/interface class is created and appended to class instance list.  */
+        /* Mandatory endpoints have to be mounted and the class thread needs to be activated if needed.  */
+        /* If instance activation is success and there is notification callback, notify application.  */
+        /* ......  */
+        return(status);
+
+#if defined(UX_HOST_STANDALONE)
+    case UX_HOST_CLASS_COMMAND_ACTIVATE_WAIT:
+
+        /* TODO: run activating state machine for the class on the instance.  */
+        /* ......  */
+        return(status);
+#endif
+
+    case UX_HOST_CLASS_COMMAND_DEACTIVATE:
+
+        /* TODO: deactivate the device class/function instance (optional).  */
+        /* The deactivate command is used when the device has been extracted either directly or when its parents has been extracted.  */
+        /* The instance endpoints have to be dismounted and the class thread canceled.  */
+        /* If there is notification callback, notify application.  */
+        /* The instance is removed from class instance list and freed.  */
+        /* ......  */
+        return(status);
+
+    case UX_HOST_CLASS_COMMAND_DESTROY:
+
+        /* TODO: destroy the instance on class unregistering.  */
+        /* Terminate pending transfers and threads.  */
+        /* Free/delete allocated resources.  */
+        /* Remove the instance from class instance list and free it.  */
+        /* ......  */
+        return(status);
+
+    default:
+
+        /* Error trap. */
+        _ux_system_error_handler(UX_SYSTEM_LEVEL_THREAD, UX_SYSTEM_CONTEXT_CLASS, UX_FUNCTION_NOT_SUPPORTED);
+
+        /* If trace is enabled, insert this event into the trace buffer.  */
+        UX_TRACE_IN_LINE_INSERT(UX_TRACE_ERROR, UX_FUNCTION_NOT_SUPPORTED, 0, 0, 0, UX_TRACE_ERRORS, 0, 0)
+
+        /* Return error status.  */
+        return(UX_FUNCTION_NOT_SUPPORTED);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ux_host_class_command_query"><a class="anchor" href="#_ux_host_class_command_query"></a>UX_HOST_CLASS_COMMAND_QUERY</h4>
+<div class="sect4">
+<h5 id="_device_query"><a class="anchor" href="#_device_query"></a>Device query</h5>
+<div class="literalblock">
+<div class="content">
+<pre>The query is performed after device descriptor is get from device. If the query is success the host stack pass ownership to class module to let class control the next enumeration steps.</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Example of checking device descriptor VID/PID:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">        if (command -&gt; ux_host_class_command_usage == UX_HOST_CLASS_COMMAND_USAGE_PIDVID &amp;&amp;
+            command -&gt; ux_host_class_command_pid == UX_DEVICE_CLASS_XXXXX_PID &amp;&amp;
+            command -&gt; ux_host_class_command_vid == UX_DEVICE_CLASS_XXXXX_VID)
+            return(UX_SUCCESS);
+        else
+            return(UX_NO_CLASS_MATCH);</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Example of checking device descriptor class/subclass/protocol:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">        if (command -&gt; ux_host_class_command_usage == UX_HOST_CLASS_COMMAND_USAGE_DCSP &amp;&amp;
+            command -&gt; ux_host_class_command_class == UX_DEVICE_CLASS_XXXXX_CLASS &amp;&amp;
+            command -&gt; ux_host_class_command_subclass == UX_DEVICE_CLASS_XXXXX_SUBCLASS &amp;&amp;
+            command -&gt; ux_host_class_command_protocol == UX_DEVICE_CLASS_XXXXX_PROTOCOL)
+            return(UX_SUCCESS);
+        else
+            return(UX_NO_CLASS_MATCH);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_interface_query"><a class="anchor" href="#_interface_query"></a>Interface query</h5>
+<div class="literalblock">
+<div class="content">
+<pre>The query is performed after configuration descriptor is get from device. The host stack goes through interfaces in the configuration to query class modules. The host stack continues enumeration to do set configuration and issue command on modules linked to interfaces then.</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Example of checking a interface descriptor class/subclass/protocol:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">if (command -&gt; ux_host_class_command_usage == UX_HOST_CLASS_COMMAND_USAGE_CSP &amp;&amp;
+    command -&gt; ux_host_class_command_class == UX_DEVICE_CLASS_XXXXX_CLASS &amp;&amp;
+    command -&gt; ux_host_class_command_subclass == UX_DEVICE_CLASS_XXXXX_SUBCLASS &amp;&amp;
+    command -&gt; ux_host_class_command_protocol == UX_DEVICE_CLASS_XXXXX_PROTOCOL)
+    return(UX_SUCCESS);
+else
+    return(UX_NO_CLASS_MATCH);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ux_host_class_command_activate"><a class="anchor" href="#_ux_host_class_command_activate"></a>UX_HOST_CLASS_COMMAND_ACTIVATE</h4>
+<div class="paragraph">
+<p>According to query results, the activations can be different:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Device query is success: the class module is device owner to finish enumeration;</p>
+</li>
+<li>
+<p>Interface query is success: the class module is interface owner to execute activation command from host stack to do enumeration steps.</p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="_activate_implement_for_device_owner"><a class="anchor" href="#_activate_implement_for_device_owner"></a>Activate implement for device owner</h5>
+<div class="paragraph">
+<p>The activate command is invoked after a device report its device descriptor. The owner must continue enumeration, to process configuration descriptor and select configuration in activation.</p>
+</div>
+<div class="paragraph">
+<p>The activate command implement example for a device owner is as following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">    /* ......  */
+
+    /* Get the device that owns this instance.  */
+    device =  (UX_DEVICE *) command -&gt; ux_host_class_command_container;
+
+    /* Allocate the memory for XXXXX instance.  */
+    xxxxx =  (UX_HOST_CLASS_XXXXX *) _ux_utility_memory_allocate(UX_NO_ALIGN, UX_REGULAR_MEMORY, sizeof(UX_HOST_CLASS_XXXXX));
+    if (xxxxx == UX_NULL)
+        return(UX_MEMORY_INSUFFICIENT);
+
+    /* Store the instance in the device container, this is for the USBX stack when it needs to invoke the class for deactivation.  */
+    device -&gt; ux_device_class_instance =  (VOID *) xxxxx;
+
+    /* Add this instance to class instance list.  */
+    _ux_host_stack_class_instance_create(xxxxx -&gt; ux_host_class_xxxxx_class, (VOID *) xxxxx);
+
+    /* TODO: Configure the device.
+     *       - Get configuration descriptor from device (through _ux_host_stack_device_configuration_get)
+     *       - Get other descriptors (class/function specific)
+     *       - Initialize the instance fields according to device reported things
+     *       - Select expected configuation on device (_ux_host_stack_device_configuration_select)
+     *       - Select expected interface in configuration (optional, if alternate settings supported)
+     *       - Issue sequence of requests to device to initialize it
+     *       - etc.
+     */
+    /* ......  */
+
+    /* TODO: class/function specific activations, such as:
+     *       - Activate class and function specific threads.
+     *       - Activate function specific endpoints.
+     *       - Other class/function specific preparations.
+     *         - Issue requests to initialize device functionalities;
+     *         - etc.
+     */
+    /* ......  */
+
+    /* If all is fine and the device is mounted, we need to inform the application
+    if a function has been programmed in the system structure. */
+    if (_ux_system_host -&gt; ux_system_host_change_function != UX_NULL)
+    {
+
+        /* Call system change function.  */
+        _ux_system_host -&gt;  ux_system_host_change_function(UX_DEVICE_INSERTION, xxxxx -&gt; ux_host_class_xxxxx_class, (VOID *) xxxxx);
+    }
+
+    /* ......  */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check existing HUB or ASIX implement for more detailed references.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_activate_implement_for_interface_owner"><a class="anchor" href="#_activate_implement_for_interface_owner"></a>Activate implement for interface owner</h5>
+<div class="paragraph">
+<p>The activate command is invoked after a device is configured. In this case host stack has built device configuration tree. The owner uses host stack enumerated things to do class/function specific activation.</p>
+</div>
+<div class="paragraph">
+<p>The activate command implement example for a interface owner is as following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">    /* ......  */
+
+    /* Get the interface that owns this instance.  */
+    interface_ptr =  (UX_INTERFACE *) command -&gt; ux_host_class_command_container;
+
+    /* Allocate the memory for XXXXX instance.  */
+    xxxxx =  (UX_HOST_CLASS_XXXXX *) _ux_utility_memory_allocate(UX_NO_ALIGN, UX_REGULAR_MEMORY, sizeof(UX_HOST_CLASS_XXXXX));
+    if (xxxxx == UX_NULL)
+        return(UX_MEMORY_INSUFFICIENT);
+
+    /* ......  */
+
+    /* This instance of the interface must also be stored in the interface container.  */
+    interface_ptr -&gt; ux_interface_class_instance =  (VOID *) xxxxxx;
+
+    /* Add this instance to class instance list.  */
+    _ux_host_stack_class_instance_create(xxxxxx -&gt; ux_host_class_xxxxxx_class, (VOID *) xxxxxx);
+
+    /* TODO: class/function specific activations, such as:
+     *       - Activate class and function specific threads.
+     *       - Activate function specific endpoints.
+     *       - Other class/function specific preparations.
+     *         - Issue requests to initialize function module functionalities;
+     *         - etc.
+     */
+    /* ......  */
+
+    /* If all is fine and the instance is mounted, we need to inform the application
+    if a function has been programmed in the system structure. */
+    if (_ux_system_host -&gt; ux_system_host_change_function != UX_NULL)
+    {
+
+        /* Call system change function.  */
+        _ux_system_host -&gt;  ux_system_host_change_function(UX_DEVICE_INSERTION, xxxxx -&gt; ux_host_class_xxxxx_class, (VOID *) xxxxx);
+    }
+
+    /* ......  */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check existing CDC_ACM, Storage or HID implement for more detailed references.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ux_host_class_command_deactivate"><a class="anchor" href="#_ux_host_class_command_deactivate"></a>UX_HOST_CLASS_COMMAND_DEACTIVATE</h4>
+<div class="paragraph">
+<p>The deactivate command implement example is as following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT  _ux_host_class_xxxxx_deactivate(UX_HOST_CLASS_COMMAND *command)
+{
+    /* ......  */
+
+    /* Get the instance to the class.  */
+    xxxxx =  (UX_HOST_CLASS_XXXXX *) command -&gt; ux_host_class_command_instance;
+
+    /* TODO: class/function specific deactivations, such as:
+     *       - Cancel pending transfers;
+     *       - Free allocated resources;
+     *       - etc.
+     */
+    /* ......  */
+
+    /* Unlink the instance from class instance list.  */
+    _ux_host_stack_class_instance_destroy(xxxxx -&gt; ux_host_class_xxxxx_class, (VOID *) xxxxx);
+
+    /* Before we free the instance, we need to inform the application that the instance is removed.  */
+    if (_ux_system_host -&gt; ux_system_host_change_function != UX_NULL)
+    {
+
+        /* Inform the application the instance is removed.  */
+        _ux_system_host -&gt; ux_system_host_change_function(UX_DEVICE_REMOVAL, xxxxx -&gt; ux_host_class_xxxxx_class, (VOID *) xxxxx);
+    }
+
+    /* Free the memory block used by the class instance.  */
+    _ux_utility_memory_free(xxxxx);
+
+    return(UX_SUCCESS);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_other_considerations"><a class="anchor" href="#_other_considerations"></a>Other considerations</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_class_struct_for_instance_list_management"><a class="anchor" href="#_class_struct_for_instance_list_management"></a>Class struct for instance list management</h3>
+<div class="paragraph">
+<p>The first two fields for class module is kept consistent for the system to manage the class instances list in class container.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">typedef struct UX_HOST_CLASS_XXXXX_STRUCT
+{
+    struct UX_HOST_CLASS_XXXXX_STRUCT
+                   *ux_host_class_xxxxx_next_instance;
+    UX_HOST_CLASS  *ux_host_class_xxxxx_class;
+
+    /* ......  */
+} UX_HOST_CLASS_XXXXX;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With these two fields, the function <code>_ux_host_stack_class_instance_create</code> can be used to link instance to class instance list and <code>_ux_host_stack_class_instance_destroy</code> can be used to unlink it.</p>
+</div>
+<div class="paragraph">
+<p>By adding instance to class instance list, instance can be referenced in application through "class_get" and "class_instance_get", like following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">    /* Get a registered class.  */
+    ux_host_stack_class_get(_ux_system_host_class_cdc_acm_name, &amp;host_class);
+    /* Get the first class instance in instance list.  */
+    ux_host_stack_class_instance_get(host_class, 0, &amp;class_instance);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also the class instance can be verified by <code>_ux_host_stack_class_instance_verify</code>. It&#8217;s useful for APIs facing to application to confirm if right instance pointer is assigned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_device_control_endpoint_0_transfers"><a class="anchor" href="#_device_control_endpoint_0_transfers"></a>Device control endpoint 0 transfers</h3>
+<div class="paragraph">
+<p>For each attached device, the control endpoint 0 is available with <code>UX_DEVICE</code> creation, as <code>UX_DEVICE::ux_device_control_endpoint</code>. To avoid multiple access conflicts from different interfaces class modules on that device, <code>UX_DEVICE::ux_device_protection_semaphore</code> can be used, e.g.,:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">    /* ......  */
+
+    /* We need to get the default control endpoint transfer request pointer.  */
+    control_endpoint =  &amp;xxxxx -&gt; ux_host_class_xxxxx_device -&gt; ux_device_control_endpoint;
+    transfer_request =  &amp;control_endpoint -&gt; ux_endpoint_transfer_request;
+
+    /* Protect the control endpoint semaphore here.  It will be unprotected in the
+       transfer request function.  */
+    status =  _ux_host_semaphore_get(&amp;xxxxx -&gt; ux_host_class_xxxxx_device -&gt; ux_device_protection_semaphore, UX_WAIT_FOREVER);
+
+    /* Check for status.  */
+    if (status != UX_SUCCESS)
+    {
+
+        /* Something went wrong. */
+        /* ......  */
+        return(status);
+    }
+
+    /* Create a transfer request for the request.  */
+    transfer_request -&gt; ux_transfer_request_data_pointer =      data_stage_data_ptr;
+    transfer_request -&gt; ux_transfer_request_requested_length =  data_stage_data_length;
+    transfer_request -&gt; ux_transfer_request_type =              bRequestType;
+    transfer_request -&gt; ux_transfer_request_value =             wValue;
+    transfer_request -&gt; ux_transfer_request_index =             wIndex;
+    transfer_request -&gt; ux_transfer_request_function =          bRequest;
+
+    /* Issue the transfer request.  */
+    status =  _ux_host_stack_transfer_request(transfer_request);
+
+    /* ......  */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_device_non_control_transfers"><a class="anchor" href="#_device_non_control_transfers"></a>Device non-control transfers</h3>
+<div class="sect3">
+<h4 id="_thread_blocking_readwrite"><a class="anchor" href="#_thread_blocking_readwrite"></a>Thread blocking read/write</h4>
+<div class="paragraph">
+<p>If transfer callback is not used, in HCD lower level implement, the transfer semaphore is put when transfer ends, so in class implement semaphore wait is performed to wait transfer end. E.g.,</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">    /* ......  */
+
+    /* Get the pointer to the bulk in endpoint in the transfer_request.  */
+    transfer_request =  &amp;xxxxx -&gt; ux_host_class_xxxxx_bulk_in_endpoint -&gt; ux_endpoint_transfer_request;
+
+    /* Initialize the transfer request.  */
+    transfer_request -&gt; ux_transfer_request_data_pointer =      data_pointer;
+    transfer_request -&gt; ux_transfer_request_requested_length =  transfer_request_length;
+
+    /* Perform the transfer.  */
+    status =  _ux_host_stack_transfer_request(transfer_request);
+
+    /* Wait for the completion of the transfer_request.  */
+    status =  _ux_host_semaphore_get(&amp;transfer_request -&gt; ux_transfer_request_semaphore,
+                                        transfer_request -&gt; ux_transfer_request_timeout_value);
+
+    /* If the semaphore did not succeed we probably have a time out.  */
+    if (status != UX_SUCCESS)
+    {
+        /* All transfers pending need to abort. There may have been a partial transfer.  */
+        _ux_host_stack_transfer_request_abort(transfer_request);
+
+        /* ......  */
+    }
+    /* ......  */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Refer to read/write implement in host class CDC-ACM for more details.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_transfer_callback"><a class="anchor" href="#_using_transfer_callback"></a>Using transfer callback</h4>
+<div class="paragraph">
+<p>If transfer callback is assigned, in HCD lower level implement, the callback is invoked when transfer ends. E.g., to start a transfer with callback for periodic report polling:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">    /* Get the address of the HID associated with the interrupt endpoint.  */
+    transfer_request =  &amp;xxxxx -&gt; ux_host_class_xxxxx_interrupt_endpoint -&gt; ux_endpoint_transfer_request;
+
+    /* Set the class instance owner.  */
+    transfer_request -&gt; ux_transfer_request_class_instance = xxxxx;
+
+    /* Set the transfer callback function.  */
+    transfer_request -&gt; ux_transfer_request_completion_function = _ux_host_class_xxxxx_transfer_completed;
+
+    /* The transfer on the interrupt endpoint can be started.  */
+    _ux_host_stack_transfer_request(transfer_request);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In callback restart the transfer to keep periodic polling:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">void _ux_host_class_xxxxx_transfer_completed(UX_TRANSFER* transfer_request)
+{
+    /* ......  */
+
+    /* Get the class instance for this transfer request.  */
+    xxxxx =  (UX_HOST_CLASS_XXXXX *) transfer_request -&gt; ux_transfer_request_class_instance;
+
+    /* Check the state of the transfer.  If there is an error, we do not proceed with this report.  */
+    if (transfer_request -&gt; ux_transfer_request_completion_code != UX_SUCCESS)
+    {
+        /* ......  */
+    }
+    /* ......  */
+
+    /* Reactivate the HID interrupt pipe.  */
+    _ux_host_stack_transfer_request(transfer_request);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Refer to host HID periodic report polling implement for more details.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

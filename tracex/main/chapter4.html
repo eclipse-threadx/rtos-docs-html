@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 4 - TraceX performance analysis :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/tracex/main/chapter4.html">
+    <meta name="description" content="This chapter describes the TraceX performance analysis tool.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="tracex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">TraceX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">TraceX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">TraceX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-tracex.html">Overview of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">TraceX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of TraceX</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - TraceX performance analysis</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Generating trace buffers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - ThreadX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter7.html">Ch. 7 - FileX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter8.html">Ch. 8 - NetX Duo trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter9.html">Ch. 9 - USBX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter10.html">Ch. 10 - Customer user events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter11.html">Ch. 11 - Format of event trace buffer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - Sample tx_port.h</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - The tx_trace.h File</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - DOS command-line utilities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - Dumping and trace buffer</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">TraceX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">TraceX</a></li>
+    <li>TraceX user guide</li>
+    <li><a href="chapter4.html">Ch. 4 - TraceX performance analysis</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/tracex/modules/ROOT/pages/chapter4.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 4 - TraceX performance analysis</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter describes the TraceX performance analysis tool:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_performance_analysis"><a class="anchor" href="#_performance_analysis"></a>Performance Analysis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TraceX provides built-in performance analysis of trace files. Information such as the <em>execution profile</em>, <em>popular services</em>, <em>thread stack usage</em>, and various <em>performance statistics,</em> including FileX and NetX Duo statistics<em>,</em> are readily available. This information is available via the <strong><em>View</em></strong> menu item.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_execution_profile"><a class="anchor" href="#_execution_profile"></a>Execution Profile</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Selecting the <strong><em>Generate Execution Profile</em></strong> button or <strong><em>View -Execution Profile</em></strong> presents the TraceX execution profile for the currently loaded trace file. The execution profile associated with the sample ThreadX demonstration trace is shown in <strong>Figure 19</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/execution_profile.png" alt="Screenshot of the execution profile associated with the sample ThreadX demonstration trace.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 19</strong></p>
+</div>
+<div class="paragraph">
+<p>The example shown in <strong>Figure 19</strong> indicates that nearly 45% of the processing time is inside of <strong><em>thread 2</em></strong> and nearly 51% of the processing time is inside of <strong><em>thread 1</em></strong> This is logical since the bulk of the trace shows these threads sending and receiving messages. The remaining execution contexts have only a small amount of execution time in this example.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_popular_services"><a class="anchor" href="#_popular_services"></a>Popular Services</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Selecting <strong><em>View -&gt;Popular Services</em></strong> presents the popular services in the currently loaded trace file. By default, this information is displayed for the entire system. However, the popular services for specific threads are also available. The popular services in the sample ThreadX demonstration trace are shown in <strong>Figure 20</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/popular_services.png" alt="Screenshot of the popular services in the sample ThreadX demonstration trace.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 20</strong></p>
+</div>
+<div class="paragraph">
+<p>The example shown in <strong>Figure 20</strong> indicates that <strong><em>tx_queue_send</em></strong> and <strong><em>tx_queue_receive</em></strong> are the two most popular services in this trace. This is consistent with the behavior of the standard ThreadX demonstration from which this trace was captured.</p>
+</div>
+<div class="paragraph">
+<p>Specific threads can be selected for this analysis by using the drop down selection list at the top of this window. <strong>Figure 21</strong> shows this analysis for <strong><em>thread 3</em></strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/popular_services_thread3.png" alt="Screenshot of the analysis for a TraceX popular services.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 21</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_thread_stack_usage"><a class="anchor" href="#_thread_stack_usage"></a>Thread Stack Usage <span class="image"><img src="_images/media/user-guide/screen_shot_17.png" alt="Analysis for thread 3."></span></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Selecting the <strong><em>Generate Thread Stack Usage</em></strong> button or <strong><em>View -&gt; Thread Stack Usage</em></strong> presents the stack usage for each thread in the trace file. This is accomplished by ThreadX including the current thread stack pointer in many of the trace entries in the file. A stack usage of 100% indicates the stack has overflowed and must be corrected in the application. If there is no thread execution within this trace file, the stack usage for that thread is shown at 0%. The thread stack usage in the sample ThreadX demonstration trace is shown in <strong>Figure 22</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/thread_stack_usage.png" alt="Screenshot of the TraceX Thread Stack Usage.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 22</strong></p>
+</div>
+<div class="paragraph">
+<p>The example shown in <strong>Figure 22</strong> indicates that most threads in this trace have between 9% and 12% stack usage.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_performance_statistics"><a class="anchor" href="#_performance_statistics"></a>Performance Statistics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Selecting the <strong><em>Generate Performance Statistics</em></strong> button or <strong><em>View -&gt; Performance Statistics</em></strong> presents the performance statistics of the currently loaded trace file. By default, this information is displayed for the entire system. However, the performance statistics are also available for each specific thread.</p>
+</div>
+<div class="paragraph">
+<p>The performance statistics of the sample ThreadX demonstration trace are shown in <strong>Figure 23</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/performance_statistics.png" alt="Screenshot of the TraceX performance statistics.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 23</strong></p>
+</div>
+<div class="paragraph">
+<p>The example shown in <strong>Figure 23</strong> indicates that there were 18 context switches in this trace file, as well as five thread preemptions, 16 thread suspensions, 19 thread resumptions, and three interrupts. There were no priority inversions found in this trace file. Notice there are two categories of priority inversions, namely, <em>deterministic</em> and <em>nondeterministic</em>. Deterministic priority inversions are priority inversion in which a thread is blocked on a mutex owned by a lower priority thread. An nondeterministic priority inversion is where a different lower priority thread runs during a deterministic priority inversion. The later can cause unforeseen timing behavior in the application and should be studied carefully.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_filex_statistics"><a class="anchor" href="#_filex_statistics"></a>FileX Statistics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Selecting <strong><em>View -&gt; FileX Statistics</em></strong> presents the FileX performance statistics of the currently loaded trace file. This information is displayed for the entire system, on all opened ../media objects. The performance statistics of the sample FileX demonstration trace are shown in <strong>Figure 24</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/filex_statistics.png" alt="Screenshot of the FileX Statistics.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 24</strong></p>
+</div>
+<div class="paragraph">
+<p>The example shown in <strong>Figure 27</strong> indicates there were 19 ../media opens, 19 ../media closes, 19 ../media flushes, 18 directory reads, 19 directory writes, and 18 directory cache misses. Additional information can be viewed by scrolling down in the statistics window.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_statistics"><a class="anchor" href="#_netx_duo_statistics"></a>NetX Duo Statistics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Selecting <strong><em>View -NetX Statistics</em></strong> presents the NetX Duo performance statistics of the currently loaded trace file. This information is displayed for the entire system. The performance statistics of the sample NetX Duo demonstration trace are shown in <strong>Figure 25</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/netx_statistics.png" alt="Screenshot of the NetX Statistics.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 25</strong></p>
+</div>
+<div class="paragraph">
+<p>The example shown in <strong>Figure 25</strong> indicates there were no ARP, Ping, or UDP events, but there were 30 IP packets sent, 1,368 IP bytes sent, 30 IP packets received, and 1,360 IP bytes received.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_trace_file_information"><a class="anchor" href="#_trace_file_information"></a>Trace File Information</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Selecting <strong><em>View -&gt; Trace File Information</em></strong> presents some basic information about the opened trace file. This information includes the byte order of the file, size of the time source, maximum number of bytes for each object name, and the base address of all trace file pointers. <strong>Figure 26</strong> shows the trace file information for the standard <strong><em>demo_threadx.trx</em></strong> trace file.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/trace_file_info.png" alt="Screenshot of the TraceX File Information.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 26</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_raw_trace_dump"><a class="anchor" href="#_raw_trace_dump"></a>Raw Trace Dump</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Selecting <strong><em>View -&gt; Raw Trace Dump</em></strong> presents a dialog to name the file containing the raw trace dump. After the file name and path are entered, TraceX builds the raw trace file in text format and launches <strong><em>notepad.exe</em></strong> to display it. <strong>Figure 27</strong> shows the raw trace file dump for the standard <strong><em>demo_threadx.trx</em></strong> trace file.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/raw_trace_dump.png" alt="Screenshot of the raw trace dump.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>FIGURE 27</strong></p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

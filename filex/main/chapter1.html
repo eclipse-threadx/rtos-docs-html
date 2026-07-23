@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 1 - Introduction to FileX :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/filex/main/chapter1.html">
+    <meta name="description" content="FileX is a complete FAT format media and file management system for deeply embedded applications.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="filex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">FileX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">FileX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">FileX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-filex.html">Overview of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">FileX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - I/O drivers for FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - FileX fault tolerant module</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - FileX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - FileX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">FileX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">FileX</a></li>
+    <li>FileX user guide</li>
+    <li><a href="chapter1.html">Ch. 1 - Introduction to FileX</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/filex/modules/ROOT/pages/chapter1.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 1 - Introduction to FileX</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>FileX is a complete FAT format media and file management system for deeply embedded applications. This chapter introduces FileX, describing its applications and benefits.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_filex_unique_features"><a class="anchor" href="#_filex_unique_features"></a>FileX Unique Features</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FileX supports an unlimited number of media devices at the same time, including RAM disks, FLASH managers, and actual physical devices. It supports 12-, 16-, and 32-bit File Allocation Table (FAT) formats, and also supports contiguous file allocation, and is highly optimized for both size and performance. FileX also includes fault tolerant support, media open/ close, and file write callback functions.</p>
+</div>
+<div class="paragraph">
+<p>Designed to meet the growing need for FLASH devices, FileX uses the same design and coding methods as ThreadX. Like all Eclipse Foundation products, FileX is distributed with full ANSI C source code, and it has no run-time royalties.</p>
+</div>
+<div class="sect2">
+<h3 id="_product_highlights"><a class="anchor" href="#_product_highlights"></a>Product Highlights</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Complete ThreadX processor support</p>
+</li>
+<li>
+<p>No royalties</p>
+</li>
+<li>
+<p>Complete ANSI C source code</p>
+</li>
+<li>
+<p>Real-time performance</p>
+</li>
+<li>
+<p>Responsive technical support</p>
+</li>
+<li>
+<p>Unlimited FileX objects (media, directories, and files)</p>
+</li>
+<li>
+<p>Dynamic FileX object creation/deletion</p>
+</li>
+<li>
+<p>Flexible memory usage</p>
+</li>
+<li>
+<p>Size scales automatically</p>
+</li>
+<li>
+<p>Small footprint (as low as 6 KBytes) instruction area size: 6-30K</p>
+</li>
+<li>
+<p>Complete integration with ThreadX</p>
+</li>
+<li>
+<p>Endian neutral</p>
+</li>
+<li>
+<p>Easy-to-implement FileX I/O drivers</p>
+</li>
+<li>
+<p>12-, 16-, and 32-bit FAT support</p>
+</li>
+<li>
+<p>Long filename support</p>
+</li>
+<li>
+<p>Internal FAT entry cache</p>
+</li>
+<li>
+<p>Unicode name support</p>
+</li>
+<li>
+<p>Contiguous file allocation</p>
+</li>
+<li>
+<p>Consecutive sector and cluster read/write</p>
+</li>
+<li>
+<p>Internal logical sector cache</p>
+</li>
+<li>
+<p>RAM disk demonstration runs out-of-the-box</p>
+</li>
+<li>
+<p>Media format capability</p>
+</li>
+<li>
+<p>Error detection and recovery</p>
+</li>
+<li>
+<p>Fault tolerant options</p>
+</li>
+<li>
+<p>Built-in performance statistics</p>
+</li>
+<li>
+<p>Standalone support (No Eclipse ThreadX)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_safety_certifications"><a class="anchor" href="#_safety_certifications"></a>Safety Certifications</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_tüv_certification"><a class="anchor" href="#_tüv_certification"></a>TÜV Certification</h3>
+<div class="paragraph">
+<p>FileX has been certified by SGS-TÜV Saar for use in safety-critical systems, according to IEC-61508 SIL 4. The certification confirms that FileX can be used in the development of safety-related software for the highest safety integrity levels of IEC-61508 for the "Functional Safety of electrical, electronic, and programmable electronic safety-related systems." SGS-TUV Saar, formed through a joint venture of Germany&#8217;s SGS-Group and TUV Saarland, has become the leading accredited, independent company for testing, auditing, verifying, and certifying embedded software for safety-related systems worldwide.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/sgs-tuv-saar-logo.png" alt="SGS TUV Saar logo">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>IEC 61508 up to SIL 4</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Please contact us for more information on which version(s) of FileX have been certified by TÜV or for the availability of test reports, certificates, and associated documentation.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ul_certification"><a class="anchor" href="#_ul_certification"></a>UL Certification</h3>
+<div class="paragraph">
+<p>FileX has been certified by UL for compliance with UL 60730-1 Annex H, CSA E60730-1 Annex H, IEC 60730-1 Annex H, UL 60335-1 Annex R, IEC 603351 Annex R, and UL 1998 safety standards for software in programmable components. Along with IEC/UL 60730-1, which has requirements for "Controls Using Software" in its Annex H, the IEC 60335-1 standard describes the requirements for "Programmable Electronic Circuits" in its Annex R. IEC 60730 Annex H and IEC 60335-1 Annex R address the safety of MCU hardware and software used in appliances such as washing machines, dishwashers, dryers, refrigerators, freezers, and ovens.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/user-guide/c-ru-us-logo.png" alt="C RU US 2">
+</div>
+</div>
+<div class="paragraph">
+<p><em>UL/IEC 60730, UL/IEC 60335, UL 1998</em></p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Please contact us for more information on which version(s) of FileX have been certified by UL or for the availability of test reports, certificates, and associated documentation.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_powerful_services_of_filex"><a class="anchor" href="#_powerful_services_of_filex"></a>Powerful Services of FileX</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_multiple_media_management"><a class="anchor" href="#_multiple_media_management"></a>Multiple Media Management</h3>
+<div class="paragraph">
+<p>FileX can support an unlimited number of physical media. Each media instance has its own distinct memory area and associated driver specified on the <strong><em>fx_media_open</em></strong> call. The default distribution of FileX comes with a simple RAM media driver and a demonstration system that uses this RAM disk.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_logical_sector_cache"><a class="anchor" href="#_logical_sector_cache"></a>Logical Sector Cache</h3>
+<div class="paragraph">
+<p>By reducing the number of whole sector transfers, both to and from the media, the FileX logical sector cache significantly improves performance. FileX maintains a logical sector cache for each opened media. The depth of the logical sector cache is determined by the amount of memory supplied to FileX with the <strong><em>fx_media_open</em></strong> API call.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_contiguous_file_support"><a class="anchor" href="#_contiguous_file_support"></a>Contiguous File Support</h3>
+<div class="paragraph">
+<p>FileX offers contiguous file support through the API service <strong><em>fx_file_allocate</em></strong> to improve and make file access time deterministic. This routine takes the amount of memory requested and looks for a series of adjacent clusters to satisfy the request. If such clusters are found, they are pre-allocated by making them part of the file&#8217;s chain of allocated clusters. On moving physical media, the FileX contiguous file support results in a significant performance improvement and makes the access time deterministic.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dynamic_creation"><a class="anchor" href="#_dynamic_creation"></a>Dynamic Creation</h3>
+<div class="paragraph">
+<p>FileX allows you to create system resources dynamically. This is especially important if your application has
+multiple or dynamic configuration requirements. In addition, there are no predetermined limits on the number of FileX resources you can use (media or files). Also, the number of system objects does not have any
+impact on performance.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_easy_to_use_api"><a class="anchor" href="#_easy_to_use_api"></a>Easy-to-use API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FileX provides the very best deeply embedded file system technology in a manner that is easy to understand and easy to use! The FileX Application Programming Interface (API) makes the services intuitive and consistent. You won&#8217;t have to decipher "alphabet soup" services that are all too common with other file systems.</p>
+</div>
+<div class="paragraph">
+<p>For a complete list of the FileX Version 5 Services, see <a href="appendix-a.html" class="xref page">Appendix A</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fault_tolerant_support"><a class="anchor" href="#_fault_tolerant_support"></a>Fault Tolerant Support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The FileX Fault Tolerant Module is designed to prevent file system corruption caused by interruptions during the file or directory update. For example, when appending data to a file, FileX needs to update the content of the file, the directory entry, and possibly the FAT entries. If this sequence of update is interrupted (such as power glitch, or the media is ejected in the middle of the update), the file system is in an inconsistent state, which may affect the integrity of the entire file system, leading towards corruption of other files.</p>
+</div>
+<div class="paragraph">
+<p>The FileX Fault Tolerant Module works by recording all steps required to update a file or a directory along the way. This log entry is stored on the media in dedicated sectors (blocks) that FileX can find and access. The location of the log data can be accessed even without a proper file system. Therefore, in case the file system is corrupted, FileX is still able to find the log entry and restore the file system back into a good state.</p>
+</div>
+<div class="paragraph">
+<p>As FileX updates file or directory, log entries are created. After the update operation is successfully completed, the log entries are removed. If the log entries were not properly removed after a successful file update, if the recovery process determines that the content in the log entry matches the file system, nothing needs to be done, and the log entries can be cleaned up.</p>
+</div>
+<div class="paragraph">
+<p>In case the file system update operation was interrupted, next time the media is mounted by FileX, the Fault Tolerant Module analyzes the log entries. The information in the log entries allows FileX to back out partial changes already applied to the file system (in case the failure happens during the early stage of the file update operation), or if the log entries contain re-do information, FileX is able to apply the changes required to finish the prior operation.</p>
+</div>
+<div class="paragraph">
+<p>This fault tolerant feature is available to all FAT file systems supported by FileX, including FAT12, FAT16, and FAT32. By default fault tolerant is not enabled in FileX. To enable the fault tolerant feature, FileX must be built with the symbol <strong>FX_ENABLE_FAULT_TOLERANT</strong> and <strong>FX_FAULT_TOLERANT</strong> defined. At run time, the application starts fault tolerant service by calling <strong><em>fx_fault_tolerant_enable</em></strong>.
+After the service starts, all file and directory write operations go through the Fault Tolerant Module.</p>
+</div>
+<div class="paragraph">
+<p>As fault tolerant service starts, it first detects whether or not the media is protected under the Fault Tolerant Module. If it is not, FileX assumes integrity of the file system, and starts protection by allocating free blocks from the file system to be used for logging and caching. If the Fault Tolerant Module logs are found on the file system, it analyzes the log entries. FileX reverts the prior operation or redoes the prior operation, depending on the content of the log entries. The file system becomes available after all the prior log entries are processed. This ensures that FIleX starts from a known good state.</p>
+</div>
+<div class="paragraph">
+<p>After a media is protected under the FileX Fault Tolerant Module, the media will not be updated with another file system. Doing so would leave the log entries on the file system inconsistent with the contents in the FAT table, the directory entry. If the media is updated by another file system before moving it back to FileX with the Fault Tolerant Module, the result is undefined.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_callback_functions"><a class="anchor" href="#_callback_functions"></a>Callback Functions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following three callback functions are added to FileX:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Media Open callback</p>
+</li>
+<li>
+<p>Media Close callback</p>
+</li>
+<li>
+<p>File Write callback</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>After registered, these functions will notify the application when such events occur.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_easy_integration"><a class="anchor" href="#_easy_integration"></a>Easy Integration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FileX is easily integrated with virtually any FLASH or media device. Porting FileX is simple. This guide describes the process in detail, and the RAM driver of the demo system makes for a very good place to start!</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

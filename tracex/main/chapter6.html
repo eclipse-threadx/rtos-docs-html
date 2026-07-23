@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 6 - ThreadX trace events :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/tracex/main/chapter6.html">
+    <meta name="description" content="This chapter describes the ThreadX events.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="tracex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">TraceX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">TraceX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">TraceX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-tracex.html">Overview of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">TraceX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - TraceX performance analysis</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Generating trace buffers</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - ThreadX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter7.html">Ch. 7 - FileX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter8.html">Ch. 8 - NetX Duo trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter9.html">Ch. 9 - USBX trace events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter10.html">Ch. 10 - Customer user events</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter11.html">Ch. 11 - Format of event trace buffer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - Sample tx_port.h</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - The tx_trace.h File</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - DOS command-line utilities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - Dumping and trace buffer</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">TraceX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">TraceX</a></li>
+    <li>TraceX user guide</li>
+    <li><a href="chapter6.html">Ch. 6 - ThreadX trace events</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/tracex/modules/ROOT/pages/chapter6.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 6 - ThreadX trace events</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter describes the ThreadX events.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_list_of_events_and_icons"><a class="anchor" href="#_list_of_events_and_icons"></a>List of Events and Icons</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following is a list of ThreadX events displayed by TraceX:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Icon</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Meaning</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image1.png" alt="Internal thread resume icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal thread resume</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image2.png" alt="Internal thread suspend icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal thread suspend</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image3.png" alt="Interrupt Service Routine Enter icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interrupt Service Routine (ISR) Enter</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image4.png" alt="Interrupt Service Routine Exit icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interrupt Service Routine (ISR) Exit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image5.png" alt="Internal time-slice icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal time-slice</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image6.png" alt="Running icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Running</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image7.png" alt="Block pool allocate icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Block pool allocate</strong> (<em>tx_block_allocate</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image8.png" alt="Block pool create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Block pool create</strong> (<em>tx_block_pool_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image9.png" alt="Block pool delete icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Block pool delete</strong> (<em>tx_block_pool_delete</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image10.png" alt="Block pool information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Block pool information get</strong> (<em>tx_block_pool_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image11.png" alt="Block pool performance information get con"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Block pool performance information get</strong> (<em>tx_block_pool_performance_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image12.png" alt="Block pool system performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Block pool system performance information get</strong> (<em>tx_block_pool_performance_system_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image13.png" alt="Block pool prioritize icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Block pool prioritize</strong> (<em>tx_block_pool_prioritize</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image14.png" alt="Block release to pool icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Block release to pool</strong> (<em>tx_block_release</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image15.png" alt="Byte pool allocate memory icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Byte pool allocate memory</strong> (<em>tx_byte_allocate</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image16.png" alt="Byte pool create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Byte pool create</strong> (<em>tx_byte_pool_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image17.png" alt="Byte pool delete icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Byte pool delete</strong> (<em>tx_byte_pool_delete</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image18.png" alt="Byte pool information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Byte pool information get</strong> (<em>tx_byte_pool_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image19.png" alt="Byte pool performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Byte pool performance information get</strong> (<em>tx_byte_pool_performance_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image20.png" alt="Byte pool system performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Byte pool system performance information get</strong> (<em>tx_byte_pool_performance_system_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image21.png" alt="*Byte pool prioritize icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Byte pool prioritize</strong> (<em>tx_byte_pool_prioritize</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image22.png" alt="Byte memory release to pool icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Byte memory release to pool</strong> (<em>tx_byte_release</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image23.png" alt="Event flags create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Event flags create</strong> (<em>tx_event_flags_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image24.png" alt="Event flags delete icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Event flags delete</strong> (<em>tx_event_flags_delete</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image25.png" alt="Event flags get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Event flags get</strong> (<em>tx_event_flags_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image26.png" alt="Event flags information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Event flags information get</strong> (<em>tx_event_flags_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image27.png" alt="Event flags performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Event flags performance information get</strong> (<em>tx_event_flags_performance_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image28.png" alt="Event flags system performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Event flags system performance information get</strong> (<em>tx_event_flags_performance_system_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image29.png" alt="Event flags set icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Event flags set</strong> (<em>tx_event_flags_set</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image30.png" alt="Event flags set notify icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Event flags set notify</strong> (<em>tx_event_flags_set_notify</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image31.png" alt="Interrupt enable/disable icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Interrupt enable/disable</strong> (<em>tx_interrupt_control</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image32.png" alt="Mutex create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Mutex create</strong> (<em>tx_mutex_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image33.png" alt="Mutex delete icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Mutex delete</strong> (<em>tx_mutex_delete</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image34.png" alt="Mutex get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Mutex get</strong> (<em>tx_mutex_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image35.png" alt="Mutex information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Mutex information get</strong> (<em>tx_mutex_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image36.png" alt="Mutex performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Mutex performance information get</strong> (<em>tx_mutex_performance_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image37.png" alt="Mutex system performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Mutex system performance information get</strong> (<em>tx_mutex_performance_system_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image38.png" alt="Mutex prioritize icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Mutex prioritize</strong> (<em>tx_mutex_prioritize</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image39.png" alt="Mutex put icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Mutex put</strong> (<em>tx_mutex_put</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image40.png" alt="Queue create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Queue create</strong> (<em>tx_queue_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image41.png" alt="Queue delete icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Queue delete</strong> (<em>tx_queue_delete</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image42.png" alt="Queue flush icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Queue flush</strong> (<em>tx_queue_flush</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image43.png" alt="Queue front send icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Queue front send</strong> (<em>tx_queue_front_send</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image44.png" alt="Queue information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Queue information get</strong> (<em>tx_queue_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image45.png" alt="Queue performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Queue performance information get</strong> (<em>tx_queue_performance_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image46.png" alt="Queue system performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Queue system performance information get</strong> (<em>tx_queue_performance_system_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image47.png" alt="Queue prioritize icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Queue prioritize</strong> (<em>tx_queue_prioritize</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image48.png" alt="Queue receive message icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Queue receive message</strong> (<em>tx_queue_receive</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image49.png" alt="Queue send message icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Queue send message</strong> (<em>tx_queue_send</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image50.png" alt="Queue send notify icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Queue send notify</strong> (<em>tx_queue_send_notify</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image51.png" alt="Semaphore ceiling put icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Semaphore ceiling put</strong> (<em>tx_semaphore_ceiling_put</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image52.png" alt="Semaphore create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Semaphore create</strong> (<em>tx_semaphore_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image53.png" alt="Semaphore delete icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Semaphore delete</strong> (<em>tx_semaphore_delete</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image54.png" alt="Semaphore get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Semaphore get</strong> (<em>tx_semaphore_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image55.png" alt="Semaphore information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Semaphore information get</strong> (<em>tx_semaphore_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image56.png" alt="Semaphore performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Semaphore performance information get</strong> (<em>tx_semaphore_performance_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image57.png" alt="Semaphore system performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Semaphore system performance information get</strong> (<em>tx_semaphore_performance_system_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image58.png" alt="Semaphore prioritize icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Semaphore prioritize</strong> (<em>tx_semaphore_prioritize</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image59.png" alt="Semaphore put icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Semaphore put</strong> (<em>tx_semaphore_put</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image60.png" alt="Semaphore put notify icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Semaphore put notify</strong> (<em>tx_semaphore_put_notify</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image61.png" alt="Thread create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread create</strong> (<em>tx_thread_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image62.png" alt="Thread delete icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread delete</strong> (<em>tx_thread_delete</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image63.png" alt="Thread exit/entry notify icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread exit/entry notify</strong> (<em>tx_thread_entry_exit_notify</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image64.png" alt="Thread identify icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread identify</strong> (<em>tx_thread_identify</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image65.png" alt="Thread information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread information get</strong> (<em>tx_thread_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image66.png" alt="Thread performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread performance information get</strong> (<em>tx_thread_performance_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image67.png" alt="Thread performance system information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread performance system information get</strong> (<em>tx_thread_performance_system_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image68.png" alt="Thread preemption change icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread preemption change</strong> (<em>tx_thread_preemption_change</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image69.png" alt="Thread priority change icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread priority change</strong> (<em>tx_thread_priority_change</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image70.png" alt="Thread relinquish icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread relinquish</strong> (<em>tx_thread_relinquish</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image71.png" alt="Thread reset icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread reset</strong> (<em>tx_thread_reset</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image72.png" alt="*Thread resume icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread resume</strong> (<em>*tx_thread_resume</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image73.png" alt="Thread Sleep icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread Sleep</strong> (<em>tx_thread_sleep</em>)*</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image74.png" alt="Thread stack error notify icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread stack error notify</strong> (<em>tx_thread_stack_error_notify</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image75.png" alt="Thread suspend icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread suspend</strong> (<em>tx_thread_suspend</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image76.png" alt="Thread terminate icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread terminate</strong> (<em>tx_thread_terminate</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image77.png" alt="Thread time-slice change icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread time-slice change</strong> (<em>tx_thread_time_slice_change</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image78.png" alt="Thread wait abort icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thread wait abort</strong> (<em>tx_thread_wait_abort</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image79.png" alt="Time get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Time get</strong> (<em>tx_time_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image80.png" alt="Time set icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Time set</strong> (<em>tx_time_set</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image81.png" alt="*Timer activate icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Timer activate</strong> (<em>tx_timer_activate</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image82.png" alt="Timer change icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Timer change</strong> (<em>tx_timer_change</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image83.png" alt="Timer create icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Timer create</strong> (<em>tx_timer_create</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image84.png" alt="Timer deactivate icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Timer deactivate</strong> (<em>tx_timer_deactivate</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image85.png" alt="Timer delete icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Timer delete</strong> (<em>tx_timer_delete</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image86.png" alt="Timer information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Timer information get</strong> (<em>tx_timer_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image87.png" alt="Timer performance information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Timer performance information get</strong> (<em>tx_timer_performance_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image88.png" alt="*Timer performance system information get icon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Timer performance system information get</strong> (<em>tx_timer_performance_system_info_get</em>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="_images/media/user-guide/tx-events/image0.png" alt="User-Defined Eventicon"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>User-Defined Event</strong> (See Chapter 10)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_event_descriptions"><a class="anchor" href="#_event_descriptions"></a>Event Descriptions</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_internal_thread_resume"><a class="anchor" href="#_internal_thread_resume"></a>Internal thread resume</h3>
+<div class="sect3">
+<h4 id="_internal_thread_resume_2"><a class="anchor" href="#_internal_thread_resume_2"></a>Internal thread resume</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image1.png" alt="Internal thread resume icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents the internal processing in ThreadX that resumes a thread for execution. If the specified thread is the highest priority and preemption-threshold does not block its execution, the system will start executing this newly ready thread.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the thread being resumed.</p>
+</li>
+<li>
+<p>Info Field 2: Previous state of the thread being resumed, as follows:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Thread state</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_READY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_COMPLETED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_TERMINATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_SUSPENDED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_SLEEP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_QUEUE_SUSP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_SEMAPHORE_SUSP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_EVENT_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_BLOCK_MEMORY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_BYTE_MEMORY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_TCP_IP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_MUTEX_SUSP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Info Field 3: Stack pointer value during the call.</p>
+</li>
+<li>
+<p>Info Field 4: Pointer to next highest priority thread to execute.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_thread_suspend"><a class="anchor" href="#_internal_thread_suspend"></a>Internal thread suspend</h3>
+<div class="sect3">
+<h4 id="_internal_thread_suspend_2"><a class="anchor" href="#_internal_thread_suspend_2"></a>Internal thread suspend</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image2.png" alt="Internal thread suspend icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents the internal processing in ThreadX that suspends a thread&#8217;s execution. The next highest priority thread ready for execution is placed in the fourth information field. If this value is NULL, there is no other thread ready for execution and the system is idle.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the thread being suspended.</p>
+</li>
+<li>
+<p>Info Field 2: New state of the thread being suspended, as follows:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Thread state</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_COMPLETED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_TERMINATED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_SUSPENDED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_SLEEP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_QUEUE_SUSP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_SEMAPHORE_SUSP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_EVENT_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_BLOCK_MEMORY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_BYTE_MEMORY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_TCP_IP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX_MUTEX_SUSP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Info Field 3: Stack pointer value during the call. Info Field 4: Pointer to next highest priority thread to execute. If NULL, the system is idle.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_interrupt_service_routine_isr_enter"><a class="anchor" href="#_interrupt_service_routine_isr_enter"></a>Interrupt Service Routine (ISR) enter</h3>
+<div class="sect3">
+<h4 id="_enter_isr"><a class="anchor" href="#_enter_isr"></a>Enter ISR</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image3.png" alt="Enter I S R icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents entering an Interrupt Service Routine (ISR) in the application. The interrupt service routine execution continues until the ISR exit event takes place.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Stack pointer value during the call.</p>
+</li>
+<li>
+<p>Info Field 2: Application-defined ISR number (optional).</p>
+</li>
+<li>
+<p>Info Field 3: Nested interrupt count.</p>
+</li>
+<li>
+<p>Info Field 4: Internal preemption disable flag.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_interrupt_service_routine_isr_exit"><a class="anchor" href="#_interrupt_service_routine_isr_exit"></a>Interrupt Service Routine (ISR) exit</h3>
+<div class="sect3">
+<h4 id="_exit_isr"><a class="anchor" href="#_exit_isr"></a>Exit ISR</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image4.png" alt="Exit I S R icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents exiting an Interrupt Service Routine (ISR) in the application.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Stack pointer value during the call.</p>
+</li>
+<li>
+<p>Info Field 2: Application-defined ISR number (optional).</p>
+</li>
+<li>
+<p>Info Field 3: Nested interrupt count.</p>
+</li>
+<li>
+<p>Info Field 4: Internal preemption disable flag.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internal_time_slice"><a class="anchor" href="#_internal_time_slice"></a>Internal time-slice</h3>
+<div class="sect3">
+<h4 id="_internal_time_slice_2"><a class="anchor" href="#_internal_time_slice_2"></a>Internal time-slice</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image5.png" alt="Internal time-slice icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents the internal processing in ThreadX that performs the time-slice operation. The next thread of the same priority is placed in the first information field. If this value is the same as the current thread, no time-slice was performed.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the next thread to execute.</p>
+</li>
+<li>
+<p>Info Field 2: Nested interrupt count.</p>
+</li>
+<li>
+<p>Info Field 3: Internal preemption disable flag.</p>
+</li>
+<li>
+<p>Info Field 4: Stack pointer value during the call.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_running"><a class="anchor" href="#_running"></a>Running</h3>
+<div class="sect3">
+<h4 id="_running_in_context"><a class="anchor" href="#_running_in_context"></a>Running in context</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image6.png" alt="Running icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents running within a thread context or idle system. It is used to illustrate subsequent changes in context as a result of an interrupt.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Not used.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_block_allocate"><a class="anchor" href="#_block_allocate"></a>Block Allocate</h3>
+<div class="sect3">
+<h4 id="_tx_block_allocate"><a class="anchor" href="#_tx_block_allocate"></a>tx_block_allocate</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image7.png" alt="Block allocate icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents allocating a memory block via tx_block_allocate. If successful, the address of the block allocated is returned in the second information field.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the corresponding block pool.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to the memory block returned (if successful).</p>
+</li>
+<li>
+<p>Info Field 3: The wait option supplied to the tx_block_allocate call.</p>
+</li>
+<li>
+<p>Info Field 4: Remaining available blocks in the pool after this allocation.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_block_pool_create"><a class="anchor" href="#_block_pool_create"></a>Block Pool Create</h3>
+<div class="sect3">
+<h4 id="_tx_block_pool_create"><a class="anchor" href="#_tx_block_pool_create"></a>tx_block_pool_create</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image8.png" alt="Block pool create icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents creating a memory block pool via tx_block_pool_create.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the corresponding block pool control block.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to the starting memory area of the pool.</p>
+</li>
+<li>
+<p>Info Field 3: The number of blocks in the pool. Info Field 4: The size of each block in the pool in bytes.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_block_pool_delete"><a class="anchor" href="#_block_pool_delete"></a>Block Pool Delete</h3>
+<div class="sect3">
+<h4 id="_tx_block_pool_delete"><a class="anchor" href="#_tx_block_pool_delete"></a>tx_block_pool_delete</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image9.png" alt="Block pool delete icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents deleting a memory block pool via tx_block_pool_delete.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the block pool control block.</p>
+</li>
+<li>
+<p>Info Field 2: Stack pointer value during the call.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_block_pool_information_get"><a class="anchor" href="#_block_pool_information_get"></a>Block Pool Information Get</h3>
+<div class="sect3">
+<h4 id="_tx_block_pool_info_get"><a class="anchor" href="#_tx_block_pool_info_get"></a>tx_block_pool_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image10.png" alt="Block pool information get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents getting information about a memory block pool via tx_block_pool_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the block pool control block.</p>
+</li>
+<li>
+<p>Info Field 2: Stack pointer value during the call.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_block_pool_performance_information_get"><a class="anchor" href="#_block_pool_performance_information_get"></a>Block Pool Performance Information Get</h3>
+<div class="sect3">
+<h4 id="_tx_block_pool_performance_info_get"><a class="anchor" href="#_tx_block_pool_performance_info_get"></a>tx_block_pool_performance_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image11.png" alt="Block pool performance information get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents getting performance information about a memory block pool via tx_block_pool_performance_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the block pool control block.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_block_pool_performance_system_information_get"><a class="anchor" href="#_block_pool_performance_system_information_get"></a>Block Pool Performance System Information Get</h3>
+<div class="sect3">
+<h4 id="_tx_block_pool_performance_system_info_get"><a class="anchor" href="#_tx_block_pool_performance_system_info_get"></a>tx_block_pool_performance_system_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image12.png" alt="Block pool performance system information get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents getting performance information about all memory block pools via tx_block_pool_performance_system_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Not used.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_block_pool_prioritize"><a class="anchor" href="#_block_pool_prioritize"></a>Block Pool Prioritize</h3>
+<div class="sect3">
+<h4 id="_tx_block_pool_prioritize"><a class="anchor" href="#_tx_block_pool_prioritize"></a>tx_block_pool_prioritize</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image13.png" alt="Block pool prioritize icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents placing the highest priority suspended thread at the front of the block pool suspension list. If this is done prior to calling tx_block_release, the highest priority suspended thread will receive the released block.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Memory block pool pointer.</p>
+</li>
+<li>
+<p>Info Field 2: Number of threads suspended on this block pool.</p>
+</li>
+<li>
+<p>Info Field 3: Stack pointer at the time of the call.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_block_release"><a class="anchor" href="#_block_release"></a>Block Release</h3>
+<div class="sect3">
+<h4 id="_tx_block_release"><a class="anchor" href="#_tx_block_release"></a>tx_block_release</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image14.png" alt="Block release icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents releasing a previously allocated block back to the block pool.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Memory block pool pointer.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to block to release.</p>
+</li>
+<li>
+<p>Info Field 3: Number of threads suspended on this block pool.</p>
+</li>
+<li>
+<p>Info Field 4: Stack pointer at the time of the call.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_byte_allocate"><a class="anchor" href="#_byte_allocate"></a>Byte Allocate</h3>
+<div class="sect3">
+<h4 id="_tx_byte_allocate"><a class="anchor" href="#_tx_byte_allocate"></a>tx_byte_allocate</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image15.png" alt="Byte allocate icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents allocating memory via tx_byte_allocate. If successful, the address of the memory allocated is returned in the second information field.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the corresponding byte pool.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to the memory returned (if successful).</p>
+</li>
+<li>
+<p>Info Field 3: Number of bytes requested. Info Field 4: The wait option supplied to the tx_byte_allocate call.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_byte_pool_create"><a class="anchor" href="#_byte_pool_create"></a>Byte Pool Create</h3>
+<div class="sect3">
+<h4 id="_tx_byte_pool_create"><a class="anchor" href="#_tx_byte_pool_create"></a>tx_byte_pool_create</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image16.png" alt="Byte pool create icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents creating a byte pool via tx_byte_pool_create.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the corresponding byte pool.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to the start of the memory area. Info Field 3: Number of bytes in the byte pool.</p>
+</li>
+<li>
+<p>Info Field 4: The stack pointer at the time of the call.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_byte_pool_delete"><a class="anchor" href="#_byte_pool_delete"></a>Byte Pool Delete</h3>
+<div class="sect3">
+<h4 id="_tx_byte_pool_delete"><a class="anchor" href="#_tx_byte_pool_delete"></a>tx_byte_pool_delete</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image17.png" alt="Byte pool delete icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents deleting a byte pool via tx_byte_pool_delete.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the corresponding byte pool.</p>
+</li>
+<li>
+<p>Info Field 2: The stack pointer at the time of the call.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_byte_pool_information_get"><a class="anchor" href="#_byte_pool_information_get"></a>Byte Pool Information Get</h3>
+<div class="sect3">
+<h4 id="_tx_byte_pool_info_get"><a class="anchor" href="#_tx_byte_pool_info_get"></a>tx_byte_pool_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image18.png" alt="Byte pool information get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents getting byte pool information via tx_byte_pool_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the corresponding byte pool.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_byte_pool_performance_info_get"><a class="anchor" href="#_byte_pool_performance_info_get"></a>Byte Pool Performance Info Get</h3>
+<div class="sect3">
+<h4 id="_tx_byte_pool_info_get_2"><a class="anchor" href="#_tx_byte_pool_info_get_2"></a>tx_byte_pool_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image19.png" alt="Byte pool performance info get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents getting byte pool performance information via tx_byte_pool_performance_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to the corresponding byte pool.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_byte_pool_performance_system_info_get"><a class="anchor" href="#_byte_pool_performance_system_info_get"></a>Byte Pool Performance System Info Get</h3>
+<div class="sect3">
+<h4 id="_tx_byte_pool_performance_system_info_get"><a class="anchor" href="#_tx_byte_pool_performance_system_info_get"></a>tx_byte_pool_performance_system_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image20.png" alt="Byte pool performance system info get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents getting byte pool performance system information via tx_byte_pool_performance_system_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Not used.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_byte_pool_prioritize"><a class="anchor" href="#_byte_pool_prioritize"></a>Byte Pool Prioritize</h3>
+<div class="sect3">
+<h4 id="_tx_byte_pool_prioritize"><a class="anchor" href="#_tx_byte_pool_prioritize"></a>tx_byte_pool_prioritize</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image21.png" alt="Byte pool prioritize icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents prioritizing the byte pool&#8217;s suspension list via tx_byte_pool_prioritize.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to corresponding byte pool.</p>
+</li>
+<li>
+<p>Info Field 2: Number of threads currently suspended on byte pool.</p>
+</li>
+<li>
+<p>Info Field 3: Stack pointer at time of call.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_byte_release"><a class="anchor" href="#_byte_release"></a>Byte Release</h3>
+<div class="sect3">
+<h4 id="_tx_byte_release"><a class="anchor" href="#_tx_byte_release"></a>tx_byte_release</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image22.png" alt="Byte release icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents releasing a block of memory allocated from a byte pool via tx_byte_release.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to corresponding byte pool.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to previously allocated byte pool memory.</p>
+</li>
+<li>
+<p>Info Field 3: Number of threads suspended on this byte pool.</p>
+</li>
+<li>
+<p>Info Field 4: Number of available bytes of memory.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_event_flags_create"><a class="anchor" href="#_event_flags_create"></a>Event Flags Create</h3>
+<div class="sect3">
+<h4 id="_tx_event_flags_create"><a class="anchor" href="#_tx_event_flags_create"></a>tx_event_flags_create</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image23.png" alt="Event flags create icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents creating a new event flags group via tx_event_flags_create.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to event flags group control block.</p>
+</li>
+<li>
+<p>Info Field 2: Stack pointer at time of call.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_event_flags_delete"><a class="anchor" href="#_event_flags_delete"></a>Event Flags Delete</h3>
+<div class="sect3">
+<h4 id="_tx_event_flags_delete"><a class="anchor" href="#_tx_event_flags_delete"></a>tx_event_flags_delete</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image24.png" alt="Event flags delete icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents deleting an event flags group via tx_event_flags_delete.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to event flags group.</p>
+</li>
+<li>
+<p>Info Field 2: Stack pointer at time of call.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_event_flags_get"><a class="anchor" href="#_event_flags_get"></a>Event Flags Get</h3>
+<div class="sect3">
+<h4 id="_tx_event_flags_get"><a class="anchor" href="#_tx_event_flags_get"></a>tx_event_flags_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image25.png" alt="Event flags gt icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents retrieving event flags from an existing event flags group via tx_event_flags_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to event flags group.</p>
+</li>
+<li>
+<p>Info Field 2: Event flags requested.</p>
+</li>
+<li>
+<p>Info Field 3: Event flags currently set in the group.</p>
+</li>
+<li>
+<p>Info Field 4: Option requested on the event flags get.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_event_flags_information_get"><a class="anchor" href="#_event_flags_information_get"></a>Event Flags Information Get</h3>
+<div class="sect3">
+<h4 id="_tx_event_flags_info_get"><a class="anchor" href="#_tx_event_flags_info_get"></a>tx_event_flags_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image26.png" alt="Event flags information get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents retrieving information regarding an existing event flags group via tx_event_flags_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to event flags group.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_event_flags_performance_information_get"><a class="anchor" href="#_event_flags_performance_information_get"></a>Event Flags Performance Information Get</h3>
+<div class="sect3">
+<h4 id="_tx_event_flags_performance_info_get"><a class="anchor" href="#_tx_event_flags_performance_info_get"></a>tx_event_flags_performance_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image27.png" alt="Event flags performance information get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents retrieving performance information regarding an existing event flags group via tx_event_flags_performance_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to event flags group.</p>
+</li>
+<li>
+<p>Info Field 2: Not used</p>
+</li>
+<li>
+<p>Info Field 3: Not used</p>
+</li>
+<li>
+<p>Info Field 4: Not Used</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_event_flags_performance_system_info_get"><a class="anchor" href="#_event_flags_performance_system_info_get"></a>Event Flags Performance System Info Get</h3>
+<div class="sect3">
+<h4 id="_tx_event_flags_performance_system_info_get"><a class="anchor" href="#_tx_event_flags_performance_system_info_get"></a>tx_event_flags_performance_system_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image28.png" alt="Event flags performance system info get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents retrieving performance information regarding an existing event flags group via tx_event_flags_performance_system_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Not used.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_event_flags_set"><a class="anchor" href="#_event_flags_set"></a>Event Flags Set</h3>
+<div class="sect3">
+<h4 id="_tx_event_flags_set"><a class="anchor" href="#_tx_event_flags_set"></a>tx_event_flags_set</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image29.png" alt="Event flags set icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents setting (or clearing) event flags in an existing event flags group via tx_event_flags_set.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to event flags group.</p>
+</li>
+<li>
+<p>Info Field 2: Event flags to set (or clear).</p>
+</li>
+<li>
+<p>Info Field 3: AND or OR event flag option.</p>
+</li>
+<li>
+<p>Info Field 4: Number of threads suspended on event flag group.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_event_flags_set_notify"><a class="anchor" href="#_event_flags_set_notify"></a>Event Flags Set Notify</h3>
+<div class="sect3">
+<h4 id="_tx_event_flags_set_notify"><a class="anchor" href="#_tx_event_flags_set_notify"></a>tx_event_flags_set_notify</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image30.png" alt="Event flags set notify icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents registering a notification callback for any event flag set operation on an existing event flags group via tx_event_flags_set_notify.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to event flags group.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_interrupt_control"><a class="anchor" href="#_interrupt_control"></a>Interrupt Control</h3>
+<div class="sect3">
+<h4 id="_tx_interrupt_control"><a class="anchor" href="#_tx_interrupt_control"></a>tx_interrupt_control</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image31.png" alt="Interrupt control icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents changing the interrupt lockout posture of the processor via tx_interrupt_control.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: New interrupt posture.</p>
+</li>
+<li>
+<p>Info Field 2: Stack pointer at time of call.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mutex_create"><a class="anchor" href="#_mutex_create"></a>Mutex Create</h3>
+<div class="sect3">
+<h4 id="_tx_mutex_create"><a class="anchor" href="#_tx_mutex_create"></a>tx_mutex_create</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image32.png" alt="Mutex create icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents creating a mutex via tx_mutex_create.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to mutex control block.</p>
+</li>
+<li>
+<p>Info Field 2: Priority inheritance option</p>
+</li>
+<li>
+<p>(TX_INHERIT or TX_NO_INHERIT).</p>
+</li>
+<li>
+<p>Info Field 3: Stack pointer at time of call.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mutex_delete"><a class="anchor" href="#_mutex_delete"></a>Mutex Delete</h3>
+<div class="sect3">
+<h4 id="_tx_mutex_delete"><a class="anchor" href="#_tx_mutex_delete"></a>tx_mutex_delete</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image33.png" alt="Mutex delete icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents deleting a mutex via tx_mutex_delete.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to mutex.</p>
+</li>
+<li>
+<p>Info Field 2: Stack pointer at time of call.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mutex_get"><a class="anchor" href="#_mutex_get"></a>Mutex Get</h3>
+<div class="sect3">
+<h4 id="_tx_mutex_get"><a class="anchor" href="#_tx_mutex_get"></a>tx_mutex_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image34.png" alt="Mutex get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents obtaining a mutex via tx_mutex_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to mutex.</p>
+</li>
+<li>
+<p>Info Field 2: The wait option supplied to the tx_mutex_get call.</p>
+</li>
+<li>
+<p>Info Field 3: Pointer to thread that owns the mutex (NULL implies the mutex is not owned).</p>
+</li>
+<li>
+<p>Info Field 4: Number of times the owning thread has called tx_mutex_get.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mutex_information_get"><a class="anchor" href="#_mutex_information_get"></a>Mutex Information Get</h3>
+<div class="sect3">
+<h4 id="_tx_mutex_info_get"><a class="anchor" href="#_tx_mutex_info_get"></a>tx_mutex_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image35.png" alt="Mutex information get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents retrieving mutex information via tx_mutex_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to mutex.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mutex_performance_information_get"><a class="anchor" href="#_mutex_performance_information_get"></a>Mutex Performance Information Get</h3>
+<div class="sect3">
+<h4 id="_tx_mutex_performance_info_get"><a class="anchor" href="#_tx_mutex_performance_info_get"></a>tx_mutex_performance_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image36.png" alt="Mutex performance information get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents retrieving mutex performance information via tx_mutex_performance_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to mutex.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mutex_performance_system_info_get"><a class="anchor" href="#_mutex_performance_system_info_get"></a>Mutex Performance System Info Get</h3>
+<div class="sect3">
+<h4 id="_tx_mutex_performance_system_info_get"><a class="anchor" href="#_tx_mutex_performance_system_info_get"></a>tx_mutex_performance_system_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image37.png" alt="Mutex performance system info get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents retrieving mutex system performance information via tx_mutex_performance_system_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Not used.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mutex_prioritize"><a class="anchor" href="#_mutex_prioritize"></a>Mutex Prioritize</h3>
+<div class="sect3">
+<h4 id="_tx_mutex_prioritize"><a class="anchor" href="#_tx_mutex_prioritize"></a>tx_mutex_prioritize</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image38.png" alt="Mutex prioritize icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents prioritizing the mutex&#8217;s suspension list via tx_mutex_prioritize.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to corresponding mutex.</p>
+</li>
+<li>
+<p>Info Field 2: Number of threads currently suspended on the mutex.</p>
+</li>
+<li>
+<p>Info Field 3: Stack pointer at time of call.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mutex_put"><a class="anchor" href="#_mutex_put"></a>Mutex Put</h3>
+<div class="sect3">
+<h4 id="_tx_mutex_put"><a class="anchor" href="#_tx_mutex_put"></a>tx_mutex_put</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image39.png" alt="Mutex put icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents releasing a previously owned mutex via tx_mutex_put.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to corresponding mutex.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer of thread owning the mutex.</p>
+</li>
+<li>
+<p>Info Field 3: Number of outstanding mutex get requests.</p>
+</li>
+<li>
+<p>Info Field 4: Stack pointer at time of call.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_queue_create"><a class="anchor" href="#_queue_create"></a>Queue Create</h3>
+<div class="sect3">
+<h4 id="_tx_queue_create"><a class="anchor" href="#_tx_queue_create"></a>tx_queue_create</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image40.png" alt="Queue create icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents creating a message queue via tx_queue_create.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to queue control block.</p>
+</li>
+<li>
+<p>Info Field 2: Size of message&#8201;&#8212;&#8201;in terms of 32-bit words.</p>
+</li>
+<li>
+<p>Info Field 3: Pointer to start of queue memory area.</p>
+</li>
+<li>
+<p>Info Field 4: Number of bytes in the queue memory area.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_queue_delete"><a class="anchor" href="#_queue_delete"></a>Queue Delete</h3>
+<div class="sect3">
+<h4 id="_tx_queue_delete"><a class="anchor" href="#_tx_queue_delete"></a>tx_queue_delete</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image41.png" alt="Queue delete icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents deleting a queue via tx_queue_delete.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to queue.</p>
+</li>
+<li>
+<p>Info Field 2: Stack pointer at time of call.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_queue_flush"><a class="anchor" href="#_queue_flush"></a>Queue Flush</h3>
+<div class="sect3">
+<h4 id="_tx_queue_flush"><a class="anchor" href="#_tx_queue_flush"></a>tx_queue_flush</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image42.png" alt="Queue flush icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents flushing (clearing all queue contents) of a queue via tx_queue_flush.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to queue.</p>
+</li>
+<li>
+<p>Info Field 2: Stack pointer at time of call.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_queue_front_send"><a class="anchor" href="#_queue_front_send"></a>Queue Front Send</h3>
+<div class="sect3">
+<h4 id="_tx_queue_front_send"><a class="anchor" href="#_tx_queue_front_send"></a>tx_queue_front_send</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image43.png" alt="Queue front send icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents sending a message to the front of a queue via tx_queue_front_send.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to queue.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to start of message.</p>
+</li>
+<li>
+<p>Info Field 3: Wait option supplied to the</p>
+</li>
+<li>
+<p>tx_queue_front_send call.</p>
+</li>
+<li>
+<p>Info Field 4: Number of messages already enqueued.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_queue_information_get"><a class="anchor" href="#_queue_information_get"></a>Queue Information Get</h3>
+<div class="sect3">
+<h4 id="_tx_queue_info_get"><a class="anchor" href="#_tx_queue_info_get"></a>tx_queue_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image44.png" alt="Queue information get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents getting information about a queue via tx_queue_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to queue.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_queue_performance_info_get"><a class="anchor" href="#_queue_performance_info_get"></a>Queue Performance Info Get</h3>
+<div class="sect3">
+<h4 id="_tx_queue_performance_info_get"><a class="anchor" href="#_tx_queue_performance_info_get"></a>tx_queue_performance_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image45.png" alt="Queue performance info get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents getting performance information about a queue via tx_queue_performance_info_get.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to queue.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_queue_performance_system_info_get"><a class="anchor" href="#_queue_performance_system_info_get"></a>Queue Performance System Info Get</h3>
+<div class="sect3">
+<h4 id="_tx_queue_performance_system_info_get"><a class="anchor" href="#_tx_queue_performance_system_info_get"></a>tx_queue_performance_system_info_get</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image46.png" alt="Queue performance system info get icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents getting system performance information about all the queues in the system.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Not used.</p>
+</li>
+<li>
+<p>Info Field 2: Not used.</p>
+</li>
+<li>
+<p>Info Field 3: Not used.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_queue_prioritize"><a class="anchor" href="#_queue_prioritize"></a>Queue Prioritize</h3>
+<div class="sect3">
+<h4 id="_tx_queue_prioritize"><a class="anchor" href="#_tx_queue_prioritize"></a>tx_queue_prioritize</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image47.png" alt="Queue prioritize icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents prioritizing the queue&#8217;s suspension list via tx_queue_prioritize.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to corresponding queue.</p>
+</li>
+<li>
+<p>Info Field 2: Number of threads currently suspended on the queue.</p>
+</li>
+<li>
+<p>Info Field 3: Stack pointer at time of call.</p>
+</li>
+<li>
+<p>Info Field 4: Not used.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_queue_receive"><a class="anchor" href="#_queue_receive"></a>Queue Receive</h4>
+<div class="sect4">
+<h5 id="_tx_queue_receive"><a class="anchor" href="#_tx_queue_receive"></a>tx_queue_receive</h5>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image48.png" alt="Queue receive icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents receiving a message from a queue via tx_queue_receive.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to queue.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to destination for message. Info Field 3: Wait option supplied to the call.</p>
+</li>
+<li>
+<p>Info Field 4: Number of messages currently queued.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_queue_send"><a class="anchor" href="#_queue_send"></a>Queue Send</h3>
+<div class="sect3">
+<h4 id="_tx_queue_send"><a class="anchor" href="#_tx_queue_send"></a>tx_queue_send</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image49.png" alt="Queue send icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents sending a message to a queue via tx_queue_send.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information Fields</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Info Field 1: Pointer to queue.</p>
+</li>
+<li>
+<p>Info Field 2: Pointer to message.</p>
+</li>
+<li>
+<p>Info Field 3: Wait option supplied to the call.</p>
+</li>
+<li>
+<p>Info Field 4: Number of messages currently queued.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_queue_send_notify"><a class="anchor" href="#_queue_send_notify"></a>Queue Send Notify</h3>
+<div class="sect3">
+<h4 id="_tx_queue_send_notify"><a class="anchor" href="#_tx_queue_send_notify"></a>tx_queue_send_notify</h4>
+<div class="paragraph">
+<p><strong>Icon</strong> <span class="image"><img src="_images/media/user-guide/tx-events/image50.png" alt="Queue send notify icon"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Description</strong></p>
+</div>
+<div class="paragraph">
+<p>This event represents registering a callback via tx_queue_send_notify which is called whenever a message is sent to a queue. <strong>Information Fields</strong> - Info Field 1: Pointer to queue. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. <mark># Semaphore Ceiling Put </mark><mark> tx_semaphore_ceiling_put <strong>Icon</strong> ![Semaphore ceiling put icon](./media/user-guide/tx-events/image51.png) <strong>Description</strong> This event represents putting to a semaphore via tx_semaphore_ceiling_put. This differs from tx_semaphore_put in that the maximum value of the semaphore is examined such that the put operation is not allowed to exceed the maximum value or ceiling. <strong>Information Fields</strong> - Info Field 1: Pointer to semaphore. - Info Field 2: Current semaphore count. - Info Field 3: Number of threads suspended on the semaphore. - Info Field 4: Ceiling limit supplied to the call. </mark><mark> Semaphore Create </mark><mark># tx_semaphore_create <strong>Icon</strong> ![Semaphore create icon](./media/user-guide/tx-events/image52.png) <strong>Description</strong> This event represents creating a semaphore via tx_semaphore_create. <strong>Information Fields</strong> - Info Field 1: Pointer to semaphore control block. - Info Field 2: Initial semaphore count. - Info Field 3: Stack pointer at time of call. - Info Field 4: Not used. </mark># Semaphore Delete <mark><mark># tx_semaphore_delete <strong>Icon</strong> ![Semaphore delete icon](./media/user-guide/tx-events/image53.png) <strong>Description</strong> This event represents deleting a semaphore via tx_semaphore_delete. <strong>Information Fields</strong> - Info Field 1: Pointer to semaphore. - nfo Field 2: Stack pointer at time of call. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Semaphore Get <mark><mark># tx_semaphore_get <strong>Icon</strong> ![Semaphore get icon](./media/user-guide/tx-events/image54.png) <strong>Description</strong> This event represents obtaining a semaphore via tx_semaphore_get. <strong>Information Fields</strong> - Info Field 1: Pointer to semaphore. - Info Field 2: Wait option supplied to the call. - Info Field 3: Current semaphore count. - Info Field 4: Stack pointer at time of call. </mark></mark> Semaphore Information Get <mark><mark># tx_semaphore_info_get <strong>Icon</strong> ![Semaphore information get icon](./media/user-guide/tx-events/image55.png) <strong>Description</strong> This event represents obtaining information about a semaphore via tx_semaphore_info_get. <strong>Information Fields</strong> - Info Field 1: Pointer to semaphore. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Semaphore Performance Info Get <mark><mark># tx_semaphore_performance_info_get <strong>Icon</strong> ![Semaphore performance info get icon](./media/user-guide/tx-events/image56.png) <strong>Description</strong> This event represents obtaining performance information about a semaphore via tx_semaphore_performance_info_get. <strong>Information Fields</strong> - Info Field 1: Pointer to semaphore. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Semaphore Performance System Info <mark><mark># tx_semaphore_performance_system_info_get <strong>Icon</strong> ![Semaphore performance system info icon](./media/user-guide/tx-events/image57.png) <strong>Description</strong> This event represents obtaining performance information about all semaphores in the system via tx_semaphore_performance_system_info_get. <strong>Information Fields</strong> - Info Field 1: Not used. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Semaphore Prioritize <mark><mark># tx_semaphore_prioritize <strong>Icon</strong> ![Semaphore prioritize icon](./media/user-guide/tx-events/image58.png) <strong>Description</strong> This event represents prioritizing the semaphore&#8217;s suspension list via tx_semaphore_prioritize. <strong>Information Fields</strong> - Info Field 1: Pointer to corresponding semaphore. - Info Field 2: Number of threads currently suspended on the semaphore. - Info Field 3: Stack pointer at time of call. - Info Field 4: Not used. </mark></mark> Semaphore Put <mark><mark># tx_semaphore_put <strong>Icon</strong> ![Semaphore put icon](./media/user-guide/tx-events/image59.png) <strong>Description</strong> This event represents releasing a semaphore instance via tx_semaphore_put. <strong>Information Fields</strong> - Info Field 1: Pointer to corresponding semaphore. Info Field 2: Current semaphore count. - Info Field 3: Number of threads suspended on the semaphore. - Info Field 4: Stack pointer at time of call. </mark></mark> Semaphore Put Notify <mark><mark># tx_semaphore_put_notify <strong>Icon</strong> ![Semaphore put notify icon](./media/user-guide/tx-events/image60.png) <strong>Description</strong> This event represents registering a callback via tx_semaphore_put_notify that is called whenever a semaphore instance is put. <strong>Information Fields</strong> - Info Field 1: Pointer to semaphore. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Thread Create <mark><mark># tx_thread_create <strong>Icon</strong> ![Thread create icon](./media/user-guide/tx-events/image61.png) <strong>Description</strong> This event represents creating a thread via tx_thread_create. <strong>Information Fields</strong> - Info Field 1: Pointer to thread control block. - Info Field 2: Priority of thread. - Info Field 3: Stack pointer for thread. - nfo Field 4: Size of stack in bytes. </mark></mark> Thread Delete <mark><mark># tx_thread_delete <strong>Icon</strong> ![Thread delete icon](./media/user-guide/tx-events/image62.png) <strong>Description</strong> This event represents deleting a thread via tx_thread_delete. <strong>Information Fields</strong> - Info Field 1: Pointer to thread. - Info Field 2: Stack pointer at time of call. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Thread Entry/Exit Notify <mark><mark># tx_thread_entry_exit_notify <strong>Icon</strong> ![Thread entry/exit notify icon](./media/user-guide/tx-events/image63.png) <strong>Description</strong> This event represents registering a callback via tx_thread_entry_exit_notify that is called whenever a thread is entered or exits. <strong>Information Fields</strong> - Info Field 1: Pointer to thread. - Info Field 2: Thread state at time of the registration. - Info Field 3: Pointer to stack at time of call. - Info Field 4: Not used. </mark><mark> Thread Identify </mark><mark></mark> tx_thread_identify <strong>Icon</strong> ![Thread identify icon](./media/user-guide/tx-events/image64.png) <strong>Description</strong> This event represents getting the current thread pointer via tx_thread_identify. <strong>Information Fields</strong> - Info Field 1: Not used. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. </mark># Thread Information Get <mark><mark># tx_thread_info_get <strong>Icon</strong> ![Thread information get icon](./media/user-guide/tx-events/image65.png) <strong>Description</strong> This event represents getting information about the specified thread via tx_thread_info_get. <strong>Information Fields</strong> - Info Field 1: Pointer to thread. - Info Field 2: State of thread at time of call. - Info Field 3: Not used. - Info Field 4: Not used. </mark><mark> Thread Performance Information Get </mark><mark></mark> tx_thread_performance_info_get <strong>Icon</strong> ![Thread performance information get icon](./media/user-guide/tx-events/image66.png) <strong>Description</strong> This event represents getting performance information about the specified thread via tx_thread_performance_info_get. <strong>Information Fields</strong> - Info Field 1: Pointer to thread. - Info Field 2: State of thread at time of call. - Info Field 3: Not used. - Info Field 4: Not used. </mark># Thread Performance System Info Get <mark><mark># tx_thread_performance_system_info_get <strong>Icon</strong> ![Thread performance system info get icon](./media/user-guide/tx-events/image67.png) <strong>Description</strong> This event represents getting performance information about all threads via tx_thread_performance_system_info_get. <strong>Information Fields</strong> - Info Field 1: Not used. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Thread Preemption Change <mark><mark># tx_thread_preemption_change <strong>Icon</strong> ![Thread preemption change icon](./media/user-guide/tx-events/image68.png) <strong>Description</strong> This event represents changing a thread&#8217;s preemption-threshold via tx_thread_preemption_change. <strong>Information Fields</strong> - Info Field 1: Pointer to thread. - Info Field 2: New preemption-threshold. - Info Field 3: Previous preemption-threshold. - Info Field 4: Thread&#8217;s state at time of call. </mark></mark> Thread Priority Change <mark><mark># tx_thread_priority_change <strong>Icon</strong> ![Thread priority change icon](./media/user-guide/tx-events/image69.png) <strong>Description</strong> This event represents changing a thread&#8217;s priority via tx_thread_priority_change. - Information Fields - Info Field 1: Pointer to thread. - Info Field 2: New priority. - Info Field 3: Previous priority. - Info Field 4: Thread&#8217;s state at time of call. </mark></mark> Thread Relinquish <mark><mark># tx_thread_relinquish <strong>Icon</strong> ![Thread relinquish icon](./media/user-guide/tx-events/image70.png) <strong>Description</strong> This event represents relinquishing the processor from a thread via tx_thread_relinquish. <strong>Information Fields</strong> - Info Field 1: Stack pointer at time of call. - Info Field 2: Pointer to the next thread to execute. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Thread Reset <mark><mark># tx_thread_reset <strong>Icon</strong> ![Thread reset icon](./media/user-guide/tx-events/image71.png) <strong>Description</strong> This event represents resetting a completed or terminated thread via tx_thread_reset. <strong>Information Fields</strong> - Info Field 1: Pointer to thread. - Info Field 2: Thread&#8217;s state at time of call. - Info Field 3: Not used. - Info Field 4: Not used. </mark><mark> Thread Resume </mark><mark></mark> tx_thread_resume <strong>Icon</strong> ![Thread resume icon](./media/user-guide/tx-events/image72.png) <strong>Description</strong> This event represents resuming a suspended thread via tx_thread_resume. <strong>Information Fields</strong> - Info Field 1: Pointer to thread. - Info Field 2: Thread&#8217;s state at time of call. - Info Field 3: Stack pointer at time of call. - Info Field 4: Not used. </mark># Thread Sleep <mark><mark># tx_thread_sleep <strong>Icon</strong> ![Thread sleep icon](./media/user-guide/tx-events/image73.png) <strong>Description</strong> This event represents suspending the current thread for a specified number of timer ticks via tx_thread_sleep. <strong>Information Fields</strong> - Info Field 1: Number of ticks to suspend for. - Info Field 2: Thread&#8217;s state at time of call. - Info Field 3: Stack pointer at time of call. - Info Field 4: Not used. </mark></mark> Thread Stack Error Notify <mark><mark># tx_thread_stack_error_notify_event <strong>Icon</strong> ![Thread stack error notify icon](./media/user-guide/tx-events/image74.png) <strong>Description</strong> This event represents registering a thread stack error notification routine via tx_thread_stack_error_notify_event. <strong>Information Fields</strong> - Info Field 1: Not used. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Thread Suspend <mark><mark># tx_thread_suspend <strong>Icon</strong> ![Thread suspend icon](./media/user-guide/tx-events/image75.png) <strong>Description</strong> This event represents suspending a thread via tx_thread_suspend. <strong>Information Fields</strong> - Info Field 1: Pointer to thread to suspend. - Info Field 2: Thread&#8217;s state at time of call. - Info Field 3: Stack pointer at time of call. - Info Field 4: Not used. </mark></mark> Thread Terminate <mark><mark># tx_thread_terminate <strong>Icon</strong> ![Thread terminate icon](./media/user-guide/tx-events/image76.png) <strong>Description</strong> This event represents terminating a thread via tx_thread_terminate. <strong>Information Fields</strong> - Info Field 1: Pointer to thread to terminate. - Info Field 2: Thread&#8217;s state at time of call. - Info Field 3: Stack pointer at time of call. - Info Field 4: Not used. </mark></mark> Thread Time-Slice Change <mark><mark># tx_thread_time_slice_change <strong>Icon</strong> ![Thread time-slice change icon](./media/user-guide/tx-events/image77.png) <strong>Description</strong> This event represents changing a thread&#8217;s time-slice via tx_thread_time_slice_change. <strong>Information Fields</strong> - Info Field 1: Pointer to thread. - Info Field 2: New time-slice. - Info Field 3: Previous time-slice. - Info Field 4: Not used. </mark></mark> Thread Wait Abort <mark><mark># tx_thread_wait_abort <strong>Icon</strong> ![Thread wait abort icon](./media/user-guide/tx-events/image78.png) <strong>Description</strong> This event represents aborting a thread&#8217;s suspension via tx_thread_wait_abort. <strong>Information Fields</strong> - Info Field 1: Pointer to thread. - Info Field 2: Thread&#8217;s state at time of call. - Info Field 3: Stack pointer at time of call. - Info Field 4: Not used. </mark></mark> Time Get <mark><mark># tx_time_get <strong>Icon</strong> ![Time get icon](./media/user-guide/tx-events/image79.png) <strong>Description</strong> This event represents getting the current number of timer ticks via tx_time_get. <strong>Information Fields</strong> - Info Field 1: Current number of timer ticks. - Info Field 2: Stack pointer at time of call. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Time Set <mark><mark># tx_time_set <strong>Icon</strong> ![Time set icon](./media/user-guide/tx-events/image80.png) <strong>Description</strong> This event represents setting the current number of timer ticks via tx_time_set. <strong>Information Fields</strong> - Info Field 1: New number of timer ticks. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Timer Activate <mark><mark># tx_timer_activate <strong>Icon</strong> ![Timer activate icon](./media/user-guide/tx-events/image81.png) <strong>Description</strong> This event represents activating the specified timer via tx_timer_activate. <strong>Information Fields</strong> - Info Field 1: Pointer to timer. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Timer Change <mark><mark># tx_timer_change <strong>Icon</strong> ![Timer change icon](./media/user-guide/tx-events/image82.png) <strong>Description</strong> This event represents changing the specified timer via tx_timer_change. <strong>Information Fields</strong> - Info Field 1: Pointer to timer. - Info Field 2: Initial expiration ticks. - Info Field 3: Reschedule expiration ticks. - Info Field 4: Not used. </mark></mark> Timer Create <mark><mark># tx_timer_create <strong>Icon</strong> ![Timer create icon](./media/user-guide/tx-events/image83.png) <strong>Description</strong> This event represents creating a timer via tx_timer_create. <strong>Information Fields</strong> - Info Field 1: Pointer to timer control block. - Info Field 2: Initial expiration ticks. - Info Field 3: Reschedule expiration ticks. - Info Field 4: Automatic enable value&#8212;&#8203;either TX_AUTO_ACTIVATE (1) or TX_NO_ACTIVATE (0). </mark></mark> Timer Deactivate <mark><mark># tx_timer_deactivate <strong>Icon</strong> ![Timer deactivate icon](./media/user-guide/tx-events/image84.png) <strong>Description</strong> This event represents deactivating a timer via tx_timer_deactivate. <strong>Information Fields</strong> - Info Field 1: Pointer to timer. - Info Field 2: Stack pointer at time of call. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Timer Delete <mark><mark># tx_timer_delete <strong>Icon</strong> ![Timer delete icon](./media/user-guide/tx-events/image85.png) <strong>Description</strong> This event represents deleting a timer via tx_timer_delete. <strong>Information Fields</strong> - Info Field 1: Pointer to timer. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Timer Information Get <mark><mark># tx_timer_info_get <strong>Icon</strong> ![Timer get information icon](./media/user-guide/tx-events/image86.png) <strong>Description</strong> This event represents getting timer information via tx_timer_info_get. <strong>Information Fields</strong> - Info Field 1: Pointer to timer. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Timer Performance Information Get <mark><mark># tx_timer_performance_info_get <strong>Icon</strong> ![Timer performance information get icon](./media/user-guide/tx-events/image87.png) <strong>Description</strong> This event represents getting timer performance information via tx_timer_performance_info_get. <strong>Information Fields</strong> - Info Field 1: Pointer to timer. - Info Field 2: Stack pointer at time of call. - Info Field 3: Not used. - Info Field 4: Not used. </mark></mark> Timer System Performance Info Get <mark>#</mark># tx_timer_performance_system_info_get <strong>Icon</strong> ![Timer system performance info get icon](./media/user-guide/tx-events/image88.png) <strong>Description</strong> This event represents getting all timer performance information via tx_timer_performance_system_info_get. <strong>Information Fields</strong> - Info Field 1: Not used. - Info Field 2: Not used. - Info Field 3: Not used. - Info Field 4: Not used.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

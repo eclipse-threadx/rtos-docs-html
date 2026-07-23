@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 5 - GUIX Display Drivers :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/guix/main/chapter-5.html">
+    <meta name="description" content="GUIX Display drivers define the software interface between the abstract drawing canvas and the physical display hardware.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guix" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">GUIX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">GUIX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">GUIX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-guix.html">Overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="guix-studio-quick-start.html">GUIX Studio Quick Start Guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-1.html">Ch. 1 - Introduction to GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-3.html">Ch. 3 - Functional overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-4.html">Ch. 4 - Description of GUIX services</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter-5.html">Ch. 5 - GUIX display drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-example.html">GUIX example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - GUIX color definitions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - GUIX color formats</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - GUIX widget styles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - GUIX brush, canvas, and gradient attributes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - GUIX event description</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-f.html">App. F - GUIX RTOS binding services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-g.html">App. G - GUIX font structure</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-h.html">App. H - GUIX build-time configuration flags</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-i.html">App. I - GUIX information structures</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-j.html">App. J - Canvas Partial Frame Buffer Feature</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-k.html">App. K - GUIX Widget Status Flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX Studio User Guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix-studio.html">About GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-1.html">Ch. 1 - Introduction to GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-2.html">Ch. 2 - Installation and Use of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-3.html">Ch. 3 - Description of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-4.html">Ch. 4 - GUIX Studio Resources</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-6.html">Ch. 6 - GUIX Studio Generated Code</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-9.html">Ch. 9 - GUIX Studio Command Line</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-10.html">Ch. 10 - Simple Example Project</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-11.html">Ch. 11 - Resource Project File</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">GUIX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">GUIX</a></li>
+    <li>GUIX user guide</li>
+    <li><a href="chapter-5.html">Ch. 5 - GUIX display drivers</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/guix/modules/ROOT/pages/chapter-5.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 5 - GUIX Display Drivers</h1>
+<div class="paragraph">
+<p>GUIX Display drivers define the software interface between the abstract drawing canvas and the physical display hardware. The GUIX display driver implements the lowest-level drawing functions that actually change pixel color information in the canvas memory and transfer the canvas memory to the physical display frame buffer in double-buffered systems.</p>
+</div>
+<div class="paragraph">
+<p>GUIX Display drivers are defined by a structure containing the physical display parameters and a set of function pointers to the low-level driver functions. By using these indirect function pointers, the abstract canvas and widget drawing functions are made completely independent of the hardware details.</p>
+</div>
+<div class="paragraph">
+<p>GUIX provides a complete, fully functional, default set of drawing functions for each supported  color depth and color format. When implementing a display driver with no specific hardware acceleration capability or other hardware specific considerations, these default drawing functions are normally sufficient for the final driver implementation. For these simplest of drivers, the only function that normally needs to be implemented in the driver software is a function to configure the hardware device. This often involves initializing various hardware registers to define the LCD display clock, display dimensions etc. For all other functions, the driver implementation simply initialize the GX_DISPLAY function pointers to the default function implementations for the desired color depth and format.</p>
+</div>
+<div class="paragraph">
+<p>When implementing a custom display driver, the best practice is to first initialize your display driver drawing function pointers with the default software implementation for the color depth you want to support, then replace those function pointers where desired to call your custom function implementations (if any). To assist with this, there is a default setup function available for each supported color depth and format. For example, if you are writing a 16 bit 5:6:5 format RGB display driver, the first thing your custom driver would normally do is invoke the generic setup routine for this color depth:</p>
+</div>
+<div class="paragraph">
+<p>UINT my_custom_565_display_driver(GX_DISPLAY *display)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">{
+      /* Perform standard function pointer setup. */
+      _gx_display_driver_565rgb_setup(display, GX_NULL, my_buffertoggle);
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The parameter my_buffer_toggle above is a pointer to your display driver buffer toggle function (which may be GX_NULL if your driver is single-buffered and drawing directly to the hardware frame buffer).</p>
+</div>
+<div class="paragraph">
+<p>If you are writing a custom display driver, you will need to include the gx_display.h header file in your custom driver source, which is an internal use header file not available to application level software.</p>
+</div>
+<div class="paragraph">
+<p>The GUIX display level drawing functions receive as input a pointer to a <strong>GX_DRAW_CONTEXT</strong> structure. The <strong>GX_DRAW_CONTEXT</strong> structure defines the clipping coordinates for the current drawing operation along with the brush and colors being used. Each drawing function receives as input additional parameters specific to the function requirements.</p>
+</div>
+<div class="paragraph">
+<p>The signature of the <strong>GX_DISPLAY</strong> driver entry point is defined as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT &lt;device&gt;_graphics_driver_&lt;format&gt;(GX_DISPLAY *display)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>While the name of this function is completely up to the implementor, the convention for the drivers provided with GUIX is to use a hardware specific device name in the &lt;device&gt; field and color format for &lt;format&gt; field above.</p>
+</div>
+<div class="paragraph">
+<p>This function must initialize the <strong>GX_DISPLAY</strong> structure provided as input and perform any hardware setup that is required. The <strong>GX_DISPLAY</strong> structure contains the following fields.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG gx_display_id</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a field for use by the application, in cases where more than one instance of a particular driver is created.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CHAR *gx_display_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An optional name used to identify the driver.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GX_DISPLAY *gx_display_created_next</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This field is initialized by GUIX, and is used to create and maintain a list of all GX_DISPLAY instances.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GX_DISPLAY *gx_display_created_previous</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This field is initialized by GUIX, and is used to create and maintain a list of all GX_DISPLAY instances.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GX_VALUE gx_display_color_format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This field should reflect the graphics data format supported by this driver. The color format types are defined in the gx_api.h header file.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GX_VALUE gx_display_width</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This field should be initialized to hold the physical display width, in pixels.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GX_VALUE gx_display_height</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This field should be initialized to hold the physical display height, in pixels.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GX_COLOR *gx_display_color_table</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a table used to convert color ID values to color format specific color values.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GX_PIXELMAP *gx_display_pixelmap_table</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to the active pixelmap table for this display.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GX_FONT *gx_display_font_table</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to the active font table for this display.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GX_COLOR *gx_display_palette</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">For palette mode drivers, this is a pointer to the active color palette. For drivers that do not use a color palette, this pointer is GX_NULL.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UINT gx_display_pixelmap_table_size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of entries in the active pixelmap table.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UINT gx_display_font_table_size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of entries in the active font table.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UINT gx_display_palette_size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of entries in color palette (if any).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG gx_display_handle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A unique identifier, or <em>handle</em>, that specifies the display.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UINT gx_display_driver_ready</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This field is use to signal to GUIX when the driver is ready for operation. In some cases, the driver may require several levels of initialization and configuration, during which time GUIX must not attempt to utilize the driver. This flag should be set to 1 when the driver is ready to service drawing requests.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID *gx_display_driver_data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This field is for use by the driver implementation. If the driver needs to create and reference additional information not available in the GX_DISPLAY structure, the driver should allocate space for and point to this additional data using this structure field. An example of driver-specific extra data might include the DMA channel being used by the driver or the SPI channel to which the display frame buffer is connected.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_drawing_initiate)(struct GX_DISPLAY_STRUCT *display, struct GX_CANVAS_STRUCT *canvas)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a function pointer that, if not NULL, is invoked by the gx_canvas_drawing_initiate function. For display drivers that utilize a graphics accelerator or hardware graphics display list, this function might be used to begin a new display list. This function pointer can be NULL.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_palette_set)(struct GX_DISPLAY_STRUCT *display, GX_COLOR *palette, INT count)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to install a color palette. This function is NULL unless the driver operates in palette (also called color lookup table or CLUT) mode.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_simple_line_draw)(GX_DRAW_CONTEXT *context, INT x1, INTy1, INT x2, INT y2)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to implement generic line drawing, no anti-aliasing. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_simple_wide_line_draw)(GX_DRAW_CONTEXT *context, INT x1, INTy1, INT x2, INT y2)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to implement generic wide line drawing, no anti-aliasing. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_anti_aliased_line_draw)(GX_DRAW_CONTEXT *context, INT x1, INTy1, INT x2, INT y2)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to implement generic anti-aliased line drawing. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_anti_aliased_wide_line_draw)(GX_DRAW_CONTEXT *context, INT x1, INTy1, INT x2, INT y2)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to implement generic anti-aliased wide line drawing. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_horizontal_line_draw)(GX_DRAW_CONTEXT *context, INT x1, INT x2, INT y)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to implement the special case of horizontal line drawing. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_horizontal_pixelmap_line_draw)(GX_DRAW_CONTEXT *context, INT x1, INT x2, INT y, GX_PIXELMAP *map)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to implement drawing a single pixelmap row. This function is used internally for pattern filling shapes. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_vertical_line_draw)(GX_DRAW_CONTEXT *context, INT y1, INT y2, INT x)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to implement the special case of vertical line drawing. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_horizontal_pattern_line_draw)(GX_DRAW_CONTEXT *context, INT x1, INT x2, INT y)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to implement horizontal pattern line drawing. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_vertical_pattern_line_draw)(GX_DRAW_CONTEXT *context, INT y1, INT y2, INT x)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to implement vertical pattern line drawing. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_canvas_copy)(struct GX_CANVAS_STRUCT *source, struct GX_CANVAS_STRUCT *dest)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to copy canvas data from one canvas to another. The source canvas invalid rectangle is used to define the copy area. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_canvas_blend)(struct GX_CANVAS_STRUCT *source, struct GX_CANVAS_STRUCT *dest)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to alpha-blend canvas data from the source canvas with the existing data in the destination canvas. The source canvas invalid rectangle is used to define the blend area. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_pixelmap_blend)(GX_DRAW_CONTEXT *context, INT xpos, INT ypos, GX_PIXELMAP *pmp, GX_UBYTE alpha)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to blend a pixelmap on the background canvas defined by the draw context. The supplied alpha value may be in addition to an alpha channel contained in the pixelmap data. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_pixelmap_draw)(GX_DRAW_CONTEXT *context, INT xpos, INT ypos, GX_PIXELMAP *pmp)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to draw a pixelmap into the canvas defined by the draw context. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_jpeg_draw)(GX_DRAW_CONTEXT *context, INT xpos, INT ypos, GX_PIXELMAP *pmp)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to decode a jpg image and render it directly to the canvas. This function is only provided if GX_SOFTWARE_DECODER_SUPPORT is defined. This function pointer can be NULL. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_png_draw)(GX_DRAW_CONTEXT *context, INT xpos, INT ypos, GX_PIXELMAP *pmp)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to decode a png image and render it directly to the canvas. This function is only provided if GX_SOFTWARE_DECODER_SUPPORT is defined. This function pointer can be NULL. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_pixelmap_rotate)(GX_DRAW_CONTEXT *context, INT xpos, INT ypos, GX_PIXELMAP *pmp INT angle, INT rot_cx, INT rot_cy)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to rotate a pixelmap and render the result directly to the canvas. This function is invoked by the gx_canvas_pixelmap_rotate API Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID *gx_display_driver_pixel_write)(GX_DRAW_CONTEXT *context, INT x, INT y, GX_COLOR color)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to write one pixel into the canvas memory. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID *gx_display_driver_block_move)(GX_DRAW_CONTEXT *context, GX_RECTANGLE *block, INT xshift, INT yshift)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to move or shift a block of pixels within a canvas. This function is primarily used for rapidly scrolling a window contents. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_pixel_blend)(GX_DRAW_CONTEXT *context, INT x, INT y, GX_COLOR color, GX_UBYTE alpha)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This function is used to alpha-blend the incoming pixel color value with the existing color value in the canvas memory at position x,y. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GX_COLOR (*gx_display_driver_native_color_get)(GX_COLOR rawcolor)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This function converts a color from the 32-bit A:R:G:B color format used internally by GUIX to the native color format of the canvas and display. Some loss of color information is expected for display drivers running at lower color depths. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USHORT (*gx_display_driver_row_pitch_get)(USHORT width)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the byte count or stride of one row of graphics data given the requested canvas width. This function is used to calculate the size of the memory area needed to create a canvas. The row pitch and width are not always the same due to hardware scan line alignment constraints. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_buffer_toggle)(struct GX_CANVAS_STRUCT *canvas, GX_RECTANGLE *dirty_area)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is a pointer to a function to toggle between the working and visible frame buffers for double-buffered memory systems. This function must first instruct the hardware to begin using the new frame buffer, then copy the modified portion of the new visible buffer to the companion buffer, to insure the two buffers stay in synch.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_polygon_draw)(GX_DRAW_CONTEXT *context, INT num_points, GX_POINT *vertices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw a polygon. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_polygon_fill)(GX_DRAW_CONTEXT *context, INT num_points, GX_POINT *vertices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw a filled polygon. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_circle_draw)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, UINT r)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw a circle. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_anti_aliased_circle_draw) (GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, UINT r)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw an anti-aliased circle. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_wide_circle_draw)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, UINT r)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw a circle with a wide outline. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_wide_anti_aliased_circle_draw) (GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, UINT r)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw an anti-aliased circle with a wide outline. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_circle_fill)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, UINT r)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw a filled circle. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_arc_draw)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, UINT r, INT start_angle, INT end_angle)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw an arc. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_anti_aliased_arc_draw)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, UINT r, INT start_angle, INTend_angle)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw an anti-aliased arc. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_wide_arc_draw)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, UINT r, INT start_angle, INT end_angle)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw an arc with a wide outline. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_anti_aliased_wide_arc_draw)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, UINT r, INT start_angle, INTend_angle)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw an anti-aliased arc. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_arc_fill)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, UINT r, INT start_angle, INT end_angle)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw a filled arc. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_pie_fill)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, UINT r, INT start_angle, INT end_angle)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw a filled pie. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_ellipse_draw)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, INT a, INT b)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw an ellipse. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_anti_aliased_ellipse_draw)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, INT a, INT b)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw an ellipse. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_wide_ellipse_draw)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, INT a, INT b)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw an ellipse with a wide outline. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_anti_aliased_wide_ellipse_draw)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, INT a, INT b)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw an ellipse with a wide outline. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_ellipse_fill)(GX_DRAW_CONTEXT *context, INT xcenter, INT ycenter, INT a, INT b)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to a function to draw a filled ellipse. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_8bit_glyph_draw)(GX_DRAW_CONTEXT *context, GX_RECTANGLE *draw_area, GX_POINT *map_offset, constGX_GLYPH *glyph)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to function to draw one 8-bit aliased text glyph to the canvas using the brush of the current drawing context. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_4bit_glyph_draw)(GX_DRAW_CONTEXT *context, GX_RECTANGLE *draw_area, GX_POINT *map_offset, const GX_GLYPH *glyph)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to function to draw one 4-bit aliased text glyph to the canvas using the brush of the current drawing context. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VOID (*gx_display_driver_1bit_glyph_draw)(GX_DRAW_CONTEXT *context, GX_RECTANGLE *draw_area, GX_POINT *map_offset, const GX_GLYPH *glyph)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to function to draw one 1-bit monochrome text glyph to the canvas using the brush of the current drawing context. Default implementations of this function are provided for each supported color depth and color format.</p></td>
+</tr>
+</tbody>
+</table>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

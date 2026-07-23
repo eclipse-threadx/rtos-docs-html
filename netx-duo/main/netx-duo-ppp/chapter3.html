@@ -1,0 +1,2678 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 3 - Description of NetX Duo Point-to-Point Protocol (PPP) services :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-ppp/chapter3.html">
+    <meta name="description" content="This chapter contains a description of all NetX Duo PPP services (listed below) in alphabetic order.">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo PPP user guide</li>
+    <li><a href="chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-ppp/chapter3.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 3 - Description of NetX Duo Point-to-Point Protocol (PPP) services</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of all NetX Duo PPP services (listed below) in alphabetic order.</p>
+</div>
+<div class="paragraph">
+<p>In the <strong>Return Values</strong> section in the following API descriptions, values in <strong>BOLD</strong> are not affected by the <strong>NX_DISABLE_ERROR_CHECKING</strong> define that is used to disable API error checking, while non-bold values are completely disabled.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_byte_receive"><a class="anchor" href="#_nx_ppp_byte_receive"></a>nx_ppp_byte_receive</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Receive a byte from serial ISR</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_byte_receive(
+    NX_PPP *ppp_ptr,
+    UCHAR byte);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This service is typically called from the application&#8217;s serial driver Interrupt Service Routine (ISR) to transfer a received byte to PPP. When called, this routine places the received byte into a circular byte buffer and notifies the appropriate PPP thread for processing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters"><a class="anchor" href="#_input_parameters"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>byte</em>: Byte received from serial device</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP byte receive.</p>
+</li>
+<li>
+<p><strong>NX_PPP_BUFFER_FULL</strong>: (0xB1) PPP serial buffer is already full.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from"><a class="anchor" href="#_allowed_from"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads, ISRs</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Notify "my_ppp" of a received byte. */
+status =  nx_ppp_byte_receive(&amp;my_ppp, new_byte);
+
+/* If status is NX_SUCCESS the received byte was successfully
+   buffered. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_chap_challenge"><a class="anchor" href="#_nx_ppp_chap_challenge"></a>nx_ppp_chap_challenge</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Generate a CHAP challenge</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_chap_challenge(NX_PPP *ppp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This service initiates a CHAP challenge after the PPP connection is already up and running. This gives the application the ability to verify the authenticity of the connection on a periodic basis. If the challenge is unsuccessful, the PPP link is closed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_2"><a class="anchor" href="#_input_parameters_2"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP challenge initiated.</p>
+</li>
+<li>
+<p><strong>NX_PPP_FAILURE</strong>: (0xB0) Invalid PPP challenge, CHAP was enabled only for response.</p>
+</li>
+<li>
+<p><strong>NX_NOT_IMPLEMENTED</strong>: (0x80) CHAP logic was disabled via NX_PPP_DISABLE_CHAP.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_2"><a class="anchor" href="#_allowed_from_2"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Initiate a PPP challenge for instance "my_ppp". */
+status =  nx_ppp_chap_challenge(&amp;my_ppp);
+
+/* If status is NX_SUCCESS a CHAP challenge "my_ppp" was successfully
+initiated. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_chap_enable"><a class="anchor" href="#_nx_ppp_chap_enable"></a>nx_ppp_chap_enable</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Enable CHAP authentication</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_chap_enable(
+    NX_PPP *ppp_ptr,
+    UINT (*get_challenge_values)(
+        CHAR *rand_value,
+        CHAR *id,
+        CHAR *name),
+    UINT (*get_responder_values)(
+        CHAR *system,
+        CHAR *name,
+        CHAR *secret),
+    UINT (*get_verification_values)(
+        CHAR *system,
+        CHAR *name,
+        CHAR *secret));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This service enables the Challenge-Handshake Authentication Protocol (CHAP) for the specified PPP instance.</p>
+</div>
+<div class="paragraph">
+<p>If the "<strong><em>get_challenge_values</em></strong>" and "<strong><em>get_verification_values</em></strong>" function pointers are specified, CHAP is required by this PPP instance. Otherwise, CHAP only responds to the peer&#8217;s challenge requests.</p>
+</div>
+<div class="paragraph">
+<p>There are several data items referenced below in the required callback functions. The data items <em>secret</em>, <em>name</em>, and <em>system</em> are expected to be NULL-terminated strings with a maximum size of NX_PPP_NAME_SIZE-1. The data item <em>rand_value</em> is expected to be a NULL-terminated string with a maximum size of NX_PPP_VALUE_SIZE-1. The data item <em>id</em> is a simple unsigned character type.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This function must be called after <em>nx_ppp_create</em> but before nx_ip_create or <em>nx_ip_interface_attach</em>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_3"><a class="anchor" href="#_input_parameters_3"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>get_challenge_values</em>: Pointer to application function to retrieve values used for the challenge. Note that the <em>rand_value</em>, <em>id</em>, and <em>secret</em> values must be copied into the supplied destinations.</p>
+</li>
+<li>
+<p><em>get_responder_values</em>: Pointer to application function that retrieves values used to respond to a challenge. Note that the <em>system</em>, <em>name</em>, and <em>secret</em> values must be copied into the supplied destinations.</p>
+</li>
+<li>
+<p><em>get_verification_values</em>: Pointer to application function that retrieves values used to verify the challenge response. Note that the <em>system</em>,<em>name</em>, and <em>secret</em> values must be copied into the supplied destinations.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP CHAP enable</p>
+</li>
+<li>
+<p><strong>NX_NOT_IMPLEMENTED</strong>: (0x80) CHAP logic was disabled via NX_PPP_DISABLE_CHAP.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer or callback function pointer. Note that if <em>get_challenge_values</em> is specified, then the <em>get_verification_values</em> function must also be supplied.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_3"><a class="anchor" href="#_allowed_from_3"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">CHAR    name_string[] = "username";
+CHAR    rand_value_string[] = "123456";
+CHAR    system_string[] = "system";
+CHAR    secret_string[] = "secret";
+
+/* Enable CHAP in both directions (CHAP challenger and CHAP responder) for
+"my_ppp". */
+status =  nx_ppp_chap_enable(&amp;my_ppp,	get_challenge_values,
+                              get_responder_values,
+                              get_verification_values);
+
+
+/* If status is NX_SUCCESS, "my_ppp" has CHAP enabled. */
+/* Define the CHAP enable routines.  */
+UINT  get_challenge_values(CHAR *rand_value, CHAR *id, CHAR *name)
+{
+   UINT    i;
+   for (i = 0; i&lt; (NX_PPP_NAME_SIZE-1); i++)
+   {
+      name[i] = name_string[i];
+   }
+   name[i] =  0;
+
+   *id =  '1';  /* One byte  */
+   for (i = 0; i&lt; (NX_PPP_VALUE_SIZE-1); i++)
+   {
+      rand_value[i] =  rand_value_string[i];
+   }
+   rand_value[i] =  0;
+
+   return(NX_SUCCESS);
+}
+
+
+UINT  get_responder_values(CHAR *system, CHAR *name, CHAR *secret)
+{
+   UINT    i;
+
+   for (i = 0; i&lt; (NX_PPP_NAME_SIZE-1); i++)
+   {
+      name[i] = name_string[i];
+   }
+   name[i] =  0;
+
+   for (i = 0; i&lt; (NX_PPP_NAME_SIZE-1); i++)
+   {
+      system[i] =  system_string[i];
+   }
+   system[i] =  0;
+
+   for (i = 0; i&lt; (NX_PPP_NAME_SIZE-1); i++)
+   {
+      secret[i] =  secret_string[i];
+   }
+   secret[i] =  0;
+
+   return(NX_SUCCESS);
+}
+
+UINT  get_verification_values(CHAR *system, CHAR *name, CHAR *secret)
+{
+   UINT    i;
+
+   for (i = 0; i&lt; (NX_PPP_NAME_SIZE-1); i++)
+   {
+      name[i] = name_string[i];
+   }
+   name[i] =  0;
+
+   for (i = 0; i&lt; (NX_PPP_NAME_SIZE-1); i++)
+   {
+      system[i] =  system_string[i];
+   }
+   system[i] =  0;
+
+   for (i = 0; i&lt; (NX_PPP_NAME_SIZE-1); i++)
+   {
+      secret[i] =  secret_string[i];
+   }
+   secret[i] =  0;
+
+   return(NX_SUCCESS);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_create"><a class="anchor" href="#_nx_ppp_create"></a>nx_ppp_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create a PPP instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  nx_ppp_create(
+    NX_PPP *ppp_ptr,
+    CHAR *name,
+    NX_IP *ip_ptr,
+    VOID *stack_memory_ptr,
+    ULONG stack_size,
+    UINT thread_priority,
+    NX_PACKET_POOL *pool_ptr,
+    void (*ppp_invalid_packet_handler)(NX_PACKET *packet_ptr),
+    void (*ppp_byte_send)(UCHAR byte));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates a PPP instance for the specified NetX Duo IP instance. This function must be called prior to creating the NetX Duo IP instance.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is generally a good idea to create the NetX Duo IP thread at a higher priority than the PPP thread priority. Please refer to the <em>nx_ip_create</em> service for more information on specifying the IP thread priority.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_4"><a class="anchor" href="#_input_parameters_4"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>name</em>: Name of this PPP instance.</p>
+</li>
+<li>
+<p><em>ip_ptr</em>: Pointer to control block for not-yet-created IP instance.</p>
+</li>
+<li>
+<p><em>stack_memory_ptr</em>: Pointer to start of PPP thread&#8217;s stack area.</p>
+</li>
+<li>
+<p><em>stack_size</em>: Size in bytes in the thread&#8217;s stack.</p>
+</li>
+<li>
+<p><em>pool_ptr</em>: Pointer to default packet pool.</p>
+</li>
+<li>
+<p><em>thread_priority</em>: Priority of internal PPP threads (1-31).</p>
+</li>
+<li>
+<p><em>ppp_invalid_packet_handler</em>: Function pointer to application&#8217;s handler for all non-PPP packets. The NetX Duo PPP typically calls this routine during initialization. This is where the application can respond to modem commands or in the case of Windows XP, the NetX Duo PPP application can initiate PPP by responding with "CLIENT SERVER" to the initial "CLIENT" sent by Windows XP.</p>
+</li>
+<li>
+<p><em>ppp_byte_send</em>: Function pointer to application&#8217;s serial byte output routine.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP create.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP, IP, or byte output function pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_4"><a class="anchor" href="#_allowed_from_4"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Create "my_ppp" for IP instance "my_ip". */
+status =  nx_ppp_create(&amp;my_ppp, "my PPP", &amp;my_ip, stack_start, 1024, 2,
+                        &amp;my_pool, my_invalid_packet_handler, my_out_byte);
+
+/* If status is NX_SUCCESS the PPP instance was successfully
+   created. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_delete"><a class="anchor" href="#_nx_ppp_delete"></a>nx_ppp_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete a PPP instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_delete(NX_PPP *ppp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes the previously created PPP instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_5"><a class="anchor" href="#_input_parameters_5"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP deletion.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_5"><a class="anchor" href="#_allowed_from_5"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Delete PPP instance "my_ppp". */
+status =  nx_ppp_delete(&amp;my_ppp);
+
+/* If status is NX_SUCCESS the "my_ppp" was successfully deleted. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_dns_address_get"><a class="anchor" href="#_nx_ppp_dns_address_get"></a>nx_ppp_dns_address_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get DNS Server IP address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_dns_address_get(
+    NX_PPP *ppp_ptr,
+    ULONG *dns_address_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the DNS IP address supplied by the peer in the IPCP handshake. If no IP address was supplied by the peer, an IP address of 0 is returned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_6"><a class="anchor" href="#_input_parameters_6"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>dns_address_ptr</em>: Destination for DNS server address</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DNS address get.</p>
+</li>
+<li>
+<p><strong>NX_PPP_NOT_ESTABLISHED</strong>: (0xB5) PPP has not completed negotiation with peer.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_6"><a class="anchor" href="#_allowed_from_6"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads, timers, ISRs</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_6"><a class="anchor" href="#_example_6"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG  my_dns_address;
+
+/* Get DNS Server address supplied by peer. */
+status =  nx_ppp_dns_address_get(&amp;my_ppp, &amp;my_dns_address);
+
+/* If status is NX_SUCCESS the "my_dns_address" contains the DNS IP address –
+   if the peer supplied one. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_secondary_dns_address_get"><a class="anchor" href="#_nx_ppp_secondary_dns_address_get"></a>nx_ppp_secondary_dns_address_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get Secondary DNS Server IP address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_secondary_dns_address_get(
+    NX_PPP *ppp_ptr,
+    ULONG *dns_address_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the secondary DNS IP address supplied by the peer in the IPCP handshake. If no IP address was supplied by the peer, an IP address of 0 is returned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_7"><a class="anchor" href="#_input_parameters_7"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>dns_address_ptr</em>: Destination for Secondary DNS server address</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_7"><a class="anchor" href="#_return_values_7"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DNS address get.</p>
+</li>
+<li>
+<p><strong>NX_PPP_NOT_ESTABLISHED</strong>: (0xB5) PPP has not completed negotiation with peer.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_7"><a class="anchor" href="#_allowed_from_7"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads, timers, ISRs</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_7"><a class="anchor" href="#_example_7"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG  my_dns_address;
+
+/* Get secondary DNS Server address supplied by peer. */
+status =  nx_ppp_secondary_dns_address_get(&amp;my_ppp, &amp;my_dns_address);
+
+/* If status is NX_SUCCESS the "my_dns_address" contains the secondary DNS Server address – if the peer supplied one. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_dns_address_set"><a class="anchor" href="#_nx_ppp_dns_address_set"></a>nx_ppp_dns_address_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set primary DNS Server IP address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_dns_address_set(
+    NX_PPP *ppp_ptr,
+    ULONG dns_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the DNS Server IP address. If the peer sends a DNS Server option request in the IPCP state, this host will provide the information.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_8"><a class="anchor" href="#_input_parameters_8"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>dns_address</em>: DNS server address</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_8"><a class="anchor" href="#_return_values_8"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DNS address set.</p>
+</li>
+<li>
+<p><strong>NX_PPP_NOT_ESTABLISHED</strong>: (0xB5) PPP has not completed negotiation with peer.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_8"><a class="anchor" href="#_allowed_from_8"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG  my_dns_address = IP_ADDRESS(1,2,3,1);
+
+/* Set DNS Server address. */
+status =  nx_ppp_dns_address_set(&amp;my_ppp, my_dns_address);
+
+/* If status is NX_SUCCESS the "my_dns_address" will be the DNS Server address provided if the peer requests one. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_secondary_dns_address_set"><a class="anchor" href="#_nx_ppp_secondary_dns_address_set"></a>nx_ppp_secondary_dns_address_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set secondary DNS Server IP address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_secondary_dns_address_set(
+    NX_PPP *ppp_ptr,
+    ULONG dns_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the secondary DNS Server IP address. If the peer sends a secondary DNS Server option request in the IPCP state, this host will provide the information.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_9"><a class="anchor" href="#_input_parameters_9"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>dns_address</em>: Secondary DNS server address</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_9"><a class="anchor" href="#_return_values_9"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DNS address set.</p>
+</li>
+<li>
+<p><strong>NX_PPP_NOT_ESTABLISHED</strong>: (0xB5) PPP has not completed negotiation with peer.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_9"><a class="anchor" href="#_allowed_from_9"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG  my_dns_address = IP_ADDRESS(1,2,3,1);
+
+/* Set DNS Server address. */
+status =  nx_ppp_secondary_dns_address_set(&amp;my_ppp, my_dns_address);
+
+/* If status is NX_SUCCESS the "my_dns_address" will be the secondary DNS Server address provided if the peer requests one. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_interface_index_get"><a class="anchor" href="#_nx_ppp_interface_index_get"></a>nx_ppp_interface_index_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get IP interface index</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_interface_index_get(
+    NX_PPP *ppp_ptr,
+    UINT *index_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the IP interface index associated with this PPP instance. This is only useful when the PPP instance is not the primary interface of an IP instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_10"><a class="anchor" href="#_input_parameters_10"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>index_ptr</em>: Destination for interface index</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_10"><a class="anchor" href="#_return_values_10"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP index get.</p>
+</li>
+<li>
+<p><strong>NX_IN_PROGRESS</strong>: (0x37) PPP has not completed initialization.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_10"><a class="anchor" href="#_allowed_from_10"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG  my_index;
+
+/* Get the interface index for this PPP instance. */
+status =  nx_ppp_interface_index_get(&amp;my_ppp, &amp;my_index);
+
+/* If status is NX_SUCCESS the "my_index" contains the IP interface index for
+   this PPP instance. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_ip_address_assign"><a class="anchor" href="#_nx_ppp_ip_address_assign"></a>nx_ppp_ip_address_assign</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Assign IP addresses for IPCP</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_ip_address_assign(
+    NX_PPP *ppp_ptr,
+    ULONG local_ip_address,
+    ULONG peer_ip_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets up the local and peer IP addresses for use in the Internet Protocol Control Protocol (IPCP. It should be called for the PPP instance that has valid IP addresses for itself and the other peer.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_11"><a class="anchor" href="#_input_parameters_11"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>local_ip_address</em>: Local IP address.</p>
+</li>
+<li>
+<p><em>peer_ip_address</em>: Peer&#8217;s IP address.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_11"><a class="anchor" href="#_return_values_11"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP address assignment.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_11"><a class="anchor" href="#_allowed_from_11"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_11"><a class="anchor" href="#_example_11"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Set IP addresses for "my_ppp". */
+status =  nx_ppp_ip_address_assign(&amp;my_ppp, IP_ADDRESS(256,2,2,187),
+IP_ADDRESS(256,2,2,188));
+
+
+/* If status is NX_SUCCESS the "my_ppp" has the IP addresses. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_link_down_notify"><a class="anchor" href="#_nx_ppp_link_down_notify"></a>nx_ppp_link_down_notify</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Notify application on link down</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_link_down_notify(
+    NX_PPP *ppp_ptr,
+    VOID (*link_down_callback)(NX_PPP *ppp_ptr));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>This service registers the application&#8217;s link down notification callback with the specified PPP instance. If non-NULL, the application&#8217;s link down callback function is called whenever the link goes down.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_12"><a class="anchor" href="#_input_parameters_12"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>link_down_callback</em>: Application&#8217;s link down notification function pointer. If NULL, link down notification is disabled.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_12"><a class="anchor" href="#_return_values_12"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful link down notification callback registration.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_12"><a class="anchor" href="#_allowed_from_12"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads, timers, ISRs</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_12"><a class="anchor" href="#_example_12"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Register "my_link_down_callback" to be called whenever the PPP
+   link goes down. */
+status =  nx_ppp_link_down_notify(&amp;my_ppp, my_link_down_callback);
+
+
+/* If status is NX_SUCCESS the function "my_link_down_callback" has been
+   registered with this PPP instance. */
+
+VOID my_link_down_callback(NX_PPP *ppp_ptr)
+{
+
+/* On link down, simply restart PPP.  */
+    nx_ppp_restart(ppp_ptr);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_link_up_notify"><a class="anchor" href="#_nx_ppp_link_up_notify"></a>nx_ppp_link_up_notify</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Notify application on link up</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_ppp_link_up_notify(
+    NX_PPP *ppp_ptr,
+    VOID (*link_up_callback)(NX_PPP *ppp_ptr));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This service registers the application&#8217;s link up notification callback with the specified PPP instance. If non-NULL, the application&#8217;s link up callback function is called whenever the link comes up.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_13"><a class="anchor" href="#_input_parameters_13"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>link_up_callback</em>: Application&#8217;s link up notification function pointer. If NULL, link up notification is disabled.**</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_13"><a class="anchor" href="#_return_values_13"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful link up notification callback registration.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_13"><a class="anchor" href="#_allowed_from_13"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads, timers, ISRs</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_13"><a class="anchor" href="#_example_13"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Register "my_link_up_callback" to be called whenever the PPP
+   link comes up. */
+status =  nx_ppp_link_up_notify(&amp;my_ppp, my_link_up_callback);
+
+
+/* If status is NX_SUCCESS the function "my_link_up_callback" has been
+   registered with this PPP instance. */
+
+VOID my_link_up_callback(NX_PPP *ppp_ptr)
+{
+    /* On link up, the application my want to start sending/receiving
+       UPD/TCP data.  */
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_nak_authentication_notify"><a class="anchor" href="#_nx_ppp_nak_authentication_notify"></a>nx_ppp_nak_authentication_notify</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Notify application if authentication NAK received</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_14"><a class="anchor" href="#_prototype_14"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT    nx_ppp_nak_authentication_notify(
+    NX_PPP *ppp_ptr,
+    void (*nak_authentication_notify)(void));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_14"><a class="anchor" href="#_description_14"></a>Description</h3>
+<div class="paragraph">
+<p>This service registers the application&#8217;s authentication nak notification callback with the specified PPP instance. If non-NULL, this callback function is called whenever the PPP instance receives a NAK during authentication.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_14"><a class="anchor" href="#_input_parameters_14"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>nak_authentication_notify</em>: Pointer to function called when the PPP instance receives an authentication NAK. If NULL, the notification is disabled.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_14"><a class="anchor" href="#_return_values_14"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful notification callback registration.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_14"><a class="anchor" href="#_allowed_from_14"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads, timers, ISRs</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_14"><a class="anchor" href="#_example_14"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Register "my_nak_auth_callback" to be called whenever the PPP
+   receives a NAK during authentication. */
+status =  nx_ppp_nak_authentication_notify(&amp;my_ppp, my_nak_auth_callback);
+
+/* If status is NX_SUCCESS the function "my_nak_auth_callback" has been
+   registered with this PPP instance. */
+
+VOID my_nak_auth_callback(NX_PPP *ppp_ptr)
+{
+   /* Handle the situation of receiving an authentication NAK */
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_pap_enable"><a class="anchor" href="#_nx_ppp_pap_enable"></a>nx_ppp_pap_enable</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Enable PAP Authentication</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_15"><a class="anchor" href="#_prototype_15"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  nx_ppp_pap_enable(
+    NX_PPP *ppp_ptr,
+    UINT (*generate_login)(CHAR *name, CHAR *password),
+    UINT (*verify_login)(CHAR *name, CHAR *password));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_15"><a class="anchor" href="#_description_15"></a>Description</h3>
+<div class="paragraph">
+<p>This service enables the Password Authentication Protocol (PAP) for the specified PPP instance. If the "<strong><em>verify_login</em></strong>" function pointer is specified, PAP is required by this PPP instance. Otherwise, PAP only responds to the peer&#8217;s PAP requirements as specified during LCP negotiation.</p>
+</div>
+<div class="paragraph">
+<p>There are several data items referenced below in the required callback functions. The data item <em>name</em> is expected to be NULL-terminated string with a maximum size of NX_PPP_NAME_SIZE-1. The data item <em>password</em> is also expected to be a NULL-terminated string with a maximum size of NX_PPP_PASSWORD_SIZE-1.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This function must be called after <em>nx_ppp_create</em> but before <em>nx_ip_create</em> or <em>nx_ip_interface_attach</em>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_15"><a class="anchor" href="#_input_parameters_15"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>generate_login</em>: Pointer to application function that produces a <em>name</em> and <em>password</em> for authentication by the peer. Note that the <em>name</em> and <em>password</em> values must be copied into the supplied destinations.</p>
+</li>
+<li>
+<p><em>verify_login</em>: Pointer to application function that verifies the <em>name</em> and <em>password</em> supplied by the peer. This routine must compare the supplied <em>name</em> and <em>password</em>. If this routine returns NX_SUCCESS, the name and password are correct and PPP can proceed to the next step. Otherwise, this routine returns NX_PPP_ERROR and PPP simply waits for another name and password.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_15"><a class="anchor" href="#_return_values_15"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP PAP enable.</p>
+</li>
+<li>
+<p><strong>NX_NOT_IMPLEMENTED</strong>: (0x80) PAP logic was disabled via NX_PPP_DISABLE_PAP.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer or application function pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_15"><a class="anchor" href="#_allowed_from_15"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_15"><a class="anchor" href="#_example_15"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">CHAR    name_string[] = "username";
+CHAR    password_string[] =  "password";
+
+/* Enable PAP for PPP instance "my_ppp". */
+status =  nx_ppp_pap_enable(&amp;my_ppp, my_generate_login, my_verify_login);
+
+/* If status is NX_SUCCESS the "my_ppp" now has PAP enabled. */
+
+/* Define callback routines for PAP enable.  */
+
+UINT  generate_login(CHAR *name, CHAR *password)
+{
+
+UINT    i;
+
+for (i = 0; i&lt; (NX_PPP_NAME_SIZE-1); i++)
+name[i] = name_string[i];
+name[i] =  0;
+
+for (i = 0; i&lt; (NX_PPP_PASSWORD_SIZE-1); i++)
+password[i] = password_string[i];
+password_string[i] =  0;
+
+return(NX_SUCCESS);
+}
+
+UINT  verify_login(CHAR *name, CHAR *password)
+{
+
+/* Assume name and password are correct. Normally,
+a comparison would be made here!  */
+printf("Name: %s, Password: %s\n", name, password);
+
+return(NX_SUCCESS);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_ping_request"><a class="anchor" href="#_nx_ppp_ping_request"></a>nx_ppp_ping_request</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send an LCP ping request</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_16"><a class="anchor" href="#_prototype_16"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  nx_ppp_ping_request(
+    NX_PPP *ppp_ptr,
+    CHAR *data,
+    UINT data_size,
+    ULONG wait_option);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_16"><a class="anchor" href="#_description_16"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends an LCP request and sets a flag that the PPP device is waiting for an echo response. The wait option is primarily for the <em>nx_packet_allocate</em> call. The service returns as soon as the request is sent. It does not wait for a response.</p>
+</div>
+<div class="paragraph">
+<p>When a matching echo response is received, the PPP thread task will clear the flag. The PPP device must have completed the LCP part of the PPP negotiation.</p>
+</div>
+<div class="paragraph">
+<p>This service is useful for PPP set ups where polling the hardware for link status may not be readily possible.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_16"><a class="anchor" href="#_input_parameters_16"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>data</em>: Pointer to data to send in echo request.</p>
+</li>
+<li>
+<p><em>data_size</em>: Size of data to send wait_option Time to wait to send the LCP echo message.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_16"><a class="anchor" href="#_return_values_16"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful sent echo request.</p>
+</li>
+<li>
+<p><strong>NX_PPP_NOT_ESTABLISHED</strong>: (0xB5) PPP connection not established.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer or application function pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_16"><a class="anchor" href="#_allowed_from_16"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_16"><a class="anchor" href="#_example_16"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">CHAR    buffer[] = "username";
+UINT    buffer_length =  sizeof("username ") - 1;
+
+/* Send an LCP ping request". */
+status =  nx_ppp_ping_request(&amp;my_ppp, &amp;buffer[0], buffer_length, 200);
+
+/* If status is NX_SUCCESS the LCP echo request was successfully sent. Now wait to
+   receive a response. */
+
+while(my_ppp.nx_ppp_lcp_echo_reply_id &gt; 0)
+{
+	tx_thread_sleep(100);
+}
+
+/* Got a valid reply! */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_raw_string_send"><a class="anchor" href="#_nx_ppp_raw_string_send"></a>nx_ppp_raw_string_send</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send a raw ASCII string</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_17"><a class="anchor" href="#_prototype_17"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  nx_ppp_raw_sting_send(
+    NX_PPP *ppp_ptr,
+    CHAR *string_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_17"><a class="anchor" href="#_description_17"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends a non-PPP ASCII string directly out the PPP interface. It is typically used after PPP receives an non-PPP packet that contains modem control information.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_17"><a class="anchor" href="#_input_parameters_17"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>string_ptr</em>: Pointer to string to send.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_17"><a class="anchor" href="#_return_values_17"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP raw string send.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer or string pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_17"><a class="anchor" href="#_allowed_from_17"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_17"><a class="anchor" href="#_example_17"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Send "CLIENTSERVER" to "CLIENT" sent by Windows 98 before PPP is
+initiated.  */
+status =  nx_ppp_raw_string_send(&amp;my_ppp, "CLIENTSERVER");
+
+/* If status is NX_SUCCESS the raw string was successfully Sent via PPP. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_restart"><a class="anchor" href="#_nx_ppp_restart"></a>nx_ppp_restart</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Restart PPP processing</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_18"><a class="anchor" href="#_prototype_18"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  nx_ppp_restart(NX_PPP *ppp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_18"><a class="anchor" href="#_description_18"></a>Description</h3>
+<div class="paragraph">
+<p>This service restarts the PPP processing. It is typically called when the link needs to be re-established either from a link down callback or by a non-PPP modem message indicating communication was lost.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_18"><a class="anchor" href="#_input_parameters_18"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_18"><a class="anchor" href="#_return_values_18"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP restart initiated.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_18"><a class="anchor" href="#_allowed_from_18"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_18"><a class="anchor" href="#_example_18"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Restart the PPP instance "my_ppp".  */
+status =  nx_ppp_restart(&amp;my_ppp);
+
+/* If status is NX_SUCCESS the PPP instance has been restarted. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_start"><a class="anchor" href="#_nx_ppp_start"></a>nx_ppp_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start PPP processing</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_19"><a class="anchor" href="#_prototype_19"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  nx_ppp_start(NX_PPP *ppp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_19"><a class="anchor" href="#_description_19"></a>Description</h3>
+<div class="paragraph">
+<p>This service starts the PPP processing. It is typically called after nx_ppp_stop() called.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+PPP automatically starts the PPP processing when the link is enabled.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_19"><a class="anchor" href="#_input_parameters_19"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_19"><a class="anchor" href="#_return_values_19"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP start initiated.</p>
+</li>
+<li>
+<p><strong>NX_PPP_ALREADY_STARTED</strong>: (0xb9) PPP already started.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_19"><a class="anchor" href="#_allowed_from_19"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_19"><a class="anchor" href="#_example_19"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Start the PPP instance "my_ppp".  */
+status =  nx_ppp_start(&amp;my_ppp);
+
+/* If status is NX_SUCCESS the PPP instance has been started. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_status_get"><a class="anchor" href="#_nx_ppp_status_get"></a>nx_ppp_status_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get current PPP status</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_20"><a class="anchor" href="#_prototype_20"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  nx_ppp_status_get(
+    NX_PPP *ppp_ptr,
+    UINT *status_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_20"><a class="anchor" href="#_description_20"></a>Description</h3>
+<div class="paragraph">
+<p>This service gets the current status of the specified PPP instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_20"><a class="anchor" href="#_input_parameters_20"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>status_ptr</em>: Destination for the PPP status, the following are possible status values:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_PPP_STATUS_ESTABLISHED</strong></p>
+</li>
+<li>
+<p><strong>NX_PPP_STATUS_LCP_IN_PROGRESS</strong></p>
+</li>
+<li>
+<p><strong>NX_PPP_STATUS_LCP_FAILED</strong></p>
+</li>
+<li>
+<p><strong>NX_PPP_STATUS_PAP_IN_PROGRESS</strong></p>
+</li>
+<li>
+<p><strong>NX_PPP_STATUS_PAP_FAILED</strong></p>
+</li>
+<li>
+<p><strong>NX_PPP_STATUS_CHAP_IN_PROGRESS</strong></p>
+</li>
+<li>
+<p><strong>NX_PPP_STATUS_CHAP_FAILED</strong></p>
+</li>
+<li>
+<p><strong>NX_PPP_STATUS_IPCP_IN_PROGRESS</strong></p>
+</li>
+<li>
+<p><strong>NX_PPP_STATUS_IPCP_FAILED</strong></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The status is only valid if the API returns NX_SUCCESS. In addition, if any of the *_FAILED status values are returned, PPP processing is effectively stopped until it is restarted again by the application.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_20"><a class="anchor" href="#_return_values_20"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP status request.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_20"><a class="anchor" href="#_allowed_from_20"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads, timers, ISRs</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_20"><a class="anchor" href="#_example_20"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ppp_status;
+UINT status;
+
+
+/* Get the current status of PPP instance "my_ppp".  */
+status =  nx_ppp_status_get(&amp;my_ppp, &amp;ppp_status);
+
+/* If status is NX_SUCCESS the current internal PPP status is contained in
+   "ppp_status". */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_stop"><a class="anchor" href="#_nx_ppp_stop"></a>nx_ppp_stop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start PPP processing</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_21"><a class="anchor" href="#_prototype_21"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  nx_ppp_stop(NX_PPP *ppp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_21"><a class="anchor" href="#_description_21"></a>Description</h3>
+<div class="paragraph">
+<p>This service stops the PPP processing. User also can calls nx_ppp_start() to start the PPP processing if needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_21"><a class="anchor" href="#_input_parameters_21"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_21"><a class="anchor" href="#_return_values_21"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP start initiated.</p>
+</li>
+<li>
+<p><strong>NX_PPP_ALREADY_STOPPED</strong>: (0xb8) PPP already stopped.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_21"><a class="anchor" href="#_allowed_from_21"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_21"><a class="anchor" href="#_example_21"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Stop the PPP instance "my_ppp".  */
+status =  nx_ppp_stop(&amp;my_ppp);
+
+/* If status is NX_SUCCESS the PPP instance has been stopped. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_packet_receive"><a class="anchor" href="#_nx_ppp_packet_receive"></a>nx_ppp_packet_receive</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Receive PPP packet</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_22"><a class="anchor" href="#_prototype_22"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  nx_ppp_packet_receive(
+    NX_PPP *ppp_ptr,
+    NX_PACKET *packet_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_22"><a class="anchor" href="#_description_22"></a>Description</h3>
+<div class="paragraph">
+<p>This service receives PPP packet.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_22"><a class="anchor" href="#_input_parameters_22"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>packet_ptr</em>: Pointer to PPP packet.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_22"><a class="anchor" href="#_return_values_22"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP status request.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_22"><a class="anchor" href="#_allowed_from_22"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_22"><a class="anchor" href="#_example_22"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Receive the PPP packet of PPP instance "my_ppp".  */
+status =  nx_ppp_packet_receive(&amp;my_ppp, packet_ptr);
+
+/* If status is NX_SUCCESS the PPP packet has received. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_ppp_packet_send_set"><a class="anchor" href="#_nx_ppp_packet_send_set"></a>nx_ppp_packet_send_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the PPP packet send function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_23"><a class="anchor" href="#_prototype_23"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT  nx_ppp_packet_send_set(
+    NX_PPP *ppp_ptr,
+    VOID (*nx_ppp_packet_send)(NX_PACKET *packet_ptr));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_23"><a class="anchor" href="#_description_23"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the PPP packet send function.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_23"><a class="anchor" href="#_input_parameters_23"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>ppp_ptr</em>: Pointer to PPP control block.</p>
+</li>
+<li>
+<p><em>nx_ppp_packet_send</em>: Routine to send PPP packet.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_23"><a class="anchor" href="#_return_values_23"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful PPP status request.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x07) Invalid PPP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_23"><a class="anchor" href="#_allowed_from_23"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_23"><a class="anchor" href="#_example_23"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Set the PPP packet send function of PPP instance "my_ppp".  */
+status =  nx_ppp_packet_send_set(&amp;my_ppp, nx_ppp_packet_send);
+
+/* If status is NX_SUCCESS the PPP packet send function has set. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

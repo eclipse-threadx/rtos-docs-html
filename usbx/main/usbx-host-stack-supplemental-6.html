@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 6: USBX Host controller driver (HCD) Porting Considerations :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/usbx/main/usbx-host-stack-supplemental-6.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="usbx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">USBX</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">USBX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">USBX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-usbx.html">Overview of USBX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-3.html">Ch. 3 - Functional components of USBX device stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-2.html">Ch. 2 - USBX device class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-7.html">Ch. 7 - USBX device class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-6.html">Ch. 6 - USBX CDC-ECM class usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-2.html">Ch. 2 - USBX Host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">USBX</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">USBX</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">USBX</a></li>
+    <li>USBX host stack supplemental</li>
+    <li><a href="usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.1/rtos-docs/usbx/modules/ROOT/pages/usbx-host-stack-supplemental-6.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 6: USBX Host controller driver (HCD) Porting Considerations</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This guide is about how to implement host controller driver (HCD) of specific hardware for USBX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_host_controller_driver_hcd"><a class="anchor" href="#_host_controller_driver_hcd"></a>Host Controller Driver (HCD)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The host controller driver is a driver layer to provide a unique way to access different USB host controllers.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hcd_for_usbx_host_stack"><a class="anchor" href="#_hcd_for_usbx_host_stack"></a>HCD for USBX Host Stack</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The USBX host stack accesses host controller through a unique struct of host controller driver (HCD).
+After USBX system initialization, the HCD (UX_HCD) pointer array is allocated and can be referenced by <code>_ux_system_host&#8594;ux_system_host_hcd_array</code>, the lower level instances are later allocated when invoking <code>ux_host_stack_hcd_register</code>, where <code>hcd_initialize_function</code> is passed as parameter and called to do memory allocation and lower level initialization.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hcd_for_specific_usb_host_controller_hardware"><a class="anchor" href="#_hcd_for_specific_usb_host_controller_hardware"></a>HCD for specific USB host controller hardware</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For different USB host controller hardware the HCD struct is initialized when application calls <code>ux_host_stack_hcd_register</code>. The actual initialization function entry is passed for this registration function to do initialization. The lower level command dispatcher is linked during initialization for USBX host stack to communicate, so that the USB flow can be performed on actual physical controller.</p>
+</div>
+<div class="paragraph">
+<p>The initialization function prototype is as following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT  _ux_hcd_xxxxx_initialize(UX_HCD *hcd);</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_hcd_xxxxx_initialize"><a class="anchor" href="#_ux_hcd_xxxxx_initialize"></a>Initialize API (_ux_hcd_xxxxx_initialize)</h3>
+<div class="paragraph">
+<p>The initialize function for specific HCD is passed to host stack HCD register function, after <code>ux_system_initialize</code>, <code>ux_host_stack_initialize</code> and <code>ux_host_stack_class_register</code>.
+It allocates necessary resources for the lower level driver.
+Usually HCD operates directly on hardware, so the initialization function initialize hardware to accept USB connection.</p>
+</div>
+<div class="paragraph">
+<p>The implement example is as following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/**************************************************************************/
+/*                                                                        */
+/*  DESCRIPTION                                                           */
+/*                                                                        */
+/*    This function initializes the USB host controller or force OTG      */
+/*    controller to work in host mode, in USBX host system.               */
+/*                                                                        */
+/*    The function entry is passed to ux_host_stack_hcd_register()        */
+/*    to perform lower level initialization.                              */
+/*                                                                        */
+/*  INPUT                                                                 */
+/*                                                                        */
+/*    HCD                                   Pointer to HCD                */
+/*                                                                        */
+/*  OUTPUT                                                                */
+/*                                                                        */
+/*    Completion Status                                                   */
+/*                                                                        */
+/*  CALLS                                                                 */
+/*                                                                        */
+/*                                                                        */
+/*  CALLED BY                                                             */
+/*                                                                        */
+/*    Host Stack                                                          */
+/*                                                                        */
+/**************************************************************************/
+UINT  _ux_hcd_xxxxx_initialize(UX_HCD *hcd)
+{
+
+UX_HCD_XXXXX          *hcd_xxxxx;
+
+
+    /* The controller initialized here is of XXXXX type.  */
+    hcd -&gt; ux_hcd_controller_type =  UX_HCD_XXXXX_CONTROLLER;
+
+    /* Initialize the max bandwidth for periodic endpoints. On XXXXX, the spec says
+       no more than 90% to be allocated for periodic.  */
+#if UX_MAX_DEVICES &gt; 1
+    hcd -&gt; ux_hcd_available_bandwidth =  UX_HCD_XXXXX_AVAILABLE_BANDWIDTH;
+#endif
+
+    /* Allocate memory for this XXXXX HCD instance.  */
+    hcd_xxxxx =  _ux_utility_memory_allocate(UX_NO_ALIGN, UX_REGULAR_MEMORY, sizeof(UX_HCD_XXXXX));
+    if (hcd_xxxxx == UX_NULL)
+        return(UX_MEMORY_INSUFFICIENT);
+
+    /* Set the pointer to the XXXXX HCD.  */
+    hcd -&gt; ux_hcd_controller_hardware =  (VOID *) hcd_xxxxx;
+
+    /* Set the generic HCD owner for the XXXXX HCD.  */
+    hcd_xxxxx -&gt; ux_hcd_xxxxx_hcd_owner =  hcd;
+
+    /* Initialize the function collector for this HCD.  */
+    hcd -&gt; ux_hcd_entry_function =  _ux_hcd_xxxxx_entry;
+
+    /* Set the state of the controller to HALTED first.  */
+    hcd -&gt; ux_hcd_status =  UX_HCD_STATUS_HALTED;
+
+    /* Since we know this is a high-speed controller, we can hardwire the version.  */
+#if UX_MAX_DEVICES &gt; 1
+    hcd -&gt; ux_hcd_version =  0x200;
+#endif
+
+    /* The number of ports on the controller.
+       The number of ports needs to be reflected both
+       for the generic HCD container and the local xxxxx container.  */
+    hcd -&gt; ux_hcd_nb_root_hubs             =  UX_HCD_XXXXX_NB_ROOT_PORTS;
+
+    /* Initialize XXXXX HCD.  */
+    /* TODO: Initialize XXXXX hCD struct fields.  */
+    /* TODO: if not initialized in application (after invoking this function),
+             initialize controller hardware, including roothub.
+             After initialization, roothub ports must be activated to accpet device insertion  */
+
+    /* Set the host controller into the operational state.  */
+    hcd -&gt; ux_hcd_status =  UX_HCD_STATUS_OPERATIONAL;
+
+    /* Return successful completion.  */
+    return(UX_SUCCESS);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_commands_for_host_stack_to_operate"><a class="anchor" href="#_commands_for_host_stack_to_operate"></a>Commands for host stack to operate</h3>
+<div class="paragraph">
+<p>In USBX host stack, the commands sent to controller are in a single API call defined as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT ux_hcd_xxxxx_entry_function(UX_HCD *hcd, UINT cmd, VOID *param);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The commands should be implemented as following:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">command</th>
+<th class="tableblock halign-left valign-top">parameter</th>
+<th class="tableblock halign-left valign-top">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HCD_GET_PORT_STATUS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG port_index</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Return roothub port status</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HCD_ENABLE_PORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG port_index</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable roothub port</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HCD_RESET_PORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ULONG port_index</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Issue a USB bus reset on roothub port</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HCD_TRANSFER_REQUEST/UX_HCD_TRANSFER_RUN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_TRANSFER*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Issue a transfer request/run transfer request state machine</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HCD_TRANSFER_ABORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_TRANSFER*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Abort a transfer request</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HCD_CREATE_ENDPOINT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_ENDPOINT*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create a physical endpoint</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HCD_DESTROY_ENDPOINT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_ENDPOINT*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Destroy a physical endpoint</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HCD_RESET_ENDPOINT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_ENDPOINT*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reset a physical endpoint (clear stall)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HCD_PROCESS_DONE_QUEUE/UX_HCD_TASKS_RUN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Process background tasks (e.g., process done queue)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_HCD_UNINITIALIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uninitialize controller hardware and free resources (optional)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The implement example is as following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/**************************************************************************/
+/*                                                                        */
+/*  DESCRIPTION                                                           */
+/*                                                                        */
+/*    This function dispatch the HCD function internally to the           */
+/*    controller driver.                                                  */
+/*                                                                        */
+/*  INPUT                                                                 */
+/*                                                                        */
+/*    HCD                                   Pointer to HCD                */
+/*    function                              Function for driver to perform*/
+/*    parameter                             Pointer to parameter(s)       */
+/*                                                                        */
+/*  OUTPUT                                                                */
+/*                                                                        */
+/*    Completion Status                                                   */
+/*                                                                        */
+/*  CALLS                                                                 */
+/*                                                                        */
+/*  CALLED BY                                                             */
+/*                                                                        */
+/*    Host Stack                                                          */
+/*                                                                        */
+/**************************************************************************/
+UINT  _ux_hcd_xxxxx_entry(UX_HCD *hcd, UINT function, VOID *parameter)
+{
+
+UINT                status;
+UX_HCD_xxxxx       *hcd_xxxxx;
+UX_INT_SAVE_AREA
+
+
+    /* Check the status of the controller.  */
+    if (hcd -&gt; ux_hcd_status == UX_UNUSED)
+    {
+
+        /* Error trap. */
+        _ux_system_error_handler(UX_SYSTEM_LEVEL_THREAD, UX_SYSTEM_CONTEXT_HCD, UX_CONTROLLER_UNKNOWN);
+
+        /* If trace is enabled, insert this event into the trace buffer.  */
+        UX_TRACE_IN_LINE_INSERT(UX_TRACE_ERROR, UX_CONTROLLER_UNKNOWN, 0, 0, 0, UX_TRACE_ERRORS, 0, 0)
+
+        return(UX_CONTROLLER_UNKNOWN);
+    }
+
+    /* Get the pointer to the xxxxx HCD.  */
+    hcd_xxxxx =  (UX_HCD_xxxxx *) hcd -&gt; ux_hcd_controller_hardware;
+
+    /* look at the function and route it.  */
+    switch(function)
+    {
+    case UX_HCD_GET_PORT_STATUS:
+        /* TODO: Lower level roothub port status get, return port status.  */
+        /*       PORT_STATUS _entry(hcd,UX_HCD_GET_PORT_STATUS,(ULONG)port_index)  */
+        /* ......  */
+        break;
+
+    case UX_HCD_ENABLE_PORT:
+        /* TODO: Lower level roothub port enable.  */
+        /*       STATUS _entry(hcd,UX_HCD_ENABLE_PORT,(ULONG)port_index).  */
+        /* ......  */
+        break;
+
+    case UX_HCD_RESET_PORT:
+        /* TODO: Lower level roothub port reset.  */
+        /*       STATUS _entry(hcd,UX_HCD_RESET_PORT,(ULONG)port_index).  */
+        /* ......  */
+        break;
+
+    case UX_HCD_TRANSFER_REQUEST:
+        /* TODO: Lower level transfer request process.  */
+        /* Transfer types to support:
+           Control: mandatory for all devices;
+           Bulk: optional, for functions that need bulk endpoint (like CDC-ACM, Mass Storage, etc.);
+           Interrupt: optional, for function that need interrupt endpoint (like HID, CDC-ACM, etc.);
+           Isochronous: optional, for function that need Isochronous endpoint (like audio, video, etc.).
+         */
+        /*       STATUS _entry(hcd,UX_HCD_TRANSFER_REQUEST,(UX_TRANSFER*)transfer).  */
+#if !defined(UX_DEVICE_STANDALONE)
+        /* For RTOS mode.  */
+        /* control request: blocking until setup-data-status phases passed and status updated,
+                            transfer_request -&gt; ux_transfer_request_semaphore could be used to wait
+                            transfer or phase terminating;
+        /* bulk request: non-blocking, starts background transfer for a single transfer request.  */
+        /* periodic request: non-blocking, ADDs transfer request to a QUEUE to send in background
+                             periodic transfer.
+                             Note queue is linked via UX_TRANSFER::ux_transfer_request_next_transfer_request,
+                             when issued transfer request list is accepted as input.  */
+        /* ......  */
+#else
+        /* For Standalone mode.  */
+        /* Must be non-blocking;
+         * in start state: start background transfer and return UX_STATE_NEXT;
+         * in pending state: return UX_STATE_WAIT;
+         * in done state: confirm transfer fields including completion code are updated and return UX_STATE_NEXT.
+         * Note the inputs for this mode is same as in RTOS mode for different request types.  */
+        /* ......  */
+#endif
+        break;
+
+    case UX_HCD_TRANSFER_ABORT:
+        /* TODO: Lower level transfer request abort.  */
+        /*       STATUS _entry(hcd,UX_HCD_TRANSFER_ABORT,(UX_TRANSFER*)transfer).  */
+        /* ......  */
+        break;
+
+    case UX_HCD_CREATE_ENDPOINT:
+        /* TODO: Lower level endpoint create.  */
+        /*       STATUS _entry(hcd,UX_HCD_CREATE_ENDPOINT,(UX_ENDPOINT*)endpoint).  */
+        /* ......  */
+        break;
+
+    case UX_HCD_DESTROY_ENDPOINT:
+        /* TODO: Lower level endpoint destroy.  */
+        /*       STATUS _entry(hcd,UX_HCD_DESTROY_ENDPOINT,(UX_ENDPOINT*)endpoint).  */
+        /* ......  */
+        break;
+
+    case UX_HCD_RESET_ENDPOINT:
+        /* TODO: Lower level halted endpoint reset.  */
+        /*       STATUS _entry(hcd,UX_HCD_RESET_ENDPOINT,(UX_ENDPOINT*)endpoint).  */
+        /* Note ClearEndpointFeature request should be sent to device to clear halted state on device side.  */
+        /* ......  */
+        break;
+
+    case UX_HCD_PROCESS_DONE_QUEUE: /* Named UX_HCD_TASKS_RUN for standalone mode.  */
+
+        /* TODO: Lower level request queue/background tasks process.  */
+        /*       STATUS _entry(hcd,UX_HCD_PROCESS_DONE_QUEUE,not_used).  */
+        /* In RTOS mode, the entry is called in a HCD processing thread, which
+         * sleeps until hcd -&gt; ux_hcd_thread_signal is larger than zero and
+         * _ux_system_host -&gt; ux_system_host_hcd_semaphore is put.
+         * In standalone mode, the entry is invoked by host stack as background
+         * task to run background state machine, it must be non-blocking.
+         */
+        /* ......  */
+        break;
+
+    case UX_HCD_UNINITIALIZE:
+
+        /* TODO: Lower level uninitialize, executed while unregister the HCD.  */
+        /*       STATUS _entry(hcd,UX_HCD_UNINITIALIZE,not_used).  */
+        /* It's optional, if the application needs a way to deinitialize USB,
+           completely free resources and uninitialize hardware. */
+        /* ......  */
+        break;
+
+    default:
+
+        /* Error trap. */
+        _ux_system_error_handler(UX_SYSTEM_LEVEL_THREAD, UX_SYSTEM_CONTEXT_HCD, UX_FUNCTION_NOT_SUPPORTED);
+
+        /* If trace is enabled, insert this event into the trace buffer.  */
+        UX_TRACE_IN_LINE_INSERT(UX_TRACE_ERROR, UX_FUNCTION_NOT_SUPPORTED, 0, 0, 0, UX_TRACE_ERRORS, 0, 0)
+
+        /* Unknown request, return an error.  */
+        status =  UX_FUNCTION_NOT_SUPPORTED;
+        break;
+
+    }
+
+    /* Return completion status.  */
+    return(status);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_other_considerations"><a class="anchor" href="#_other_considerations"></a>Other considerations</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_hcd_background_thread_in_rtos_mode"><a class="anchor" href="#_hcd_background_thread_in_rtos_mode"></a>HCD background thread in RTOS mode</h3>
+<div class="paragraph">
+<p>With RTOS support, a thread is created in host stack to process HCD background tasks.
+It waits <code>_ux_system_host &#8594; ux_system_host_hcd_semaphore</code> and <code>UX_HCD::ux_hcd_thread_signal</code>, to issue command <code>UX_HCD_PROCESS_DONE_QUEUE</code> on specific HCD.</p>
+</div>
+<div class="paragraph">
+<p>E.g., for a HCD based on STM32 HAL, to process SOF signal in background task, the code could be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">void HAL_HCD_SOF_Callback(HCD_HandleTypeDef *hhcd)
+{
+    /* ...... */
+
+    /* Signals HCD thread to process done queue.  */
+    hcd -&gt; ux_hcd_thread_signal++;
+    _ux_host_semaphore_put(&amp;_ux_system_host -&gt; ux_system_host_hcd_semaphore);
+
+    /* ...... */
+}
+UINT  _ux_hcd_stm32_entry(UX_HCD *hcd, UINT function, VOID *parameter)
+{
+    /* ...... */
+    switch(function)
+    {
+
+    /* ...... */
+
+    case UX_HCD_PROCESS_DONE_QUEUE:
+
+        /* Process periodic queue.  */
+        _ux_hcd_stm32_periodic_schedule(hcd_stm32);
+
+    /* ...... */
+    }
+
+    /* ...... */
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dmacache_safe_of_transfer_request_buffer_optional"><a class="anchor" href="#_dmacache_safe_of_transfer_request_buffer_optional"></a>DMA/CACHE safe of transfer request buffer (optional)</h3>
+<div class="paragraph">
+<p>When data cache is enabled in system, if DMA is used for data transfer, the physical address and cache may need synchronization. In USBX the buffer for endpoint transfer is always allocated from "cache safe" memory pool to avoid such issue. It&#8217;s also possible to implement HCD transfer without DMA or with cache invalidate/flush to remove the "cache safe" pool.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_isochronous_transfer_request_queue_support_optional"><a class="anchor" href="#_isochronous_transfer_request_queue_support_optional"></a>Isochronous transfer request queue support (optional)</h3>
+<div class="paragraph">
+<p>Usually isochronous transfer is not supported unless it&#8217;s planned to support devices like audio, video, etc. When adding isochronous support, request queue must be supported for it (but not for other types of transfer). In this case transfer queue linked by <code>UX_TRANSFER::ux_transfer_request_next_transfer_request</code> can be processed, to prepare multiple request buffers in one function call.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_split_transfer_support_optional"><a class="anchor" href="#_split_transfer_support_optional"></a>Split transfer support (optional)</h3>
+<div class="paragraph">
+<p>Usually split transfer is not supported unless it&#8217;s planned to support high speed hub with full/low speed devices on its downstream port. In this case, the split transfer is sent to hub instead of to full/low speed device directly.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
