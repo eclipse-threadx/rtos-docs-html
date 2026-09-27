@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Appendix E - ThreadX SMP MISRA C compliance :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx/main/appendix-e.html">
+    <meta name="description" content="Explore the ThreadX SMP MISRA C compliance.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">ThreadX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">ThreadX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">ThreadX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-threadx.html">Overview of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of ThreadX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Device drivers for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - Demonstration system for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - ThreadX API services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - ThreadX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - ThreadX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX User Guide Addendum for ARMv8-M</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="user-guide-armv8m/chapter1.html">Ch. 1 - Introduction to ThreadX for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="user-guide-armv8m/chapter2.html">Ch. 2 - Installing ThreadX support for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="user-guide-armv8m/chapter3.html">Ch. 3 - ThreadX APIs for ARMv8-M</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX SMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter1.html">Ch. 1 - Introduction to ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter2.html">Ch. 2 - Installation &amp; Use of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter3.html">Ch. 3 - Functional Components of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter4.html">Ch. 4 - Description of ThreadX SMP Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter5.html">Ch. 5 - Device Drivers for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/chapter6.html">Ch. 6 - Demonstration System for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-a.html">App. A - ThreadX SMP API Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-b.html">App. B - ThreadX SMP Constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-c.html">App. C - ThreadX SMP Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="threadx-smp/appendix-d.html">App. D - ASCII Character Codes</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - ThreadX SMP MISRA C compliance</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">ThreadX User Guide</a></li>
+    <li><a href="index.html">ThreadX</a></li>
+    <li>ThreadX SMP user guide</li>
+    <li><a href="appendix-e.html">App. E - ThreadX SMP MISRA C compliance</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/threadx/modules/ROOT/pages/appendix-e.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Appendix E - ThreadX SMP MISRA C compliance</h1>
+<div class="sect1">
+<h2 id="_misra_c_overview"><a class="anchor" href="#_misra_c_overview"></a>MISRA C Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>MISRA C is a set of programming guidelines for critical systems using
+the C programming language. The original MISRA C guidelines were
+primarily targeted toward automotive applications, however, MISRA C is
+now widely recognized as being applicable to any safety critical
+application. MISRA-C:2004 consists of 142 rules (122 are "required"
+while 20 are "advisory"). MISRA C:2012 consists of 143 rules of varying
+importance and 16 directives. ThreadX is compliant with all "required"
+and "mandatory" rules of MISRA-C:2004 and MISRA C:2012. ThreadX is also
+compliant with all but two "advisory" rules.</p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP has nearly the same compliance, however, there are a two
+"required" rule exceptions specific to ThreadX SMP implementation. These
+are of low priority and are necessary for the reuse of the standard
+ThreadX code base.</p>
+</div>
+<div class="sect2">
+<h3 id="_enabling_threadx_smp_misra_compliance"><a class="anchor" href="#_enabling_threadx_smp_misra_compliance"></a>Enabling ThreadX SMP MISRA Compliance</h3>
+<div class="paragraph">
+<p>Full MISRA compliance is achieved by building the ThreadX SMP library
+with <strong><em>TX_MISRA_ENABLE</em></strong> defined.</p>
+</div>
+<div class="paragraph">
+<p>It is important to note that <strong><em>TX_MISRA_ENABLE</em></strong> must be defined on
+the command line or within project settings of the IDE, i.e., it isn&#8217;t
+sufficient for this to be defined in <strong><em>tx_port.h</em></strong> or <strong><em>tx_user.h</em></strong>.
+All other defines can be added to the header files. It&#8217;s also important
+that <strong><em>TX_INLINE_INITIALIZATION</em></strong> must not be defined. By default,
+this is defined in most distribution&#8217;s <strong><em>tx_port.h</em></strong> file.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Some versions of ThreadX SMP might require changes to project and/or <strong><em>tx_port.h</em></strong>. Please see the end of this document for additional information.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_misra_high_level_compliance"><a class="anchor" href="#_misra_high_level_compliance"></a>MISRA High-Level Compliance</h3>
+<div class="paragraph">
+<p>There are several areas in MISRA C:2012 that are not easily determined
+by static analysis tools such as IAR&#8217;s C-STAT. These areas are addressed
+in this section, as follows:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Directive</th>
+<th class="tableblock halign-left valign-top">ThreadX SMP Compliance Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dir 1.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IEC 61508 certification indicates this directive is met.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dir 3.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IEC 61508 certification indicates this directive is met.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dir 4.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IEC 61508 certification indicates this directive is met.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dir 4.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">There are eight assembly language files&#8201;&#8212;&#8201;each effectively a function in size&#8201;&#8212;&#8201;comprising a typical ThreadX SMP port. The assembly files are:<br>
+<br>
+<strong><em>txinitialize_low_level.s</em></strong><br>
+<strong><em>txthread_context_save.s</em></strong><br>
+<strong><em>txthread_context_restore.s</em></strong><br>
+<strong><em>txthread_interrupt_control.s</em></strong><br>
+<strong><em>txthread_schedule.s</em></strong><br>
+<strong><em>txthread_smp_core_get.s</em></strong><br>
+<strong><em>txthread_smp_core_preempt.s</em></strong><br>
+<strong><em>txthread_smp_current_state_get.s</em></strong><br>
+<strong><em>txthread_smp_current_thread_get.s</em></strong><br>
+<strong><em>txthread_smp_initialize_wait.s</em></strong><br>
+<strong><em>txthread_smp_low_level_initialize.s</em></strong><br>
+<strong><em>txthread_smp_protect.s</em></strong><br>
+<strong><em>txthread_smp_time_get.s</em></strong><br>
+<strong><em>txthread_smp_unprotect.s</em></strong><br>
+<strong><em>txthread_stack_build.s</em></strong><br>
+<strong><em>txthread_system_return.s</em></strong><br>
+<strong><em>txtimer_interrupt.s</em></strong><br>
+<br>
+When <strong><em>TX_MISRA_ENABLE</em></strong> is used to build the ThreadX SMP library, another assembly file <strong><em>tx_misra.s</em></strong> is present that encapsulates all pointer arithmetic/manipulation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_threadx_smp_misra_exceptions"><a class="anchor" href="#_threadx_smp_misra_exceptions"></a>ThreadX SMP MISRA Exceptions</h3>
+<div class="paragraph">
+<p>ThreadX SMP conforms with almost all "required" and "mandatory"
+MISRA-C:2004 and MISRA C:2012 rules/directives. The only exceptions to
+this are several "advisory" and "lower priority" required
+rules/directives, as follows:</p>
+</div>
+<div class="paragraph">
+<p><strong>MISRA Exception(s):</strong></p>
+</div>
+<div class="paragraph">
+<p>MISRA-C:2004 5.6 (advisory)<br>
+MISRA C:2012 Dir 4.5 (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"No identifier in one name space should have the same spelling as an identifier in another name space, with the exception of structure member and union member names."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>There are handful of structure member names associated with the notify callbacks that are the same in their first 31 characters. In addition, there are macro parameters that are problematic with regard to this directive.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 Dir 5.1 (Required)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"External identifiers shall be distinct. This is a link analysis check."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>Several global variables are the same in their first 31 characters.</p>
+</div>
+<div class="paragraph">
+<p>MISRA-C:2004 16.7 (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"A pointer parameter in a function prototype should be declared as pointer to const if the pointer is not used to modify the addressed object."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP has an established API from before this MISRA rule so changing this in the ThreadX SMP API is not practical. In addition, some services in ThreadX SMP are conditionally enabled or disabled and therefore some cases supplied pointers to the API are not used to modify the addressed object.</p>
+</div>
+<div class="paragraph">
+<p>MISRA-C:2004 19.7 (advisory)<br>
+MISRA C:2012 4.9 (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"A function should be used in preference to a function-like macro."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP uses function-like macros to make the ThreadX SMP code base
+more portable across the many different processors that are supported by
+ThreadX SMP.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 Dir-4.6_b (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"typedefs that indicate size and signedness should be used in place of the basic numerical types."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP uses basic typedefs without sign or size information, such as UINT and ULONG.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 Dir-4.8 (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"If a pointer to a structure or union is never dereference within a translation unit, then the implementation of the object should be hidden."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP objects have a structure name and a typedef name. Since the structure name is not used directly by the ThreadX SMP code, this advisory directive is not met.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 2.3 (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"A project should not contain unused type declarations."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP defines a few typedefs that are not used in the standard ThreadX SMP configuration, but are used in some configurations and in the middleware supported by ThreadX SMP.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 2.4 (advisory)</p>
+</div>
+<div class="paragraph">
+<p>"<strong><em>A project should not contain unused tag declarations</em></strong>."</p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP uses some structures only once while defining a typedef.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 2.5 (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"A project should not contain unused macro declarations."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP defines a few typedefs that are not used in the standard ThreadX SMP configuration, but are used in some configurations and in the middleware supported by ThreadX SMP.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 2.7 (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"There should be no unused parameters in functions."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>By default, ThreadX SMP conforms to this advisory rule. However, when ThreadX is built with <strong><em>TX_DISABLE_NOTIFY_CALLBACKS</em></strong>, Four functions in the ThreadX SMP library are flagged as not meeting this advisory rule, as follows:</p>
+</div>
+<div class="paragraph">
+<p><strong><em>tx_event_flags_set_notify.c<br>
+tx_queue_send_notify.c<br>
+tx_semaphore_put_notify.c<br>
+tx_thread_entry_exit_notify.c</em></strong></p>
+</div>
+<div class="paragraph">
+<p>In addition, when <strong><em>TX_TIMER_PROCESS_IN_ISR</em></strong> is defined, the file <strong><em>tx_timer_thread_entry.c</em></strong> is flagged as not meeting this advisory rule.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 3.1 (required)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"The character sequences /</strong> and // shall not be used within a comment."</em>*</p>
+</div>
+<div class="paragraph">
+<p>"//" is used in the copyright as part of the URL.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 8.7 (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"Functions and objects should not be defined with external linkage if they are referenced in only one translation unit."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>Internal functions and variables in ThreadX SMP are not always referenced from more than one external translation unit.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 8.9_b (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"An object should be defined at block scope if its identifier only appears in a single function."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>Some global data elements of ThreadX SMP are only referenced in one function, necessitating an exception to this rule.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 8.13 (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"A pointer should point to a const-qualified type whenever
+possible."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>The ThreadX SMP API has input parameters that are not modified but the
+pointer does not have the const qualifier.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 17.8 (advisory)</p>
+</div>
+<div class="paragraph">
+<p><strong><em>"A function parameter should not be modified."</em></strong></p>
+</div>
+<div class="paragraph">
+<p>In several files the input parameter to a ThreadX SMP API is used as a
+local variable within the API itself. There are no side effects since
+in C the parameters are passed as value.</p>
+</div>
+<div class="paragraph">
+<p>MISRA-C:2004 20.1 (required, low priority)<br>
+MISRA C:2012 21.1</p>
+</div>
+<div class="paragraph">
+<p>"<strong>Reserved identifiers, macros and functions in the standard library,
+shall not be defined, redefined or undefined</strong>"</p>
+</div>
+<div class="paragraph">
+<p>ThreadX SMP utilizes much of the field proven ThreadX single core
+source code. However, to enable the reuse, macros are used to replace
+data structures specific to each core with function calls or an array
+indexed by core, like the following:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/misra-Compliance/image1.png" alt="Image that shows an array indexed by core.">
+</div>
+</div>
+<div class="paragraph">
+<p>Technically, this isn&#8217;t replacing a reserved identifier, but the
+MISRA-C:2004 specification indicates that anything with an underscore
+cannot be redefined.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 5.2 (required, low priority)</p>
+</div>
+<div class="paragraph">
+<p>"<strong>Identifiers declared in the same scope and name space shall be
+distinct</strong>"</p>
+</div>
+<div class="paragraph">
+<p>This is the same situation as the previous issue, the macro
+re-definition of <strong><em>"_tx_thread_system_state</em></strong>" matches the default
+definition of the actual data structure, which is expected since
+ThreadX SMP needs to override the standard, single core data structure
+usage.</p>
+</div>
+<div class="paragraph">
+<p>MISRA C:2012 18.1 (required)</p>
+</div>
+<div class="paragraph">
+<p>"<strong><em>A pointer resulting from arithmetic on a pointer operand shall
+address an element of the same array as that pointer operand</em></strong>."</p>
+</div>
+<div class="paragraph">
+<p>C-STAT generates six messages when building the Thread SMP library,
+however, these are all false positives, i.e., this version of C-STAT
+is erroneously reporting this error.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_misra_c_verification_tools"><a class="anchor" href="#_misra_c_verification_tools"></a>MISRA C Verification Tools</h3>
+<div class="paragraph">
+<p>ThreadX SMP MISRA compliance is verified using the IAR EWARM 8.11.1
+C-STAT 1.4.4 MISRA-C:2004 and MISRA C:2012. The following figures show
+the MISRA C rules checked by C-STAT (and should also serve as a
+compliance matrix):</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/misra-Compliance/image2.png" alt="Image that shows IAR EWARM 8.11.1.">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/misra-Compliance/image3.png" alt="Image that shows C-STAT 1.4.4.">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/misra-Compliance/image4.png" alt="Image that shows MISRA-C:2004.">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/misra-Compliance/image5.png" alt="Image that shows MISRA C:2012.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 1: MISRA-C:2004/MISRA C:2012 Compliance Matrix</strong></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_building_threadx_smp_without_tx_misra_enable"><a class="anchor" href="#_building_threadx_smp_without_tx_misra_enable"></a>Building ThreadX SMP Without TX_MISRA_ENABLE</h3>
+<div class="paragraph">
+<p>Building ThreadX SMP without <strong><em>TX_MISRA_ENABLE</em></strong> has significant
+run-time performance advantages and is the default (and recommended)
+configuration for ThreadX SMP. When building in this manner, there are
+several mandatory MISRA C rules that are not met, including the
+following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>MISRA-C:2004</strong> - 8.5a, 10.1a, 11.3, 12.13, 13.2d, 14.7, 17.4a</p>
+</li>
+<li>
+<p><strong>MISRA C:2012</strong> - 10.3, 11.4, 13.3, 14.4d, 15.5, 17.7</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_additional_project_andor_tx_port_h_requirements"><a class="anchor" href="#_additional_project_andor_tx_port_h_requirements"></a>Additional Project and/or tx_port.h Requirements</h3>
+<div class="paragraph">
+<p>Some versions of ThreadX SMP may need additional configuration to
+achieve full MISRA compliance. In addition to building ThreadX SMP with
+<strong><em>TX_MISRA_ENABLE</em></strong>, the ThreadX project should have the C dialect C89
+specified and strict language conformance selected, as follows:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/misra-Compliance/image6.png" alt="Screenshot that shows strict language conformance.">
+</div>
+</div>
+<div class="paragraph">
+<p>Next, if the version of ThreadX does not have a pre-built
+<strong><em>tx_misra.s</em></strong> assembly file, the <strong><em>tx_misra.c</em></strong> file should be
+compiled to assembly and the assembly file should be included in the
+project.</p>
+</div>
+<div class="paragraph">
+<p>Finally, <strong><em>tx_port.h</em></strong> should have the following changes for full
+MISRA compliance:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The following defines should be present in <strong><em>tx_port.h</em></strong> or in the project settings:</p>
+<div class="paragraph">
+<p>#define TX_BLOCK_POOL_ENABLE_PERFORMANCE_INFO<br>
+#define TX_BYTE_POOL_ENABLE_PERFORMANCE_INFO<br>
+#define TX_EVENT_FLAGS_ENABLE_PERFORMANCE_INFO<br>
+#define TX_MUTEX_ENABLE_PERFORMANCE_INFO<br>
+#define TX_QUEUE_ENABLE_PERFORMANCE_INFO<br>
+#define TX_SEMAPHORE_ENABLE_PERFORMANCE_INFO<br>
+#define TX_THREAD_ENABLE_PERFORMANCE_INFO<br>
+#define TX_TIMER_ENABLE_PERFORMANCE_INFO</p>
+</div>
+</li>
+<li>
+<p>The TX_DISABLE_NOTIFY_CALLBACKS should NOT be defined in <strong><em>tx_port.h</em></strong> or in the project settings.</p>
+</li>
+<li>
+<p>TX_DISABLE_INLINE should be defined to disable the in-line helper functions in ThreadX SMP.</p>
+</li>
+<li>
+<p>The trace timer source should be redefined as follows:</p>
+<div class="paragraph">
+<p>#ifndef TX_MISRA_ENABLE<br>
+#ifndef TX_TRACE_TIME_SOURCE<br>
+#define TX_TRACE_TIME_SOURCE /* ORIGINAL SOURCE */<br>
+#endif<br>
+#else<br>
+ULONG _tx_misra_time_stamp_get(VOID);<br>
+#define TX_TRACE_TIME_SOURCE _tx_misra_time_stamp_get()<br>
+#endif</p>
+</div>
+</li>
+<li>
+<p>Change the in-line initialization option to (this also disables in-line assembly macros):</p>
+<div class="paragraph">
+<p>#ifdef TX_MISRA_ENABLE<br>
+#define TX_DISABLE_INLINE<br>
+#else<br>
+#define TX_INLINE_INITIALIZATION<br>
+#endif</p>
+</div>
+</li>
+<li>
+<p>Ensure that the disable stack checking option is disabled:
+#ifndef TX_MISRA_ENABLE<br>
+#ifdef TX_ENABLE_STACK_CHECKING<br>
+#undef TX_DISABLE_STACK_FILLING<br>
+#endif<br>
+#endif</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

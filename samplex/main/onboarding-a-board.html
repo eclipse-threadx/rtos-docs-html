@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Onboarding a new board :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/samplex/main/onboarding-a-board.html">
+    <meta name="description" content="How to add a board to the SampleX board support package framework.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="samplex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">SampleX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">SampleX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">SampleX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">SampleX guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="overview.html">Overview of SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="bsp-interface.html">The BSP interface contract</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="onboarding-a-board.html">Onboarding a new board</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">SampleX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">SampleX User Guide</a></li>
+    <li><a href="index.html">SampleX</a></li>
+    <li>SampleX guide</li>
+    <li><a href="onboarding-a-board.html">Onboarding a new board</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/samplex/modules/ROOT/pages/onboarding-a-board.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Onboarding a new board</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adding a board to SampleX means creating one directory under <code>targets/</code>, implementing the interfaces described in <a href="bsp-interface.html" class="xref page">The BSP interface contract</a> inside it, and building an application against them. Nothing outside that directory changes: the interface headers in <code>bsp/</code>, the component submodules in <code>libs/</code> and the other targets are all left as they are.</p>
+</div>
+<div class="paragraph">
+<p><code>templates/target/</code> in the <a href="https://github.com/eclipse-threadx/samplex">SampleX repository</a> is the starting point. It is a documented blueprint rather than a target that compiles as it stands, because the startup assembly, the linker script and the vendor SDK can only come from the silicon vendor.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_steps"><a class="anchor" href="#_steps"></a>Steps</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Copy the template.</strong> Copy <code>templates/target/</code> to <code>targets/&lt;Vendor&gt;/&lt;BOARD&gt;/</code>. The vendor directory groups boards from one silicon vendor and the board directory is the target name used throughout the build.</p>
+</li>
+<li>
+<p><strong>Declare the board&#8217;s specifications.</strong> Fill in <code>lib/bsp/include/board_config.h</code>. It holds compile-time constants only, no executable code and no function prototypes: the core clock frequency, the debug console baud rate, the bounds of RAM, and whatever the board holds back at the top of RAM for its main stack or below it for its C heap. <code>bsp_ram_region()</code> is built from these, so getting them right is what keeps an application&#8217;s byte pool clear of the board&#8217;s own reservations.</p>
+</li>
+<li>
+<p><strong>Implement the interfaces.</strong> Fill in the driver stubs under <code>lib/bsp/src/</code>, one source file per interface, using the vendor SDK or direct register access. Three points are where new boards most often go wrong:</p>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><code>bsp_ram_region()</code> must subtract every reservation the board makes. The application allocates all of what this call reports.</p>
+</li>
+<li>
+<p><code>bsp_console_set_rx_handler()</code> must be implemented even on a board that only polls its console: accept the handler, store it, and never invoke it. A board that does raise a receive interrupt dispatches to the stored handler from its own interrupt handler, and must not call a symbol the application is required to define.</p>
+</li>
+<li>
+<p><code>bsp_self_test()</code> must at minimum verify that the board&#8217;s C heap cannot grow into the region <code>bsp_ram_region()</code> hands out. Beyond that, check what this board&#8217;s own configuration asserts.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Add the vendor startup files.</strong> Take the startup assembly, the system initialization source and the linker script from the vendor&#8217;s official SDK or reference package rather than writing them, and place them under <code>app/common/startup/</code> and <code>app/common/linker/</code>. Avoid editing vendor startup code unless it is strictly necessary; it is maintained upstream by the silicon vendor.</p>
+</li>
+<li>
+<p><strong>Add the ThreadX low-level setup.</strong> Copy <code>tx_initialize_low_level.S</code> from the ThreadX port directory matching this core and toolchain, under <code>libs/threadx/ports/</code>, into the target&#8217;s startup directory. It handles core register setup and vector layout for that processor family and is normally copied unchanged.</p>
+</li>
+<li>
+<p><strong>Wire up the build.</strong> Each target carries its own CMake configuration and its own toolchain file under <code>cmake/</code>, so that changing one board&#8217;s build cannot affect another. The target&#8217;s CMake files expose the include paths, build the board support package as a static library, and link it with the vendor SDK, the ThreadX kernel and the chosen application into the final image.</p>
+</li>
+<li>
+<p><strong>Build and run it.</strong> Build the target, then run it. A board that can be emulated should ship a headless test script that advances a fixed span of virtual time, asserts on the console output and exits non-zero on any unmet assertion, as both currently supported boards do, so the result does not depend on host speed and the target can gate continuous integration.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><code>templates/target/README.md</code> carries the full asset mapping — which vendor file belongs in which directory — and the per-file onboarding detail. Follow the two currently supported targets as worked examples; each target&#8217;s readme records how that board was brought up.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_choosing_the_application"><a class="anchor" href="#_choosing_the_application"></a>Choosing the application</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A new board has two ways to get something to run, and both are legitimate.</p>
+</div>
+<div class="paragraph">
+<p>Point the target&#8217;s <code>app/CMakeLists.txt</code> at <code>apps/threadx_demo/main.c</code> to build the shared portable demo. This is the fastest way to prove a fresh board support package is complete and correct: it exercises the board, LED, RAM-budget and self-test interfaces, and it already runs on two architectures, so a failure is a finding about the new board rather than about the demo.</p>
+</div>
+<div class="paragraph">
+<p>Or start from the template&#8217;s own <code>app/main.c</code> and grow a board-specific application in place. That is the right choice when the demo genuinely depends on hardware only this board has.</p>
+</div>
+<div class="paragraph">
+<p>The rule for which directory an application belongs in is what its source names:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>An application that names no board symbol, no vendor header and no linker-defined address is portable and belongs in <code>apps/</code>, where every target can build it.</p>
+</li>
+<li>
+<p>An application that names any of those belongs with its board, under <code>targets/&lt;Vendor&gt;/&lt;BOARD&gt;/app/</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A target may do both. One of the currently supported boards keeps a sensor-monitoring demo as its own application because that demo models real hardware, and builds the shared portable demo alongside it as a second executable against the same board support package.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_not_to_change"><a class="anchor" href="#_what_not_to_change"></a>What not to change</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Directory</th>
+<th class="tableblock halign-left valign-top">Why it stays as it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bsp/</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The target-agnostic interface contract. A new board implements these headers; it does not modify them or add board-specific headers beside them.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>libs/</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ThreadX, NetX Duo, FileX and USBX, consumed as submodules. Targets reference them rather than vendoring a copy.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>apps/</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Portable applications shared by every target. Extend one only in ways that stay board neutral.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Other targets</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No board support package code is shared between targets, and none should become shared. This is what guarantees that onboarding a board cannot regress one already supported.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>If a board genuinely needs something the contract does not cover, that is a change to the framework, proposed once for all boards, rather than an interface added under one target. The contract is intentionally small, and adding to it is expected to be rare.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

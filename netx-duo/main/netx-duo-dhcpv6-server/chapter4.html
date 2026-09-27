@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 4 - NetX Duo DHCPv6 server services :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-dhcpv6-server/chapter4.html">
+    <meta name="description" content="This chapter contains a description of all NetX Duo DHCPv6Server services.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo User Guide</a></li>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo DHCPv6 server user guide</li>
+    <li><a href="chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-dhcpv6-server/chapter4.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 4 - NetX Duo DHCPv6 server services</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of all NetX Duo DHCPv6Server services (listed below).</p>
+</div>
+<div class="paragraph">
+<p>In the <strong>Return Values</strong> section in the following API descriptions, values in <strong>BOLD</strong> are not affected by the <strong>NX_DISABLE_ERROR_CHECKING</strong> define that is used to disable API error checking, while non-bold values are completely disabled.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_create_dns_address"><a class="anchor" href="#_nx_dhcpv6_create_dns_address"></a>nx_dhcpv6_create_dns_address</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the network DNS server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT nx_dhcpv6_create_dns_address(
+     NX_DHCPV6_SERVER *dhcpv6_server_ptr,
+     NXD_ADDRESS *dns_ipv6_address);</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This service loads the DHCPv6 Server with the DNS server address for the Server DHCPv6 network interface.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters"><a class="anchor" href="#_input_parameters"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>dns_ipv6_address</em>: Pointer to the DNS server</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) DNS Server saved to DHCPv6 Server instance</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_INVALID_INTERFACE_IP_ADDRESS</strong> (0xE95) An invalid address is supplied</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from"><a class="anchor" href="#_allowed_from"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application Code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Set the network DNS server with the input address for the Server DHCPv6interface. */
+status = nx_dhcpv6_create__dns_address(&amp;dhcp_server_0, &amp;dns_ipv6_address);
+/* If this service returns NX_SUCCESS the DNS server data was accepted. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_create_ip_address_range"><a class="anchor" href="#_nx_dhcpv6_create_ip_address_range"></a>nx_dhcpv6_create_ip_address_range</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create the Server IP address list</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_create_ip_address_range(
+     NX_DHCPV6_SERVER *dhcpv6_server_ptr,
+     NXD_ADDRESS *start_ipv6_address, NXD_ADDRESS *end_ipv6_address,
+     UINT *addresses_added)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates the IP address list specified by the start and end addresses of the Server&#8217;s assignable address range. The start and end addresses must match the Server interface address prefix (must be on the same link as the Server DHCPv6 interface). The number of addresses actually added is returned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_2"><a class="anchor" href="#_input_parameters_2"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>start_ipv6_address</em>: Start of addresses to add</p>
+</li>
+<li>
+<p><em>end_ipv6_address</em>: End of addresses to add</p>
+</li>
+<li>
+<p><em>addresses_added</em>: Output of addresses added</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) IP address list successfully created</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_INVALID_INTERFACE_IP_ADDRESS</strong> (0xE95) An invalid address is supplied</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_2"><a class="anchor" href="#_allowed_from_2"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application Code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Create the Server IP address list for the server DHCPv6 interface. */
+status = nx_dhcpv6_create_ip_address_range(&amp;dhcp_server_0,
+         &amp;start_ipv6_address, &amp;end_ipv6_address, &amp;addresses_reserved);
+/* If status is NX_SUCCESS one or more addresses were successfully added. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_reserve_ip_address_range"><a class="anchor" href="#_nx_dhcpv6_reserve_ip_address_range"></a>nx_dhcpv6_reserve_ip_address_range</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Reserve specified range of IP addresses</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_reserve_ip_address_range(
+     NX_DHCPV6_SERVER *dhcpv6_server_ptr,
+     NXD_ADDRESS *start_ipv6_address, NXD_ADDRESS *end_ipv6_address,
+     UINT *addresses_reserved)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This service reserves the IP address range specified by the start and end addresses. These addresses must be within in the previously created server IP address range. These addresses will not be assigned to any Clients by the DHCPv6 Server. The start and end addresses must match the Server interface address prefix (must be on the same link as the Server DHCPv6 network interface). The number of addresses actually reserved is returned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_3"><a class="anchor" href="#_input_parameters_3"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>start_ipv6_address</em>: Start of addresses to reserve</p>
+</li>
+<li>
+<p><em>end_ipv6_address</em>: End of addresses to reserve</p>
+</li>
+<li>
+<p><em>*addresses_reserved</em>: Number of addresses reserved</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) RELEASE message successfully created and processed</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_INVALID_INTERFACE_IP_ADDRESS</strong> (0xE95) An invalid address is supplied</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_INVALID_IP_ADDRESS</strong> (0xED1) Starting address not found in Server address list.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_3"><a class="anchor" href="#_allowed_from_3"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application Code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Reserve a range of ip addresses in the Server address table for the server DHCPv6
+network interface. */
+
+status = nx_dhcpv6_reserve_ip_address_range(&amp;dhcp_server_0,
+         &amp;start_ipv6_address, &amp;end_ipv6_address, &amp;addresses_reserved);
+
+/* If status is NX_SUCCESS one or more addresses were successfully reserved. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_server_create"><a class="anchor" href="#_nx_dhcpv6_server_create"></a>nx_dhcpv6_server_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create the DHCPv6 Server instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT nx_dhcpv6_server_create(NX_DHCPV6_SERVER *dhcpv6_server_ptr,
+        NX_IP *ip_ptr, CHAR *name_ptr,
+        NX_PACKET_POOL *packet_pool_ptr,
+        VOID *stack_ptr,ULONG stack_size,
+    VOID (*dhcpv6_address_declined_handler)(struct
+        NX_DHCPV6_SERVER_STRUCT *dhcpv6_server_ptr,
+        NX_DHCPV6_CLIENT *dhcpv6_client_ptr,
+        UINT message),
+    VOID (*dhcpv6_option_request_handler)(
+        struct NX_DHCPV6_SERVER_STRUCT *dhcpv6_server_ptr,
+        UINT option_request, UCHAR *buffer_ptr, UINT *index));</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates the DHCPv6 Server task with the specified input. The callback handlers are optional input. The stack pointer, IP instance and packet pool input are required. The IP instance and packet pool must already be created.</p>
+</div>
+<div class="paragraph">
+<p>User is encouraged to call nx_dhcpv6_server_option_request_handler_set to set the option request handler.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_4"><a class="anchor" href="#_input_parameters_4"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>ip_ptr</em>: Pointer to the IP instance</p>
+</li>
+<li>
+<p><em>name_str</em>: Pointer to Server name</p>
+</li>
+<li>
+<p><em>packet_pool_ptr</em>: Pointer to Server packet pool</p>
+</li>
+<li>
+<p><em>stack_ptr</em>: Pointer to Server stack memory</p>
+</li>
+<li>
+<p><em>stack_size</em>: Size of Server stack memory</p>
+</li>
+<li>
+<p><em>dhcpv6_address_declined_handler</em>: Pointer to Client Decline or Release message handler</p>
+</li>
+<li>
+<p><em>dhcpv6_option_request_handler</em>: Pointer to options request option handler</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully resumed</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_DHCPV6_PARAM_ERROR Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_4"><a class="anchor" href="#_allowed_from_4"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application Code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Create the DHCPv6 Server. */
+status = nx_dhcpv6_server_create(&amp;dhcp_server_0, &amp;ip_0, "DHCPv6 Server",
+         &amp;pool_0, stack_pointer,2048, dhcpv6_decline_handler,
+         dhcpv6_get_time_handler);
+/* If status is NX_SUCCESS the Server successfully created. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_server_delete"><a class="anchor" href="#_nx_dhcpv6_server_delete"></a>nx_dhcpv6_server_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete the DHCPv6 Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_server_delete(NX_DHCPV6_SERVER *dhcpv6_server_ptr)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes the DHCPv6 Server task and any request that the Server was processing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_5"><a class="anchor" href="#_input_parameters_5"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully deleted</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_5"><a class="anchor" href="#_allowed_from_5"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Delete the DHCPv6 Serve. */
+status = nx_dhcpv6_server_delete(&amp;dhcp_server_0);
+/* If status is NX_SUCCESS the Server successfully deleted. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_server_resume"><a class="anchor" href="#_nx_dhcpv6_server_resume"></a>nx_dhcpv6_server_resume</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Resume DHCPv6 Server task</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_server_resume(NX_DHCPV6_SERVER *dhcpv6_server_ptr)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This service resumes the DHCPv6 Server task and any request that the Server was processing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_6"><a class="anchor" href="#_input_parameters_6"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully resumed</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_ALREADY_STARTED</strong> (0xE91) Server is running already</p>
+</li>
+<li>
+<p><strong>status</strong> (variable) ThreadX and NetX Duo error status</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_6"><a class="anchor" href="#_allowed_from_6"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_6"><a class="anchor" href="#_example_6"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Resume the DHCPv6 Server task. */
+status = nx_dhcpv6_server_resume(&amp;dhcp_server_0);
+/* If status is NX_SUCCESS the Server successfully resumed. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_server_suspend"><a class="anchor" href="#_nx_dhcpv6_server_suspend"></a>nx_dhcpv6_server_suspend</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Suspend DHCPv6 Server task</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_server_suspend(NX_DHCPV6_SERVER *dhcpv6_server_ptr)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This service suspends the DHCPv6 Server task and any request that the Server was processing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_7"><a class="anchor" href="#_input_parameters_7"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_7"><a class="anchor" href="#_return_values_7"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully resumed</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_NOT_STARTED</strong> (0xE92) Server is not started</p>
+</li>
+<li>
+<p><strong>Status</strong> (variable) ThreadX and NetX Duo error status</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_7"><a class="anchor" href="#_allowed_from_7"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_7"><a class="anchor" href="#_example_7"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Suspend the DHCPv6 Server task. */
+status = nx_dhcpv6_server_suspend(&amp;dhcp_server_0);
+
+/* If status is NX_SUCCESS the Server successfully suspended. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_server_start"><a class="anchor" href="#_nx_dhcpv6_server_start"></a>nx_dhcpv6_server_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start the DHCPv6 Server task</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_server_start(NX_DHCPV6_SERVER *dhcpv6_server_ptr)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>This service starts the DHCPv6 Server task and readies the Server to process application requests for receiving DHCPv6 Client messages. It verifies the Server instance has sufficient information (Server DUID), creates and binds the UDP socket for sending and receiving DHCPv6 messages, and activates timers for keeping track of session time and IP lease expiration.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Before the DHCPv6 Server can run, the host application is responsible for creating the IP address range from which the Server can assign IP addresses. It is also responsible for setting the Server DUID and DHCPv6 interface (see <em>nx_dhcpv6_server_duid_set</em> and <em>nx_dhcpv6_server_interface_set</em> respectively.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_8"><a class="anchor" href="#_input_parameters_8"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_8"><a class="anchor" href="#_return_values_8"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully started</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_ALREADY_STARTED</strong> (0xE91) Server is running already</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_NO_ASSIGNABLE_ADDRESSES</strong> (0xEA7) Server has no assignable addresses to lease</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_INVALID_GLOBAL_INDEX</strong> (0xE97) Global address index not set</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_NO_SERVER_DUID</strong> (0xE92) No Server DUID created</p>
+</li>
+<li>
+<p><strong>status</strong> (variable) ThreadX and NetX Duo error status</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_8"><a class="anchor" href="#_allowed_from_8"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Start the DHCPv6 Server task. */
+status = nx_dhcpv6_server_start(&amp;dhcp_server_0);
+/* If status is NX_SUCCESS the Server successfully started. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_retrieve_ip_address_lease"><a class="anchor" href="#_nx_dhcpv6_retrieve_ip_address_lease"></a>nx_dhcpv6_retrieve_ip_address_lease</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get an IP address lease from the Server table</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_retrieve_ip_address_lease(
+     NX_DHCPV6_SERVER *dhcpv6_server_ptr, UINT table_index,
+     NXD_ADDRESS *lease_IP_address, ULONG *T1, ULONG *T2,
+     ULONG *valid_lifetime, ULONG *preferred_lifetime)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves an IP address lease record from the Server table at the specified table index location. This can be done before or after retrieving Client record data.</p>
+</div>
+<div class="paragraph">
+<p>The capability of storing and retrieving data between the DHCPv6 Server and non volatile memory is a requirement of the DHCPv6 protocol. It makes no difference in what order IP lease data and Client record data is saved to nonvolatile memory.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is not recommended to copy data to or from Server tables without stopping or suspending the DHCPv6 Server first.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_9"><a class="anchor" href="#_input_parameters_9"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>table_index</em>: Table index to store lease at</p>
+</li>
+<li>
+<p><em>lease_IP_address</em>: Pointer to IP address leased to the Client</p>
+</li>
+<li>
+<p><em>T1</em>: Client requested renew time</p>
+</li>
+<li>
+<p><em>T2</em>: Client requested rebind time</p>
+</li>
+<li>
+<p><em>valid_lifetime</em>: Client lease becomes deprecated</p>
+</li>
+<li>
+<p><em>preferred_lifetime</em>: Client lease becomes invalid</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_9"><a class="anchor" href="#_return_values_9"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully started</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_PARAMETER_ERROR</strong> (0xE93) Invalid IP lease data input</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_9"><a class="anchor" href="#_allowed_from_9"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Retrieve the DHCPv6 Server lease data. */
+For (I = 0; I &lt; NX_DHCPV6_MAX_LEASES; i++)
+{
+    /* Get the next lease record. */
+    status = nx_dhcpv6_server_startdhcpv6_server_ptr, i, &amp;next_ipv6_address, &amp;T1,
+             &amp;T2, &amp;preferred_lifetime, &amp;valid_lifetime);
+    /* The host application then saves this record to memory.
+}
+/* If status is NX_SUCCESS the Server data is successfully downloaded. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_add_ip_address_lease"><a class="anchor" href="#_nx_dhcpv6_add_ip_address_lease"></a>nx_dhcpv6_add_ip_address_lease</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add an IP address lease to the Server table</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_add_ip_address_lease(
+     NX_DHCPV6_SERVER *dhcpv6_server_ptr,
+     UINT table_index,
+     NXD_ADDRESS *lease_IP_address,
+     ULONG T1,
+     ULONG T2,
+     ULONG valid_lifetime,
+     ULONG preferred_lifetime)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>This service loads IP lease data from a previous DHCPv6 Server session from non volatile memory to the Server lease table. This is not necessary if the Server is running for the first time and has no previous lease data. If this is the case the host application must create an IP address range for assigning IP addresses, using the <strong><em>nx_dhcpv6_create_ip_address_range</em></strong> service. The data is sufficient to reconstruct a DHCPv6 lease record. The table index need not be specified. If set to 0xFFFFFFFF (infinity) the DHCPv6 Server will find the next available slot to copy the data to.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Uploading IP lease data MUST be done before uploading Client records; both MUST be done before (re)starting the DHCPv6 Server.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The capability of storing and retrieving data between the DHCPv6 Server and non volatile memory is a requirement of the DHCPv6 protocol.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_10"><a class="anchor" href="#_input_parameters_10"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>table_index</em>: Table index to store lease at</p>
+</li>
+<li>
+<p><em>lease_IP_address</em>: Pointer to IP address leased to the Client</p>
+</li>
+<li>
+<p><em>T1</em>: Client requested renew time</p>
+</li>
+<li>
+<p><em>T2</em>: Client requested rebind time</p>
+</li>
+<li>
+<p><em>valid_lifetime</em>: Client lease becomes deprecated</p>
+</li>
+<li>
+<p><em>preferred_lifetime</em>: Client lease becomes invalid</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_10"><a class="anchor" href="#_return_values_10"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully started</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_TABLE_FULL</strong> (0xEC4) No room for more lease data**</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_INVALID_INTERFACE_IP_ADDRESS</strong> (0xE95) Lease data does not appear to be on link with Server DHCPv6 interface</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_PARAM_ERROR</strong> (0xE93) Invalid IP lease data input</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_10"><a class="anchor" href="#_allowed_from_10"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Copy the IP lease data to the Server address table. Note that the table index
+is defaulted to 0xFFFFFFFF meaning the DHCPv6 Server will find an empty slot
+for each lease. */
+
+    For(I = 0; I &lt; NX_DHCPV6_MAX_LEASES; i++)
+    {
+        status = nx_dhcpv6_add_ip_address_lease(dhcpv6_server_ptr, 0xFFFFFFFF,
+                 &amp;next_ipv6_address, &amp;T1, &amp;T2, &amp;preferred_lifetime, &amp;valid_lifetime);
+        /* Get the next lease address from memory… */
+    }
+
+    /* If status is NX_SUCCESS the lease data was successfully uploaded. It is opk
+    to add the Client records to the Server table now. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_add_client_record"><a class="anchor" href="#_nx_dhcpv6_add_client_record"></a>nx_dhcpv6_add_client_record</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add a Client record to the Server table</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_add_client_record(
+     NX_DHCPV6_SERVER *dhcpv6_server_ptr,
+     UINT table_index,
+     ULONG message_xid,
+     NXD_ADDRESS *client_address,
+     UINT client_state,
+     ULONG IP_lease_time_accrued,
+     ULONG valid_lifetime,
+     UINT duid_type,
+     UINTduid_hardware,
+     ULONG physical_address_msw,
+     ULONG physical_address_lsw,
+     ULONG duid_time,
+     ULONG duid_vendor_number,
+     UCHAR *duid_vendor_private,
+     UINT duid_private_length)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This service copies Client data from non volatile memory to the Server table one record at a time. This is only necessary if the Server is being rebooted and has Client data from a previous session to restore from memory. If a Server has no previous data, the DHCPv6 Server will initialize the Client table to be able for adding Client records.</p>
+</div>
+<div class="paragraph">
+<p>It is not necessary to specify the table index. If set to 0xFFFFFFFF (infinity) the DHCPv6 Server will locate the next available slot. The DHCPv6 Server can reconstruct a Client record from this data.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The host application MUST upload the IP lease data BEFORE the Client record data. This is so that internally the DHCPv6 Server can cross link the tables so that each Client record is joined with its corresponding IP lease record in their respective tables. See <em>nx_dhcpv6_add_ip_address_lease</em> for details on uploading IP lease data from memory.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Depending on DUID type, not all data must be supplied. For example if a Client has a vendor assigned DUID type, it can send in zero for DUID Link Layer parameters (MAC address, hardware type, DUID time).
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The capability of storing and retrieving data between the DHCPv6 Server and non volatile memory is a requirement of the DHCPv6 protocol.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_11"><a class="anchor" href="#_input_parameters_11"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_11"><a class="anchor" href="#_return_values_11"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully started</p>
+</li>
+<li>
+<p><strong>NX_ INVALID_PARAMETERS</strong> (0x4D) Invalid non pointer input**</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_TABLE_FULL</strong> (0xEC4) No empty slots left for adding another Client record</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_ADDRESS_NOT_FOUND</strong> (0xEA8) Client assigned address not found in Server lease table.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_11"><a class="anchor" href="#_allowed_from_11"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_11"><a class="anchor" href="#_example_11"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/*Add the IP lease data and Client records back to the server before starting
+theServer. */
+    /* Copy the 'lease data' to the server table FIRST. */
+for (i = 0; i&lt; NX_DHCPV6_MAX_LEASES; i++)
+    {
+
+        /* Add the next lease record. Let the server find the next
+        available slot. */
+        status = nx_dhcpv6_add_ip_address_lease(dhcpv6_server_ptr,
+                 0xFFFFFFFF,,&amp;next_ipv6_address, NX_DHCPV6_DEFAULT_T1_TIME,
+                 NX_DHCPV6_DEFAULT_T2_TIME, NX_DHCPV6_DEFAULT_PREFERRED_TIME,
+                 NX_DHCPV6_DEFAULT_VALID_TIME);
+if (status != NX_SUCCESS)
+return status;
+        /* Get the next IP lease record from memory. */
+        …
+    }
+    /* Copy the client records to the Server table NEXT.
+    for (i = 0; i&lt; NX_DHCPV6_MAX_LEASES; i++)
+    {
+        /* Add the next client record. Let the server find the next
+        available slot. */
+        status = nx_dhcpv6_add_client_record(dhcpv6_server_ptr, 0xFFFFFFFF,
+                 message_xid, &amp;client_ipv6_address, NX_DHCPV6_STATE_BOUND,
+                 IP_lifetime_time_accrued, valid_lifetime, duid_type,
+                 duid_hardware, physical_address_msw, physical_address_lsw,
+                 duid_time, 0, NX_NULL, 0);
+if (status != NX_SUCCESS)
+return status;
+        /* Get the next Client record from memory. */
+        …
+    }
+
+/* If status is NX_SUCCESS the Server data was successfully restored and
+it is ok to start the DHCPv6 server now. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_retrieve_client_record"><a class="anchor" href="#_nx_dhcpv6_retrieve_client_record"></a>nx_dhcpv6_retrieve_client_record</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieve a Client record from the Server table</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_retrieve_client_record(
+     NX_DHCPV6_SERVER *dhcpv6_server_ptr,
+     UINT table_index,
+     ULONG *message_xid,
+     NXD_ADDRESS *client_address,
+     UINT *client_state,
+     ULONG IP_lease_time_accrued,
+     ULONG *valid_lifetime,
+     UINT *duid_type,
+     UINT *duid_hardware,
+     ULONG *physical_address_msw,
+     ULONG *physical_address_lsw,
+     ULONG *duid_time,
+     ULONG *duid_vendor_number,
+     UCHAR *duid_vendor_private,
+     UINT *duid_private_length)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>This service copies the essential data from the Server&#8217;s Client record table for storage to non-volatile memory. The Server can reconstruct an adequate Client record from such data in the reverse process (uploading data to the Server table). Regardless of the DUID type, none of the pointers can be NULL pointers; data is initialized to zero for all parameters. For example, if the Client DUID type is Link Layer Plus Time, the vendor number is returned as zero and the private ID is an empty string.</p>
+</div>
+<div class="paragraph">
+<p>The capability of storing and retrieving data between the DHCPv6 Server and non volatile memory is a requirement of the DHCPv6 protocol. It makes no difference in what order IP lease data and Client record data is saved to nonvolatile memory.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is not recommended to copy data to or from Server tables without stopping or suspending the DHCPv6 Server first.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_12"><a class="anchor" href="#_input_parameters_12"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>table_index</em>: Index into Server&#8217;s client table</p>
+</li>
+<li>
+<p><em>message_xid</em>: Client Server Transaction ID</p>
+</li>
+<li>
+<p><em>client_address</em>: IPv6 address leased to Client</p>
+</li>
+<li>
+<p><em>client_state</em>: Client DHCPv6 state (e.g. bound)</p>
+</li>
+<li>
+<p><em>IP_lease_time_accrued</em>: Time expired on lease already <em>dhcpv6_server_ptr</em> Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_12"><a class="anchor" href="#_return_values_12"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully started</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_INVALID_DUID</strong> (0xECC) Invalid or inconsistent DUID data</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong> (0x16) Invalid pointer input</p>
+</li>
+<li>
+<p>NX_INVALID_PARAMETERS (0x4D) Invalid non pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_12"><a class="anchor" href="#_allowed_from_12"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_12"><a class="anchor" href="#_example_12"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Retrieve the Client records from the DHCPv6 Server table. */
+For (i = 0; i&lt; NX_MAX_DHCPV6_CLIENTS; i++)
+{
+    status = nx_dhcpv6_retrieve_client_recorddhcpv6_server_ptr, i, &amp;message_xid,
+             &amp;client_ipv6_address, &amp;client_state, &amp;IP_lifetime_time_accrued,
+             valid_lifetime, &amp;duid_type, &amp;duid_hardware, &amp;physical_address_msw,
+             &amp;physical_address_lsw, &amp;duid_time, &amp;duid_vendor_number, &amp;private_id[0],
+             &amp;length);
+    /* The host application can save this data to memory now.
+}
+/* If status is NX_SUCCESS the Server successfully started. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_server_interface_set"><a class="anchor" href="#_nx_dhcpv6_server_interface_set"></a>nx_dhcpv6_server_interface_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the interface index for Server DHCPv6 interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_server_interface_set(
+     NX_DHCPV6_SERVER *dhcpv6_server_ptr,
+     UINT iface_index,
+     UINT ga_address_index)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the network interface on which the DHCPv6 Server handles DHCPv6 Client requests. Not that for versions of NetX Duo that do not support multihome, the interface value is defaulted to zero. The global address index is necessary to obtain the Server global address on its DHCPv6 interface. This is used by the DHCPv6 logic to ensure that lease addresses and other DHCPv6 data is on link with the DHCPv6 Server.</p>
+</div>
+<div class="paragraph">
+<p>This must be called before the DHCPv6 server is started, even for applications on single homed devices or without multihome support.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_13"><a class="anchor" href="#_input_parameters_13"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>iface_index</em>: Server DHCPv6 Server interface</p>
+</li>
+<li>
+<p><em>ga_address_index</em>: Index of Server global address in the Server IP instance address table</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_13"><a class="anchor" href="#_return_values_13"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully started</p>
+</li>
+<li>
+<p><strong>NX_INVALID_INTERFACE</strong> (0x4C) Interface does not exist</p>
+</li>
+<li>
+<p>NX_NO_INTERFACE_ADDRESS (0x50) Global index exceeds the IP instance maximum IPv6 addresses (NX_MAX_IPV6_ADDRESSES)</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_13"><a class="anchor" href="#_allowed_from_13"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_13"><a class="anchor" href="#_example_13"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Set the Server DHCPv6 interface to the primary interface. The global IP
+address is at the index 1 in the IP address table. */
+status = nx_dhcpv6_server_interface_set(&amp;dhcp_server_0, 0, 1);
+
+/* If status is NX_SUCCESS the Server interface is successfully set. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_set_server_duid"><a class="anchor" href="#_nx_dhcpv6_set_server_duid"></a>nx_dhcpv6_set_server_duid</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the Server DUID for DHCPv6 packets</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_14"><a class="anchor" href="#_prototype_14"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT _nx_dhcpv6_set_server_duid(
+     NX_DHCPV6_SERVER *dhcpv6_server_ptr,
+     UINT duid_type,
+     UINT hardware_type,
+     ULONG mac_address_msw,
+     ULONG mac_address_lsw,
+     ULONG time)</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_14"><a class="anchor" href="#_description_14"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the Server DUID and must be called before the host application starts the Server. For link layer and link layer time DUID types, the host application must supply the hardware type and MAC address data. For link layer time DUIDs, the time pointer must point to a valid time. The number of seconds since Jan 1, 2000 is a typical seed value. If the Server DUID type is the enterprise, vendor assigned type, the DUID will be created from the user configurable options NX_DHCPV6_SERVER_DUID_VENDOR_PRIVATE_ID and NX_DHCPV6_SERVER_DUID_VENDOR_ASSIGNED_ID, and the time and MAC address values can be set to NULL.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is the host application&#8217;s responsibility to save the Server DUID parameters to nonvolatile memory such that it uses the same DUID in messages to Clients between reboots. This is a requirement of the DHCPv6 protocol (RFC 3315).
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_14"><a class="anchor" href="#_input_parameters_14"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>duid_type</em>: DHCPv6 Server DUID type</p>
+</li>
+<li>
+<p><em>hardware_type</em>: Hardware type (e.g. Ethernet)</p>
+</li>
+<li>
+<p><em>mac_address_msw</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>mac_address_lsw</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>time</em>: Time value for DUID</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_14"><a class="anchor" href="#_return_values_14"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully suspended</p>
+</li>
+<li>
+<p><strong>NX_DHCPV6_INVALID_SERVER_DUID</strong> (0XE98) Unknown or unsupported DUID type</p>
+</li>
+<li>
+<p><strong>NX_INVALID_PARAMETERS</strong> (0x4D) Invalid non pointer input</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_14"><a class="anchor" href="#_allowed_from_14"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_14"><a class="anchor" href="#_example_14"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Set the DHCPv6 ServerDUID as Link layer plus time, over Ethernet hardware. */
+duid_time = SECONDS_SINCE_JAN_1_2000_MOD_32 + rand();
+
+status = nx_dhcpv6_set_server_duid(&amp;dhcp_server_0,1, 0x6,
+         physical_address_msw,physical_address_lsw,duid_time);
+
+/* If status is NX_SUCCESS the ServerDUID is successfully set. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcpv6_server_option_request_handler_set"><a class="anchor" href="#_nx_dhcpv6_server_option_request_handler_set"></a>nx_dhcpv6_server_option_request_handler_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the option request handler for DHCPv6 Server instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_15"><a class="anchor" href="#_prototype_15"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre>UINT nx_dhcpv6_server_option_request_handler_set(
+     NX_DHCPV6_SERVER *dhcpv6_server_ptr,
+     VOID (*dhcpv6_option_request_handler_extended)(
+          struct NX_DHCPV6_SERVER_STRUCT *dhcpv6_server_ptr,
+          UINT option_request,
+          UCHAR *buffer_ptr,
+          UINT *index,
+          UINT available_payload));</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_15"><a class="anchor" href="#_description_15"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the DHCPv6 Server extended option request handler.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_15"><a class="anchor" href="#_input_parameters_15"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcpv6_server_ptr</em>: Pointer to DHCPv6 Server</p>
+</li>
+<li>
+<p><em>dhcpv6_option_request_handler_extended</em>: Pointer to extended options request handler</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_15"><a class="anchor" href="#_return_values_15"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong> (0x00) Server successfully resumed</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_15"><a class="anchor" href="#_allowed_from_15"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application Code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_15"><a class="anchor" href="#_example_15"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/* Set the option request handler for DHCPv6 Server. */
+status = nx_dhcpv6_server_option_request_handler_set(&amp;dhcp_server_0,
+         dhcpv6_option_request_handler_extended);
+
+/* If status is NX_SUCCESS the extended handler successfully set. */</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

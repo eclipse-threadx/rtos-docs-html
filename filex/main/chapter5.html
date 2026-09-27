@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 5 - I/O Drivers for FileX :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/filex/main/chapter5.html">
+    <meta name="description" content="This chapter contains a description of I/O drivers for FileX and is designed to help developers write application-specific drivers.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="filex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">FileX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">FileX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">FileX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-filex.html">Overview of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">FileX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of FileX services</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - I/O drivers for FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - FileX fault tolerant module</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - FileX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - FileX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">FileX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">FileX User Guide</a></li>
+    <li><a href="index.html">FileX</a></li>
+    <li>FileX user guide</li>
+    <li><a href="chapter5.html">Ch. 5 - I/O drivers for FileX</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/filex/modules/ROOT/pages/chapter5.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 5 - I/O Drivers for FileX</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of I/O drivers for FileX and is designed to help developers write application-specific drivers.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_io_driver_introduction"><a class="anchor" href="#_io_driver_introduction"></a>I/O Driver Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FileX supports multiple media devices. The FX_MEDIA structure defines everything required to manage a media device. This structure contains all media information, including the media-specific I/O driver and associated parameters for passing information and status between the driver and FileX. In most systems, there is a unique I/O driver for each FileX media instance.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_io_driver_entry"><a class="anchor" href="#_io_driver_entry"></a>I/O Driver Entry</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each FileX I/O driver has a single entry function that is defined by the <strong><em>fx_media_open</em></strong> service call. The driver entry function has the following format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">void my_driver_entry(FX_MEDIA *media_ptr);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>FileX calls the I/O driver entry function to request all physical media access, including initialization and boot sector reading. Requests made to the driver are done sequentially; i.e., FileX waits for the current request to complete before another request is sent.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_io_driver_requests"><a class="anchor" href="#_io_driver_requests"></a>I/O Driver Requests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Because each I/O driver has a single entry function, FileX makes specific requests through the media control block. Specifically, the  <strong>fx_media_driver_request</strong> member of <strong>FX_MEDIA</strong> is used to specify the exact driver request. The I/O driver communicates the success or failure of the request through the <strong>fx_media_driver_status</strong> member of <strong>FX_MEDIA</strong>. If the driver request was successful, <strong>FX_SUCCESS</strong> is placed in this field before the driver returns. Otherwise, if an error is detected, FX_IO_ERROR is placed in this field.</p>
+</div>
+<div class="sect2">
+<h3 id="_driver_initialization"><a class="anchor" href="#_driver_initialization"></a>Driver Initialization</h3>
+<div class="paragraph">
+<p>Although the actual driver initialization processing is application specific, it usually consists of data structure initialization and possibly some preliminary hardware initialization. This request is the first made by FileX and is done from within the fx_media_open service.</p>
+</div>
+<div class="paragraph">
+<p>If media write protection is detected, the driver fx_media_driver_write_protect member of FX_MEDIA should be set to FX_TRUE.</p>
+</div>
+<div class="paragraph">
+<p>The following FX_MEDIA members are used for the I/O driver initialization request:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">FX_MEDIA member</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_request</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_INIT</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>FileX provides a mechanism to inform the application driver when sectors are no longer being used. This is especially useful for FLASH memory managers that must manage all in-use logical sectors mapped to the FLASH.</p>
+</div>
+<div class="paragraph">
+<p>If such notification of free sectors is required, the application driver simply sets the <em>fx_media_driver_free_sector_update</em> field in the associated <strong>FX_MEDIA</strong> structure to <strong>FX_TRUE</strong>. After set, FileX makes a <strong><em>FX_DRIVER_RELEASE_SECTORS</em></strong> I/O driver call indicating when one or more consecutive sectors becomes free.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_boot_sector_read"><a class="anchor" href="#_boot_sector_read"></a>Boot Sector Read</h3>
+<div class="paragraph">
+<p>Instead of using a standard read request, FileX makes a specific request to read the media&#8217;s boot sector. The following <strong>FX_MEDIA</strong> members are used for the I/O driver boot sector read request:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">FX_MEDIA member</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_request</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_BOOT_READ</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_buffer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Address of destination for boot sector.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_boot_sector_write"><a class="anchor" href="#_boot_sector_write"></a>Boot Sector Write</h3>
+<div class="paragraph">
+<p>Instead of using a standard write request, FileX makes a specific request to write the media&#8217;s boot sector. The following <strong>FX_MEDIA</strong> members are used for the I/O driver boot sector write request:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">FX_MEDIA member</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_request</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_BOOT_WRITE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_buffer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Address of source for boot sector.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_sector_read"><a class="anchor" href="#_sector_read"></a>Sector Read</h3>
+<div class="paragraph">
+<p>FileX reads one or more sectors into memory by issuing a read request to the I/O driver. The following <strong>FX_MEDIA</strong> members are used for the I/O driver read request:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">FX_MEDIA member</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_request</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_READ</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_logical_sector</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Logical sector to read</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_sectors</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of sectors to read</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_buffer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Destination buffer for sector(s) read</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_data_sector_read</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set to FX_TRUE if a file data sector is requested. Otherwise, FX_FALSE if a system sector (FAT or directory sector) is requested.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_sector_type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines the explicit type of sector requested, as follows:<br>
+FX_FAT_SECTOR (2)<br>
+FX_DIRECTORY_SECTOR (3)<br>
+FX_DATA_SECTOR (4)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_sector_write"><a class="anchor" href="#_sector_write"></a>Sector Write</h3>
+<div class="paragraph">
+<p>FileX writes one or more sectors to the physical media by issuing a write request to the I/O driver. The following FX_MEDIA members are used for the I/O driver write request:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">FX_MEDIA member</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_request</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_WRITE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_logical_sector</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Logical sector to write</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_sectors</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of sectors to write</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_buffer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Source buffer for sector(s) to write</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_system_write</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set to FX_TRUE if a system sector is requested (FAT or directory sector). Otherwise, FX_FALSE if a file data sector is requested.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_sector_type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines the explicit type of sector requested, as follows:<br>
+<br>
+FX_FAT_SECTOR (2)<br>
+FX_DIRECTORY_SECTOR (3)<br>
+FX_DATA_SECTOR (4).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_driver_flush"><a class="anchor" href="#_driver_flush"></a>Driver Flush</h3>
+<div class="paragraph">
+<p>FileX flushes all sectors currently in the driver&#8217;s sector cache to the physical media by issuing a flush request to the I/O driver. Of course, if the driver is not caching sectors, this request requires no driver processing. The following FX_MEDIA members are used for the I/O driver flush request:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">FX_MEDIA member</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_request</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_FLUSH</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_driver_abort"><a class="anchor" href="#_driver_abort"></a>Driver Abort</h3>
+<div class="paragraph">
+<p>FileX informs the driver to abort all further physical I/O activity with the physical media by issuing an abort request to the I/O driver. The driver should not perform any I/O again until it is re-initialized. The following FX_MEDIA members are used for the I/O driver abort request:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">FX_MEDIA member</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_request</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_ABORT</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_release_sectors"><a class="anchor" href="#_release_sectors"></a>Release Sectors</h3>
+<div class="paragraph">
+<p>If previously selected by the driver during initialization, FileX informs the driver whenever one or more consecutive sectors become free. If the driver is actually a FLASH manager, this information can be used to tell the FLASH manager that these sectors are no longer needed. The following <strong>FX_MEDIA</strong> members are used for the I/O release sectors request:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">FX_MEDIA member</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_request</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_RELEASE_SECTORS</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_logical_sector</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Start of free sector</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fx_media_driver_sectors</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of free sectors</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_driver_suspension"><a class="anchor" href="#_driver_suspension"></a>Driver Suspension</h3>
+<div class="paragraph">
+<p>Because I/O with physical media may take some time, suspending the calling thread is often desirable. Of course, this assumes completion of the underlying I/O operation is interrupt driven. If so, thread suspension is easily implemented with a ThreadX semaphore. After starting the input or output operation, the I/O driver suspends on its own internal I/O semaphore (created with an initial count of zero during driver initialization). As part of the driver I/O completion interrupt processing, the same I/O semaphore is set, which in turn wakes up the suspended thread.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sector_translation"><a class="anchor" href="#_sector_translation"></a>Sector Translation</h3>
+<div class="paragraph">
+<p>Because FileX views the media as linear logical sectors, I/O requests made to the I/O driver are made with logical sectors. It is the driver&#8217;s responsibility to translate between logical sectors and the physical geometry of the media, which may include heads, tracks, and physical sectors. For FLASH and RAM disk media, the logical sectors typically map directory to physical sectors. In any case, here are the typical formulas to perform the logical to physical sector
+mapping in the I/O driver:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">media_ptr -&gt; fx_media_driver_physical_sector =
+    (media_ptr -&gt; fx_media_driver_logical_sector % media_ptr -&gt; fx_media_sectors_per_track) + 1;
+
+media_ptr -&gt; fx_media_driver_physical_head =
+    (media_ptr -&gt; fx_media_driver_logical_sector/ media_ptr -&gt;
+    fx_media_sectors_per_track) % media_ptr -&gt; fx_media_heads;
+
+media_ptr -&gt; fx_media_driver_physical_track =(media_ptr -&gt;
+    fx_media_driver_logical_sector/ (media_ptr -&gt; fx_media_sectors_per_track *
+    media_ptr -&gt; fx_media_heads)));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that physical sectors start at one, while logical sectors start at zero.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hidden_sectors"><a class="anchor" href="#_hidden_sectors"></a>Hidden Sectors</h3>
+<div class="paragraph">
+<p>Hidden sectors resided prior to the boot record on the media. Because they are really outside the scope of the FAT file system layout, they must be accounted for in each logical sector operation the driver does.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_media_write_protect"><a class="anchor" href="#_media_write_protect"></a>Media Write Protect</h3>
+<div class="paragraph">
+<p>The FileX driver can turn on write protect by setting the fx_media_driver_write_protect field in the media control block. This will cause an error to be returned if any FileX calls are made in an attempt to write to the media.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sample_ram_driver"><a class="anchor" href="#_sample_ram_driver"></a>Sample RAM Driver</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The FileX demonstration system is delivered with a small RAM disk
+driver, which is defined in the file fx_ram_driver.c. The driver assumes a 32K memory space and creates a
+boot record for 256 128-byte sectors. This file provides a good
+example of how to implement application specific FileX I/O
+drivers.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/*FUNCTION: _fx_ram_driver
+RELEASE: PORTABLE C 5.7
+AUTHOR: William E. Lamie, Eclipse Foundation, Inc.
+DESCRIPTION: This function is the entry point to the generic
+    RAM disk driver that is delivered with all versions of FileX.
+    The format of the RAM disk is easily modified by calling fx_media_format prior to opening the media.
+
+    This driver also serves as a template for developing FileX drivers
+    for actual devices. Simply replace the read/write sector logic
+    with calls to read/write from the appropriate physical device.
+
+FileX RAM/FLASH structures look like the following:
+Physical Sector             Contents
+    0                         Boot record
+    1                         FAT Area Start
+    +FAT Sectors             Root Directory Start
+    +Directory Sectors         Data Sector Start
+
+INPUT: media_ptr Media control block pointer
+OUTPUT: None
+CALLS:     _fx_utility_memory_copy Copy sector memory
+        _fx_utility_16_unsigned_read Read 16-bit unsigned
+CALLED BY: FileX System Functions
+RELEASE HISTORY:
+
+    DATE         NAME         DESCRIPTION
+    12-12-2005     William E.     Lamie Initial Version 5.0
+    07-18-2007     William E.     Lamie Modified comment(s),
+                                resulting in version 5.1
+    03-01-2009     William E.     Lamie Modified comment(s),
+                                resulting in version 5.2
+    11-01-2015     William E.     Lamie Modified comment(s),
+                                resulting in version 5.3
+    04-15-2016     William E.     Lamie Modified comment(s),
+                                resulting in version 5.4
+    04-03-2017     William E.     Lamie Modified comment(s),
+                                fixed compiler warnings,
+                                resulting in version 5.5
+    12-01-2018     William E.     Lamie Modified comment(s),
+                                checked buffer overflow,
+                                resulting in version 5.6
+    08-15-2019     William E.     Lamie Modified comment(s),
+                                resulting in version 5.7
+*/
+
+VOID _fx_ram_driver(FX_MEDIA *media_ptr) { UCHAR *source_buffer;
+                                           UCHAR *destination_buffer;
+                                           UINT bytes_per_sector;
+
+    /* There are several useful/important pieces of information contained
+        in the media structure, some of which are supplied by FileX and
+        others are for the driver to setup. The following
+        is a summary of the necessary FX_MEDIA structure members:
+    FX_MEDIA Member                     Meaning
+
+    fx_media_driver_request             FileX request type.
+        Valid requests from FileX are as follows:
+        FX_DRIVER_READ
+        FX_DRIVER_WRITE
+        FX_DRIVER_FLUSH
+        FX_DRIVER_ABORT
+        FX_DRIVER_INIT
+        FX_DRIVER_BOOT_READ
+        FX_DRIVER_RELEASE_SECTORS
+        FX_DRIVER_BOOT_WRITE FX_DRIVER_UNINIT
+
+    fx_media_driver_status              This value is RETURNED by the driver.
+        If the operation is successful, this field should be set to FX_SUCCESS
+        for before returning. Otherwise, if an error occurred, this field should be set to FX_IO_ERROR.
+
+    fx_media_driver_buffer              Pointer to buffer to read or write sector data. This is supplied by FileX.
+
+    fx_media_driver_logical_sector      Logical sector FileX is requesting.
+    fx_media_driver_sectors             Number of sectors FileX is requesting.
+
+    The following is a summary of the optional FX_MEDIA structure members: FX_MEDIA Member Meaning
+
+    fx_media_driver_info                Pointer to any additional information or memory.
+        This is optional for the driver use and is setup from the fx_media_open call.
+        The RAM disk uses this pointer for the RAM disk memory itself.
+
+    fx_media_driver_write_protect       The DRIVER sets this to FX_TRUE when media is write protected.
+        This is typically done in initialization, but can be done anytime.
+
+    fx_media_driver_free_sector_update  The DRIVER sets this to FX_TRUE when it needs
+        to know when clusters are released. This is important for FLASH wear-leveling drivers.
+
+    fx_media_driver_system_write        FileX sets this flag to FX_TRUE if the sector
+        being written is a system sector, e.g., a boot, FAT, or directory sector.
+        The driver may choose to use this to initiate error recovery logic for greater fault
+        tolerance. fx_media_driver_data_sector_read FileX sets this flag to FX_TRUE
+        if the sector(s) being read are file data sectors, i.e., NOT system sectors.
+
+    fx_media_driver_sector_type         FileX sets this variable to the specific type of
+        sector being read or written. The following sector types are identified:
+            FX_UNKNOWN_SECTOR
+            FX_BOOT_SECTOR
+            FX_FAT_SECTOR
+            FX_DIRECTORY_SECTOR
+            FX_DATA_SECTOR */
+
+    /* Process the driver request specified in the media control block. */
+
+    switch (media_ptr -&gt; fx_media_driver_request){
+
+        case FX_DRIVER_READ: {
+
+            /* Calculate the RAM disk sector offset. Note the RAM disk memory
+            is pointed to by the fx_media_driver_info pointer, which is supplied
+            by the application in the call to fx_media_open. */
+
+            source_buffer = ((UCHAR *)media_ptr -&gt; fx_media_driver_info) +
+                ((media_ptr -&gt; fx_media_driver_logical_sector +
+                media_ptr -&gt; fx_media_hidden_sectors) * media_ptr -&gt; fx_media_bytes_per_sector);
+
+            /* Copy the RAM sector into the destination. */
+
+             _fx_utility_memory_copy(source_buffer,
+                media_ptr -&gt; fx_media_driver_buffer, media_ptr -&gt; fx_media_driver_sectors *
+                media_ptr -&gt; fx_media_bytes_per_sector);
+
+            /* Successful driver request. */
+
+            media_ptr -&gt; fx_media_driver_status = FX_SUCCESS; break; }
+
+        case FX_DRIVER_WRITE: {
+
+            /* Calculate the RAM disk sector offset. Note the RAM disk memory
+                is pointed to by the fx_media_driver_info pointer, which is supplied
+                by the application in the call to fx_media_open. */
+
+            destination_buffer = ((UCHAR *)media_ptr -&gt; fx_media_driver_info) +
+                ((media_ptr -&gt; fx_media_driver_logical_sector +
+                media_ptr -&gt; fx_media_hidden_sectors) * media_ptr -&gt; fx_media_bytes_per_sector);
+
+            /* Copy the source to the RAM sector. */
+
+            _fx_utility_memory_copy(media_ptr -&gt; fx_media_driver_buffer,
+                destination_buffer, media_ptr -&gt; fx_media_driver_sectors *
+                media_ptr -&gt; fx_media_bytes_per_sector);
+
+            /* Successful driver request. */
+
+            media_ptr -&gt; fx_media_driver_status = FX_SUCCESS; break; }
+
+        case FX_DRIVER_FLUSH: {
+            /* Return driver success. */
+            media_ptr -&gt; fx_media_driver_status = FX_SUCCESS; break; }
+
+        case FX_DRIVER_ABORT: {
+            /* Return driver success. */
+            media_ptr -&gt; fx_media_driver_status = FX_SUCCESS; break; }
+
+        case FX_DRIVER_INIT: {
+
+            /* FLASH drivers are responsible for setting several fields
+                in the media structure, as follows:
+                media_ptr -&gt; fx_media_driver_free_sector_update media_ptr -&gt;
+                fx_media_driver_write_protect
+                The fx_media_driver_free_sector_update flag is used to instruct
+                FileX to inform the driver whenever sectors are not being used.
+                This is especially useful for FLASH managers so they don't have
+                maintain mapping for sectors no longer in use.
+                The fx_media_driver_write_protect flag can be set anytime by
+                the driver to indicate the media is not writable. Write attempts
+                made when this flag is set are returned as errors. */
+            /* Perform basic initialization here... since the boot record is going
+                to be read subsequently and again for volume name requests. */
+            /* Successful driver request. */
+
+            media_ptr -&gt; fx_media_driver_status = FX_SUCCESS; break; }
+
+         case FX_DRIVER_UNINIT: {
+
+            /* There is nothing to do in this case for the RAM driver.
+                For actual devices some shutdown processing may be necessary. */
+
+            /* Successful driver request. */
+            media_ptr -&gt; fx_media_driver_status = FX_SUCCESS; break; }
+
+        case FX_DRIVER_BOOT_READ: {
+            /* Read the boot record and return to the caller. */
+
+            /* Calculate the RAM disk boot sector offset, which is at the
+                very beginning of the RAM disk. Note the RAM disk memory is pointed
+                to by the fx_media_driver_info pointer, which is supplied by the
+                application in the call to fx_media_open. */
+
+            source_buffer = (UCHAR *)media_ptr -&gt; fx_media_driver_info;
+
+            /* For RAM driver, determine if the boot record is valid. */
+
+            if ((source_buffer[0] != (UCHAR)0xEB) ||
+
+            ((source_buffer[1] != (UCHAR)0x34) &amp;&amp;
+
+            (source_buffer[1] != (UCHAR)0x76)) ||
+
+            (source_buffer[2] != (UCHAR)0x90)) {
+
+            /* Invalid boot record, return an error! */
+            media_ptr -&gt; fx_media_driver_status = FX_MEDIA_INVALID; return; }
+
+            /* For RAM disk only, pickup the bytes per sector. */
+
+            bytes_per_sector =
+                _fx_utility_16_unsigned_read(&amp;source_buffer[FX_BYTES_SECTOR]);
+
+            /* Ensure this is less than the media memory size. */
+            if (bytes_per_sector \media_ptr -&gt; fx_media_memory_size) {
+
+            media_ptr -&gt; fx_media_driver_status = FX_BUFFER_ERROR; break; }
+
+            /* Copy the RAM boot sector into the destination. */
+
+            _fx_utility_memory_copy(source_buffer, media_ptr -&gt; fx_media_driver_buffer, bytes_per_sector);
+
+            /* Successful driver request. */
+
+            media_ptr -&gt; fx_media_driver_status = FX_SUCCESS; break; }
+
+        case FX_DRIVER_BOOT_WRITE: {
+
+            /* Write the boot record and return to the caller. */
+
+            /* Calculate the RAM disk boot sector offset, which is at the
+                very beginning of the RAM disk. Note the RAM disk memory is
+                pointed to by the fx_media_driver_info pointer, which is supplied
+                by the application in the call to fx_media_open. */
+            destination_buffer = (UCHAR *)media_ptr -&gt; fx_media_driver_info;
+
+            /* Copy the RAM boot sector into the destination. */
+
+            _fx_utility_memory_copy(media_ptr -&gt; fx_media_driver_buffer,
+                destination_buffer, media_ptr -&gt; fx_media_bytes_per_sector);
+
+            /* Successful driver request. */
+
+            media_ptr -&gt; fx_media_driver_status = FX_SUCCESS; break; }
+
+        default: {
+            /* Invalid driver request. */
+            media_ptr -&gt; fx_media_driver_status = FX_IO_ERROR; break;}
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Cortex-R52 Port :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/home/main/cortex-r52-port.html">
+    <meta name="description" content="What the ARM Cortex-R52 ThreadX port provides, how it differs from the ARMv7-R ports, and how to build and run it.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="home" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">Home</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Home</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hardware-support.html">Hardware Support</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="cortex-r52-port.html">Cortex-R52 Port</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="continuous-integration.html">Continuous Integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="releases-and-support.html">Releases and Support</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security-updates.html">Security Updates</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Home</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="hardware-support.html">Hardware Support</a></li>
+    <li><a href="cortex-r52-port.html">Cortex-R52 Port</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/home/modules/ROOT/pages/cortex-r52-port.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Cortex-R52 Port</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Cortex-R52 port is the ThreadX tree&#8217;s ARMv8-R port. It lives in
+<code>ports/cortex_r52/gnu</code>, targets AArch32 state, and supports the GNU toolchain.
+A ThreadX Modules port is maintained alongside it in
+<code>ports_module/cortex_r52/gnu</code>.</p>
+</div>
+<div class="paragraph">
+<p>This page covers what a board support package has to provide, how the port is
+built and tested, and where the module port&#8217;s own documentation is.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_it_differs_from_the_armv7_r_ports"><a class="anchor" href="#_how_it_differs_from_the_armv7_r_ports"></a>How it differs from the ARMv7-R ports</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Cortex-R4, R5 and R7 ports in the tree implement ARMv7-R. The Cortex-R52
+differs from them in ways that matter when writing board support:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The processor always implements EL2 and resets into it. The port is
+EL2-aware: the reset path configures EL2, installs both the EL2 and EL1
+vector tables, and then drops to EL1 to run the kernel. Several registers
+must be programmed while still at EL2, notably <code>CNTFRQ</code>,
+<code>CNTHCTL.PL1PCTEN</code>/<code>PL1PCEN</code> for EL1 access to the physical timer, and
+<code>ICC_HSRE</code> for EL1 access to the GICv3 CPU interface.</p>
+</li>
+<li>
+<p>Exceptions routed to EL2 from EL1 or EL0 all arrive at the Hyp Trap Entry,
+vector offset <code>0x14</code>, and are distinguished by decoding <code>HSR.EC</code>.
+Offsets <code>0x04</code>–<code>0x10</code> are exceptions taken from Hyp mode itself.</p>
+</li>
+<li>
+<p>Memory protection is PMSAv8-R, programmed through <code>PRSELR</code>, <code>PRBAR</code> and
+<code>PRLAR</code> with memory types supplied by <code>MAIR</code>. This replaces the PMSAv7
+region model used by the ARMv7-R ports.</p>
+</li>
+<li>
+<p>Interrupts are handled by a GICv3, whose CPU interface is reached through
+<code>ICC_*</code> system registers rather than memory-mapped registers.</p>
+</li>
+<li>
+<p>Floating point is FPv5 with double precision. As on the other ARM ports,
+context is saved lazily for threads that call <code>tx_thread_vfp_enable()</code>;
+note that enabling the FPU hardware itself (<code>CPACR</code>, <code>FPEXC.EN</code>) is the
+board support package&#8217;s responsibility, not the kernel&#8217;s.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_scheduler_priority_search"><a class="anchor" href="#_scheduler_priority_search"></a>Scheduler priority search</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The port uses the <code>CLZ</code> instruction for the scheduler&#8217;s lowest-set-bit priority
+search, in place of the portable loop in <code>tx_thread.h</code>. Upstream gates that
+optimisation on <code>__TARGET_ARCH_ARM</code>, an Arm Compiler 5 predefine that GCC does
+not define, so it had never once been compiled in under GCC; this port asks
+<code>__ARM_FEATURE_CLZ</code> instead.</p>
+</div>
+<div class="paragraph">
+<p>It applies in the default 32-priority configuration rather than only above 32,
+and it is worth around 40% of the priority search&#8217;s code size. A Thumb build
+deliberately keeps the portable loop, because <code>__ARM_FEATURE_CLZ</code> describes the
+architecture rather than the instruction set and Thumb-1 has no <code>CLZ</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_and_running"><a class="anchor" href="#_building_and_running"></a>Building and running</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The port is built with CMake and Ninja, and ships an example build for the freely
+available ARMv8-R AEM Fixed Virtual Platform (<code>FVP_BaseR_AEMv8R</code>). That is
+enough to run the standard demonstration and the port&#8217;s own self-tests without
+hardware.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-dos hljs" data-lang="dos">cmake -B build_r52 -G Ninja \
+      -DCMAKE_TOOLCHAIN_FILE=cmake/cortex_r52.cmake \
+      -DTX_R52_BUILD_FVP_EXAMPLE=ON .
+ninja -C build_r52 boot_check.elf demo_m2.elf demo_m3.elf \
+                   demo_threadx.elf demo_mpu.elf demo_clz.elf
+ctest --test-dir build_r52</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Image</th>
+<th class="tableblock halign-left valign-top">What it exercises</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boot_check.elf</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EL2 configuration, the drop to EL1 and the EL2 seam</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>demo_m2.elf</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cooperative context switching, no interrupts</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>demo_m3.elf</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Generic timer tick, GICv3 and preemption</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>demo_threadx.elf</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The standard eight-thread demonstration plus verification</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>demo_mpu.elf</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PMSAv8-R protection and cache enable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>demo_clz.elf</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <code>CLZ</code> lowest-set-bit priority search</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Further images are added by the optional feature switches: <code>demo_m5.elf</code> for
+lazy VFP context save with <code>TX_R52_ENABLE_VFP</code>, and the IRQ and FIQ nesting
+demonstrations with their own options. Enabling the module manager example
+described below adds two more.</p>
+</div>
+<div class="paragraph">
+<p>Each image reports its own result and terminates the model through the
+semihosting <code>SYS_EXIT</code> call, so no host-side timeout is needed. The test runner
+treats a missing result line as a failure, so a hang cannot pass.</p>
+</div>
+<div class="paragraph">
+<p>See <code>ports/cortex_r52/gnu/readme_threadx.txt</code> for the full set of build options
+and board-support detail.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The AEM FVP is an architecture envelope model rather than a Cortex-R52
+implementation&#8201;&#8212;&#8201;it reports MIDR <code>0x410FD0F0</code>, part number <code>0xD0F</code>. It
+validates architecture. Implementation details such as MPU region count, TCM,
+lockstep and RAS must be validated on silicon. Nothing in this port is gated on
+MIDR.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_threadx_modules_support"><a class="anchor" href="#_threadx_modules_support"></a>ThreadX Modules support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The module port in <code>ports_module/cortex_r52/gnu</code> gives each module its own
+PMSAv8-R region set, runs module threads in User mode while kernel threads run in
+System mode, and supports up to five shared or external memory regions per
+module. It ships example builds for the same Fixed Virtual Platform and for NXP
+S32Z280 silicon.</p>
+</div>
+<div class="paragraph">
+<p>Unlike every other module port in the tree, this one <strong>requires</strong> a module to ask
+for user mode and memory protection together: a preamble carrying either alone is
+refused at load time with <code>TXM_MODULE_INVALID_PROPERTIES</code>. PMSAv8-R gives EL1 no
+background region unless <code>SCTLR.BR</code> is set and faults EL0 accesses that match no
+region, so closing the kernel&#8217;s window over the module area leaves a module
+without its own region set with no mapping at all rather than with a weaker one.
+Shared and external memory access stays optional.</p>
+</div>
+<div class="paragraph">
+<p>Modules are built A32, like the manager, and that is the only state the port is
+validated in. A Thumb module is expected to start correctly&#8201;&#8212;&#8201;the manager takes
+the initial <code>T</code> bit from the module&#8217;s entry pointer&#8201;&#8212;&#8201;but nothing in the tree
+proves the interworking path through entry, the supervisor call dispatcher,
+preemption and fault recovery, so build modules <code>-marm</code>.</p>
+</div>
+<div class="paragraph">
+<p>One constraint is worth knowing before choosing a part. The port needs at least
+<strong>17</strong> EL1 MPU regions&#8201;&#8212;&#8201;eight for the board support package, eight for the module
+block and one for the kernel&#8217;s window over the module area&#8201;&#8212;&#8201;and therefore <strong>will
+not run on a Cortex-R52 configured with 16</strong>, which <code>MPUIR.DREGION</code> permits. The
+example board support reads <code>MPUIR</code> and refuses to enable protection at all
+rather than programming a region that does not exist.</p>
+</div>
+<div class="paragraph">
+<p>Hosting the module manager also asks four things of a board support package that
+the kernel port alone does not: routing the EL1 supervisor call vector to the
+manager, routing both abort vectors to the manager&#8217;s fault capture for faults
+taken from User mode, programming the kernel&#8217;s window over the module area, and
+performing cache maintenance after copying module code.</p>
+</div>
+<div class="paragraph">
+<p><a href="../../threadx-modules/main/appendix.html" class="xref page">The ThreadX Modules appendix</a> documents
+all of this for the port: the region budget and the 64-byte protection granule,
+the module preamble and linker arrangement, the position-independent build flags,
+the separate ThreadX library a manager build needs, the board support
+requirements above, the shared-memory grant contract, and how to run the module
+example on the model.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

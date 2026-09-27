@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 4 - Description of ThreadX SMP Services :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx/main/threadx-smp/chapter4.html">
+    <meta name="description" content="This chapter contains a description of all ThreadX SMP services in alphabetic order.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">ThreadX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">ThreadX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">ThreadX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-threadx.html">Overview of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of ThreadX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - Device drivers for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter6.html">Ch. 6 - Demonstration system for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - ThreadX API services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - ThreadX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - ThreadX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX User Guide Addendum for ARMv8-M</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter1.html">Ch. 1 - Introduction to ThreadX for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter2.html">Ch. 2 - Installing ThreadX support for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter3.html">Ch. 3 - ThreadX APIs for ARMv8-M</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX SMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation &amp; Use of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional Components of ThreadX SMP</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of ThreadX SMP Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Device Drivers for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - Demonstration System for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - ThreadX SMP API Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - ThreadX SMP Constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - ThreadX SMP Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII Character Codes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ThreadX SMP MISRA C compliance</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">ThreadX User Guide</a></li>
+    <li><a href="../index.html">ThreadX</a></li>
+    <li>ThreadX SMP user guide</li>
+    <li><a href="chapter4.html">Ch. 4 - Description of ThreadX SMP Services</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/threadx/modules/ROOT/pages/threadx-smp/chapter4.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 4 - Description of ThreadX SMP Services</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of all ThreadX SMP services in alphabetic order. Their names are designed so all similar services are grouped together. In the "Return Values" section in the following descriptions, values in <strong>BOLD</strong> are not affected by the <strong>TX_DISABLE_ERROR_CHECKING</strong> define used to disable API error checking; while values shown in nonbold are completely disabled. In addition, a "<strong>Yes</strong>" listed under the "<strong>Preemption Possible</strong>" heading indicates that calling the service may resume a higher-priority thread, thus preempting the calling thread.</p>
+</div>
+<div class="paragraph">
+<p>Under the <strong>Allowed From</strong> heading, "Initialization" means from <em>tx_application_define</em> onward. It does not extend to code that runs before <em>tx_kernel_enter</em>, such as C++ static constructors or preliminary processing in <em>main</em>, because the kernel structures these services operate on are set up by <em>tx_kernel_enter</em> itself. See "Calling ThreadX SMP Services During Initialization" in <a href="chapter3.html" class="xref page">Chapter 3 - Functional Components of ThreadX SMP</a>.</p>
+</div>
+<div class="paragraph">
+<p>The Threadx SMP API functions available to the application are as follows.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_thread_smp_services"><a class="anchor" href="#_thread_smp_services"></a>Thread_SMP_Services</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#tx_thread_smp_core_exclude">tx_thread_smp_core_exclude</a></p>
+</li>
+<li>
+<p><a href="#tx_thread_smp_core_exclude_get">tx_thread_smp_core_exclude_get</a></p>
+</li>
+<li>
+<p><a href="#tx_thread_smp_core_get">tx_thread_smp_core_get</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_timer_smp_services"><a class="anchor" href="#_timer_smp_services"></a>Timer_SMP_Services</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#tx_timer_smp_core_exclude">tx_timer_smp_core_exclude</a></p>
+</li>
+<li>
+<p><a href="#tx_timer_smp_core_exclude_get">tx_timer_smp_core_exclude_get</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tx_thread_smp_core_exclude"><a class="anchor" href="#_tx_thread_smp_core_exclude"></a>tx_thread_smp_core_exclude</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Exclude thread execution on a set of cores</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT  tx_thread_smp_core_exclude(TX_THREAD *thread_ptr,
+                          ULONG exclusion_map);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This function excludes the specified thread from executing on the core(s) specified in the bit map called "<em>exclusion_map</em>." Each bit in "<em>exclusion_map</em>" represents a core (bit 0 represents core 0, etc.). If the bit is set, the corresponding core is excluded from executing the specified thread.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Use of processor exclusion may cause additional processing in the thread to core mapping logic in order to find the optimal match. This processing is bounded by the number of ready threads.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters"><a class="anchor" href="#_parameters"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>thread_ptr</strong>: Pointer to thread to change the core exclusion.</p>
+</li>
+<li>
+<p><strong>exclusion_map</strong>: Bit map where a sit bit indicates that that core is excluded. Supplying a 0 value enables the thread to execute on any core (default).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>TX_SUCCESS</strong>: (0x00) Successful core exclusion.</p>
+</li>
+<li>
+<p><strong>TX_THREAD_ERROR</strong>: (0x0E) Invalid thread pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from"><a class="anchor" href="#_allowed_from"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, ISRs, threads, and timers</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Exclude core 0 for "Thread 0". */
+tx_thread_smp_core_exclude(&amp;thread_0, 0x01);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also"><a class="anchor" href="#_see_also"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_thread_smp_services">Thread SMP Services</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tx_thread_smp_core_exclude_get"><a class="anchor" href="#_tx_thread_smp_core_exclude_get"></a>tx_thread_smp_core_exclude_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Gets the thread&#8217;s current core exclusion</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT tx_thread_smp_core_exclude_get(TX_THREAD *thread_ptr,
+                         ULONG *exclusion_map_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This function returns the current core exclusion list.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_2"><a class="anchor" href="#_parameters_2"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>thread_ptr</strong>: Pointer to thread from which to retrieve the core exclusion.</p>
+</li>
+<li>
+<p><strong>exclusion_map_ptr</strong>: Destination for current core exclusion bit map.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>TX_SUCCESS</strong>: (0x00) Successful retrieval of thread&#8217;s core exclusion.</p>
+</li>
+<li>
+<p><strong>TX_THREAD_ERROR</strong>: (0x0E) Invalid thread pointer.</p>
+</li>
+<li>
+<p><strong>TX_PTR_ERROR</strong>: (0x03) Invalid exclusion destination pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_2"><a class="anchor" href="#_allowed_from_2"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, ISRs, threads, and timers</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">ULONG excluded_cores;
+/* Retrieve the core exclusion for "Thread 0". */
+tx_thread_smp_core_exclude_get(&amp;thread_0, &amp;excluded_cores);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_2"><a class="anchor" href="#_see_also_2"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_thread_smp_services">Thread SMP Services</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tx_thread_smp_core_get"><a class="anchor" href="#_tx_thread_smp_core_get"></a>tx_thread_smp_core_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieve currently executing core of caller</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT  tx_thread_smp_core_get(void);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This function returns the core ID of the core executing this service.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_3"><a class="anchor" href="#_parameters_3"></a>Parameters</h3>
+<div class="paragraph">
+<p>None</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>core_id: ID of currently executing core, (0 through TX_THREAD_SMP_MAX_CORES-1)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_3"><a class="anchor" href="#_allowed_from_3"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, ISRs, threads, and timers</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT core;
+/* Pickup the currently executing core. */
+core = tx_thread_smp_core_get();
+
+/* At this point, "core" contains the executing core ID. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_3"><a class="anchor" href="#_see_also_3"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_thread_smp_services">Thread SMP Services</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tx_timer_smp_core_exclude"><a class="anchor" href="#_tx_timer_smp_core_exclude"></a>tx_timer_smp_core_exclude</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Exclude timer execution on a set of cores</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT  tx_timer_smp_core_exclude(TX_TIMER *timer_ptr, ULONG exclusion_map);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This function excludes the specified timer from executing on the core(s) specified in the bit map called "<em>exclusion_map</em>." Each bit in "<em>exclusion_map</em>" represents a core (bit 0 represents core 0, etc.). If the bit is set, the corresponding core is excluded from executing the specified timer.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Use of processor exclusion may cause additional processing in the thread to core mapping logic in order to find the optimal match. This processing is bounded by the number of ready threads.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_4"><a class="anchor" href="#_parameters_4"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timer_ptr</strong>: Pointer to timer to change the core exclusion.</p>
+</li>
+<li>
+<p><strong>exclusion_map</strong>: Bit map where a sit bit indicates that that core is excluded. Supplying a 0 value enables the timer to execute on any core (default).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>TX_SUCCESS</strong> (0x00) Successful core exclusion.</p>
+</li>
+<li>
+<p><strong>TX_TIMER_ERROR</strong> (0x0E) Invalid timer pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_4"><a class="anchor" href="#_allowed_from_4"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, ISRs, threads, and timers</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* Exclude core 0 for "Timer 0". */
+tx_timer_smp_core_exclude(&amp;timer_0, 0x01);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_4"><a class="anchor" href="#_see_also_4"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_timer_smp_services">Timer SMP Services</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tx_timer_smp_core_exclude_get"><a class="anchor" href="#_tx_timer_smp_core_exclude_get"></a>tx_timer_smp_core_exclude_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Gets the timer&#8217;s current core exclusion</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT tx_timer_smp_core_exclude_get(TX_TIMER *timer_ptr,
+                         ULONG *exclusion_map_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>This function returns the current core exclusion list.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_5"><a class="anchor" href="#_parameters_5"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>timer_ptr</strong>: Pointer to timer from which to retrieve the core exclusion.</p>
+</li>
+<li>
+<p><strong>exclusion_map_ptr</strong>: Destination for current core exclusion bit map.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>TX_SUCCESS</strong>: (0x00) Successful retrieval of timer&#8217;s core exclusion.</p>
+</li>
+<li>
+<p><strong>TX_TIMER_ERROR</strong>: (0x0E) Invalid timer pointer.</p>
+</li>
+<li>
+<p><strong>TX_PTR_ERROR</strong>: (0x03) Invalid exclusion destination pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_5"><a class="anchor" href="#_allowed_from_5"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Initialization, ISRs, threads, and timers</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">ULONG excluded_cores;
+
+/* Retrieve the core exclusion for "Timer 0". */
+tx_timer_smp_core_exclude_get(&amp;timer_0, &amp;excluded_cores);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_5"><a class="anchor" href="#_see_also_5"></a>See Also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_timer_smp_services">Timer SMP Services</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

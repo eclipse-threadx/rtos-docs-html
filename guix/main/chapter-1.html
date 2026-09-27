@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 1 - Introduction to GUIX :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/guix/main/chapter-1.html">
+    <meta name="description" content="GUIX is a high-performance real-time implementation of a GUI designed exclusively for embedded ThreadX-based applications.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guix" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">GUIX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">GUIX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">GUIX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-guix.html">Overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="guix-studio-quick-start.html">GUIX Studio Quick Start Guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix.html">About this guide</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter-1.html">Ch. 1 - Introduction to GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-3.html">Ch. 3 - Functional overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-4.html">Ch. 4 - Description of GUIX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-5.html">Ch. 5 - GUIX display drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-example.html">GUIX example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - GUIX color definitions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - GUIX color formats</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - GUIX widget styles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - GUIX brush, canvas, and gradient attributes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - GUIX event description</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-f.html">App. F - GUIX RTOS binding services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-g.html">App. G - GUIX font structure</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-h.html">App. H - GUIX build-time configuration flags</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-i.html">App. I - GUIX information structures</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-j.html">App. J - Canvas Partial Frame Buffer Feature</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-k.html">App. K - GUIX Widget Status Flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX Studio User Guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix-studio.html">About GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-1.html">Ch. 1 - Introduction to GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-2.html">Ch. 2 - Installation and Use of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-3.html">Ch. 3 - Description of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-4.html">Ch. 4 - GUIX Studio Resources</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-6.html">Ch. 6 - GUIX Studio Generated Code</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-9.html">Ch. 9 - GUIX Studio Command Line</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-10.html">Ch. 10 - Simple Example Project</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-11.html">Ch. 11 - Resource Project File</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">GUIX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">GUIX User Guide</a></li>
+    <li><a href="index.html">GUIX</a></li>
+    <li>GUIX user guide</li>
+    <li><a href="chapter-1.html">Ch. 1 - Introduction to GUIX</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/guix/modules/ROOT/pages/chapter-1.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 1 - Introduction to GUIX</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>GUIX is a high-performance real-time implementation of a graphical interface framework designed
+exclusively for embedded ThreadX-based applications. This chapter
+contains an introduction to GUIX and a description of its applications
+and benefits.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_guix_feature_overview"><a class="anchor" href="#_guix_feature_overview"></a>GUIX Feature Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Unlike many other GUI implementations, GUIX is designed to be versatile&#8212;&#8203;easily scaling from small micro-controller-based applications to those that use powerful RISC and DSP processors. This is in sharp contrast to public domain or other commercial implementations originally intended for workstation environments but then squeezed into
+embedded designs. An overview of GUIX features follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Easy to use with host-based design tool GUIX Studio</p>
+</li>
+<li>
+<p>Win32 GUIX run-time environment for complete hosted prototyping</p>
+</li>
+<li>
+<p>Supports most processors supported by ThreadX</p>
+</li>
+<li>
+<p>Written exclusively in ANSI C</p>
+</li>
+<li>
+<p>Endian neutral</p>
+</li>
+<li>
+<p>Smallest, Fasted Embedded GUI</p>
+</li>
+<li>
+<p>Run-time configurable, number of objects, screen size, etc.</p>
+</li>
+<li>
+<p>Easy to write display driver interface</p>
+</li>
+<li>
+<p>Color (up to 32-bpp color depth), monochrome, and grayscale support</p>
+</li>
+<li>
+<p>Multilingual support via UTF8 string encoding and string resources</p>
+</li>
+<li>
+<p>Default free fonts and easy to add new fonts</p>
+</li>
+<li>
+<p>Multiple drawing Canvases supported, of various sizes</p>
+</li>
+<li>
+<p>Multiple displays of different sizes and color depths supported</p>
+</li>
+<li>
+<p>Screen Transition support (fade in, fade out, swipe, etc.)</p>
+</li>
+<li>
+<p>Touch Screen, Gesture, and Virtual Keyboard Support</p>
+</li>
+<li>
+<p>Bitmap compression</p>
+</li>
+<li>
+<p>Alpha Blending Support</p>
+</li>
+<li>
+<p>Dither Support</p>
+</li>
+<li>
+<p>Anti-Aliasing Support</p>
+</li>
+<li>
+<p>Skinning and Themes</p>
+</li>
+<li>
+<p>Canvas Blending</p>
+</li>
+<li>
+<p>Complete Window Management</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Parent/Child Relationship</p>
+</li>
+<li>
+<p>Dynamic creation, deletion, resizing, moving</p>
+</li>
+<li>
+<p>Separate event handling and drawing</p>
+</li>
+<li>
+<p>Z-order</p>
+</li>
+<li>
+<p>Clipping and views</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Extensive Set of Widgets</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Various button types, sliders, and dials</p>
+</li>
+<li>
+<p>Drop Down List</p>
+</li>
+<li>
+<p>Prompt</p>
+</li>
+<li>
+<p>Multi-Line text view</p>
+</li>
+<li>
+<p>Single and Multi-Line text input</p>
+</li>
+<li>
+<p>Numeric and Textual Scroll Wheels</p>
+</li>
+<li>
+<p>Windows and Scroll Bars</p>
+</li>
+<li>
+<p>Radial Progress Bar</p>
+</li>
+<li>
+<p>Sprite</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_ansi_c_source_code"><a class="anchor" href="#_ansi_c_source_code"></a>ANSI C Source Code</h3>
+<div class="paragraph">
+<p>GUIX is written completely in ANSI C and is portable immediately to
+virtually any processor architecture that has an ANSI C compiler and
+ThreadX support. Although written in ANSI C, GUIX uses an object
+oriented model and inheritance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_not_a_black_box"><a class="anchor" href="#_not_a_black_box"></a>Not A Black Box</h3>
+<div class="paragraph">
+<p>Most distributions of GUIX include the complete C source code. This
+eliminates the "black-box" problems that occur with many commercial GUI
+implementations. By using GUIX, applications developers can see exactly
+what the GUI is doing&#8212;&#8203;there are no mysteries!</p>
+</div>
+<div class="paragraph">
+<p>Having the source code also allows for application specific
+modifications. Although not recommended, it is certainly beneficial to
+have the ability to modify the GUI if it is required. These features are
+especially comforting to developers accustomed to working with in-house
+or public domain products. They expect to have source code and the
+ability to modify it. GUIX is the ultimate GUI software for such
+developers.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_embedded_gui_applications"><a class="anchor" href="#_embedded_gui_applications"></a>Embedded GUI Applications</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Embedded GUI applications are applications that have a user interface
+requirement and execute on microprocessors hidden inside products such
+as cellular phones, communication equipment, automotive engines, laser
+printers, medical devices, and so forth. Such applications almost always
+have some memory and performance constraints. Another distinction of
+embedded GUI is that their software and hardware have a dedicated
+purpose.</p>
+</div>
+<div class="sect2">
+<h3 id="_real_time_gui_software"><a class="anchor" href="#_real_time_gui_software"></a>Real-time GUI Software</h3>
+<div class="paragraph">
+<p>Basically, GUI software that must perform its processing within an exact
+period of time is called <em>real-time GUI</em> software, and when time
+constraints are imposed on GUI applications, they are classified as
+realtime applications. Embedded GUI applications are almost always
+real-time because of their inherent interaction with the external world.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_guix_benefits"><a class="anchor" href="#_guix_benefits"></a>GUIX Benefits</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The primary benefits of using GUIX for embedded applications are
+high-performance, feature rich, and very small memory requirements. GUIX
+is also completely integrated with the high-performance, multitasking
+ThreadX real-time operating system.</p>
+</div>
+<div class="sect2">
+<h3 id="_improved_responsiveness"><a class="anchor" href="#_improved_responsiveness"></a>Improved Responsiveness</h3>
+<div class="paragraph">
+<p>The high-performance GUIX product enables applications to respond faster
+than ever before. This is especially important for embedded applications
+that either have a significant volume of visual information or strict
+timing requirements on displaying such information.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_software_maintenance"><a class="anchor" href="#_software_maintenance"></a>Software Maintenance</h3>
+<div class="paragraph">
+<p>Using GUIX allows developers to easily partition the GUI aspects of
+their embedded application. This partitioning makes the entire
+development process easy and significantly enhances future software
+maintenance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_increased_throughput"><a class="anchor" href="#_increased_throughput"></a>Increased Throughput</h3>
+<div class="paragraph">
+<p>GUIX provides the highest-performance GUI available, which directly
+transfers to the embedded application. GUIX applications are able to
+process user interface information faster than non-GUIX applications!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_processor_isolation"><a class="anchor" href="#_processor_isolation"></a>Processor Isolation</h3>
+<div class="paragraph">
+<p>GUIX provides a robust, processor-independent interface between the
+application and the underlying processor and display hardware. This
+allows developers to concentrate on the high-level aspects of the user
+interface rather than spending extra time dealing with display hardware
+issues.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ease_of_use"><a class="anchor" href="#_ease_of_use"></a>Ease of Use</h3>
+<div class="paragraph">
+<p>GUIX is designed with the application developer in mind. The GUIX
+architecture and service call interface are easy to understand. As a
+result, GUIX developers can quickly use its advanced features.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_improve_time_to_market"><a class="anchor" href="#_improve_time_to_market"></a>Improve Time to Market</h3>
+<div class="paragraph">
+<p>The powerful features of GUIX accelerate the software development
+process. GUIX abstracts most processor and display hardware issues,
+thereby removing these concerns from a majority of application user
+interface implementation. This feature, coupled with the ease-of-use and
+advanced feature set, results in a faster time to market!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_protecting_the_software_investment"><a class="anchor" href="#_protecting_the_software_investment"></a>Protecting the Software Investment</h3>
+<div class="paragraph">
+<p>GUIX is written exclusively in ANSI C and is fully integrated with the
+ThreadX real-time operating system. This means GUIX applications are
+instantly portable to all ThreadX supported processors. Better yet, a
+completely new processor architecture can be supported with ThreadX in a
+matter of weeks. As a result, using GUIX ensures the application&#8217;s
+migration path and protects the original development investment.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

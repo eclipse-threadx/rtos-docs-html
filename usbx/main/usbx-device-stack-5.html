@@ -1,0 +1,2502 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 5 - USBX Device Class Considerations :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/usbx/main/usbx-device-stack-5.html">
+    <meta name="description" content="Learn about the USBX Device Class considerations.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="usbx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">USBX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">USBX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">USBX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-usbx.html">Overview of USBX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-3.html">Ch. 3 - Functional components of USBX device stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-2.html">Ch. 2 - USBX device class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-7.html">Ch. 7 - USBX device class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-6.html">Ch. 6 - USBX CDC-ECM class usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-2.html">Ch. 2 - USBX Host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">USBX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">USBX User Guide</a></li>
+    <li><a href="index.html">USBX</a></li>
+    <li>USBX device stack user guide</li>
+    <li><a href="usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/usbx/modules/ROOT/pages/usbx-device-stack-5.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 5 - USBX Device Class Considerations</h1>
+<div class="sect1">
+<h2 id="_device_class_registration"><a class="anchor" href="#_device_class_registration"></a>Device Class registration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each device class follows the same principle for registration. A structure containing specific class parameters is passed to the class initialize function.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Set the parameters for callback when insertion/extraction of a HID device. */
+
+hid_parameter.ux_slave_class_hid_instance_activate = tx_demo_hid_instance_activate;
+
+hid_parameter.ux_slave_class_hid_instance_deactivate = tx_demo_hid_instance_deactivate;
+
+/* Initialize the hid class parameters for the device. */
+hid_parameter.ux_device_class_hid_parameter_report_address = hid_device_report;
+
+hid_parameter.ux_device_class_hid_parameter_report_length = HID_DEVICE_REPORT_LENGTH;
+
+hid_parameter.ux_device_class_hid_parameter_report_id = UX_TRUE;
+hid_parameter.ux_device_class_hid_parameter_callback = demo_thread_hid_callback;
+
+/* Initialize the device hid class. The class is connected with interface 0 */
+
+status = ux_device_stack_class_register(_ux_system_slave_class_hid_name,
+    ux_device_class_hid_entry,1,0, (VOID *)&amp;hid_parameter);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each class can register, optionally, a callback function when a instance of the class gets activated. The callback is then called by the device stack to inform the application that an instance was created.</p>
+</div>
+<div class="paragraph">
+<p>The application would have in its body the 2 functions for activation and deactivation, as shown in the following example.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">VOID tx_demo_hid_instance_activate(VOID *hid_instance)
+{
+    /* Save the HID instance. */
+    hid_slave = (UX_SLAVE_CLASS_HID *) hid_instance;
+}
+
+VOID tx_demo_hid_instance_deactivate(VOID *hid_instance)
+{
+    /* Reset the HID instance. */
+    hid_slave = UX_NULL;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It is not recommended to do anything within these functions but to memorize the instance of the class and synchronize with the rest of the application.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_general_considerations_for_bulk_transfer"><a class="anchor" href="#_general_considerations_for_bulk_transfer"></a>General Considerations for Bulk Transfer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As per the USB 2.0 specification, an endpoint must always transmit data payloads with a data field less than or equal to the endpoint&#8217;s
+reported wMaxPacketSize value. The size of a data packet is limited to bMaxPacketSize. Transfer can be completed with the following cases</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The endpoint has transferred exactly the amount of data expected</p>
+</li>
+<li>
+<p>When a device or host endpoint receives a packet with size less than max packet size(wMaxPacketSize). This short packet indicates that there is no more data packet left and transfer is complete or when the data packets to be transmitted are all equal to wMaxPacketSize, then the end of transfer cannot be determined. In order for transfer completion a Zero Length Packet(ZLP) must be sent
+Short packets and Zero Length Packets signify the end of a bulk data transfer.
+The above considerations apply to raw bulk data transfer APIs, e.g., ux_device_class_cdc_acm_read().</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usb_device_storage_class"><a class="anchor" href="#_usb_device_storage_class"></a>USB Device Storage Class</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The USB device storage class allows for a storage device embedded in the system to be made visible to a USB host.</p>
+</div>
+<div class="paragraph">
+<p>The USB device storage class does not by itself provide a storage solution. It merely accepts and interprets SCSI requests coming from the host. When one of these requests is a read or a write command, it will invoke a pre-defined call back to a real storage device handler, such as an ATA device driver or a Flash device driver.</p>
+</div>
+<div class="paragraph">
+<p>When initializing the device storage class, a pointer structure is given to the class that contains all the information necessary. An example is given below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Initialize the storage class parameters to customize vendor strings. */
+
+storage_parameter.ux_slave_class_storage_parameter_vendor_id
+    = demo_ux_system_slave_class_storage_vendor_id;
+
+storage_parameter.ux_slave_class_storage_parameter_product_id
+    = demo_ux_system_slave_class_storage_product_id;
+
+storage_parameter.ux_slave_class_storage_parameter_product_rev
+    = demo_ux_system_slave_class_storage_product_rev;
+
+storage_parameter.ux_slave_class_storage_parameter_product_serial
+    = demo_ux_system_slave_class_storage_product_serial;
+
+/* Store the number of LUN in this device storage instance: single LUN. */
+storage_parameter.ux_slave_class_storage_parameter_number_lun = 1;
+
+/* Initialize the storage class parameters for reading/writing to the Flash Disk. */
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_last_lba = 0x1e6bfe;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_block_length = 512;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_type = 0;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_removable_flag = 0x80;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_read_only_flag
+    = UX_FALSE;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_read
+    = tx_demo_thread_flash_media_read;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_write
+    = tx_demo_thread_flash_media_write;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_status
+    = tx_demo_thread_flash_media_status;
+
+/* A simple write caching support.
+   If this callback is assigned, host gets notification from caching page
+   that write caching is supported, and can send SYNCHRONIZE_CACHE to
+   flush cache. But caching options are not allowed to be changed.  */
+storage_parameter.ux_slave_class_storage_parameter_lun[0].
+ux_slave_class_storage_media_flush  =
+   tx_demo_thread_flash_media_flush;
+
+/* Initialize the device storage class. The class is connected with interface 0 */
+status = ux_device_stack_class_register(_ux_system_slave_class_storage_name,
+    ux_device_class_storage_entry, ux_device_class_storage_thread, 0, (VOID *)&amp;storage_parameter);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, the driver storage strings are customized by assigning string pointers to corresponding parameter. If any one of the string pointer is left to UX_NULL, the default ThreadX string is used.</p>
+</div>
+<div class="paragraph">
+<p>In this example, the drive&#8217;s last block address or LBA is given as well as the logical sector size. The LBA is the number of sectors available in the media --1. The block length is set to 512 in regular storage media. It can be set to 2048 for optical drives.</p>
+</div>
+<div class="paragraph">
+<p>The application needs to pass three callback function pointers to allow the storage class to read, write and obtain status for the media.</p>
+</div>
+<div class="paragraph">
+<p>The prototypes for the read and write functions are shown in the example below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT media_read(
+    VOID *storage,
+    ULONG lun,
+    UCHAR *data_pointer,
+    ULONG number_blocks,
+    ULONG lba,
+    ULONG *media_status);
+
+UINT media_write(
+    VOID *storage,
+    ULONG lun,
+    UCHAR *data_pointer,
+    ULONG number_blocks,
+    ULONG lba,
+    ULONG *media_status);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>storage</em> is the instance of the storage class.</p>
+</li>
+<li>
+<p><em>lun</em> is the LUN the command is directed to.</p>
+</li>
+<li>
+<p><em>data_pointer</em> is the address of the buffer to be used for reading or writing.</p>
+</li>
+<li>
+<p><em>number_blocks</em> is the number of sectors to read/write.</p>
+</li>
+<li>
+<p><em>lba</em> is the sector address to read.</p>
+</li>
+<li>
+<p><em>media_status</em> should be filled out exactly like the media status callback return value.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The return value can have either the value UX_SUCCESS or UX_ERROR indicating a successful or unsuccessful operation. These operations do not need to return any other error codes. If there is an error in any operation, the storage class will invoke the status call back function.</p>
+</div>
+<div class="paragraph">
+<p>This function has the following prototype.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG media_status(
+    VOID *storage,
+    ULONG lun,
+    ULONG media_id,
+    ULONG *media_status);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The calling parameter media_id is not currently used and should always be 0. In the future it may be used to distinguish multiple storage devices or storage devices with multiple SCSI LUNs. This version of the storage class does not support multiple instances of the storage class or storage devices with multiple SCSI LUNs.</p>
+</div>
+<div class="paragraph">
+<p>The return value is a SCSI error code that can have the following format.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Bits 0-7</strong> Sense_key</p>
+</li>
+<li>
+<p><strong>Bits 8-15</strong> Additional Sense Code</p>
+</li>
+<li>
+<p><strong>Bits 16-23</strong> Additional Sense Code Qualifier</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following table provides the possible Sense/ASC/ASCQ combinations.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Sense Key</th>
+<th class="tableblock halign-left valign-top">ASC</th>
+<th class="tableblock halign-left valign-top">ASCQ</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NO SENSE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RECOVERED DATA WITH RETRIES</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RECOVERED DATA WITH ECC</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">04</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LOGICAL DRIVE NOT READY - BECOMING READY</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">04</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LOGICAL DRIVE NOT READY - INITIALIZATION REQUIRED</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">04</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">04</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LOGICAL UNIT NOT READY - FORMAT IN PROGRESS</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">04</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LOGICAL DRIVE NOT READY - DEVICE IS BUSY</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">06</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NO REFERENCE POSITION FOUND</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">08</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LOGICAL UNIT COMMUNICATION FAILURE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">08</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LOGICAL UNIT COMMUNICATION TIME-OUT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">08</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LOGICAL UNIT COMMUNICATION OVERRUN</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MEDIUM NOT PRESENT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">54</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USB TO HOST SYSTEM INTERFACE FAILURE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INSUFFICIENT RESOURCES</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNKNOWN ERROR</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NO SEEK COMPLETE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WRITE FAULT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ID CRC ERROR</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNRECOVERED READ ERROR</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ADDRESS MARK NOT FOUND FOR ID FIELD</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ADDRESS MARK NOT FOUND FOR DATA FIELD</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RECORDED ENTITY NOT FOUND</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CANNOT READ MEDIUM - UNKNOWN FORMAT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">31</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FORMAT COMMAND FAILED</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">04</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">40</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DIAGNOSTIC FAILURE ON COMPONENT NN (80H-FFH)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">05</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PARAMETER LIST LENGTH ERROR</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">05</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INVALID COMMAND OPERATION CODE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">05</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LOGICAL BLOCK ADDRESS OUT OF RANGE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">05</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INVALID FIELD IN COMMAND PACKET</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">05</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LOGICAL UNIT NOT SUPPORTED</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">05</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INVALID FIELD IN PARAMETER LIST</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">05</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PARAMETER NOT SUPPORTED</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">05</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PARAMETER VALUE INVALID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">05</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">39</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SAVING PARAMETERS NOT SUPPORT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">06</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NOT READY TO READY TRANSITION&#8201;&#8212;&#8201;MEDIA CHANGED</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">06</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">29</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POWER ON RESET OR BUS DEVICE RESET OCCURRED</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">06</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">COMMANDS CLEARED BY ANOTHER INITIATOR</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">07</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">27</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WRITE PROTECTED MEDIA</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4E</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OVERLAPPED COMMAND ATTEMPTED</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>There are two additional, optional callbacks the application may implement; one is for responding to a <strong>GET_STATUS_NOTIFICATION</strong> command and the other is for responding to the <strong>SYNCHRONIZE_CACHE</strong> command.</p>
+</div>
+<div class="paragraph">
+<p>If the application would like to handle the <strong>GET_STATUS_NOTIFICATION</strong> command from the host, it should implement a callback with the following prototype.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_slave_class_storage_media_notification(
+    VOID *storage,
+    ULONG lun,
+    ULONG media_id,
+    ULONG notification_class,
+    UCHAR **media_notification,
+    ULONG *media_notification_length);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>storage</em> is the instance of the storage class.</p>
+</li>
+<li>
+<p><em>media_id</em> is not currently used. notification_class specifies the class of notification.</p>
+</li>
+<li>
+<p><em>media_notification</em> should be set by the application to the buffer containing the response for the notification.</p>
+</li>
+<li>
+<p><em>media_notification_length</em> should be set by the application to contain the length of the response buffer.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The return value indicates whether or not the command succeeded&#8201;&#8212;&#8201;should be either <strong>UX_SUCCESS</strong> or <strong>UX_ERROR</strong>.</p>
+</div>
+<div class="paragraph">
+<p>If the application does not implement this callback, then upon receiving the <strong>GET_STATUS_NOTIFICATION</strong> command, USBX will notify the host that the command is not implemented.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>SYNCHRONIZE_CACHE</strong> command should be handled if the application is utilizing a cache for writes from the host. A host may send this command if it knows the storage device is about to be disconnected, for example, in Windows, if you right click a flash drive icon in the toolbar and select "Eject [storage device name]", Windows will issue the <strong>SYNCHRONIZE_CACHE</strong> command to that device.</p>
+</div>
+<div class="paragraph">
+<p>If the application would like to handle the <strong>SYNCHRONIZE_CACHE</strong> command from the host, it should implement a callback with the following prototype.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_slave_class_storage_media_flush(
+    VOID *storage,
+    ULONG lun,
+    ULONG number_blocks,
+    ULONG lba,
+    ULONG *media_status);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>storage</em> is the instance of the storage class.</p>
+</li>
+<li>
+<p><em>lun</em> parameter specifies which LUN the command is directed to.</p>
+</li>
+<li>
+<p><em>number_blocks</em> specifies the number of blocks to synchronize.</p>
+</li>
+<li>
+<p><em>lba</em> is the sector address of the first block to synchronize.</p>
+</li>
+<li>
+<p><em>media_status</em> should be filled out exactly like the media status callback return value.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The return value indicates whether or not the command succeeded&#8201;&#8212;&#8201;should be either <strong>UX_SUCCESS</strong> or <strong>UX_ERROR</strong>.</p>
+</div>
+<div class="sect2">
+<h3 id="_multiple_scsi_lun"><a class="anchor" href="#_multiple_scsi_lun"></a>Multiple SCSI LUN</h3>
+<div class="paragraph">
+<p>The USBX device storage class supports multiple LUNs. It is therefore possible to create a storage device that acts as a CD-ROM and a Flash disk at the same time. In such a case, the initialization would be slightly different. Here is an example for a Flash Disk and CD-ROM:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Store the number of LUN in this device storage instance. */
+storage_parameter.ux_slave_class_storage_parameter_number_lun = 2;
+
+/* Initialize the storage class parameters for reading/writing to the Flash Disk. */
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_last_lba = 0x7bbff;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_block_length = 512;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_type = 0;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_removable_flag = 0x80;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_read = tx_demo_thread_flash_media_read;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_write = tx_demo_thread_flash_media_write;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[0].ux_slave_class_storage_media_status = tx_demo_thread_flash_media_status;
+
+/* Initialize the storage class LUN parameters for reading/writing to the CD-ROM. */
+
+storage_parameter.ux_slave_class_storage_parameter_lun[1].ux_slave_class_storage_media_last_lba = 0x04caaf;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[1].ux_slave_class_storage_media_block_length = 2048;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[1].ux_slave_class_storage_media_type = 5;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[1].ux_slave_class_storage_media_removable_flag = 0x80;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[1].ux_slave_class_storage_media_read = tx_demo_thread_cdrom_media_read;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[1].ux_slave_class_storage_media_write = tx_demo_thread_cdrom_media_write;
+
+storage_parameter.ux_slave_class_storage_parameter_lun[1].ux_slave_class_storage_media_status = tx_demo_thread_cdrom_media_status;
+
+/* Initialize the device storage class for a Flash disk and CD-ROM. The class is connected with interface 0 */ status = ux_device_stack_class_register(_ux_system_slave_class_storage_name,ux_device_class_storage_entry,
+    ux_device_class_storage_thread,0, (VOID *) &amp;storage_parameter);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_write_caching_scsi_lun"><a class="anchor" href="#_write_caching_scsi_lun"></a>Write Caching SCSI LUN</h3>
+<div class="paragraph">
+<p>The USBX device storage class supports write caching on LUNs.</p>
+</div>
+<div class="paragraph">
+<p>The application needs to pass a callback function pointer to allow the storage class to report write caching enable to host and do flushing on host request.</p>
+</div>
+<div class="paragraph">
+<p>The flush callback function has the following prototype:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT    media_flush(VOID *storage, ULONG lun, ULONG number_blocks,    ULONG lba, ULONG *media_status);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The calling parameter <em>number_blocks</em> and <em>lba</em> specifies the area on LUN that needs flush.</p>
+</div>
+<div class="paragraph">
+<p>Note that when the callback is not assigned, host is not notified for write caching support, so there is no option for it. When the callback is assigned, host is notified for write caching enabled, but not allowed to change this setting.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usb_device_cdc_acm_class"><a class="anchor" href="#_usb_device_cdc_acm_class"></a>USB Device CDC-ACM Class</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The USB device CDC-ACM class allows for a USB host system to communicate with the device as a serial device. This class is based on the USB standard and is a subset of the CDC standard.</p>
+</div>
+<div class="paragraph">
+<p>A CDC-ACM compliant device framework needs to be declared by the device stack. An example is found here below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">unsigned char device_framework_full_speed[] = {
+
+    /*
+    Device descriptor 18 bytes
+    0x02 bDeviceClass: CDC class code
+    0x00 bDeviceSubclass: CDC class sub code 0x00 bDeviceProtocol: CDC Device protocol
+    idVendor &amp; idProduct - https://www.linux-usb.org/usb.ids
+    */
+
+    0x12, 0x01, 0x10, 0x01,
+    0xEF, 0x02, 0x01, 0x08,
+    0x84, 0x84, 0x00, 0x00,
+    0x00, 0x01, 0x01, 0x02,
+    0x03, 0x01,
+
+    /* Configuration 1 descriptor 9 bytes */
+    0x09, 0x02, 0x4b, 0x00, 0x02, 0x01, 0x00,0x40, 0x00,
+
+    /* Interface association descriptor. 8 bytes. */
+    0x08, 0x0b, 0x00,
+    0x02, 0x02, 0x02, 0x00, 0x00,
+
+    /* Communication Class Interface Descriptor Requirement. 9 bytes. */
+    0x09, 0x04, 0x00, 0x00,0x01,0x02, 0x02, 0x01, 0x00,
+
+    /* Header Functional Descriptor 5 bytes */
+    0x05, 0x24, 0x00,0x10, 0x01,
+
+    /* ACM Functional Descriptor 4 bytes */
+    0x04, 0x24, 0x02,0x0f,
+
+    /* Union Functional Descriptor 5 bytes */
+    0x05, 0x24, 0x06, 0x00,
+
+    /* Master interface */
+    0x01, /* Slave interface */
+
+    /* Call Management Functional Descriptor 5 bytes */
+    0x05, 0x24, 0x01,0x03, 0x01, /* Data interface */
+
+    /* Endpoint 1 descriptor 7 bytes */
+    0x07, 0x05, 0x83, 0x03,0x08, 0x00, 0xFF,
+
+    /* Data Class Interface Descriptor Requirement 9 bytes */
+    0x09, 0x04, 0x01, 0x00, 0x02,0x0A, 0x00, 0x00, 0x00,
+
+    /* First alternate setting Endpoint 1 descriptor 7 bytes*/
+    0x07, 0x05, 0x02,0x02,0x40, 0x00,0x00,
+
+    /* Endpoint 2 descriptor 7 bytes */
+    0x07, 0x05, 0x81,0x02,0x40, 0x00, 0x00,
+
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The CDC-ACM class uses a composite device framework to group interfaces (control and data). As a result care should be taken when defining the device descriptor. <strong>USBX relies on the interface association descriptor (IAD) to know internally how to bind interfaces</strong>. The IAD descriptor should be declared before the interfaces and contain the first interface of the CDC-ACM class and how many interfaces are attached.</p>
+</div>
+<div class="paragraph">
+<p>The CDC-ACM class also uses a union functional descriptor which performs the same function as the newer IAD descriptor. Although a Union Functional descriptor must be declared for historical reasons and compatibility with the host side, it is not used by USBX.</p>
+</div>
+<div class="paragraph">
+<p>The initialization of the CDC-ACM class expects the following parameters.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Set the parameters for callback when insertion/extraction of a CDC device. */
+
+parameter.ux_slave_class_cdc_acm_instance_activate = tx_demo_cdc_instance_activate;
+
+parameter.ux_slave_class_cdc_acm_instance_deactivate = tx_demo_cdc_instance_deactivate;
+
+parameter.ux_slave_class_cdc_acm_parameter_change = tx_demo_cdc_instance_parameter_change;
+
+/* Initialize the device cdc class. This class owns both interfaces starting with 0. */
+status = ux_device_stack_class_register(_ux_system_slave_class_cdc_acm_name,ux_device_class_cdc_acm_entry,
+    1,0, &amp;parameter);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The 2 parameters defined are callback pointers into the user applications that will be called when the stack activates or deactivate this class.</p>
+</div>
+<div class="paragraph">
+<p>The third parameter defined is a callback pointer to the user application that will be called when there is line coding or line states parameter change. E.g., when there is request from host to change DTR state to <strong>TRUE</strong>, the callback is invoked, in it user application can check line states through IOCTL function to kow host is ready for communication.</p>
+</div>
+<div class="paragraph">
+<p>The CDC-ACM is based on a USB-IF standard and is automatically recognized by MACOs and Linux operating systems. On Windows platforms, this class requires a .inf file for Windows version prior to 10. Windows 10 does not require any .inf files. We supply a template for the CDC-ACM class and it can be found in the <strong><em>usbx_windows_host_files</em></strong> directory. For more recent version of Windows the file CDC_ACM_Template_Win7_64bit.inf should be used (except Win10). This file needs to be modified to reflect the PID/VID used by the device. The PID/VID will be specific to the final customer when the company and the product are registered with the USB-IF. In the inf file, the fields to modify are located here.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-INF hljs" data-lang="INF">[DeviceList]
+%DESCRIPTION%=DriverInstall, USB\VID_8484&amp;PID_0000
+
+[DeviceList.NTamd64]
+%DESCRIPTION%=DriverInstall, USB\VID_8484&amp;PID_0000</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the device framework of the CDC-ACM device, the PID/VID are stored in the device descriptor (see the device descriptor declared above).</p>
+</div>
+<div class="paragraph">
+<p>When a USB host systems discovers the USB CDC-ACM device, it will mount a serial class and the device can be used with any serial terminal program. See the host Operating System for reference.</p>
+</div>
+<div class="paragraph">
+<p>The CDC-ACM class API functions are defined below.</p>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_cdc_acm_ioctl"><a class="anchor" href="#_ux_device_class_cdc_acm_ioctl"></a>ux_device_class_cdc_acm_ioctl</h3>
+<div class="paragraph">
+<p>Perform IOCTL on the CDC-ACM interface</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_class_cdc_acm_ioctl (
+    UX_SLAVE_CLASS_CDC_ACM *cdc_acm,
+    ULONG ioctl_function,
+    VOID *parameter);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to perform various ioctl calls to the cdc acm interface</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters"><a class="anchor" href="#_parameters"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong>: Pointer to the cdc class instance.</p>
+</li>
+<li>
+<p><strong>ioctl_function</strong>: Ioctl function to be performed.</p>
+</li>
+<li>
+<p><strong>parameter</strong>: Pointer to a parameter specific to the ioctl call.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value"><a class="anchor" href="#_return_value"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) Error from function</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Start cdc acm callback transmission. */
+
+status = _ux_device_class_cdc_acm_ioctl(cdc_acm_slave,
+    UX_SLAVE_CLASS_CDC_ACM_IOCTL_TRANSMISSION_START, &amp;callback);
+
+if(status != UX_SUCCESS)
+    return;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ioctl_functions"><a class="anchor" href="#_ioctl_functions"></a>Ioctl functions:</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Function</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_CLASS_CDC_ACM_IOCTL_SET_LINE_CODING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_CLASS_CDC_ACM_IOCTL_GET_LINE_CODING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_CLASS_CDC_ACM_IOCTL_GET_LINE_STATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_CLASS_CDC_ACM_IOCTL_ABORT_PIPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_CLASS_CDC_ACM_IOCTL_SET_LINE_STATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_CLASS_CDC_ACM_IOCTL_TRANSMISSION_START</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_SLAVE_CLASS_CDC_ACM_IOCTL_TRANSMISSION_STOP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_set_line_coding"><a class="anchor" href="#_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_set_line_coding"></a>ux_device_class_cdc_acm_ioctl: UX_SLAVE_CLASS_CDC_ACM_IOCTL_SET_LINE_CODING</h3>
+<div class="paragraph">
+<p>Perform IOCTL Set Line Coding on the CDC-ACM interface</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_class_cdc_acm_ioctl (
+    UX_SLAVE_CLASS_CDC_ACM*cdc_acm,
+    ULONG ioctl_function,
+    VOID *parameter);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to Set the Line Coding parameters.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_2"><a class="anchor" href="#_parameters_2"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong>: Pointer to the cdc class instance.</p>
+</li>
+<li>
+<p><strong>ioctl_function</strong>: ux_SLAVE_CLASS_CDC_ACM_IOCTL_SET_LINE_CODING</p>
+</li>
+<li>
+<p><strong>parameter</strong>: Pointer to a line parameter structure:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_SLAVE_CLASS_CDC_ACM_LINE_CODING_PARAMETER_STRUCT
+{
+    ULONG ux_slave_class_cdc_acm_parameter_baudrate;
+    UCHAR ux_slave_class_cdc_acm_parameter_stop_bit;
+    UCHAR ux_slave_class_cdc_acm_parameter_parity;
+    UCHAR ux_slave_class_cdc_acm_parameter_data_bit;
+} UX_SLAVE_CLASS_CDC_ACM_LINE_CODING_PARAMETER;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_2"><a class="anchor" href="#_return_value_2"></a>Return Value</h3>
+<div class="paragraph">
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Change the line coding values. */
+
+line_coding.ux_slave_class_cdc_acm_line_coding_dter = 9600;
+line_coding.ux_slave_class_cdc_acm_line_coding_stop_bit =
+    UX_HOST_CLASS_CDC_ACM_LINE_CODING_STOP_BIT_15;
+
+line_coding.ux_slave_class_cdc_acm_line_coding_parity =
+    UX_HOST_CLASS_CDC_ACM_LINE_CODING_PARITY_EVEN;
+
+line_coding.ux_slave_class_cdc_acm_line_coding_data_bits = 5;
+
+status = _ux_slave_class_cdc_acm_ioctl(cdc_acm,
+    UX_SLAVE_CLASS_CDC_ACM_IOCTL_SET_LINE_CODING, &amp;line_coding);
+
+if (status != UX_SUCCESS)
+    break;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_get_line_coding"><a class="anchor" href="#_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_get_line_coding"></a>ux_device_class_cdc_acm_ioctl: UX_SLAVE_CLASS_CDC_ACM_IOCTL_GET_LINE_CODING</h3>
+<div class="paragraph">
+<p>Perform IOCTL Get Line Coding on the CDC-ACM interface</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">device_class_cdc_acm_ioctl (
+    UX_SLAVE_CLASS_CDC_ACM *cdc_acm,
+    ULONG ioctl_function,
+    VOID *parameter);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to Get the Line Coding parameters.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_3"><a class="anchor" href="#_parameters_3"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong>: Pointer to the cdc class instance.</p>
+</li>
+<li>
+<p><strong>ioctl_function</strong>: ux_SLAVE_CLASS_CDC_ACM_IOCTL_GET_ LINE_CODING</p>
+</li>
+<li>
+<p><strong>parameter</strong>: Pointer to a line parameter structure:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_SLAVE_CLASS_CDC_ACM_LINE_CODING_PARAMETER_STRUCT
+{
+    ULONG ux_slave_class_cdc_acm_parameter_baudrate;
+    UCHAR ux_slave_class_cdc_acm_parameter_stop_bit;
+    UCHAR ux_slave_class_cdc_acm_parameter_parity;
+    UCHAR ux_slave_class_cdc_acm_parameter_data_bit;
+} UX_SLAVE_CLASS_CDC_ACM_LINE_CODING_PARAMETER;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_3"><a class="anchor" href="#_return_value_3"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* This is to retrieve BAUD rate. */
+
+status = _ux_device_class_cdc_acm_ioctl(cdc_acm_slave,
+    UX_SLAVE_CLASS_CDC_ACM_IOCTL_GET_LINE_CODING, &amp;line_coding);
+
+/* Any error ? */
+if (status == UX_SUCCESS)
+{
+    /* Decode BAUD rate. */
+    switch (line_coding.ux_slave_class_cdc_acm_parameter_baudrate)
+    {
+        case 1200 :
+            status = tx_demo_thread_slave_cdc_acm_response("1200", 4);
+            break;
+        case 2400 :
+            status = tx_demo_thread_slave_cdc_acm_response("2400", 4);
+            break;
+        case 4800 :
+            status = tx_demo_thread_slave_cdc_acm_response("4800", 4);
+            break;
+        case 9600 :
+            status = tx_demo_thread_slave_cdc_acm_response("9600", 4);
+            break;
+        case 115200 :
+            status = tx_demo_thread_slave_cdc_acm_response("115200", 6);
+            break;
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_get_line_state"><a class="anchor" href="#_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_get_line_state"></a>ux_device_class_cdc_acm_ioctl: UX_SLAVE_CLASS_CDC_ACM_IOCTL_GET_LINE_STATE</h3>
+<div class="paragraph">
+<p>Perform IOCTL Get Line State on the CDC-ACM interface</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_class_cdc_acm_ioctl (
+    UX_SLAVE_CLASS_CDC_ACM*cdc_acm,
+    ULONG ioctl_function,
+    VOID *parameter);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to Get the Line State parameters.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_4"><a class="anchor" href="#_parameters_4"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong>: Pointer to the cdc class instance.</p>
+</li>
+<li>
+<p><strong>ioctl_function</strong>: ux_SLAVE_CLASS_CDC_ACM_IOCTL_GET_LINE_STATE</p>
+</li>
+<li>
+<p><strong>parameter</strong>: Pointer to a line parameter structure:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_SLAVE_CLASS_CDC_ACM_LINE_STATE_PARAMETER_STRUCT
+{
+    UCHAR ux_slave_class_cdc_acm_parameter_rts;
+    UCHAR ux_slave_class_cdc_acm_parameter_dtr;
+} UX_SLAVE_CLASS_CDC_ACM_LINE_STATE_PARAMETER;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_4"><a class="anchor" href="#_return_value_4"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* This is to retrieve RTS state. */
+status = _ux_device_class_cdc_acm_ioctl(cdc_acm_slave,
+    UX_SLAVE_CLASS_CDC_ACM_IOCTL_GET_LINE_STATE, &amp;line_state);
+
+/* Any error ? */
+if (status == UX_SUCCESS)
+{
+/* Check state. */
+    if (line_state.ux_slave_class_cdc_acm_parameter_rts == UX_TRUE)
+        /* State is ON. */
+        status = tx_demo_thread_slave_cdc_acm_response("RTS ON", 6);
+    else
+        /* State is OFF. */
+        status = tx_demo_thread_slave_cdc_acm_response("RTS OFF", 7);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_set_line_state"><a class="anchor" href="#_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_set_line_state"></a>ux_device_class_cdc_acm_ioctl: UX_SLAVE_CLASS_CDC_ACM_IOCTL_SET_LINE_STATE</h3>
+<div class="paragraph">
+<p>Perform IOCTL Set Line State on the CDC-ACM interface</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_class_cdc_acm_ioctl (
+    UX_SLAVE_CLASS_CDC_ACM *cdc_acm,
+    ULONG ioctl_function,
+    VOID *parameter);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to Get the Line State parameters</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_5"><a class="anchor" href="#_parameters_5"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong>: Pointer to the cdc class instance.</p>
+</li>
+<li>
+<p><strong>ioctl_function</strong>: ux_SLAVE_CLASS_CDC_ACM_IOCTL_SET_LINE_STATE</p>
+</li>
+<li>
+<p><strong>parameter</strong>: Pointer to a line parameter structure:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_SLAVE_CLASS_CDC_ACM_LINE_STATE_PARAMETER_STRUCT
+{
+    UCHAR ux_slave_class_cdc_acm_parameter_rts;
+    UCHAR ux_slave_class_cdc_acm_parameter_dtr;
+} UX_SLAVE_CLASS_CDC_ACM_LINE_STATE_PARAMETER;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_5"><a class="anchor" href="#_return_value_5"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* This is to set RTS state. */
+
+line_state.ux_slave_class_cdc_acm_parameter_rts = UX_TRUE;
+status = _ux_device_class_cdc_acm_ioctl(cdc_acm_slave,
+    UX_SLAVE_CLASS_CDC_ACM_IOCTL_SET_LINE_STATE, &amp;line_state);
+
+/* If status is UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_abort_pipe"><a class="anchor" href="#_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_abort_pipe"></a>ux_device_class_cdc_acm_ioctl: UX_SLAVE_CLASS_CDC_ACM_IOCTL_ABORT_PIPE</h3>
+<div class="paragraph">
+<p>Perform IOCTL ABORT PIPE on the CDC-ACM interface</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_class_cdc_acm_ioctl (
+    UX_SLAVE_CLASS_CDC_ACM *cdc_acm,
+    ULONG ioctl_function,
+    VOID *parameter);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to abort a pipe. For example, to abort an ongoing write, UX_SLAVE_CLASS_CDC_ACM_ENDPOINT_XMIT should be passed as the parameter.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_6"><a class="anchor" href="#_parameters_6"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong>: Pointer to the cdc class instance.</p>
+</li>
+<li>
+<p><strong>ioctl_function</strong>: ux_SLAVE_CLASS_CDC_ACM_IOCTL_ABORT_PIPE</p>
+</li>
+<li>
+<p><strong>parameter</strong>: The pipe direction:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UX_SLAVE_CLASS_CDC_ACM_ENDPOINT_XMIT 1
+
+UX_SLAVE_CLASS_CDC_ACM_ENDPOINT_RCV 2</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_6"><a class="anchor" href="#_return_value_6"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_ENDPOINT_HANDLE_UNKNOWN</strong> (0x53) Invalid pipe direction.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_6"><a class="anchor" href="#_example_6"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* This is to abort the Xmit pipe. */
+
+status = _ux_device_class_cdc_acm_ioctl(cdc_acm_slave,
+    UX_SLAVE_CLASS_CDC_ACM_IOCTL_ABORT_PIPE,
+    UX_SLAVE_CLASS_CDC_ACM_ENDPOINT_XMIT);
+
+/* If status is UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_transmission_start"><a class="anchor" href="#_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_transmission_start"></a>ux_device_class_cdc_acm_ioctl: UX_SLAVE_CLASS_CDC_ACM_IOCTL_TRANSMISSION_START</h3>
+<div class="paragraph">
+<p>Perform IOCTL Transmission Start on the CDC-ACM interface</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_class_cdc_acm_ioctl (
+    UX_SLAVE_CLASS_CDC_ACM *cdc_acm,
+    ULONG ioctl_function,
+    VOID *parameter);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application wants to use transmission with callback.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_7"><a class="anchor" href="#_parameters_7"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong>: Pointer to the cdc class instance.</p>
+</li>
+<li>
+<p><strong>ioctl_function</strong>: ux_SLAVE_CLASS_CDC_ACM_IOCTL_TRANSMISSION_START</p>
+</li>
+<li>
+<p><strong>parameter</strong>: Pointer to the Start Transmission parameter structure:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_SLAVE_CLASS_CDC_ACM_CALLBACK_PARAMETER_STRUCT
+{
+    UINT (*ux_device_class_cdc_acm_parameter_write_callback)(struct UX_SLAVE_CLASS_CDC_ACM_STRUCT *cdc_acm,
+        UINT status, ULONG length);
+    UINT (*ux_device_class_cdc_acm_parameter_read_callback)(struct UX_SLAVE_CLASS_CDC_ACM_STRUCT *cdc_acm,
+        UINT status, UCHAR *data_pointer, ULONG length);
+} UX_SLAVE_CLASS_CDC_ACM_CALLBACK_PARAMETER;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_7"><a class="anchor" href="#_return_value_7"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) Transmission already started.</p>
+</li>
+<li>
+<p><strong>UX_MEMORY_INSUFFICIENT</strong> (0x12) A memory allocation failed.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_7"><a class="anchor" href="#_example_7"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Set the callback parameter. */
+
+callback.ux_device_class_cdc_acm_parameter_write_callback
+    = tx_demo_thread_slave_write_callback;
+
+callback.ux_device_class_cdc_acm_parameter_read_callback
+    = tx_demo_thread_slave_read_callback;
+
+/* Program the start of transmission. */
+status = _ux_device_class_cdc_acm_ioctl(cdc_acm_slave,
+    UX_SLAVE_CLASS_CDC_ACM_IOCTL_TRANSMISSION_START, &amp;callback);
+
+/* If status is UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_transmission_stop"><a class="anchor" href="#_ux_device_class_cdc_acm_ioctl_ux_slave_class_cdc_acm_ioctl_transmission_stop"></a>ux_device_class_cdc_acm_ioctl: UX_SLAVE_CLASS_CDC_ACM_IOCTL_TRANSMISSION_STOP</h3>
+<div class="paragraph">
+<p>Perform IOCTL Transmission Stop on the CDC-ACM interface</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_class_cdc_acm_ioctl(
+    UX_SLAVE_CLASS_CDC_ACM *cdc_acm,
+    ULONG ioctl_function,
+    VOID *parameter);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application wants to stop using transmission with callback.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_8"><a class="anchor" href="#_parameters_8"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong>: Pointer to the cdc class instance.</p>
+</li>
+<li>
+<p><strong>ioctl_function</strong>: ux_SLAVE_CLASS_CDC_ACM_IOCTL_TRANSMISSION_STOP</p>
+</li>
+<li>
+<p><strong>parameter</strong>: Not used</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_8"><a class="anchor" href="#_return_value_8"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) No ongoing transmission.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Program the stop of transmission. */
+
+status = _ux_device_class_cdc_acm_ioctl(cdc_acm_slave,
+    UX_SLAVE_CLASS_CDC_ACM_IOCTL_TRANSMISSION_STOP, UX_NULL);
+
+/* If status is UX_SUCCESS, the operation was successful. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_cdc_acm_read"><a class="anchor" href="#_ux_device_class_cdc_acm_read"></a>ux_device_class_cdc_acm_read</h3>
+<div class="paragraph">
+<p>Read from CDC-ACM pipe</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_class_cdc_acm_read(
+    UX_SLAVE_CLASS_CDC_ACM *cdc_acm,
+    UCHAR *buffer,
+    ULONG requested_length,
+    ULONG *actual_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to read from the OUT data pipe (OUT from the host, IN from the device). It is blocking.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This functions reads raw bulk data from host, so it keeps pending until buffer is full or host terminates the transfer by a short packet (including Zero Length Packet). For more details, please refer to section <a href="#general-considerations-for-bulk-transfer"><strong>General Considerations for Bulk Transfer</strong></a>.
+The function reads bytes from the host packet by packet. If the prepared buffer size is smaller than a packet and the host sends more data than expected (in other words, the prepared buffer size is not a multiple of the USB endpoint&#8217;s max packet size), then buffer overflow will occur. To avoid this issue, the recommended way to read is to allocate a buffer exactly one packet size (USB endpoint max packet size). This way if there is more data, the next read can get it and no buffer overflow will occur. If there is less data, the current read can get a short packet instead of generating an error.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_9"><a class="anchor" href="#_parameters_9"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong>: Pointer to the cdc class instance.</p>
+</li>
+<li>
+<p><strong>buffer</strong>: Buffer address where data will be stored.</p>
+</li>
+<li>
+<p><strong>requested_length</strong>: The maximum length we expect.</p>
+</li>
+<li>
+<p><strong>actual_length</strong>: The length returned into the buffer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_9"><a class="anchor" href="#_return_value_9"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_CONFIGURATION_HANDLE_UNKNOWN</strong> (0x51) Device is no longer in the configured state.</p>
+</li>
+<li>
+<p><strong>UX_TRANSFER_NO_ANSWER</strong> (0x22) No answer from device. The device was probably disconnected while the transfer was pending.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Read from the CDC class. */
+
+status = ux_device_class_cdc_acm_read(cdc, buffer, UX_DEMO_BUFFER_SIZE, &amp;actual_length);
+
+if(status != UX_SUCCESS) return;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_cdc_acm_write"><a class="anchor" href="#_ux_device_class_cdc_acm_write"></a>ux_device_class_cdc_acm_write</h3>
+<div class="paragraph">
+<p>Write to a CDC-ACM pipe</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_class_cdc_acm_write(
+    UX_SLAVE_CLASS_CDC_ACM *cdc_acm,
+    UCHAR *buffer,
+    ULONG requested_length,
+    ULONG *actual_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to write to the IN data pipe (IN from the host, OUT from the device). It is blocking.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_10"><a class="anchor" href="#_parameters_10"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong>: Pointer to the cdc class instance.</p>
+</li>
+<li>
+<p><strong>buffer</strong>: Buffer address where data is stored.</p>
+</li>
+<li>
+<p><strong>requested_length</strong>: The length of the buffer to write.</p>
+</li>
+<li>
+<p><strong>actual_length</strong>: The length returned into the buffer after write is performed.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_10"><a class="anchor" href="#_return_value_10"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_CONFIGURATION_HANDLE_UNKNOWN</strong> (0x51) Device is no longer in the configured state.</p>
+</li>
+<li>
+<p><strong>UX_TRANSFER_NO_ANSWER</strong> (0x22) No answer from device. The device was probably disconnected while the transfer was pending.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Write to the CDC class bulk in pipe. */
+
+status = ux_device_class_cdc_acm_write(cdc, buffer, UX_DEMO_BUFFER_SIZE, &amp;actual_length);
+
+if(status != UX_SUCCESS)
+    return;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_cdc_acm_write_with_callback"><a class="anchor" href="#_ux_device_class_cdc_acm_write_with_callback"></a>ux_device_class_cdc_acm_write_with_callback</h3>
+<div class="paragraph">
+<p>Writing to a CDC-ACM pipe with callback</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_class_cdc_acm_write_with_callback(
+    UX_SLAVE_CLASS_CDC_ACM *cdc_acm,
+    UCHAR *buffer,
+    ULONG requested_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to write to the IN data pipe (IN from the host, OUT from the device). This function is non-blocking and the completion will be done through a callback set in <strong>UX_SLAVE_CLASS_CDC_ACM_IOCTL_TRANSMISSION_START</strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_11"><a class="anchor" href="#_parameters_11"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>cdc_acm</strong>: Pointer to the cdc class instance.</p>
+</li>
+<li>
+<p><strong>buffer</strong>: Buffer address where data is stored.</p>
+</li>
+<li>
+<p><strong>requested_length</strong>: The length of the buffer to write.</p>
+</li>
+<li>
+<p><strong>actual_length</strong>: The length returned into the buffer after write is performed</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_11"><a class="anchor" href="#_return_value_11"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_CONFIGURATION_HANDLE_UNKNOWN</strong> (0x51) Device is no longer in the configured state.</p>
+</li>
+<li>
+<p><strong>UX_TRANSFER_NO_ANSWER</strong> (0x22) No answer from device. The device was probably disconnected while the transfer was pending.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_11"><a class="anchor" href="#_example_11"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Write to the CDC class bulk in pipe non blocking mode. */
+status = ux_device_class_cdc_acm_write_with_callback(cdc, buffer, UX_DEMO_BUFFER_SIZE);
+
+if(status != UX_SUCCESS)
+    return;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_usb_device_cdc_ecm_class"><a class="anchor" href="#_usb_device_cdc_ecm_class"></a>USB Device CDC-ECM Class</h3>
+<div class="paragraph">
+<p>The USB device CDC-ECM class allows for a USB host system to communicate with the device as a ethernet device. This class is based on the USB standard and is a subset of the CDC standard.</p>
+</div>
+<div class="paragraph">
+<p>A CDC-ECM compliant device framework needs to be declared by the device stack. An example is found here below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">unsigned char device_framework_full_speed[] = {
+
+    /* Device descriptor 18 bytes
+    0x02 bDeviceClass: CDC_ECM class code
+    0x06 bDeviceSubclass: CDC_ECM class sub code
+    0x00 bDeviceProtocol: CDC_ECM Device protocol
+    idVendor &amp; idProduct - https://www.linux-usb.org/usb.ids
+    0x3939 idVendor: Eclipse ThreadX test.
+    */
+
+    0x12, 0x01, 0x10, 0x01,
+    0x02, 0x00, 0x00, 0x08,
+    0x39, 0x39, 0x08, 0x08, 0x00, 0x01, 0x01, 0x02, 03,0x01,
+
+    /* Configuration 1 descriptor 9 bytes. */
+    0x09, 0x02, 0x58, 0x00,0x02, 0x01, 0x00,0x40, 0x00,
+
+    /* Interface association descriptor. 8 bytes. */
+
+    0x08, 0x0b, 0x00, 0x02, 0x02, 0x06, 0x00, 0x00,
+
+    /* Communication Class Interface Descriptor Requirement 9 bytes */
+    0x09, 0x04, 0x00, 0x00,0x01,0x02, 0x06, 0x00, 0x00,
+
+    /* Header Functional Descriptor 5 bytes */
+    0x05, 0x24, 0x00, 0x10, 0x01,
+
+    /* ECM Functional Descriptor 13 bytes */
+    0x0D, 0x24, 0x0F, 0x04,0x00, 0x00, 0x00, 0x00, 0xEA, 0x05, 0x00,
+    0x00,0x00,
+
+    /* Union Functional Descriptor 5 bytes */
+    0x05, 0x24, 0x06, 0x00,0x01,
+
+    /* Endpoint descriptor (Interrupt) */
+    0x07, 0x05, 0x83, 0x03, 0x08, 0x00, 0x08,
+
+    /* Data Class Interface Descriptor Alternate Setting 0, 0 endpoints. 9 bytes */
+    0x09, 0x04, 0x01, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00,
+
+    /* Data Class Interface Descriptor Alternate Setting 1, 2 endpoints. 9 bytes */
+    0x09, 0x04, 0x01, 0x01, 0x02, 0x0A, 0x00, 0x00,0x00,
+
+    /* First alternate setting Endpoint 1 descriptor 7 bytes */
+    0x07, 0x05, 0x02, 0x02, 0x40, 0x00, 0x00,
+
+    /* Endpoint 2 descriptor 7 bytes */
+    0x07, 0x05, 0x81, 0x02, 0x40, 0x00,0x00
+
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The CDC-ECM class uses a very similar device descriptor approach to the CDC-ACM and also requires an IAD descriptor. See the CDC-ACM class for definition.</p>
+</div>
+<div class="paragraph">
+<p>In addition to the regular device framework, the CDC-ECM requires special string descriptors. An example is given below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">unsigned char string_framework[] = {
+    /* Manufacturer string descriptor: Index 1 - "Eclipse ThreadX" */
+    0x09, 0x04, 0x01, 0x0c,
+    0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x20, 0x4c,
+    0x6f, 0x67, 0x69, 0x63,
+
+    /* Product string descriptor: Index 2 - "EL CDCECM Device" */
+    0x09, 0x04, 0x02, 0x10,
+    0x45, 0x4c, 0x20, 0x43, 0x44, 0x43, 0x45, 0x43,
+    0x4d, 0x20, 0x44, 0x65, 0x76, 0x69, 0x63, 0x64,
+
+    /* Serial Number string descriptor: Index 3 - "0001" */
+    0x09, 0x04, 0x03, 0x04,
+    0x30, 0x30, 0x30, 0x31,
+
+    /* MAC Address string descriptor: Index 4 - "001E5841B879" */
+    0x09, 0x04, 0x04, 0x0C,
+    0x30, 0x30, 0x31, 0x45, 0x35, 0x38,
+    0x34, 0x31, 0x42, 0x38, 0x37, 0x39
+
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The MAC address string descriptor is used by the CDC-ECM class to reply to the host queries as to what MAC address the device is answering to at the TCP/IP protocol. It can be set to the device choice but must be defined here.</p>
+</div>
+<div class="paragraph">
+<p>The initialization of the CDC-ECM class is as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Set the parameters for callback when insertion/extraction of a CDC device. Set to NULL.*/
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_instance_activate = UX_NULL;
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_instance_deactivate = UX_NULL;
+
+/* Define a NODE ID. */
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_local_node_id[0] = 0x00;
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_local_node_id[1] = 0x1e;
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_local_node_id[2] = 0x58;
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_local_node_id[3] = 0x41;
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_local_node_id[4] = 0xb8;
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_local_node_id[5] = 0x78;
+
+/* Define a remote NODE ID. */
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_remote_node_id[0] = 0x00;
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_remote_node_id[1] = 0x1e;
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_remote_node_id[2] = 0x58;
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_remote_node_id[3] = 0x41;
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_remote_node_id[4] = 0xb8;
+cdc_ecm_parameter.ux_slave_class_cdc_ecm_parameter_remote_node_id[5] = 0x79;
+
+/* Initialize the device cdc_ecm class. */
+status = ux_device_stack_class_register(_ux_system_slave_class_cdc_ecm_name,
+    ux_device_class_cdc_ecm_entry, 1,0,&amp;cdc_ecm_parameter);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The initialization of this class expects the same function callback for activation and deactivation, although here as an exercise they are set to NULL so that no callback is performed.</p>
+</div>
+<div class="paragraph">
+<p>The next parameters are for the definition of the node IDs. 2 Nodes are necessary for the CDC-ECM, a local node and a remote node. The local node specifies the MAC address of the device, while the remote node specifies the MAC address of the host. The remote node must be the same one as the one declared in the device framework string descriptor.</p>
+</div>
+<div class="paragraph">
+<p>The CDC-ECM class has built-in APIs for transferring data both ways but they are hidden to the application as the user application will communicate with the USB Ethernet device through NetX.</p>
+</div>
+<div class="paragraph">
+<p>The USBX CDC-ECM class is closely tied to the NetX Duo Network stack. An application using both NetX Duo and USBX CDC-ECM class will activate the NetX network stack in its usual way but in addition needs to activate the USB network stack as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Initialize the NetX Duo system. */
+nx_system_initialize();
+
+/* Perform the initialization of the network driver. This will initialize the USBX network layer.*/
+ux_network_driver_init();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The USB network stack needs to be activated only once and is not specific to CDCECM but is required by any USB class that requires NetX services.</p>
+</div>
+<div class="paragraph">
+<p>The CDC-ECM class will be recognized by MAC OS and Linux hosts. But there is no driver supplied by Windows to recognize CDC-ECM natively. Some commercial products do exist for Windows platforms and they supply their own .inf file. This file will need to be modified the same way as the CDC-ACM inf template to match the PID/VID of the USB network device.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usb_device_hid_class"><a class="anchor" href="#_usb_device_hid_class"></a>USB Device HID Class</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The USB device HID class allows for a USB host system to connect to a HID device with specific HID client capabilities.</p>
+</div>
+<div class="paragraph">
+<p>USBX HID device class is relatively simple compared to the host side. It is closely tied to the behavior of the device and its HID descriptor.</p>
+</div>
+<div class="paragraph">
+<p>Any HID client requires first to define a HID device framework as the example below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UCHAR device_framework_full_speed[] = {
+    /* Device descriptor */
+    0x12, 0x01, 0x10, 0x01, 0x00, 0x00, 0x00, 0x08,
+    0x81, 0x0A, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x01,
+
+    /* Configuration descriptor */
+    0x09, 0x02, 0x22, 0x00, 0x01, 0x01, 0x00, 0xc0, 0x32,
+
+    /* Interface descriptor */
+    0x09, 0x04, 0x00, 0x00, 0x01, 0x03, 0x00, 0x00, 0x00,
+
+    /* HID descriptor */
+    0x09, 0x21, 0x10, 0x01, 0x21, 0x01, 0x22, 0x3f, 0x00,
+
+    /* Endpoint descriptor (Interrupt) */
+    0x07, 0x05, 0x81, 0x03, 0x08, 0x00, 0x08
+
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The HID framework contains an interface descriptor that describes the HID class and the HID device subclass. The HID interface can be a standalone class or part of a composite device. If the HID device supports multiple report, its <em>report_id</em> parameter should be set to <strong>UX_TRUE</strong>, if not it should be set to <strong>UX_FALSE</strong>.</p>
+</div>
+<div class="paragraph">
+<p>The initialization of the HID class is as follow, using a USB keyboard as an example.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Initialize the hid class parameters for a keyboard. */
+hid_parameter.ux_device_class_hid_parameter_report_address = hid_keyboard_report;
+hid_parameter.ux_device_class_hid_parameter_report_length = HID_KEYBOARD_REPORT_LENGTH;
+hid_parameter.ux_device_class_hid_parameter_callback = tx_demo_thread_hid_callback;
+hid_parameter.ux_device_class_hid_parameter_get_callback = tx_demo_thread_hid_get_callback;
+hid_parameter.ux_device_class_hid_parameter_report_id = 0;
+
+/* Initialize the device hid class. The class is connected with interface 0 */
+
+status = ux_device_stack_class_register(_ux_system_slave_class_hid_name,
+    ux_device_class_hid_entry, 1,0,(VOID *)&amp;hid_parameter);
+if (status!=UX_SUCCESS)
+    return;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The application needs to pass to the HID class a HID report descriptor and its length. The report descriptor is a collection of items that describe the device. For more information on the HID grammar refer to the HID USB class specification.</p>
+</div>
+<div class="paragraph">
+<p>In addition to the report descriptor, the application passes a call back when a HID event happens.</p>
+</div>
+<div class="paragraph">
+<p>The USBX HID class supports the following standard HID commands from the host.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Command name</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DEVICE_CLASS_HID_COMMAND_GET_REPORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Get a report from the device, callback is invoked to let application fill event</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DEVICE_CLASS_HID_COMMAND_GET_IDLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Get the idle frequency of the interrupt endpoint</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DEVICE_CLASS_HID_COMMAND_GET_PROTOCOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Get the protocol running on the device</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DEVICE_CLASS_HID_COMMAND_SET_REPORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x09</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set a report to the device, callback is invoked to notify application</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DEVICE_CLASS_HID_COMMAND_SET_IDLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0a</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set the idle frequency of the interrupt endpoint</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UX_DEVICE_CLASS_HID_COMMAND_SET_PROTOCOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Get the protocol running on the device</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The Get and Set report are the most commonly used commands by HID to transfer data back and forth between the host and the device. Most commonly the host sends data on the control endpoint but can receive data either on the interrupt endpoint or by issuing a GET_REPORT command to fetch the data on the control endpoint.</p>
+</div>
+<div class="paragraph">
+<p>The HID class can send data back to the host on the interrupt endpoint by using the ux_device_class_hid_event_set function.</p>
+</div>
+<div class="sect2">
+<h3 id="_ux_device_class_hid_event_set"><a class="anchor" href="#_ux_device_class_hid_event_set"></a>ux_device_class_hid_event_set</h3>
+<div class="paragraph">
+<p>Setting an event to the HID class</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT ux_device_class_hid_event_set(
+    UX_SLAVE_CLASS_HID *hid,
+    UX_SLAVE_CLASS_HID_EVENT *hid_event);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when an application needs to send a HID event back to the host. The function is not blocking, it merely puts the report into a circular queue and returns to the application.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_12"><a class="anchor" href="#_parameters_12"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hid</strong>: Pointer to the hid class instance.</p>
+</li>
+<li>
+<p><strong>hid_event</strong>: Pointer to structure of the hid event.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_value_12"><a class="anchor" href="#_return_value_12"></a>Return Value</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_SUCCESS</strong> (0x00) This operation was successful.</p>
+</li>
+<li>
+<p><strong>UX_ERROR</strong> (0xFF) Error no space available in circular queue.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_12"><a class="anchor" href="#_example_12"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Insert a key into the keyboard event. Length is fixed to 8. */
+hid_event.ux_device_class_hid_event_length = 8;
+
+/* First byte is a modifier byte. */
+hid_event.ux_device_class_hid_event_buffer[0] = 0;
+
+/* Second byte is reserved. */
+hid_event.ux_device_class_hid_event_buffer[1] = 0;
+
+/* The 6 next bytes are keys. We only have one key here. */
+hid_event.ux_device_class_hid_event_buffer[2] = key;
+
+/* Set the keyboard event. */
+ux_device_class_hid_event_set(hid, &amp;hid_event);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The callback defined at the initialization of the HID class performs the opposite of sending an event. It gets as input the event sent by the host. The prototype of the callback is as follows.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hid_callback"><a class="anchor" href="#_hid_callback"></a>hid_callback</h3>
+<div class="paragraph">
+<p>Notify that an event is from host through control SET_REPORT request</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT hid_callback(
+    UX_SLAVE_CLASS_HID *hid,
+    UX_SLAVE_CLASS_HID_EVENT *hid_event);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This function is called when the host sends a HID SET_REPORT to the application.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_13"><a class="anchor" href="#_parameters_13"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hid</strong>: Pointer to the hid class instance.</p>
+</li>
+<li>
+<p><strong>hid_event</strong>: Pointer to structure of the hid event.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_13"><a class="anchor" href="#_example_13"></a>Example</h3>
+<div class="paragraph">
+<p>The following example shows how to interpret an event for a HID keyboard:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_demo_thread_hid_callback(UX_SLAVE_CLASS_HID *hid, UX_SLAVE_CLASS_HID_EVENT *hid_event
+{
+    /* There was an event. Analyze it. Is it NUM LOCK ? */
+    if (hid_event -&gt; ux_device_class_hid_event_buffer[0] &amp; HID_NUM_LOCK_MASK)
+        /* Set the Num lock flag. */
+        num_lock_flag = UX_TRUE;
+    else
+        /* Reset the Num lock flag. */
+        num_lock_flag = UX_FALSE;
+
+    /* There was an event. Analyze it. Is it CAPS LOCK ? */
+    if (hid_event -&gt; ux_device_class_hid_event_buffer[0] &amp; HID_CAPS_LOCK_MASK)
+        /* Set the Caps lock flag. */
+        caps_lock_flag = UX_TRUE;
+    else
+        /* Reset the Caps lock flag. */
+        caps_lock_flag = UX_FALSE;
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hid_get_callback"><a class="anchor" href="#_hid_get_callback"></a>hid_get_callback</h3>
+<div class="paragraph">
+<p>Notify that a host is requesting event through control GET_REPORT request</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_14"><a class="anchor" href="#_prototype_14"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT hid_get_callback(
+    UX_SLAVE_CLASS_HID *hid,
+    UX_SLAVE_CLASS_HID_EVENT *hid_event);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_14"><a class="anchor" href="#_description_14"></a>Description</h3>
+<div class="paragraph">
+<p>This function is invoked when host is requesting event through control GET_REPORT
+request, application must fill event structure in the callback, the data size must
+not exceed the event length and the max event buffer size.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters_14"><a class="anchor" href="#_parameters_14"></a>Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>hid</strong>: Pointer to the hid class instance.</p>
+</li>
+<li>
+<p><strong>hid_event</strong>: Pointer to structure of the hid event.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_14"><a class="anchor" href="#_example_14"></a>Example</h3>
+<div class="paragraph">
+<p>The following example shows how to prepare an event:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_demo_thread_hid_get_callback(UX_SLAVE_CLASS_HID *hid, UX_SLAVE_CLASS_HID_EVENT *hid_event)
+{
+    /* Host is asking input for GET_REPORT, prepare event data here.  */
+
+    /* Check if report ID is used,
+     * note in application the setting could be consistent so the check can be optimized.
+     */
+    if (hid -&gt; ux_device_class_hid_report_id)
+    {
+        /* First byte in buffer must be report ID, if report ID is required.
+         * See HID spec. for more details.
+         */
+        event-&gt;ux_device_class_hid_event_report_id = demo_hid_event_report_id;
+        event-&gt;ux_device_class_hid_event_report_type = demo_hid_event_report_type;
+        if (demo_hid_event_length &lt; UX_DEVICE_CLASS_HID_EVENT_BUFFER_LENGTH - 1)
+            demo_hid_event_length += 1;
+        event-&gt;ux_device_class_hid_event_length = demo_hid_event_length;
+        *(event-&gt;ux_device_class_hid_event_buffer) = (UCHAR)event-&gt;ux_device_class_hid_event_report_id;
+        _ux_utility_memory_copy(event-&gt;ux_device_class_hid_event_buffer + 1,
+                                demo_hid_event_buffer,
+                                event-&gt;ux_device_class_hid_event_length - 1);
+    }
+    else
+        /* A prepared event can be copied here. Note if copying data to event buffer,
+         * keep the total size inside UX_DEVICE_CLASS_HID_EVENT_BUFFER_LENGTH.
+         */
+        _ux_utility_memory_copy(event, my_event, sizeof(UX_SLAVE_CLASS_HID_EVENT));
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

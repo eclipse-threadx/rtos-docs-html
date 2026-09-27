@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 3 - Functional Components of USBX Host Stack :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/usbx/main/usbx-host-stack-3.html">
+    <meta name="description" content="This chapter contains a description of the high performance USBX embedded USB host stack from a functional perspective.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="usbx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">USBX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">USBX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">USBX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-usbx.html">Overview of USBX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-3.html">Ch. 3 - Functional components of USBX device stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-4.html">Ch. 4 - Description of USBX device services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-5.html">Ch. 5 - USBX device class considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX device stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-2.html">Ch. 2 - USBX device class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-6.html">Ch. 6 - USBX device controller driver (DCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-device-stack-supplemental-7.html">Ch. 7 - USBX device class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-about.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-1.html">Ch. 1 - Introduction to USBX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-2.html">Ch. 2 - USBX installation</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-4.html">Ch. 4 - Description of USBX host services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-5.html">Ch. 5 - USBX host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-6.html">Ch. 6 - USBX CDC-ECM class usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">USBX host stack supplemental</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-1.html">Ch. 1 - Introduction to supplement</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-2.html">Ch. 2 - USBX Host classes API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-3.html">Ch. 3 - USBX DPUMP class considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-4.html">Ch. 4 - USBX Pictbridge implementation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-5.html">Ch. 5 - USBX OTG</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-6.html">Ch. 6 - USBX Host controller driver (HCD) porting considerations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="usbx-host-stack-supplemental-7.html">Ch. 7 - USBX Host class implementation considerations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">USBX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">USBX User Guide</a></li>
+    <li><a href="index.html">USBX</a></li>
+    <li>USBX host stack user guide</li>
+    <li><a href="usbx-host-stack-3.html">Ch. 3 - Functional components of USBX host stack</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/usbx/modules/ROOT/pages/usbx-host-stack-3.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 3 - Functional Components of USBX Host Stack</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of the high performance USBX embedded USB host stack from a functional perspective.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_execution_overview"><a class="anchor" href="#_execution_overview"></a>Execution Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>USBX is composed of several components:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Initialization</p>
+</li>
+<li>
+<p>Application interface calls</p>
+</li>
+<li>
+<p>Host Classes</p>
+</li>
+<li>
+<p>Hub Class</p>
+</li>
+<li>
+<p>USB Host Stack</p>
+</li>
+<li>
+<p>Host controller (with Root Hub)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following diagram illustrates the USBX host stack.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/usbx-host-stack/usbx-host-stack.png" alt="USBX Host Stack">
+</div>
+</div>
+<div class="sect2">
+<h3 id="_initialization"><a class="anchor" href="#_initialization"></a>Initialization</h3>
+<div class="paragraph">
+<p>In order to activate USBX, the function <strong><em>ux_system_initialize</em></strong> must be called. This function initializes the memory resources of USBX.</p>
+</div>
+<div class="paragraph">
+<p>In order to activate USBX host facilities, the function <strong><em>ux_host_stack_initialize</em></strong> must be called. This function will in turn initialize all the resources used by the USBX host stack such as ThreadX threads, mutexes, and semaphores.</p>
+</div>
+<div class="paragraph">
+<p>It is up to the application initialization to register one or more USB classes by function <strong>ux_host_stack_class_register</strong>. If Hub Class is registered, its ready to detect devices connected through hub port, otherwise, only devices connected to root hub ports are enumerated.</p>
+</div>
+<div class="paragraph">
+<p>It is up to the application initialization to activate at least one USB host controller. When the host controller(s) initialization function has been called the bus is active and device discovery can start. If the root hub of the host controller detects an attached device, the USB enumeration thread, in charge of the USB topology, will be wake up and proceed to enumerate the device(s).</p>
+</div>
+<div class="paragraph">
+<p>It is possible, due to the nature of the root hub and downstream hubs, that all attached USB devices may not have been configured completely when the host controller initialization function returns. It can take several seconds to enumerate all USB devices, especially if there are one or more hubs between the root hub and USB devices.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_application_interface_calls"><a class="anchor" href="#_application_interface_calls"></a>Application Interface Calls</h3>
+<div class="paragraph">
+<p>There are two levels of APIs in USBX.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>USB Host Stack APIs</p>
+</li>
+<li>
+<p>USB Host Class APIs</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Normally, a USBX application should not have to call any of the USB host stack API functions. Most applications will only access the USB Class API functions.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_usb_host_stack"><a class="anchor" href="#_usb_host_stack"></a>USB Host Stack</h3>
+<div class="paragraph">
+<p>The host stack API functions are responsible for the registration of USBX components (host classes and host controllers), configuration of devices, and the transfer requests for available device endpoints.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_usb_host_classes"><a class="anchor" href="#_usb_host_classes"></a>USB Host Classes</h3>
+<div class="paragraph">
+<p>The Class APIs are very specific to each USB class. Most of the common API functions for USB classes provide services such as opening/closing a device and reading from and writing to a device.</p>
+</div>
+<div class="sect3">
+<h4 id="_cdc_class"><a class="anchor" href="#_cdc_class"></a>CDC Class</h4>
+<div class="paragraph">
+<p>The CDC class is in charge of enumerating and driving connected CDC devices. Currently two functionalities are supported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>CDC-ACM, the serial converter, refer to CDC-ACM part in Chapter 5 for more details.</p>
+</li>
+<li>
+<p>CDC-ECM, the ethernet controller, refer to Chapter 6 for more details.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_storage_class"><a class="anchor" href="#_storage_class"></a>Storage Class</h4>
+<div class="paragraph">
+<p>The Storage class is in charge of enumerating and driving connected mass storage devices. It is integrated with FileX, the Eclipse ThreadX file system support module, to offer services to operate the connected media through <strong>FX_MEDIA</strong> interface.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_hid_class"><a class="anchor" href="#_hid_class"></a>HID Class</h4>
+<div class="paragraph">
+<p>The HID class is in charge of enumerating and driving connect HID devices. The following functionalities are supported by its client services:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>HID Keyboard</p>
+</li>
+<li>
+<p>HID Mouse</p>
+</li>
+<li>
+<p>HID Remote control
+Refer to HID part in Chapter 5 for more details.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hub_class"><a class="anchor" href="#_hub_class"></a>Hub Class</h3>
+<div class="paragraph">
+<p>The hub class is in charge of driving USB hubs. A USB hub can either be a stand-alone hub or as part of a compound device such as a keyboard or a monitor. A hub can be self-powered or bus-powered. Bus-powered hubs have a maximum of four downstream ports and can only allow for the connection of devices that are either self-powered or bus-powered devices that use less than 100mA of power. Hubs can be cascaded. Up to five hubs can be connected to one another.</p>
+</div>
+<div class="sect3">
+<h4 id="_host_controller"><a class="anchor" href="#_host_controller"></a>Host controller</h4>
+<div class="paragraph">
+<p>The USB host controller driver interoperates USB Host Stack operations to hardware actions. Normally, a USBX application should not have to call host controller APIs, except initialization function. When the host controller initialization function is called, the hardware is ready and the stack will reply to detect bus events and start communication with connected devices.</p>
+</div>
+<div class="sect4">
+<h5 id="_root_hub"><a class="anchor" href="#_root_hub"></a>Root Hub</h5>
+<div class="paragraph">
+<p>Each host controller instance has one or more USB root hubs. The number of root hubs is either determined by the nature of the controller or can be retrieved by reading specific registers from the controller.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_usb_host_stack_2"><a class="anchor" href="#_usb_host_stack_2"></a>USB Host Stack</h3>
+<div class="paragraph">
+<p>The USB host stack is the centerpiece of USBX. It has three main functions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Manage the topology of the USB.</p>
+</li>
+<li>
+<p>Bind a USB device to one or more classes.</p>
+</li>
+<li>
+<p>Provide an API to classes to perform device descriptor interrogation and USB transfers.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_topology_manager"><a class="anchor" href="#_topology_manager"></a>Topology Manager</h3>
+<div class="paragraph">
+<p>The USB stack topology thread is awakened when a new device is connected or when a device has been disconnected. Either the root hub or a regular hub can accept device connections. Once a device has been connected to the USB, the topology manager will retrieve the device descriptor. This descriptor will contain the number of possible configurations available for this device. Most devices have one configuration only. Some devices can operate differently according to the available power available on the port where it is connected. If this is the case, the device will have multiple configurations that can be selected depending on the available power. When the device is configured by the topology manager, it is then allowed to draw the amount of power specified in its configuration descriptor.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usb_class_binding"><a class="anchor" href="#_usb_class_binding"></a>USB Class Binding</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When the device is configured, the topology manager will let the class manager continue the device discovery by looking at the device interface descriptors. A device can have one or more interface descriptors.</p>
+</div>
+<div class="paragraph">
+<p>An interface represents a function in a device. For instance, a USB speaker has three interfaces, one for audio streaming, one for audio control, and one to manage the various speaker buttons.</p>
+</div>
+<div class="paragraph">
+<p>The class manager has two mechanisms to join the device interface(s) to one or more classes. It can either use the combination of a PID/VID (product ID and vendor ID) found in the interface descriptor or the combination of Class/Subclass/Protocol.</p>
+</div>
+<div class="paragraph">
+<p>The PID/VID combination is valid for interfaces that cannot be driven by a generic class. The Class/Subclass/Protocol combination is used by interfaces that belong to a USB-IF certified class such as a printer, hub, storage, audio, or HID.</p>
+</div>
+<div class="paragraph">
+<p>The class manager contains a list of registered classes from the initialization of USBX. The class manager will call each class one at a time until one class accepts to manage the interface for that device. A class can only manage one interface. For the example of the USB audio speaker, the class manager will call all the classes for each of the interfaces.</p>
+</div>
+<div class="paragraph">
+<p>Once a class accepts an interface, a new instance of that class is created. The class manager will then search for the default alternate setting for the interface. A device may have one or more alternate settings for each interface. The alternate setting 0 will be the on used by default until a class decides to change it.</p>
+</div>
+<div class="paragraph">
+<p>For the default alternate setting, the class manager will mount all the endpoints contained in the alternate setting. If the mounting of each endpoint is successful, the class manager will complete its job by returning to the class that will finish the initialization of the interface.</p>
+</div>
+<div class="sect2">
+<h3 id="_usbx_apis"><a class="anchor" href="#_usbx_apis"></a>USBX APIs</h3>
+<div class="paragraph">
+<p>The USB stack exports a certain number of APIs for the USB classes to perform interrogation on the device and USB transfers on specific endpoints. These API functions are described in detail in this reference manual.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_host_controller_2"><a class="anchor" href="#_host_controller_2"></a>Host Controller</h3>
+<div class="paragraph">
+<p>The host controller driver is responsible for driving a specific type of USB controller. A USB host controller can have multiple controllers inside. For instance, certain Intel PC chipset contain two UHCI controllers. Some USB 2.0 controllers contain multiple instances of an OHCI controller in addition to one instance of the EHCI controller.</p>
+</div>
+<div class="paragraph">
+<p>The Host controller will manage multiple instance of the same controller only. In order to drive most USB 2.0 host controllers, it will be required to initialize both the OCHI controller and the EHCI controller during the initialization of USBX.</p>
+</div>
+<div class="paragraph">
+<p>The host controller is responsible for managing the following.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Root Hub</p>
+</li>
+<li>
+<p>Power Management</p>
+</li>
+<li>
+<p>Endpoints</p>
+</li>
+<li>
+<p>Transfers</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_root_hub_2"><a class="anchor" href="#_root_hub_2"></a>Root Hub</h3>
+<div class="paragraph">
+<p>The root hub management is responsible for the powering up of each controller port and determining if there is a device inserted or not. This functionality is used by the USBX generic root hub to interrogate the controller downstream ports.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_power_management"><a class="anchor" href="#_power_management"></a>Power Management</h3>
+<div class="paragraph">
+<p>The power management processing provides for the handling of suspend/resume signals either in gang mode, therefore affecting all controller downstream ports at the same time, or individually if the controller offers this functionality.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_endpoints"><a class="anchor" href="#_endpoints"></a>Endpoints</h3>
+<div class="paragraph">
+<p>The endpoint management provides for the creation or destruction of physical endpoints to the controller. The physical endpoints are memory entities that are parsed by the controller if the controller supports master DMA or that are written in the controller. The physical endpoints contain transactions information to be performed by the controller.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_transfers"><a class="anchor" href="#_transfers"></a>Transfers</h3>
+<div class="paragraph">
+<p>Transfer management provides for a class to perform a transaction on each of the endpoints that have been created. Each logical endpoint contains a component called TRANSFER REQUEST for USB transfer requests. The TRANSFER REQUEST is used by the stack to describe the transaction. This TRANSFER REQUEST is then passed to the stack and to the controller, which may divide it into several sub transactions depending on the capabilities of the controller.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usb_device_framework"><a class="anchor" href="#_usb_device_framework"></a>USB Device Framework</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A USB device is represented by a tree of descriptors. There are six main types of descriptors.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Device descriptors</p>
+</li>
+<li>
+<p>Configuration descriptors</p>
+</li>
+<li>
+<p>Interface descriptors</p>
+</li>
+<li>
+<p>Endpoint descriptors</p>
+</li>
+<li>
+<p>String descriptors</p>
+</li>
+<li>
+<p>Functional descriptors</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A USB device may have a very simple description and looks like this.
+<span class="image"><img src="_images/media/usbx-host-stack/usb-device-simple.png" alt="Simple USB device"></span></p>
+</div>
+<div class="paragraph">
+<p>In the above illustration, the device has only one configuration. A single interface is attached to this configuration, indicating that the device has only one function, and it has one endpoint only. Attached to the device descriptor is a string descriptor providing a visible identification of the device.</p>
+</div>
+<div class="paragraph">
+<p>However, a device may be more complex and may appear as follows.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/usbx-host-stack/usb-device-complex.png" alt="Complex USB device">
+</div>
+</div>
+<div class="paragraph">
+<p>In the above illustration, the device has two configuration descriptors attached to the device descriptor. This device may indicate that it has two power modes or can be driven by either standard classes or proprietary classes.</p>
+</div>
+<div class="paragraph">
+<p>Attached to the first configuration are two interfaces indicating that the device has two logical functions. The first function has 3 endpoint descriptors and a functional descriptor. The functional descriptor may be used by the class responsible to drive the interface to obtain further information about this interface normally not found by a generic descriptor.</p>
+</div>
+<div class="sect2">
+<h3 id="_device_descriptors"><a class="anchor" href="#_device_descriptors"></a>Device Descriptors</h3>
+<div class="paragraph">
+<p>Each USB device has one single device descriptor. This descriptor contains the device identification, the number of configurations supported, and the characteristics of the default control endpoint used for configuring the device.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Offset</th>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BLength</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Size of this descriptor in bytes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bDescriptorType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Constant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DEVICE Descriptor Type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bcdUSB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BCD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USB Specification Release Number in BinaryCoded Dec<br>
+Example: 2.10 is equivalent to 0x210. This field identifies the release of the USB Specification that the device and its descriptors are compliant with.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bDeviceClass</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class code (assigned by USB-IF).<br>
+If this field is reset to 0, each interface within a configuration specifies its own class information and the various interfaces operate independently.<br>
+If this field is set to a value between 1 and 0xFE, the device supports different class specifications on different interfaces and the interfaces may not operate independently. This value identifies the class definition used for the aggregate interfaces.<br>
+If this field is set to 0xFF, the device class is vendor specific.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bDeviceSubClass</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SubClass</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Subclass code (assigned by USB-IF).<br>
+These codes are qualified by the value of the bDeviceClass field. If the bDeviceClass field is reset to 0, this field must also be reset to 0. If the bDeviceClass field is not set to 0xFF, all values are reserved for assignment by USB.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bDeviceProtocol</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protocol</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protocol code (assigned by USB-IF).<br>
+These codes are qualified by the value of the bDeviceClass and the bDeviceSubClass fields. If a device supports class-specific protocols on a device basis as opposed to an interface basis, this code identifies the protocols that the device uses as defined by the specification of the device class. If this field is reset to 0, the device does not use class specific protocols on a device basis.<br>
+However, it may use class specific protocols on an interface basis.<br>
+If this field is set to 0xFF, the device uses a vendor specific protocol on a device basis.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bMaxPacketSize0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum packet size for endpoint zero (only byte sizes of 8, 16, 32, or 64 are valid)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">idVendor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Vendor ID (assigned by USB-IF)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">idProduct</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Product ID (assigned by the Manufacturer)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bcdDevice</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BCD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Device release number in binary-coded decimal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">iManufacturer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Index</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Index of string descriptor describing manufacturer</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">iProduct</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Index</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Index of string descriptor describing product</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">iSerialNumber</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Index</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Index of string descriptor describing the device&#8217;s serial number</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bNumConfigurations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of possible configurations</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>USBX defines a USB device descriptor as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_DEVICE_DESCRIPTOR_STRUCT
+{
+    UINT      bLength;
+    UINT      bDescriptorType;
+    USHORT    bcdUSB;
+    UINT      bDeviceClass;
+    UINT      bDeviceSubClass;
+    UINT      bDeviceProtocol;
+    UINT      bMaxPacketSize0;
+    USHORT    idVendor;
+    USHORT    idProduct;
+    USHORT    bcdDevice;
+    UINT      iManufacturer;
+    UINT      iProduct;
+    UINT      iSerialNumber;
+    UINT      bNumConfigurations;
+} UX_DEVICE_DESCRIPTOR;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The USB device descriptor is part of a device container described as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_DEVICE_STRUCT
+{
+    ULONG ux_device_handle;
+    ULONG ux_device_type;
+    ULONG ux_device_state;
+    ULONG ux_device_address;
+    ULONG ux_device_speed;
+    ULONG ux_device_port_location;
+    ULONG ux_device_max_power;
+    ULONG ux_device_power_source;
+    UINT ux_device_current_configuration;
+
+    TX_SEMAPHORE ux_device_protection_semaphore;
+    struct UX_DEVICE_STRUCT *ux_device_parent;
+    struct UX_HOST_CLASS_STRUCT *ux_device_class;
+    VOID *ux_device_class_instance;
+    struct UX_HCD_STRUCT *ux_device_hcd;
+    struct UX_CONFIGURATION_STRUCT *ux_device_first_configuration;
+    struct UX_DEVICE_STRUCT *ux_device_next_device;
+    struct UX_DEVICE_DESCRIPTOR_STRUCT ux_device_descriptor;
+    struct UX_ENDPOINT_STRUCT ux_device_control_endpoint;
+    struct UX_HUB_TT_STRUCT ux_device_hub_tt[UX_MAX_TT];
+} UX_DEVICE;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>ux_device_handle</strong>: Handle of the device. This is typically the address of the instance of this structure for the device.</p>
+</li>
+<li>
+<p><strong>ux_device_type</strong>: Obsolete value. Unused.</p>
+</li>
+<li>
+<p><strong>ux_device_state</strong>: Device State, which can have one of the following values:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_DEVICE_RESET</strong>                0</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_ATTACHED</strong>             1</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_ADDRESSED</strong>            2</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_CONFIGURED</strong>           3</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_SUSPENDED</strong>            4</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_RESUMED</strong>              5</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_SELF_POWERED_STATE</strong>   6</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_SELF_POWERED_STATE</strong>   7</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_REMOTE_WAKEUP</strong>        8</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_BUS_RESET_COMPLETED</strong>  9</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_REMOVED</strong>              10</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_FORCE_DISCONNECT</strong>     11</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>ux_device_address</strong>: Address of the device after the <strong>SET_ADDRESS</strong> command has been accepted (from 1 to 127).</p>
+</li>
+<li>
+<p><strong>ux_device_speed</strong>: Speed of the device:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_LOW_SPEED_DEVICE</strong>      0</p>
+</li>
+<li>
+<p><strong>UX_FULL_SPEED_DEVICE</strong>     1</p>
+</li>
+<li>
+<p><strong>UX_HIGH_SPEED_DEVICE</strong>     2</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>ux_device_port_location</strong>: Index of the port of the parent device (root hub or hub).</p>
+</li>
+<li>
+<p><strong>ux_device_max_power</strong>: Maximum power in mA that the device may take in the selected configuration.</p>
+</li>
+<li>
+<p><strong>ux_device_power_source</strong>: Can be one of the two following values:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>UX_DEVICE_BUS_POWERED</strong>     1</p>
+</li>
+<li>
+<p><strong>UX_DEVICE_SELF_POWERED</strong>    2</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>ux_device_current_configuration</strong>: Index of the current configuration being used by this device.</p>
+</li>
+<li>
+<p><strong>ux_device_parent</strong>: Device container pointer of the parent of this device. If the pointer is null, the parent is the root hub of the controller.</p>
+</li>
+<li>
+<p><strong>ux_device_class</strong>: Pointer to the class type that owns this device.</p>
+</li>
+<li>
+<p><strong>ux_device_class_instance</strong>: Pointer to the instance of the class that owns this device.</p>
+</li>
+<li>
+<p><strong>ux_device_hcd</strong>: USB Host Controller Instance where this device is attached.</p>
+</li>
+<li>
+<p><strong>ux_device_first_configuration</strong>: Pointer to the first configuration container for this device.</p>
+</li>
+<li>
+<p><strong>ux_device_next_device</strong>: Pointer to the next device in the list of device on any of the buses detected by USBX.</p>
+</li>
+<li>
+<p><strong>ux_device_descriptor</strong>: USB device descriptor.</p>
+</li>
+<li>
+<p><strong>ux_device_control_endpoint</strong>: Descriptor of the default control endpoint used by this device.</p>
+</li>
+<li>
+<p><strong>ux_device_hub_tt</strong>: Array of Hub TTs for the device</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuration_descriptors"><a class="anchor" href="#_configuration_descriptors"></a>Configuration Descriptors</h3>
+<div class="paragraph">
+<p>The configuration descriptor describes information about a specific device configuration. A USB device may contain one or more configuration descriptors. The <strong>bNumConfigurations</strong> field in the device descriptor indicates the number of configuration descriptors. The descriptor contains a <strong>bConfigurationValue</strong> field with a value that, when used as a parameter to the Set Configuration request, causes the device to assume the described configuration.</p>
+</div>
+<div class="paragraph">
+<p>The descriptor describes the number of interfaces provided by the configuration. Each interface represents a logical function within the device and may operate independently. For instance a USB audio speaker may have three interfaces, one for audio streaming, one for audio control, and one HID interface to manage the speaker&#8217;s buttons.</p>
+</div>
+<div class="paragraph">
+<p>When the host issues a GET_DESCRIPTOR request for the configuration descriptor, all related interface and endpoint descriptors are returned.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Offset</th>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bLength</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Size of this descriptor in bytes.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bDescriptorType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Constant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CONFIGURATION</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wTotalLength</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total length of data returned for this configuration. Includes the combined length of all descriptors (configuration, interface, endpoint, and class or vendor specific) returned for this configuration.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bNumInterfaces</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of interfaces supported by this configuration.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bConfigurationValue</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value to use as an argument to Set<br>
+Configuration to select this configuration.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">iConfiguration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Index</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Index of string descriptor describing this configuration.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bMAttributes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bitmap</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration characteristics D7 Bus Powered<br>
+D6 Self Powered<br>
+D5 Remote Wakeup<br>
+D4..0 Reserved (reset to 0)<br>
+A device configuration that uses power from the bus and a local source sets both D7 and D6. The actual power source at runtime may be determined using the Get Status device request.<br>
+If a device configuration supports remote wakeup, D5 is set to 1.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MaxPower</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum power consumption of USB device from the bus in this specific configuration when the device is fully operational.<br>
+Expressed in 2 mA units (e.g., 50 = 100 mA).<br>
+Note: A device configuration reports whether the configuration is bus-powered or self-powered.<br>
+Device status reports whether the device is currently self-powered. If a device is disconnected from its external power source, it updates device status to indicate that it is no longer self-powered.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>USBX defines a USB configuration descriptor as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_CONFIGURATION_DESCRIPTOR_STRUCT
+{
+    UINT bLength;
+    UINT bDescriptorType;
+    USHORT wTotalLength;
+    UINT bNumInterfaces;
+    UINT bConfigurationValue;
+    UINT iConfiguration;
+    UINT bmAttributes;
+    UINT MaxPower;
+} UX_CONFIGURATION_DESCRIPTOR;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The USB configuration descriptor is part of a configuration container described as shown below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_CONFIGURATION_STRUCT
+{
+    ULONG ux_configuration_handle;
+    ULONG ux_configuration_state;
+    struct UX_CONFIGURATION_DESCRIPTOR_STRUCT ux_configuration_descriptor;
+    struct UX_INTERFACE_STRUCT *ux_configuration_first_interface;
+    struct UX_CONFIGURATION_STRUCT *ux_configuration_next_configuration;
+    struct UX_DEVICE_STRUCT *ux_configuration_device;
+} UX_CONFIGURATION;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>ux_configuration_handle</strong>: Handle of the configuration. This is typically the address of the instance of this structure for the configuration.</p>
+</li>
+<li>
+<p><strong>ux_configuration_state</strong>: State of the configuration.</p>
+</li>
+<li>
+<p><strong>ux_configuration_descriptor</strong>: USB device descriptor.</p>
+</li>
+<li>
+<p><strong>ux_configuration_first_interface</strong>: Pointer to the first interface for this configuration.</p>
+</li>
+<li>
+<p><strong>ux_configuration_next_configuration</strong>: Pointer to the next configuration for the same device.</p>
+</li>
+<li>
+<p><strong>ux_configuration_device</strong>: Pointer to the device owner of this configuration.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_interface_descriptors"><a class="anchor" href="#_interface_descriptors"></a>Interface Descriptors</h3>
+<div class="paragraph">
+<p>The interface descriptor describes a specific interface within a configuration. An interface is a logical function within a USB device. A configuration provides one or more interfaces, each with zero or more endpoint descriptors describing a unique set of endpoints within the configuration. When a configuration supports more than one interface, the endpoint descriptors for a particular interface follow the interface descriptor in the data returned by the <strong>GET_DESCRIPTOR</strong> request for the specified configuration.</p>
+</div>
+<div class="paragraph">
+<p>An interface descriptor is always returned as part of a configuration descriptor. An interface descriptor cannot be directly access by a GET_DESCRIPTOR request.</p>
+</div>
+<div class="paragraph">
+<p>An interface may include alternate settings that allow the endpoints and/or their characteristics to be varied after the device has been configured. The default setting for an interface is always alternate setting zero. A class can select to change the current alternate setting to change the interface behavior and the characteristics of the associated endpoints. The SET_INTERFACE request is used to select an alternate setting or to return to the default setting.</p>
+</div>
+<div class="paragraph">
+<p>Alternate settings allow a portion of the device configuration to be varied while other interfaces remain in operation. If a configuration has alternate settings for one or more of its interfaces, a separate interface descriptor and its associated endpoints are included for each setting.</p>
+</div>
+<div class="paragraph">
+<p>If a device configuration contains a single interface with two alternate settings, the GET_DESCRIPTOR request for the configuration would return the configuration descriptor, then the interface descriptor with the <strong>bInterfaceNumber</strong> and <strong>bAlternateSetting</strong> fields set to zero and then the endpoint descriptors for that setting, followed by another interface descriptor and its associated endpoint descriptors. The second interface descriptor&#8217;s <strong>bInterfaceNumber</strong> field would also be set to zero, but the <strong>bAlternateSetting</strong> field of the second interface descriptor would be set to 1 indicating that this alternate setting belongs to the first interface.</p>
+</div>
+<div class="paragraph">
+<p>An interface may not have any endpoints associated with it, in which case only the default control endpoint is valid for that interface.</p>
+</div>
+<div class="paragraph">
+<p>Alternate settings are used mainly to change the requested bandwidth for periodic endpoints associated with the interface. For example, a USB speaker streaming interface should have the first alternate setting with a 0 bandwidth demand on its isochronous endpoint. Other alternate settings may select different bandwidth requirements depending on the audio streaming frequency.</p>
+</div>
+<div class="paragraph">
+<p>The USB descriptor for the interface is as follows:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Offset</th>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Descriptor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bLength</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Size of this descriptor in bytes.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bDescriptorType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Constant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INTERFACE Descriptor Type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bInterfaceNumber</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of interface. Zero-based value identifying the index in the array of concurrent interfaces supported by this configuration.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bAlternateSetting</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value used to select alternate setting for the interface identified in the prior field.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bNumEndpoints</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of endpoints used by this interface (excluding endpoint zero). If this value is 0, this interface only uses endpoint zero.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bInterfaceClass</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class code (assigned by USB)<br>
+If this field is reset to 0, the interface does not belong to any USB specified device class.<br>
+If this field is set to 0xFF, the interface class is vendor specific.<br>
+All other values are reserved for assignment by USB.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bInterfaceSubClass</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SubClass</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Subclass code (assigned by USB).<br>
+These codes are qualified by the value of the bInterfaceClass field. If the bInterfaceClass field is reset to 0, this field must also be reset to 0. If the bInterfaceClass field is not set to 0xFF, all values are reserved for assignment by USB.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bInterfaceProtocol</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protocol</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protocol code (assigned by USB). These codes are qualified by the value of the bInterfaceClass and the bInterfaceSubClass fields. If an interface supports class-specific requests, this code identifies the protocols that the device uses as defined by the specification of the device class.<br>
+If this field is reset to 0, the device does not use a class specific protocol on this interface. If this field is set to 0xFF, the device uses a vendor specific protocol for this interface.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">iInterface</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Index</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Index of string descriptor describing this interface.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>USBX defines a USB interface descriptor as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_INTERFACE_DESCRIPTOR_STRUCT
+{
+    UINT bLength;
+    UINT bDescriptorType;
+    UINT bInterfaceNumber;
+    UINT bAlternateSetting;
+    UINT bNumEndpoints;
+    UINT bInterfaceClass
+    UINT bInterfaceSubClass;
+    UINT bInterfaceProtocol;
+    UINT iInterface;
+} UX_INTERFACE_DESCRIPTOR;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The USB interface descriptor is part of an interface container described as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_INTERFACE_STRUCT
+{
+    ULONG ux_interface_handle;
+    ULONG ux_interface_state;
+    ULONG ux_interface_current_alternate_setting;
+    struct UX_INTERFACE_DESCRIPTOR_STRUCT ux_interface_descriptor;
+    struct UX_HOST_CLASS_STRUCT    *ux_interface_class;
+    VOID    *ux_interface_class_instance;
+    struct UX_ENDPOINT_STRUCT    *ux_interface_first_endpoint;
+    struct UX_INTERFACE_STRUCT    *ux_interface_next_interface;
+    struct UX_CONFIGURATION_STRUCT    *ux_interface_configuration;
+} UX_INTERFACE;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>ux_interface_handle</strong>: Handle of the interface. This is typically the address of the instance of this structure for the interface.</p>
+</li>
+<li>
+<p><strong>ux_interface_state</strong>: State of the interface.</p>
+</li>
+<li>
+<p><strong>ux_interface_descriptor</strong>: USB interface descriptor.</p>
+</li>
+<li>
+<p><strong>ux_interface_class</strong>: Pointer to the class type that owns this interface.</p>
+</li>
+<li>
+<p><strong>ux_interface_class_instance</strong>: Pointer to the instance of the class that owns this interface.</p>
+</li>
+<li>
+<p><strong>ux_interface_first_endpoint</strong>: Pointer to the first endpoint registered with this interface.</p>
+</li>
+<li>
+<p><strong>ux_interface_next_interface</strong>: Pointer to the next interface associated with the configuration.</p>
+</li>
+<li>
+<p><strong>ux_interface_configuration</strong>: Pointer to the configuration owner of this interface.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_endpoint_descriptors"><a class="anchor" href="#_endpoint_descriptors"></a>Endpoint Descriptors</h3>
+<div class="paragraph">
+<p>Each endpoint associated with an interface has its own endpoint descriptor. This descriptor contains the information required by the host stack to determine the bandwidth requirements of each endpoint, the maximum payload associated with the endpoint, its periodicity, and its direction. An endpoint descriptor is always returned by a GET_DESCRIPTOR command for the configuration.</p>
+</div>
+<div class="paragraph">
+<p>The default control endpoint associated with the device descriptor is not counted as part of the endpoint(s) associated with the interface and therefore not returned in this descriptor.</p>
+</div>
+<div class="paragraph">
+<p>When the host software requests a change of the alternate setting for an interface, all the associated endpoints and their USB resources are modified according to the new alternate setting.</p>
+</div>
+<div class="paragraph">
+<p>Except for the default control endpoints, endpoints cannot be share between interfaces.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 9.0909%;">
+<col style="width: 18.1818%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 54.5455%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Offset</th>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bLength</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Size of this descriptor in bytes.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bDescriptorType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Constant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ENDPOINT Descriptor Type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bEndpointAddress</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Endpoint</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The address of the endpoint on the USB device described by this descriptor. The address is encoded as follows:<br>
+Bit 3&#8230;&#8203;0: The endpoint number<br>
+Bit 6&#8230;&#8203;4: Reserved, reset to zero<br>
+Bit 7: Direction, ignored for control endpoints<br>
+0 = OUT endpoint<br>
+1 = IN endpoint</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bmAttributes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bitmap</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This field describes the endpoint&#8217;s attributes when it is configured using the <strong>bConfigurationValue</strong> field. Bits 1..0: Transfer Type<br>
+00 = Control<br>
+01 = Isochronous<br>
+10 = Bulk<br>
+11 = Interrupt<br>
+If not an isochronous endpoint, bits 5..2 are reserved and must be set to zero. If isochronous, they are defined as follows:<br>
+Bits 3..2: Synchronization Type<br>
+00 = No Synchronization<br>
+01 = Asynchronous<br>
+10 = Adaptive<br>
+11 = Synchronous<br>
+Bits 5..4: Usage Type<br>
+00 = Data endpoint<br>
+01 = Feedback endpoint<br>
+10 = Implicit feedback data endpoint<br>
+11 = Reserved</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wMaxPacketSize</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum packet size this endpoint is capable of sending or receiving when this configuration is selected.<br>
+For isochronous endpoints, this value is used to reserve the bus time in the schedule, required for the per-(micro)frame data payloads. The pipe may, on an ongoing basis, actually use less bandwidth than that reserved. The device reports, if necessary, the actual bandwidth used via its normal, non-USB defined mechanisms.<br>
+For all endpoints, bits 10..0 specify the maximum packet size (in bytes).<br>
+For high-speed isochronous and interrupt endpoints:<br>
+Bits 12..11 specify the number of additional transaction opportunities per microframe: 00 = None (1 transaction per microframe)<br>
+01 = 1 additional (2 per microframe)<br>
+10 = 2 additional (3 per microframe)<br>
+11 = Reserved<br>
+Bits 15..13 are reserved and must be set to zero.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bInterval</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number interval for polling endpoint for data transfers.<br>
+Expressed in frames or microframes depending on the device operating speed (i.e., either 1 millisecond or 125 µs units).<br>
+For full-/high-speed isochronous endpoints, this value must be in the range from 1 to 16. The <strong>bInterval</strong> is used as the exponent for a 2bInterval-1 value; e.g., a <strong>bInterval</strong> 4 means a period of 8 (24-1).<br>
+For full-/low-speed interrupt endpoints, the value of this field may be from 1 to 255.<br>
+For high-speed interrupt endpoints, the <strong>bInterval</strong> is used as the exponent for a 2bInterval-1 value; e.g., a <strong>bInterval</strong> 4 means a period of 8 (24-1). This value must be from 1 to 16.<br>
+For high-speed bulk/control OUT endpoints, the <strong>bInterval</strong> specify the maximum NAK rate of the endpoint. A value of 0 indicates the endpoint never NAKs. Other values indicate at most one NAK each <strong>bInterval</strong> of microframes.<br>
+This value must be in the range from 0 to 255.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>USBX defines a USB endpoint descriptor as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_ENDPOINT_DESCRIPTOR_STRUCT
+{
+    UINT bLength;
+    UINT bDescriptorType;
+    UINT bEndpointAddress;
+    UINT bmAttributes;
+    USHORT wMaxPacketSize;
+    UINT bInterval;
+} UX_ENDPOINT_DESCRIPTOR;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The USB endpoint descriptor is part of an endpoint container, which is described as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_ENDPOINT_STRUCT {
+    ULONG    ux_endpoint_handle;
+    ULONG    ux_endpoint_state;
+    VOID    *ux_endpoint_ed;
+    struct UX_ENDPOINT_DESCRIPTOR_STRUCT    ux_endpoint_descriptor;
+    struct UX_ENDPOINT_STRUCT    *ux_endpoint_next_endpoint;
+    struct UX_INTERFACE_STRUCT    *ux_endpoint_interface;
+    struct UX_DEVICE_STRUCT    *ux_endpoint_device;
+    struct UX_TRANSFER REQUEST_STRUCT    ux_endpoint_transfer request;
+} UX_ENDPOINT;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>ux_endpoint_handle</strong>: Handle of the endpoint. This is typically the address of the instance of this structure for the endpoint.</p>
+</li>
+<li>
+<p><strong>ux_endpoint_state</strong>: State of the endpoint.</p>
+</li>
+<li>
+<p><strong>ux_endpoint_ed</strong>: Pointer to the physical endpoint at the host controller layer.</p>
+</li>
+<li>
+<p><strong>ux_endpoint_descriptor</strong>: USB endpoint descriptor.</p>
+</li>
+<li>
+<p><strong>ux_endpoint_next_endpoint</strong>: Pointer to the next endpoint that belongs to the same interface.</p>
+</li>
+<li>
+<p><strong>ux_endpoint_interface</strong>: Pointer to the interface that owns this endpoint interface.</p>
+</li>
+<li>
+<p><strong>ux_endpoint_device</strong>: Pointer to the parent device container.</p>
+</li>
+<li>
+<p><strong>ux_endpoint_transfer request</strong>: USB transfer request used to send/receive data from to/from the device.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_string_descriptors"><a class="anchor" href="#_string_descriptors"></a>String descriptors</h3>
+<div class="paragraph">
+<p>String descriptors are optional. If a device does not support string descriptors, all references to string descriptors within device, configuration, and interface descriptors must be reset to zero.</p>
+</div>
+<div class="paragraph">
+<p>String descriptors use UNICODE encoding, thus allowing the support for several character sets. The strings in a USB device may support multiple languages. When requesting a string descriptor, the requester specifies the desired language using a language ID defined by the USB-IF. The list of currently defined USB LANGIDs can be found in the USBX appendix ??.
+String index zero for all languages returns a string descriptor that contains an array of two-byte LANGID codes supported by the device. It should be noted that the UNICODE string is not 0 terminated. Instead, the size of the string array is computed by subtracting two from the size of the array contained in the first byte of the descriptor.</p>
+</div>
+<div class="paragraph">
+<p>The USB string descriptor 0 is encoded as follows.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Offset</th>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bLength</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N+2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Size of this descriptor in bytes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bDescriptorType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Constant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING Descriptor Type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wLANGID[0]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LANGID code 0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wLANGID[n]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LANGID code n</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Other USB string descriptors are encoded as follows.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Offset</th>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bLength</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Size of this descriptor in bytes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bDescriptorType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Constant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING Descriptor Type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bString</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">n</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNICODE encoded string</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>USBX defines a non-zero length USB string descriptor as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef struct UX_STRING_DESCRIPTOR_STRUCT
+{
+    UINT bLength;
+    UINT bDescriptorType;
+    USHORT bString[1];
+} UX_STRING_DESCRIPTOR;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_functional_descriptors"><a class="anchor" href="#_functional_descriptors"></a>Functional Descriptors</h3>
+<div class="paragraph">
+<p>Functional descriptors are also known as class-specific descriptors. They normally use the same basic structures as generic descriptors and allow for additional information to be available to the class. For example, in the case of the USB audio speaker, class specific descriptors allow the audio class to retrieve for each alternate setting the type of audio frequency supported.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_usbx_device_descriptor_framework_in_memory"><a class="anchor" href="#_usbx_device_descriptor_framework_in_memory"></a>USBX Device Descriptor Framework in Memory</h3>
+<div class="paragraph">
+<p>USBX maintains most device descriptors in memory, that is, all descriptors except the string and functional descriptors. The following diagram shows how these descriptors are stored and related.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/usbx-host-stack/usbx-device-descriptor-framework.png" alt="USBX Device Descriptor Framework in Memory">
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

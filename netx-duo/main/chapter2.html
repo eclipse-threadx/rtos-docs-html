@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 2 - Installation and Use of NetX Duo :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/chapter2.html">
+    <meta name="description" content="This chapter contains a description of various issues related to installation, setup, and use of the high- performance network stack NetX Duo.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">NetX Duo User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">NetX Duo User Guide</a></li>
+    <li><a href="index.html">NetX Duo</a></li>
+    <li>NetX Duo user guide</li>
+    <li><a href="chapter2.html">Ch. 2 - Installation and use of NetX Duo</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/netx-duo/modules/ROOT/pages/chapter2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 2 - Installation and Use of NetX Duo</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of various issues related to installation, setup, and use of the high- performance network stack NetX Duo, including the following:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_host_considerations"><a class="anchor" href="#_host_considerations"></a>Host Considerations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Embedded development is usually performed on Windows or Linux (Unix) host computers. After the application is compiled, linked, and the executable is generated on the host, it is downloaded to the target hardware for execution.</p>
+</div>
+<div class="paragraph">
+<p>Usually the target download is done from within the development tool&#8217;s debugger. After download, the debugger is responsible for providing target execution control (go, halt, breakpoint, etc.) as well as access to memory and processor registers.</p>
+</div>
+<div class="paragraph">
+<p>Most development tool debuggers communicate with the target hardware via on-chip debug (OCD) connections such as JTAG (IEEE 1149.1) and Background Debug Mode (BDM). Debuggers also communicate with target hardware through In-Circuit Emulation (ICE) connections. Both OCD and ICE connections provide robust solutions with minimal intrusion on the target resident software.</p>
+</div>
+<div class="paragraph">
+<p>As for resources used on the host, the source code for NetX Duo is delivered in ASCII format and requires approximately 1 Mbytes of space on the host computer&#8217;s hard disk.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_target_considerations"><a class="anchor" href="#_target_considerations"></a>Target Considerations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo requires between 5 KBytes and 45 KBytes of Read-Only Memory (ROM) on the target. Another 1 to 5KBytes of the target&#8217;s Random Access Memory (RAM) are required for the NetX Duo thread stack and other global data structures.</p>
+</div>
+<div class="paragraph">
+<p>In addition, NetX Duo requires the use of two ThreadX timer objects and one ThreadX mutex object. These facilities are used for periodic processing needs and thread protection inside the NetX Duo protocol stack.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_product_distribution"><a class="anchor" href="#_product_distribution"></a>Product Distribution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo can be obtained from our public source code repository at <a href="https://github.com/eclipse-threadx/netxduo/" class="bare">https://github.com/eclipse-threadx/netxduo/</a>.</p>
+</div>
+<div class="paragraph">
+<p>The following is a list of several important files in the repository:</p>
+</div>
+<div class="paragraph">
+<p><strong>nx_api.h</strong><br>
+C header file containing all system equates, data structures, and service prototypes.</p>
+</div>
+<div class="paragraph">
+<p><strong>nx_port.h</strong>
+C header file containing all development-tool and targetspecific data definitions and structures.</p>
+</div>
+<div class="paragraph">
+<p><strong>demo_netx.c</strong>
+C file containing a small demo application.</p>
+</div>
+<div class="paragraph">
+<p><strong>nx.a (or nx.lib)</strong><br>
+Binary version of the NetX Duo C library that is distributed with the standard package.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_installation"><a class="anchor" href="#_netx_duo_installation"></a>NetX Duo Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo is installed by cloning the GitHub repository to your local machine. The following is typical syntax for creating a clone of the NetX Duo repository on your PC:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">    git clone https://github.com/eclipse-threadx/netxduo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively you can download a copy of the repository using the download button on the GitHub main page.</p>
+</div>
+<div class="paragraph">
+<p>You will also find instructions for building the NetX Duo library on the front page of the online repository.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<em>Application software needs access to the NetX Duo library file (usually <strong>nx.a</strong> or <strong>nx.lib</strong>) and the C include files <strong>nx_api.h, and nx_port.h</strong>. This is accomplished either by setting the appropriate path for the development tools or by copying these files into the application development area.</em>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_netx_duo"><a class="anchor" href="#_using_netx_duo"></a>Using NetX Duo</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using NetX Duo is easy. Basically, the application code must include <strong><em>nx_api.h</em></strong> during compilation and link with the NetX Duo library <strong><em>nx.a</em></strong> (or <em>*nx.lib*)</em>.</p>
+</div>
+<div class="paragraph">
+<p>The following are the four easy steps required to build a NetX Duo application:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Step</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Step&nbsp;1:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Include the <strong><em>nx_api.h</em></strong> file in all application files that use NetX Duo services or data structures.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Step&nbsp;2:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Initialize the NetX Duo system by calling <strong><em>nx_system_initialize</em></strong> from the <strong><em>tx_application_define</em></strong> function or an application thread.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Step&nbsp;3:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create an IP instance, enable the Address Resolution Protocol (ARP), if necessary, and any sockets after <strong><em>nx_system_initialize</em></strong> is called.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Step&nbsp;4:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compile application source and link with the NetX Duo runtime library <strong><em>nx.a</em></strong> (or <strong><em>nx.lib</em></strong>). The resulting image can be downloaded to the target and executed!</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>Troubleshooting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each NetX Duo port is delivered with one or more demonstrations that execute on an actual network or via a simulated network driver. It is always a good idea to get the demonstration system running first.</p>
+</div>
+<div class="paragraph">
+<p>If the demonstration system does not run properly, perform the following operations to narrow the problem:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Determine how much of the demonstration is running.</p>
+</li>
+<li>
+<p>Increase stack sizes in any new application threads.</p>
+</li>
+<li>
+<p>Recompile the NetX Duo library with the appropriate debug options listed in the configuration option section.</p>
+</li>
+<li>
+<p>Examine the NX_IP structure to see if packets are being sent or received.</p>
+</li>
+<li>
+<p>Examine the default packet pool to see if there are available packets.</p>
+</li>
+<li>
+<p>Ensure the network driver is supplying ARP and IP packets with its headers on 4-byte boundaries for applications requiring IPv4 or IPv6 connectivity.</p>
+</li>
+<li>
+<p>Temporarily bypass any recent changes to see if the problem disappears or changes.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_options"><a class="anchor" href="#_configuration_options"></a>Configuration Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several configuration options when building the NetX Duo library and the application using NetX Duo. The configuration options can be defined in the application source, on the command line, or within the <strong><em>nx_user.h</em></strong> include file, unless otherwise specified.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>Options defined in <strong>nx_user.h</strong> are applied only if the application and NetX Duo library are built with</em> <strong>NX_INCLUDE_USER_DEFINE_FILE</strong> <em>defined.</em>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following sections list the configuration options available in NetX Duo. General options applicable to both IPv4 and IPv6 are listed first, followed by IPv6-specific options.</p>
+</div>
+<div class="sect2">
+<h3 id="_system_configuration_options"><a class="anchor" href="#_system_configuration_options"></a>System Configuration Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ASSERT_FAIL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Symbol that defines the debug statement to use when an assertion fails.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DEBUG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables the optional print debug information available from the RAM Ethernet network driver.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DEBUG_PACKET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables the optional debug packet dumping available in the RAM Ethernet network driver.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ASSERT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables ASSERT checks in the source code. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ERROR_CHECKING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, removes the basic NetX Duo error checking API and improves performance. API return codes not affected by disabling error checking are listed in bold typeface in the API definition. This define is typically used after the application is debugged sufficiently and its use improves performance and decreases code size.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DRIVER_DEFERRED_PROCESSING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables deferred network driver packet handling. This allows the network driver to place a packet on the IP instance and have the real processing routine called from the NetX Duo internal IP helper thread.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DUAL_PACKET_POOL_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to  <strong><em>NX_ENABLE_DUAL_PACKET_POOL</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_ENABLE_DUAL_PACKET_POOL</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_DUAL_PACKET_POOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, allows the stack to use two packet pools, one with large payload size and one with smaller payload size. By default this option is not enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_EXTENDED_NOTIFY_SUPPORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables more callback hooks in the stack. These callback functions are used by the BSD wrapper layer. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_INTERFACE_CAPABILITY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, allows the interface device driver to specify extra capability information, such as checksum off-loading. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_SOURCE_ADDRESS_CHECK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables the source address of incoming packet to be checked. By default this option is disabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPSEC_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables the NetX Duo library to support IPsec operations. This feature requires the optional NetX Duo IPsec module. By default this feature is not enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_LITTLE_ENDIAN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, performs the necessary byte swapping on little endian environments to ensure the protocol headers are in proper big endian format. Note the default is typically setup in <strong><em>nx_port.h</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_PHYSICAL_INTERFACES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the total number of physical network interfaces on the device. The default value is 1 and is defined in <strong><em>nx_api.h</em></strong>; a device must have at least one physical interface. Note this does not include the loopback interface.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_NAT_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, NetX Duo is built with NAT process. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PHYSICAL_HEADER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the size in bytes of the physical header of the frame. The default value is 16 (based on a typical 14-byte Ethernet frame aligned to 32-bit boundary) and is defined in <strong><em>nx_api.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included, such as in <em>*nx_user.h*.</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PHYSICAL_TRAILER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the size in bytes of the physical packet trailer and is typically used to reserve storage for things like Ethernet CRCs, etc. The default value is 4 and is defined in <strong><em>nx_api.h</em></strong>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_arp_configuration_options"><a class="anchor" href="#_arp_configuration_options"></a>ARP Configuration Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_DEFEND_BY_REPLY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, allows NetX Duo to defend its IP address by sending an ARP response.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_DEFEND_INTERVAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines the interval, in seconds, the ARP module sends out the next defend packet in response to an incoming ARP message that indicates an address in conflict.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_DISABLE_AUTO_ARP_ENTRY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_DISABLE_ARP_AUTO_ENTRY</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_DISABLE_ARP_AUTO_ENTRY</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_EXPIRATION_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of seconds ARP entries remain valid. The default value of zero disables expiration or aging of ARP entries and is defined in <strong><em>nx_api.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_MAC_CHANGE_NOTIFICATION_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_ENABLE_ARP_MAC_CHANGE_NOTIFICATION</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_ENABLE_ARP_MAC_CHANGE_NOTIFICATION</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_MAX_QUEUE_DEPTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum number of packets that can be queued while waiting for an ARP response. The default value is 4 and is defined in <strong><em>nx_api.h</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_MAXIMUM_RETRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum number of ARP retries made without an ARP response. The default value is 18 and is defined in <strong><em>nx_api.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ARP_UPDATE_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of seconds between ARP retries. The default value is 10, which represents 10 seconds, and is defined in <strong><em>nx_api.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ARP_AUTO_ENTRY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables entering ARP request information in the ARP cache.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ARP_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables ARP information gathering.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_ARP_MAC_CHANGE_NOTIFICATION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, allows ARP to invoke a callback notify function on detecting the MAC address is updated.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_icmp_configuration_options"><a class="anchor" href="#_icmp_configuration_options"></a>ICMP Configuration Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMP_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables ICMP information gathering.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMP_RX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables both ICMPv4 and ICMPv6 checksum computation on received ICMP packets. This option is useful when the network interface driver is able to verify the ICMPv4 and ICMPv6 checksum, and the application does not use the IP fragmentation feature or the IPsec feature. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMP_TX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables both ICMPv4 and ICMPv6 checksum computation on transmitted ICMP packets. This option is useful where the network interface driver is able to compute the ICMPv4 and ICMPv6 checksum, and the application does not use the IP fragmentation feature or IPsec feature. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPV4_ERROR_MESSAGE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, NetX Duo does not send ICMPv4 Error Messages in response to error conditions such as improperly formatted IPv4 header. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPV4_RX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables ICMPv4 checksum computation on received ICMP packets. This option is defined automatically if <strong><em>NX_DISABLE_ICMP_RX_CHECKSUM</em></strong> is defined. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPv4_RX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_DISABLE_ICMPV4_RX_CHECKSUM</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_DISABLE_ICMPV4_RX_CHECKSUM</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPV4_TX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables ICMPv4 checksum computation on transmitted ICMP packets. This option is defined automatically if <strong><em>NX_DISABLE_ICMP_TX_CHECKSUM</em></strong> is defined. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPv4_TX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_DISABLE_ICMPV4_TX_CHECKSUM</em></strong>.&lt;/br&gt;Although it is still being supported, new designs are encouraged to use <strong><em>NX_DISABLE_ICMPV4_TX_CHECKSUM</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_ICMP_ADDRESS_CHECK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, the destination address of ICMP packet is checked. The default is disabled. An ICMP Echo Request destined to an IP broadcast or IP multicast address will be silently discarded.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_igmp_configuration_options"><a class="anchor" href="#_igmp_configuration_options"></a>IGMP Configuration Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_IGMP_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables IGMP information gathering.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_IGMPV2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables IGMPv2 support, and NetX Duo supports IGMPv1 only. By default this option is not set and is defined in <strong><em>nx_api.h</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_MULTICAST_GROUPS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum number of multicast groups that can be joined. The default value is 7 and is defined in <strong><em>nx_api.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_ip_configuration_options"><a class="anchor" href="#_ip_configuration_options"></a>IP Configuration Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_FRAGMENTATION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables both IPv4 and IPv6 fragmentation and reassembly logic.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_IPV4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables IPv4 functionality. This option can be used to build NetX Duo to support IPv6 only. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_IP_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables IP information gathering.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_IP_RX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables checksum logic on received IPv4 packets. This is useful if the network device is able to verify the IPv4 checksum, and the application does not expect to use IP fragmentation or IPsec.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_IP_TX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables checksum logic on IPv4 packets sent. This is useful in situations in which the underlying network device is capable of generating the IPv4 header checksum, and the application does not expect to use IP fragmentation or IPsec.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_LOOPBACK_INTERFACE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables NetX Duo support for the loopback interface.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_RX_SIZE_CHECKING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables the size checking on received packets.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_IP_RAW_PACKET_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables the IP raw packet receive filter functionality. Applications requiring more control over the type of raw IP packets to be received can use this feature. The IP raw packet filter feature also supports the raw socket operation in the BSD compatibility layer. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_IP_STATIC_ROUTING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables IPv4 static routing in which a destination address can be assigned a specific next hop address. By default IPv4 static routing is disabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_FRAGMENT_IMMEDIATE_ASSEMBLY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, allows IPv4 and IPv6 reassembly logic to execute right away after receiving an IP fragment. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_MAX_REASSEMBLY_TIME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Symbol that controls maximum time allowed to reassemble IPv4 fragment and IPv6 fragment. Note the value defined here overwrites both <strong><em>NX_IPV4_MAX_REASSEMBLY_TIME</em></strong> and <strong><em>NX_IPV6_MAX_REASSEMBLY_TIME</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_PERIODIC_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, specifies the number of ThreadX timer ticks in one second. The default value is derived from the ThreadX symbol <strong><em>TX_TIMER_TICKS_PER_SECOND,</em></strong> which by default is set to 100 (10ms timer). Applications shall exercise caution when modifying this value, as the rest of the NetX Duo modules derive timing information from <strong><em>NX_IP_PERIODIC_RATE</em>.</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_RAW_MAX_QUEUE_DEPTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Symbol that controls the number of raw IP packets can be queued on the raw packet receive queue. By default value is set to 20.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IP_ROUTING_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, sets the maximum number of entries in the IPv4 static routing table, which is a list of an outgoing interface and the next hop addresses for a given destination address. The default value is 8 and is defined in <strong><em>nx_api.h.</em></strong> This symbol is used only if <strong><em>NX_ENABLE_IP_STATIC_ROUTING</em></strong> is defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV4_MAX_REASSEMBLY_TIME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Symbol that controls maximum time allowed to reassemble IPv4 fragment. Note the value defined in NX_IP_MAX_REASSEMBLY_TIME overwrites this value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_TCPIP_OFFLOAD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Symbol that enables TCP/IP offload feature. Note NX_ENABLE_INTERFACE_CAPABILITY must be defined to enable this feature.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_packet_configuration_options"><a class="anchor" href="#_packet_configuration_options"></a>Packet Configuration Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_PACKET_CHAIN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables the packet chain logic. By default this is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_PACKET_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables packet pool information gathering.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_LOW_WATERMARK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables NetX Duo packet pool low watermark feature. Application sets low watermark value. On receiving TCP packets, if the packet pool low watermark is reached, NetX Duo silently discards the packet by releasing it, preventing the packet pool from starvation. By default this feature is not enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_PACKET_DEBUG_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, logs packet debug information.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_ALIGNMENT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, specifies the alignment requirement, in bytes, for starting address of the packet payload area. This option deprecates  <strong><em>NX_PACKET_HEADER_PAD</em></strong> and <strong><em>NX_PACKET_HEADER_PAD_SIZE</em></strong>. By default this option is defined to be 4, making the starting address of the payload area 4-byte aligned.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_HEADER_PAD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables padding towards the end of the NX_PACKET control block. The number of ULONG words to pad is defined by  <strong><em>NX_PACKET_HEADER_PAD_SIZE</em></strong>. Note this option is depreciated by <strong><em>NX_PACKET_ALIGNMENT</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PACKET_HEADER_PAD_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the number of ULONG words to be padded to the NX_PACKET structure, allowing the packet payload area to start at the desired alignment. This feature is useful when receive buffer descriptors point directly into NX_PACKET payload area, and the network  interface receive logic or the cache operation logic expects the buffer starting address to meet certain alignment requirements. This value becomes valid only when <strong><em>NX_PACKET_HEADER_PAD</em></strong> is defined. Note this option is deprecated by <strong><em>NX_PACKET_ALIGNMENT</em></strong>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_rarp_configuration_options"><a class="anchor" href="#_rarp_configuration_options"></a>RARP Configuration Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_RARP_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables RARP information gathering.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_tcp_configuration_options"><a class="anchor" href="#_tcp_configuration_options"></a>TCP Configuration Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_RESET_DISCONNECT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables the reset processing during disconnect when the timeout value supplied is specified as <strong><em>NX_NO_WAIT</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_TCP_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables TCP information gathering.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_TCP_RX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables checksum logic on received TCP packets. This is only useful in situations in which the link-layer has reliable checksum or  CRC processing, or the interface driver is able to verify the TCP checksum in hardware, and the application does not use IPsec.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_TCP_TX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables checksum logic for sending TCP packets. This is only useful in situations in which the receiving network node has received TCP checksum logic disabled or the underlying network driver is capable of generating the TCP checksum, and the application does not use IPsec.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_TCP_KEEPALIVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables the optional TCP keepalive timer. The default settings is not enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_TCP_MSS_CHECK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables the verification of minimum peer MSS before accepting a TCP connection. To use this feature, the symbol <strong><em>NX_ENABLE_TCP_MSS_MINIMUM</em></strong> must be defined. By default, this option is not enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_TCP_QUEUE_DEPTH_UPDATE_NOTIFY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, allows the application to install a callback function that is invoked when the TCP transmit queue depth is no longer at maximum value. This callback serves as an indication that the TCP socket is ready to transmit more data. By default this option is not enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_TCP_WINDOW_SCALING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enables the window scaling option for TCP applications. If defined, window scaling option is negotiated during TCP connection phase, and the application is able to specify a window size larger than 64K. The default setting is not enabled (not defined).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_LISTEN_REQUESTS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum number of server listen requests. The default value is 10 and is defined in <strong><em>nx_api.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ACK_EVERY_N_PACKETS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of TCP packets to receive before sending an ACK. Note if <strong><em>NX_TCP_IMMEDIATE_ACK</em></strong> is enabled but <strong><em>NX_TCP_ACK_EVERY_N_PACKETS</em></strong> is not, this value is automatically set to 1 for backward compatibility.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ACK_TIMER_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies how the number of system ticks (NX_IP_PERIODIC_RATE) is divided to calculate the timer rate for the TCP delayed ACK processing. The default value is 5, which represents 200ms, and is defined in <strong><em>nx_tcp.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ENABLE_KEEPALIVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_ENABLE_TCP_KEEPALIVE</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_ENABLE_TCP_KEEPALIVE</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ENABLE_MSS_CHECK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_ENABLE_TCP_MSS_CHECK</em></strong>.Although it is still being supported, new designs are encouraged to use <strong><em>NX_ENABLE_TCP_MSS_CHECK.</em></strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_ENABLE_WINDOW_SCALING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_ENABLE_TCP_WINDOW_SCALING</em></strong>.Although it is still being supported, new designs are encouraged to use <strong><em>NX_ENABLE_TCP_WINDOW_SCALING</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_FAST_TIMER_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies how the number of NetX Duo internal ticks (NX_IP_PERIODIC_RATE) is divided to calculate the fast TCP timer rate. The fast TCP timer is used to drive the various TCP timers, including the delayed ACK timer. The default value is 10, which represents 100ms assuming the ThreadX timer is running at 10ms. This value is defined in <strong><em>nx_tcp.h</em></strong>. The  application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_IMMEDIATE_ACK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables the optional TCP immediate ACK response processing. Defining this symbol is equivalent to defining  <strong><em>NX_TCP_ACK_EVERY_N_PACKETS</em></strong> to be 1.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_KEEPALIVE_INITIAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of seconds of inactivity before the keepalive timer activates. The default value is 7200, which represents 2 hours, and is defined in <strong><em>nx_tcp.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_KEEPALIVE_RETRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies how many keepalive retries are allowed before the connection is deemed broken. The default value is 10, which represents 10 retries, and is defined in <strong><em>nx_tcp.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_KEEPALIVE_RETRY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of seconds between retries of the keepalive timer assuming the other side of the connection is not responding. The default value is 75, which represents 75 seconds between retries, and is defined in <strong><em>nx_tcp.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MAX_OUT_OF_ORDER_PACKETS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Symbol that defines the maximum number of out-of-order TCP packets can be kept in the TCP socket receive queue. This symbol can be used to limit the number of packets queued in the TCP receive socket, preventing the packet pool from being starved. By default this symbol is not defined, thus there is no limit on the number of out of order packets being queued in the TCP socket.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MAXIMUM_RETRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies how many data transmit retries are allowed before the connection is deemed broken. The default value is 10, which represents 10 retries, and is defined in <strong><em>nx_tcp.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MAXIMUM_RX_QUEUE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Symbol that defines the maximum receive queue for TCP sockets. This feature is enabled by <strong><em>NX_ENABLE_LOW_WATERMARK</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MAXIMUM_TX_QUEUE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum depth of the TCP transmit queue before TCP send requests are suspended or rejected. The default value is 20, which means that a maximum of 20 packets can be in the transmit queue at any given time. Note packets stay in the transmit queue until an ACK that covers some or all of the packet data is received from the other side of the connection. This constant is defined in <strong><em>nx_tcp.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_MSS_MINIMUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Symbol that defines the minimal MSS value NetX Duo TCP module accepts. This feature is enabled by <strong><em>NX_ENABLE_TCP_MSS_CHECK</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_QUEUE_DEPTH_UPDATE_NOTIFY_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_ENABLE_TCP_QUEUE_DEPTH_UPDATE_NOTIFY</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_ENABLE_TCP_QUEUE_DEPTH_UPDATE_NOTIFY</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_RETRY_SHIFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies how the retransmit timeout period changes between retries. If this value is 0, the initial retransmit timeout is the same as subsequent retransmit timeouts. If this value is 1, each successive retransmit is twice as long. If this value is 2, each subsequent retransmit timeout is four times as long. The default value is 0 and is defined in <strong><em>nx_tcp.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_TCP_TRANSMIT_TIMER_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies how the number of system ticks (<strong><em>NX_IP_PERIODIC_RATE</em></strong>) is divided to calculate the timer rate for the TCP transmit retry processing. The default value is 1, which represents 1 second, and is defined in <strong><em>nx_tcp.h</em></strong>. The application can override the default by defining the value before <strong><em>nx_api.h</em></strong> is included.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_udp_configuration_options"><a class="anchor" href="#_udp_configuration_options"></a>UDP Configuration Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_UDP_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables UDP information gathering.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_UDP_RX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables the UDP checksum computation on incoming UDP packets. This is useful if the network interface driver is able to verify UDP header checksum in hardware, and the application does not enable IPsec or IP fragmentation logic.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_UDP_TX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables the UDP checksum computation on outgoing UDP packets. This is useful if the network interface driver is able to compute UDP header checksum and insert the value in the IP head before transmitting the data, and the application does not enable IPsec or IP fragmentation logic.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_ipv6_options"><a class="anchor" href="#_ipv6_options"></a>IPv6 Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_IPV6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disables IPv6 functionality when the NetX Duo library is built. For applications that do not need IPv6, this avoids pulling in code and additional storage space needed to support IPv6.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_IPV6_PATH_MTU_DISCOVERY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables path MTU discovery, which is used to determine the maximum MTU in the path to a target in the NetX Duo host destination table. This enables the NetX Duo host to send the largest possible packet that will not require fragmentation. By default, this option is defined (path MTU is disabled).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, allows a callback function to be invoked when the IPv6 address is changed. By default this option is not enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_IPV6_MULTICAST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables IPv6 multicast join/leave function. By default this option is not enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ENABLE_IPV6_PATH_MTU_DISCOVERY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables the IPv6 path MTU discovery feature. By default this option is not enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_ADDRESS_CHANGE_NOTIFY_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_DEFAULT_ROUTER_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of entries in the IPv6 routing table. At least onS entry is needed for the default router. Defined in <strong><em>nx_api.h</em></strong>, the default value is 8.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_DESTINATION_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of entries in the IPv6 destination table. This stores information about next hop addresses for IPv6 addresses. Defined in <strong><em>nx_api.h</em></strong>, the default value is 8.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_MAX_REASSEMBLY_TIME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Symbol that controls the maximum time allowed to reassemble IPv6 fragment.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_MULTICAST_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_ENABLE_IPV6_MULTICAST</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_ENABLE_IPV6_MULTICAST</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_PREFIX_LIST_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the size of the prefix table. Prefix information is obtained from router advertisements and is part of the IPv6 address configuration. Defined in <strong><em>nx_api.h</em></strong>, the default value is 8.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_STATELESS_AUTOCONFIG_CONTROL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, allows NetX Duo to disable stateless address autoconfiguration feature. By default this option is not enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_IPV6_ADDRESSES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of entries in the IPv6 address pool. During interface configuration, NetX Duo uses IPv6 entries from the pool. It is defaulted to (NX_MAX_PHYSICAL_INTERFACES * 3) to allow each interface to have at least one link local address and two global addresses. Note that all interfaces share the IPv6 address pool.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PATH_MTU_INCREASE_WAIT_INTERVAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the wait interval in timer ticks to reset the path MTU for a specific target in the destination table. If <strong><em>NX_DISABLE_IPV6_PATH_MTU_DISCOVERY</em></strong> is defined, defining this symbol has no effect.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_PATH_MTU_INCREASE_WAIT_INTERVAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Symbol that specifies the wait interval (in seconds) to reset the path MTU value for a destination table entry. It is valid only if <strong><em>NX_ENABLE_IPV6_PATH_MTU_DISCOVERY</em></strong> is defined. By default this value is set to 600 (seconds).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_neighbor_cache_configuration_options"><a class="anchor" href="#_neighbor_cache_configuration_options"></a>Neighbor Cache Configuration Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DELAY_FIRST_PROBE_TIME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the delay in seconds before the first solicitation is sent out for a cache entry in the STALE state. Defined in <strong><em>nx_nd_cache.h</em></strong>, the default value is 5.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_IPV6_DAD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option disables Duplicate Address Detection (DAD) during IPv6 address assignment. Addresses are set either by manual configuration or through Stateless Address Auto Configuration.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_IPV6_PURGE_UNUSED_CACHE_ENTRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option prevents NetX Duo from removing older cache table entries before their timeout expires to make room for new entries when the table is full. Static and router entries are never purged.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_DAD_TRANSMITS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of Neighbor Solicitation messages to be sent before NetX Duo marks an interface address as valid. If <strong><em>NX_DISABLE_IPV6_DAD</em></strong> is defined (DAD disabled), setting this option has no effect. Alternatively, a value of zero (0) turns off DAD but leaves the DAD functionality in NetX Duo. Defined in <strong><em>nx_api.h</em></strong>, the default value is 3.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_DISABLE_PURGE_UNUSED_CACHE_ENTRIES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_DISABLE_IPV6_PURGE_UNUSED_CACHE_ENTRIES</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_DISABLE_IPV6_PURGE_UNUSED_CACHE_ENTRIES</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_IPV6_NEIGHBOR_CACHE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of entries in the IPv6 Neighbor Cache table. Defined in <strong><em>nx_nd_cache.h</em></strong>, the default value is 16.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_MULTICAST_SOLICIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of Neighbor Solicitation messages NetX Duo transmits as part of the IPv6 Neighbor Discovery protocol when mapping between IPv6 address and MAC address is required. Defined in <strong><em>nx_nd_cache.h</em></strong>, the default value is 3.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_MAX_UNICAST_SOLICIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of Neighbor Solicitation messages NetX Duo transmits to determine a specific neighbor&#8217;s reachability. Defined in <strong><em>nx_nd_cache.h</em></strong>, the default value is 3.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ND_MAX_QUEUE_DEPTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Symbol that defines the maximum number of packets queued up for ND cache to be resolved. By default this symbol is set to 4.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_REACHABLE_TIME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the time out in seconds for a cache entry to exist in the REACHABLE state with no packets received from the cache destination IPv6 address. Defined in <strong><em>nx_nd_cache.h</em></strong>, the default value is 30.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_RETRANS_TIMER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies in milliseconds the length of delay between solicitation packets sent by NetX Duo. Defined in <strong><em>nx_nd_cache.h</em></strong>, the default value is 1000.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NXDUO_DISABLE_DAD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_DISABLE_IPV6_DAD</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_DISABLE_IPV6_DAD</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NXDUO_DUP_ADDR_DETECT_TRANSMITS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_IPV6_DAD_TRANSMITS</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_IPV6_DAD_TRANSMITS</em></strong>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_miscellaneous_icmpv6_configuration_options"><a class="anchor" href="#_miscellaneous_icmpv6_configuration_options"></a>Miscellaneous ICMPv6 Configuration Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPV6_ERROR_MESSAGE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables NetX Duo from sending an ICMPv6 error message in response to a problem packet (e.g., improperly formatted header or packet header type is deprecated) received from another host.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPV6_REDIRECT_PROCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables ICMPv6 redirect packet processing. NetX Duo by default processes redirect messages and updates the destination table with next hop IP address information.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPV6_ROUTER_ADVERTISEMENT_PROCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables NetX Duo from processing information received in IPv6 router advertisement packets.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPV6_ROUTER_SOLICITATION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables NetX Duo from sending IPv6 router solicitation messages at regular intervals to the router.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPV6_RX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables ICMPv6 checksum computation on received ICMP packets.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPv6_RX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_DISABLE_ICMPV6_RX_CHECKSUM</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_DISABLE_CMPV6_RX_CHECKSUM</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPV6_TX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, disables and ICMPv6 checksum computation on transmitted ICMP packets.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_DISABLE_ICMPV6_TX_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_DISABLE_ICMPV6_TX_CHECKSUM</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_DISABLE_ICMPV6_TX_CHECKSUM</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_MAX_RTR_SOLICITATIONS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Define the max number of router solicitations a host sends until a router response is received. If no response is received, the host concludes no router is present. The default value is 3.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_RTR_SOLICITATION_DELAY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum delay for the initial router solicitation in seconds.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NX_ICMPV6_RTR_SOLICITATION_INTERVAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the interval between two router solicitation messages. The default value is 4.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NXDUO_DESTINATION_TABLE_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_IPV6_DESTINATION_TABLE_SIZE</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_IPV6_DESTINATION_TABLE_SIZE</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NXDUO_DISABLE_ICMPV6_ERROR_MESSAGE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_DISABLE_ICMPV6_ERROR_MESSAGE</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_DISABLE_ICMPV6_ERROR_MESSAGE</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NXDUO_DISABLE_ICMPV6_REDIRECT_PROCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_DISABLE_ICMPV6_REDIRECT_PROCESS</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_DISABLE_ICMPV6_REDIRECT_PROCESS</em></strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NXDUO_DISABLE_ICMPV6_ROUTER_ADVERTISEMENT_PROCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_DISABLE_ICMPV6_ROUTER_ADVERTISEMENT_PROCESS</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_DISABLE_ICMPV6_ROUTER_ADVERTISEMENT_PROCESS</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NXDUO_DISABLE_ICMPV6_ROUTER_SOLICITATION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_DISABLE_ICMPV6_ROUTER_SOLICITATION</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_DISABLE_ICMPV6_ROUTER_SOLICITATION</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NXDUO_ICMPV6_MAX_RTR_SOLICITATIONS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_ICMPV6_MAX_RTR_SOLICITATIONS</em></strong>. Although it is still being supported, new designs are encouraged to use <strong><em>NX_ICMPV6_MAX_RTR_SOLICITATIONS</em></strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NXDUO_ICMPV6_RTR_SOLICITATION_INTERVAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Renamed to <strong><em>NX_ICMPV6_RTR_SOLICITATION_INTERVAL</em></strong>. This symbol is being depreciated. Although it is still being supported, new designs are encouraged to use <strong><em>NX_ICMPV6_RTR_SOLICITATION_INTERVAL</em></strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_version_id"><a class="anchor" href="#_netx_duo_version_id"></a>NetX Duo Version ID</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The current version of NetX Duo is available to both the user and the application software during runtime. You can obtain the NetX Duo version from examination of the <strong>nx_port.h</strong> file. In addition, this file also contains a version history of the corresponding port. Application software can obtain the NetX Duo version by examining the global string <em><strong>_nx_version_id</em></strong> in <strong><em>nx_port.h</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>Application software can also obtain release information from the constants shown below defined in <strong><em>nx_api.h</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>These constants identify the current product release by name and the product major and minor version.</p>
+</div>
+<div class="paragraph">
+<p>#define EL_PRODUCT_NETXDUO<br>
+#define NETXDUO_MAJOR_VERSION<br>
+#define NETXDUO_MINOR_VERSION</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

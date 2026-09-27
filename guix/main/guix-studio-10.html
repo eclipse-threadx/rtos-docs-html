@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 10: Example Project :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/guix/main/guix-studio-10.html">
+    <meta name="description" content="This chapter describes how to create an example project in GUIX Studio and execute the example on GUIX.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guix" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">GUIX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">GUIX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">GUIX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-guix.html">Overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="guix-studio-quick-start.html">GUIX Studio Quick Start Guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-1.html">Ch. 1 - Introduction to GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-2.html">Ch. 2 - Installation and use of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-3.html">Ch. 3 - Functional overview of GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-4.html">Ch. 4 - Description of GUIX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter-5.html">Ch. 5 - GUIX display drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-example.html">GUIX example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - GUIX color definitions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - GUIX color formats</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - GUIX widget styles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - GUIX brush, canvas, and gradient attributes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-e.html">App. E - GUIX event description</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-f.html">App. F - GUIX RTOS binding services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-g.html">App. G - GUIX font structure</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-h.html">App. H - GUIX build-time configuration flags</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-i.html">App. I - GUIX information structures</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-j.html">App. J - Canvas Partial Frame Buffer Feature</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-k.html">App. K - GUIX Widget Status Flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">GUIX Studio User Guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-guix-studio.html">About GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-1.html">Ch. 1 - Introduction to GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-2.html">Ch. 2 - Installation and Use of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-3.html">Ch. 3 - Description of GUIX Studio</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-4.html">Ch. 4 - GUIX Studio Resources</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-5.html">Ch. 5 - GUIX Studio Screen Designer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-6.html">Ch. 6 - GUIX Studio Generated Code</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-7.html">Ch. 7 - Defining Screen Flow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-8.html">Ch. 8 - Notes on Editing Specific Widget Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-9.html">Ch. 9 - GUIX Studio Command Line</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="guix-studio-10.html">Ch. 10 - Simple Example Project</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="guix-studio-11.html">Ch. 11 - Resource Project File</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">GUIX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">GUIX User Guide</a></li>
+    <li><a href="index.html">GUIX</a></li>
+    <li>GUIX Studio User Guide</li>
+    <li><a href="guix-studio-10.html">Ch. 10 - Simple Example Project</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/guix/modules/ROOT/pages/guix-studio-10.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 10: Example Project</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter describes how to create an example project in GUIX Studio and execute the example on GUIX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_new_project"><a class="anchor" href="#_create_new_project"></a>Create New Project</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The first step is creating a new project and configuring the displays and languages that the project will support. When you first start GUIX Studio, you will see the <strong><em>Recent Projects</em></strong> screen:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/recent_projects.png" alt="Screenshot of the GUIX Studio Recent Projects dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.1</strong></p>
+</div>
+<div class="paragraph">
+<p>Click on the <strong><em>Create New Project</em></strong>&#8230;&#8203; button to begin a new project. You will be presented with the <strong><em>New GUIX Project</em></strong> dialog, shown here:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/create_new_project.png" alt="Screenshot of the GUIX Studio Create New Project dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.2</strong></p>
+</div>
+<div class="paragraph">
+<p>Type the name "<strong><em>new_example</em></strong>" as the project name. Project names should use standard C variable naming rules, that is, no special or reserved characters. Type the path to the location where the project should be saved. The path must be a valid file system directory, that is, GUIX Studio will not create the directory if it does not exist. Click "OK" to create the project.</p>
+</div>
+<div class="paragraph">
+<p>The next screen shown is the Project Configuration screen, shown here:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/config_new_project.png" alt="Screenshot of the GUIX Studio Configure Project dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.3</strong></p>
+</div>
+<div class="paragraph">
+<p>This dialog allows you to specify how many displays your project will support, and give a name to each display. You must specify the color format supported by each display, and optionally type a pathname for the output files generated by Studio for each display. The default directory for the output files is "<strong><em>.\</em></strong>", meaning the C output files are written to the same directory as the project itself.</p>
+</div>
+<div class="paragraph">
+<p>For this example, leave the <strong><em>Number of Displays</em></strong> set to "1", type the name "<strong><em>main_display</em></strong>" in the display name field, and check "<strong><em>allocate canvas memory</em></strong>". Leave the resolution, color format, and directory fields at their default values, and click <strong><em>OK</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>You should now see your project open with the Studio IDE, as shown in figure 10.4:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/initial_screen.png" alt="Screenshot of a project open with the Studio IDE.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.4</strong></p>
+</div>
+<div class="paragraph">
+<p>When you create a new project, GUIX Studio automatically creates a default window as the starting point for your project. This gray box is the default window created for you, centered within the <em>Target View</em>.</p>
+</div>
+<div class="paragraph">
+<p>If this window is not selected, click on the window so that the dashed selection box is drawn around the window. Now in the <strong><em>Properties View</em></strong>, change the <strong><em>Widget Name</em></strong>, <strong><em>Widget Id</em></strong>, <strong><em>Left</em></strong>, <strong><em>Top</em></strong>, <strong><em>Width</em></strong>, <strong><em>Height</em></strong>, and <strong><em>Border</em></strong> to match those settings shown below. As you make these changes, you should see your changes immediately taking effect within the Target View.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/initial_window_properties.png" alt="Screenshot of the Properties View dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.5</strong></p>
+</div>
+<div class="paragraph">
+<p>Next we will add a pixelmap resource to be used within a <strong><em>GX_ICON</em></strong> widget. Several icons are provided with your GUIX Studio distribution that will work fine for this example. Expand your <strong><em>Pixelmaps</em></strong> Resource View and click the <strong><em>Add New Pixelmap</em></strong> button:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/image74.jpg" alt="Screenshot of the Add New Pixelmap button.">
+</div>
+</div>
+<div class="paragraph">
+<p>Browse to your GUIX Studio installation folder, and within the <strong><em>./graphics/icons</em></strong> folder select the file named <strong><em>i_history_lg.png</em></strong>. Click <strong><em>Open</em></strong> to add this resource to your project. Your <strong><em>Pixelmaps</em></strong> Resource View should now show a preview of the newly added icon image:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/example_add_pixelmap.png" alt="Screenshot of the Pixelmaps Resource View.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.6</strong></p>
+</div>
+<div class="paragraph">
+<p>We will use this new image resource later as part of our UI design.</p>
+</div>
+<div class="paragraph">
+<p>Similar to adding a pixelmap resource, we will add a new font resource to our toolbox so that we can use this font later in our design. Expand the <strong><em>Fonts</em></strong> Resource View and click on the <strong><em>Add New Font</em></strong> button. This action will invoke the <strong><em>Add/Edit</em></strong> font dialog. Next, browse to the supplied GUIX fonts in the GUIX Studio installation folder, <strong><em>.\fonts\verasans</em></strong>, and select the TrueType font file named <strong><em>VeraIt.ttf</em></strong>. Type font the font name "<strong><em>MEDIUM_ITALIC</em></strong>" in the font name field, and type "<strong><em>30</em></strong>" in the height field. Your dialog should now look like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/example_add_font.png" alt="Screenshot of the Edit Font dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.7</strong></p>
+</div>
+<div class="paragraph">
+<p>Click <strong><em>OK</em></strong> to add this font to your project. You should now see the font in your Resource View:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/example_font_added.png" alt="Screenshot of the Fonts in the Resource View.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.8</strong></p>
+</div>
+<div class="paragraph">
+<p>We will use this new font later in our UI design.</p>
+</div>
+<div class="paragraph">
+<p>Now that we have some new resources available, we need to add some child widgets to our screen that can utilize these resources. Select the previously created window named "<strong><em>hello_world</em></strong>" by right-clicking on the window in the Target View. In the pop-up menu that is now displayed, select the menu command <strong><em>Insert, Text, Prompt</em></strong> to insert a new <strong><em>GX_PROMPT</em></strong> widget and attach the widget to the background window. Your window should now look like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/image78.jpg" alt="Screenshot of a pop-up menu with the Prompt selection">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.9</strong></p>
+</div>
+<div class="paragraph">
+<p>Click on the font named "<strong><em>MEDIUM_ITALIC</em></strong>" in the <strong><em>Fonts</em></strong> Resource View, and drag and drop the font on the prompt widget. Next, edit the prompt properties as shown in figure 10.10 to resize the prompt, set the prompt transparency, and change the prompt text and style:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/image79.jpg" alt="Screenshot of the Properties View for the prompt.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.10</strong></p>
+</div>
+<div class="paragraph">
+<p>You may need to scroll vertically in the Properties View to see each of these settings depending on your screen resolution. After making these changes, your Target View should now look like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/image80.jpg" alt="Screenshot of a pop-up menu with the Hello World selection.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.11</strong></p>
+</div>
+<div class="paragraph">
+<p>Next we will place an Icon Button style widget on the screen. Select the background window by clicking on it, and use either the top-level menu or the right-click pop-up menu to select <strong><em>Insert, Button, Icon Button</em></strong> to add a new <strong><em>GX_ICON_BUTTON</em></strong> to the window. Click on the Icon named <strong><em>I_HISTORY_LG</em></strong> that we added earlier and drag it to the icon button. Using the properties view, adjust the icon position and size as show below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/image81.jpg" alt="Screenshot of the Properties View for the icon button style widget.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.12</strong></p>
+</div>
+<div class="paragraph">
+<p>Your screen should now look like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/image82.jpg" alt="Screenshot of a pop-up menu with the Hello World and clipboard icon.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.13</strong></p>
+</div>
+<div class="paragraph">
+<p>We will call this complete for the simple example screen design. Your actual application screens will likely be much more sophisticated, but this is enough to show you how to use GUIX Studio to create your own application screens.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generate_resource_and_application_code"><a class="anchor" href="#_generate_resource_and_application_code"></a>Generate Resource and Application Code</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The next step is to generate the resource file and specification file that define the embedded GUIX run-time UI. To generate your output files you will need right-click on the <strong><em>main_display</em></strong> node in the Project View, and select the <strong><em>Generate Resource Files</em></strong> command. You will observe an information window that indicates your resource files have been generated, as shown in figure 10.14:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/guix-studio/image83.jpg" alt="Screenshot of a notification dialog.">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 10.14</strong></p>
+</div>
+<div class="paragraph">
+<p>Click <strong><em>OK</em></strong> to dismiss this notification, and use the same procedure to right-click on the <strong><em>main_display</em></strong> node and select the <strong><em>Generate Specification Files</em></strong> command. You should observe a similar notification window. You have now generated your simple UI application files.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_user_supplied_code"><a class="anchor" href="#_create_user_supplied_code"></a>Create User Supplied Code</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The next step is to create your own application file that will invoke the GUIX Studio-generated screen design. Using your preferred editor, create a source file named <strong><em>new_example.c</em></strong>, and enter the following source code into this file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* This is an example of the GUIX graphics framework in Win32. */
+/* Include system files. */
+
+#include &lt;stdio.h&gt;
+#include "tx_api.h"
+#include "gx_api.h"
+
+/* Include GUIX resource and specification files for example. */
+
+#include "new_example_resources.h"
+#include "new_example_specifications.h"
+
+/* Define the new example thread control block and stack. */
+
+TX_THREAD new_example_thread;
+UCHAR new_example_thread_stack[4096];
+
+/* Define the root window pointer. */
+
+GX_WINDOW_ROOT *root_window;
+
+/* Define function prototypes. */
+
+VOID new_example_thread_entry(ULONG thread_input);
+UINT win32_graphics_driver_setup_24bpp(GX_DISPLAY *display);
+
+int main()
+{
+    /* Enter the ThreadX kernel. */
+    tx_kernel_enter();
+    return(0);
+}
+
+VOID tx_application_define(void *first_unused_memory)
+{
+    /* Create the new example thread. */
+    tx_thread_create(&amp;new_example_thread, "GUIX New Example Thread",
+                      new_example_thread_entry, 0,
+                      new_example_thread_stack, sizeof(new_example_thread_stack),
+                      1, 1, TX_NO_TIME_SLICE, TX_AUTO_START);
+}
+
+VOID new_example_thread_entry(ULONG thread_input)
+{
+
+    /* Initialize the GUIX library */
+    gx_system_initialize();
+
+    /* Configure the main display. */
+    gx_studio_display_configure(MAIN_DISPLAY,                      /* Display to configure*/
+                                win32_graphics_driver_setup_24bpp, /* Driver to use */
+                                LANGUAGE_ENGLISH,                  /* Language to install */
+                                MAIN_DISPLAY_DEFAULT_THEME,        /* Theme to install */
+                                &amp;root_window);                     /* Root window pointer */
+
+    /* Create the screen - attached to root window. */
+
+    gx_studio_named_widget_create("hello_world", (GX_WIDGET *) root_window, GX_NULL);
+
+    /* Show the root window to make it visible. */
+    gx_widget_show(root_window);
+
+    /* Let GUIX run. */
+    gx_system_start();
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The source code above creates a typical ThreadX thread named <code>GUIX New Example Thread</code> with a stack size of 4K bytes. The interesting work begins in the function named <strong><em>new_example_thread_entry</em></strong>. This function is where the GUIX specific thread begins to run.</p>
+</div>
+<div class="paragraph">
+<p>The first call is to the function named <strong><em>gx_system_initialize</em></strong>. This call is always required before any other GUIX APIs are invoked to prepare the GUIX library for first use.</p>
+</div>
+<div class="paragraph">
+<p>Next, the example calls the function <strong><em>gx_studio_display_configure</em></strong>. This function creates the GUIX display instance, installs the requested language of the application string table, installs the requested theme from the display resources, and returns a pointer to the root window that has been created for this display. The root window is used as the parent of all top-level screens that our application will display.</p>
+</div>
+<div class="paragraph">
+<p>Next the example calls <strong><em>gx_studio_named_widget_create</em></strong> to create an instance of our <strong><em>hello_world</em></strong> screen. This function uses the data structures and resource produces by GUIX Studio to create an instance of the screen as we have defined it. We pass the root window pointer as the second parameter to this function call, meaning we want the screen to be immediately attached to the root window. The last parameter is an optional return pointer that can be used if we want to keep a pointer to the created screen.</p>
+</div>
+<div class="paragraph">
+<p>Next <strong><em>gx_widget_show</em></strong> is called, which makes the root window and all of its children, including the <strong><em>hello_world</em></strong> screen, visible.</p>
+</div>
+<div class="paragraph">
+<p>Finally, the example calls <strong><em>gx_system_start</em></strong>. This function begins executing the GUIX system event processing loop.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_build_and_run_the_example"><a class="anchor" href="#_build_and_run_the_example"></a>Build and Run the Example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Building and running the example is specific to your build tools and environment. However we can define the general process:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create a new directory and application project</p>
+</li>
+<li>
+<p>Add these files to the project:</p>
+<div class="paragraph">
+<p><strong>new_example_resources.c</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>new_example_specification.c</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>new_example.c</strong></p>
+</div>
+</li>
+<li>
+<p>Add the Win32 run-time support files from the GUIX Studio installation path <strong><em>./win32_runtime</em></strong>. This includes the ThreadX and GUIX Win32 header and run-time library files.</p>
+</li>
+<li>
+<p>Add the GUIX Win32 library (<strong><em>gx.lib</em></strong>) to the project</p>
+</li>
+<li>
+<p>Add the ThreadX Win32 library (<strong><em>tx.lib</em></strong>) to the project</p>
+</li>
+<li>
+<p>Compile, Link, and Run the application!</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

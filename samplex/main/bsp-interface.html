@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>The BSP interface contract :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/samplex/main/bsp-interface.html">
+    <meta name="description" content="The C interfaces a SampleX board support package implements and a portable application relies on.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="samplex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">SampleX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">SampleX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">SampleX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">SampleX guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="overview.html">Overview of SampleX</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="bsp-interface.html">The BSP interface contract</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="onboarding-a-board.html">Onboarding a new board</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">SampleX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">SampleX User Guide</a></li>
+    <li><a href="index.html">SampleX</a></li>
+    <li>SampleX guide</li>
+    <li><a href="bsp-interface.html">The BSP interface contract</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/samplex/modules/ROOT/pages/bsp-interface.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">The BSP interface contract</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The interfaces below are declared in <code>bsp/include/bsp/</code> in the <a href="https://github.com/eclipse-threadx/samplex">SampleX repository</a>. Every board added under <code>targets/</code> implements all of them; every application in <code>apps/</code> is written against them and against nothing else that is board specific.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>These are SampleX framework interfaces, not ThreadX kernel services. They are not part of the <a href="../../threadx/main/index.html" class="xref page">ThreadX</a> API and they are not available to an application that does not link a SampleX board support package.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Two rules apply to the set as a whole.</p>
+</div>
+<div class="paragraph">
+<p><strong>The contract is closed to boards.</strong> A new board implements the existing interfaces rather than changing them or adding board-specific headers next to them. Widening the contract is a change to the framework, made once for all boards, not a change one board makes for itself.</p>
+</div>
+<div class="paragraph">
+<p><strong>Every board implements every call.</strong> Where a board has no hardware for a call, it implements the call as a no-op instead of omitting it, so a portable binary continues to link and run. A board with no user LED still exports the four <code>led.h</code> entry points; a board whose console cannot receive still accepts and stores a receive handler. This is what allows an application to call into the contract unconditionally, without compile-time tests for which board it is being built for.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Header</th>
+<th class="tableblock halign-left valign-top">Interface</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;bsp/board.h&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bsp_board_init()</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;bsp/led.h&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bsp_led_init()</code>, <code>bsp_led_on()</code>, <code>bsp_led_off()</code>, <code>bsp_led_toggle()</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;bsp/console.h&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bsp_console_init()</code>, <code>bsp_console_write()</code>, <code>bsp_console_set_rx_handler()</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;bsp/memory.h&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bsp_ram_region()</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;bsp/selftest.h&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bsp_self_test()</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_core_board_control"><a class="anchor" href="#_core_board_control"></a>Core board control</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">void bsp_board_init(void);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Brings the core up: clock tree, flash wait states, power scaling and any system-level configuration the board needs before peripherals are touched. An application calls it first, before any other BSP call and before <code>tx_kernel_enter()</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_user_led"><a class="anchor" href="#_user_led"></a>User LED</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">void bsp_led_init(void);
+void bsp_led_on(void);
+void bsp_led_off(void);
+void bsp_led_toggle(void);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Configures and drives the board&#8217;s user LED. <code>bsp_led_init()</code> performs the pin muxing and must be called before the other three. A board without a user LED implements all four as no-ops.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_serial_console"><a class="anchor" href="#_serial_console"></a>Serial console</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">void bsp_console_init(void);
+void bsp_console_write(const char *data, size_t length);
+
+typedef void (*bsp_console_rx_fn)(char c, void *context);
+
+void bsp_console_set_rx_handler(bsp_console_rx_fn handler, void *context);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>bsp_console_init()</code> configures the board&#8217;s debug UART and its pin muxing. <code>bsp_console_write()</code> transmits <code>length</code> characters from <code>data</code>; it is the output path an application can rely on whether or not the C library&#8217;s <code>printf()</code> is available on that target.</p>
+</div>
+<div class="paragraph">
+<p><code>bsp_console_set_rx_handler()</code> registers the handler invoked once for each byte the console receives, together with an opaque context pointer that is passed back unmodified. Passing <code>NULL</code> as the handler detaches the current one. Bytes that arrive with no handler attached are dropped rather than faulting.</p>
+</div>
+<div class="paragraph">
+<p>The handler is called <strong>from interrupt context</strong> on a board that drives its receiver from an interrupt. It must therefore not block, must not allocate, and must not call any ThreadX service that is illegal from an interrupt service routine. Handing a byte to a ThreadX queue is the intended shape; formatting it is not.</p>
+</div>
+<div class="paragraph">
+<p>Registration exists rather than a fixed callback symbol because the alternative breaks linking. A board support package whose interrupt handler calls a fixed, application-defined symbol cannot be linked by any application that does not define that symbol. An application with no interest in console input would have to define a board-specific interrupt callback in order to say that it wants nothing, and a second executable built against the same board support package would fail to link outright. That is the board support package reaching up into the application, expressed through the linker rather than through a header, and it is the coupling this framework exists to remove.</p>
+</div>
+<div class="paragraph">
+<p>A board whose console has no receive-interrupt path still implements the call and stores what it is given; the handler is simply never invoked. The two supported targets show both shapes: the PolarFire SoC Icicle Kit dispatches to the stored handler from its trap handler, while the NUCLEO-F401RE polls its USART and never invokes the handler it holds. An application registers unconditionally and does not ask which case it is in.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_application_ram_budget"><a class="anchor" href="#_application_ram_budget"></a>Application RAM budget</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">void bsp_ram_region(void *first_unused, void **base, size_t *size);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Reports the region of RAM the application may claim. <code>first_unused</code> is the pointer ThreadX passes to <code>tx_application_define()</code>. On return, <code>*base</code> is the first address the application owns and <code>*size</code> is the length of that region in bytes, or zero when the board has no RAM to spare. Neither output pointer may be <code>NULL</code>.</p>
+</div>
+<div class="paragraph">
+<p>ThreadX reports the first address it believes to be unused, but only the board knows what sits above it: a C heap reservation, a main stack at the top of RAM, or a memory-mapped peripheral window. This interface is what lets an application size a <code>TX_BYTE_POOL</code> without naming a board symbol or a linker-defined address.</p>
+</div>
+<div class="paragraph">
+<p>The region returned belongs entirely to the application, which will allocate every byte of it. A board must therefore never include its own heap or stack reservations in what it reports. Both supported targets verify in their startup self-tests that their C heap cannot grow into the region they hand out, which is the check that makes this guarantee testable rather than merely stated. The two shapes such a clamp takes are visible in the supported boards: one keeps its main stack at the top of SRAM and clamps the region below a fixed reservation, the other keeps its boot stack below ThreadX&#8217;s first unused address and has only its C heap reservation to skip.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_startup_self_tests"><a class="anchor" href="#_startup_self_tests"></a>Startup self-tests</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">typedef void (*bsp_selftest_report_fn)(int passed, const char *message,
+                                       void *context);
+
+unsigned bsp_self_test(bsp_selftest_report_fn report, void *context);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Runs the board&#8217;s startup self-tests and returns the number of checks that failed, zero when all passed. Each check reports through <code>report</code> in execution order. <code>report</code> must not be <code>NULL</code>: passing <code>NULL</code> runs no check and returns 1, because a board whose results cannot be reported must not be assumed healthy.</p>
+</div>
+<div class="paragraph">
+<p><code>bsp_self_test()</code> is intended to be called before <code>tx_kernel_enter()</code>, so that a hardware or configuration fault is reported even when the scheduler never starts. Checks that mutate board state undo it before returning, leaving the board as the caller found it.</p>
+</div>
+<div class="paragraph">
+<p>The board owns the checks and the application owns how their results reach the user. Verifying that a board came up as its own configuration promised needs vendor headers, linker symbols and register maps that no portable application can see, which is why these checks belong to the board support package rather than to the sample. Conversely, formatting the result line stays on the application side of the callback, and with it the choice between <code>printf()</code> and <code>bsp_console_write()</code>, so a board never has to know which of the two is available on that target.</p>
+</div>
+<div class="paragraph">
+<p>The <code>message</code> string describes the check and includes any measured value. It is valid only for the duration of the call; a handler that needs to keep it must copy it.</p>
+</div>
+<div class="paragraph">
+<p>The checks themselves are per-board and are listed in each target&#8217;s readme. Their common floor is the heap-versus-<code>bsp_ram_region()</code> guarantee above; beyond that, a board checks what its own configuration asserts, such as the clock tree and timebase it programmed, or its timer arithmetic and interrupt routing.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

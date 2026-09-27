@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx-modules/main/chapter3.html">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx-modules" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">ThreadX Modules User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">ThreadX Modules</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">ThreadX Modules documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX Modules user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Module requirements</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Module Manager requirements</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Module APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Module Manager APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix.html">Appendix - Port-specific examples</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX Modules User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">ThreadX Modules User Guide</a></li>
+    <li><a href="index.html">ThreadX Modules</a></li>
+    <li>ThreadX Modules user guide</li>
+    <li><a href="chapter3.html">Ch. 3 - Module Manager requirements</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/threadx-modules/modules/ROOT/pages/chapter3.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<div id="preamble">
+<div class="sectionbody">
+<hr>
+<div class="paragraph">
+<p>title: Chapter 3 - Module Manager requirements
+description: This article is a description of the steps required for building the ThreadX Module Manager.</p>
+</div>
+<hr>
+</div>
+</div>
+<h1 id="_chapter_3_module_manager_requirements" class="sect0"><a class="anchor" href="#_chapter_3_module_manager_requirements"></a>Chapter 3 - Module Manager requirements</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>The ThreadX Module Manager resides in the resident portion of the application along with the ThreadX RTOS. It is responsible for starting the module as well as fielding and dispatching all module requests for ThreadX API services.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The ThreadX Module <strong>Manager</strong> source files (C and assembly) should be added to the ThreadX library project "<strong>tx</strong>".
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following steps are required for building the ThreadX Module Manager (each step is described in greater detail below).</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <strong>TX_THREAD</strong> control block must be extended to include module information. The easiest way to accomplish this is to replace the definition of <strong>TX_THREAD_EXTENSION_2</strong> in the <strong><em>tx_port.h</em></strong> file with the <strong>TX_THREAD_EXTENSION_2</strong> found in <strong><em>txm_module_port.h</em></strong>. See <a href="appendix.html" class="xref page">appendix</a> for port-specific extensions.</p>
+<div class="paragraph">
+<p>Example extension:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#define TX_THREAD_EXTENSION_2                     \
+    VOID      tx_thread_module_instance_ptr;      \
+    VOID      tx_thread_module_entry_info_ptr;    \
+    ULONG     tx_thread_module_current_user_mode; \
+    ULONG     tx_thread_module_user_mode;         \
+    VOID     *tx_thread_module_kernel_stack_start;\
+    VOID     *tx_thread_module_kernel_stack_end;  \
+    ULONG     tx_thread_module_kernel_stack_size; \
+    VOID     *tx_thread_module_stack_ptr;         \
+    VOID     *tx_thread_module_stack_start;       \
+    VOID     *tx_thread_module_stack_end;         \
+    ULONG     tx_thread_module_stack_size;        \
+    VOID     *tx_thread_module_reserved;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following extensions must be defined in <strong><em>tx_port.h</em></strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#define TX_EVENT_FLAGS_GROUP_EXTENSION  VOID    *tx_event_flags_group_module_instance; \
+     VOID   (*tx_event_flags_group_set_module_notify)(struct TX_EVENT_FLAGS_GROUP_STRUCT *group_ptr);
+
+#define TX_QUEUE_EXTENSION              VOID    *tx_queue_module_instance; \
+     VOID   (*tx_queue_send_module_notify)(struct TX_QUEUE_STRUCT *queue_ptr);
+
+#define TX_SEMAPHORE_EXTENSION          VOID    *tx_semaphore_module_instance; \
+     VOID   (*tx_semaphore_put_module_notify)(struct TX_SEMAPHORE_STRUCT *semaphore_ptr);
+
+#define TX_TIMER_EXTENSION              VOID    *tx_timer_module_instance; \
+     VOID   (*tx_timer_module_expiration_function)(ULONG id);</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add all the <strong><em>txm_module_manager</em>*<em></strong> C and assembly files to the ThreadX library project <strong>_tx</em></strong>.</p>
+</li>
+<li>
+<p>Rebuild all libraries and executable projects. If NetX Duo is required, all Module and Module Manager C code should be built with <strong>TXM_MODULE_ENABLE_NETX_DUO</strong> defined.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_manager_sources"><a class="anchor" href="#_module_manager_sources"></a>Module Manager sources</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The ThreadX Module Manager has a set of source files that are designed to be linked and located directly with the resident ThreadX code. These files provide the ability to launch a module and field subsequent ThreadX API requests from the module. The module manager files are as follows.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>File Name</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Contents</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module.h</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Include file that defines module information (also included in the module source code).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_dispatch.h</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Include file that defines dispatch helper functions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_util.h</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Include file that defines internal utility helper macros &amp; functions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_port.h</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Include file that defines port-specific module information (also included in the module source code).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>tx_initialize_low_level.[s,S,68]</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Replaces existing ThreadX library file. Updated vector table and additional vector handlers for module manager and memory exceptions. <em>This file is only in Cortex-A7/ARM, Cortex-M7/ARM, Cortex-R4/ARM, Cortex-R4/IAR, MCF544xx/GHS, RX63/IAR, RX65N/IAR.</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>tx_thread_context_restore.s</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Replaces existing ThreadX library file. Restore thread context after interrupt processing. <em>This file is only in Cortex-A7/ARM, Cortex-R4/ARM, Cortex-R4/IAR.</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>tx_thread_schedule.[s,S,68]</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Replaces existing ThreadX library file. Extended scheduler code, which in this case is used to update memory management registers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>tx_thread_stack_build.s</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Replaces existing ThreadX library file. Builds the stack frame of a thread. <em>This file is only in Cortex-A7/ARM, Cortex-R4/ARM, Cortex-R4/IAR.</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_thread_stack_build.[s,S,68]</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Builds all module initial stacks, includes setup for position-independent data access.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_user_mode_entry.[s,S]</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allows the module to enter kernel mode. <em>This file is only in Cortex-A7/ARM, Cortex-R4/ARM, Cortex-R4/IAR.</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_alignment_adjust.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Handles port-specific alignment requirements.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_application_request.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Handles the application-specific requests to the resident code.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_callback_request.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sends a callback request to a module.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_event_flags_notify_trampoline.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Processes the event flags set notification call from ThreadX.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_external_memory_enable.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Creates an entry in the memory management table for a shared memory space the module can access.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_file_load.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allocates and loads a binary module file into the module memory area and prepares it for execution.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_in_place_load.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allocates the module data area and prepares for module execution from the supplied code address.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_initialize.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Initializes the Module Manager, including specification of the module memory area available for loading and running modules.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_inside_data_check.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Decides whether a whole caller-supplied address range lies inside the module&#8217;s data or shared memory, and whether the module may reach it for reading or for writing. <em>This file is only in Cortex-A7/ARM</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_initialize_mmu.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Initialize MMU. Users can edit this file according to their memory map. <em>This file is only in Cortex-A7/ARM</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_mm_initialize.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Initialize MPU/MMU. Users can edit this file according to their memory map. <em>This file is only in Cortex-A7/ARM</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_kernel_dispatch.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Handles the module API requests, based on the request ID.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_maximum_module_priority_set.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the maximum thread priority allowed in a module.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_memory_fault_handler.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Handles memory faults detected in an executing module.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_memory_fault_notify.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Registers an application notification callback whenever a memory fault occurs.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_memory_load.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allocates and loads a module&#8217;s code and data and prepares the module for execution.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_mm_register_setup.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets up MPU/MMU registers for the module based on where the code and data are loaded.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_object_allocate.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allocates memory for a module object.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_object_deallocate.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deallocates memory for a module object.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_object_pointer_get.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Searches for the supplied object type and name, and if found, returns the object pointer.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_object_pointer_get_extended.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Searches for the supplied object type and name, and if found, returns the object pointer. Name length specified for safety.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_object_pool_create.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Creates a pool of objects outside the module&#8217;s data area that module applications can allocate from.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_properties_get.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gets the properties of the specified module.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_queue_notify_trampoline.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Processes the queue notification call from ThreadX.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_semaphore_notify_trampoline.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Processes the semaphore put notification call from ThreadX.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_start.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Starts execution of a module.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_stop.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stops execution of a module.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_thread_create.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Creates all module threads.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_thread_notify_trampoline.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Processes the thread entry/exit notification call from ThreadX.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_thread_reset.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reset a module thread.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_timer_notify_trampoline.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Processes timer expirations from ThreadX.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_unload.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unloads the module from the module memory area.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>txm_module_manager_util.c</em></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal helper functions for manager.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_manager_initialization"><a class="anchor" href="#_module_manager_initialization"></a>Module Manager initialization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The resident portion of the application is responsible for calling the Module Manager initialization function <strong><em>txm_module_manager_initialize</em></strong>. This function sets up the internal structures for loading and unloading modules, including setting up the memory area used for allocating module memory.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_manager_loading"><a class="anchor" href="#_module_manager_loading"></a>Module Manager loading</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Module Manager can load modules dynamically into the module memory from binary module files or from a module code section that is already present in the resident code area. In addition, the module manager can execute code in place, that is, only the module data is allocated in the module memory and the code execution is done in place. The following Module Manager load API functions are available.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>txm_module_manager_file_load</em></strong></p>
+</li>
+<li>
+<p><strong><em>txm_module_manager_in_place_load</em></strong></p>
+</li>
+<li>
+<p><strong><em>txm_module_manager_memory_load</em></strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The memory protected version of the Module Manager also makes sure that the module is loaded with the proper alignment and the memory management registers are set up properly for each module. When memory protection is enabled via the module preamble options, module memory access is restricted to the module code and data areas.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_manager_starting"><a class="anchor" href="#_module_manager_starting"></a>Module Manager starting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Module Manager initiates execution of a previously-loaded module via the <strong><em>txm_module_manager_start</em></strong> API function. To initiate module execution, this function creates a thread that enters the module at the starting location specified in the module preamble. The priority and stack size of this thread is also specified in the module preamble.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_manager_stopping"><a class="anchor" href="#_module_manager_stopping"></a>Module Manager stopping</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Module Manager terminates execution of a previously-loaded and executing module via the <strong><em>txm_module_manager_stop</em></strong> function. This API function first terminates and deletes the initial starting thread. If the module preamble specifies a stop thread, this thread is created and executed. The Module Manager waits for a fixed period of time for the stop thread to complete. Once complete, all system resources created by the module are deleted and the module is placed in a dormant state, from which it can be either restarted or unloaded.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_manager_unloading"><a class="anchor" href="#_module_manager_unloading"></a>Module Manager unloading</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Module Manager unloads a previously-loaded but not executing module via the <strong><em>txm_module_manager_unload</em></strong> function. This API releases all memory associated with the module, freeing it for use with another module in the future.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_manager_requests"><a class="anchor" href="#_module_manager_requests"></a>Module Manager requests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Requests made by modules to the Module Manager are done via macros in <strong><em>txm_module.h</em></strong> that map all ThreadX calls to call the Module Manager dispatch function via a function pointer supplied to the module by the Module Manager.</p>
+</div>
+<div class="paragraph">
+<p>Additional application-specific services made via the module calling <strong><em>txm_module_application_request</em></strong> are handled by the same macro mechanism used for the ThreadX API. By default, this handling function in the Module Manager is empty and designed such that the application adds the necessary code to process the application-specific requests.</p>
+</div>
+<div class="paragraph">
+<p>If the request is not implemented by the Module Manager, a value of <strong>TX_NOT_AVAILABLE</strong> error status is returned by the Module Manager. This error code is also returned if the module requests an operation that is outside the scope of the module&#8217;s access. For example, a module is not allowed to create a timer with the timer control block or callback address outside of the module&#8217;s code area.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_manager_pointer_validation"><a class="anchor" href="#_module_manager_pointer_validation"></a>Module Manager pointer validation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Every pointer a module passes to a ThreadX service is validated by the Module Manager before privileged code reads or writes through it. The dispatch code hands the port three things: the module instance making the request, the first address of the range, and the range&#8217;s full size in bytes. A port must answer for the whole range, not merely for its first address.</p>
+</div>
+<div class="paragraph">
+<p>The size the dispatch code passes is the number of bytes the service will touch, which is not always the number the module passed in. A queue&#8217;s message size is a count of <strong>ULONG</strong> words rather than of bytes, so <strong><em>tx_queue_send</em></strong>, <strong><em>tx_queue_front_send</em></strong> and <strong><em>tx_queue_receive</em></strong> each validate <code>message_size * sizeof(ULONG)</code> bytes of the caller&#8217;s buffer. A module&#8217;s message source, and its receive destination, must have that many bytes reachable from the address it passes.</p>
+</div>
+<div class="paragraph">
+<p>The rules a port applies are the same everywhere:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A range is accepted only if <strong>every</strong> byte of it is reachable by the requesting module. A range that starts inside the module&#8217;s memory and continues past the end of it is rejected.</p>
+</li>
+<li>
+<p>A zero-length range is rejected, and so is one whose last byte would fall past the top of the address space.</p>
+</li>
+<li>
+<p>A range the kernel writes to must be writable by the module. The module&#8217;s own code, and shared memory registered read-only through <strong><em>txm_module_manager_external_memory_enable</em></strong>, may be read from but may not be used as an output destination.</p>
+</li>
+<li>
+<p>A range that is checked for being <strong>outside</strong> the module must have no byte inside it. A range that reaches into the module&#8217;s memory only partway is neither inside nor outside, and is rejected by both checks.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A rejected pointer causes the service to return <strong>TXM_MODULE_INVALID_MEMORY</strong> rather than being carried into the kernel.</p>
+</div>
+<div class="sect2">
+<h3 id="_kernel_object_validation"><a class="anchor" href="#_kernel_object_validation"></a>Kernel object validation</h3>
+<div class="paragraph">
+<p>A range check answers whether privileged code may touch some memory. It cannot answer whether the memory <strong>is</strong> the object a service was asked to operate on, and for a kernel object that is the question that matters. The Module Manager&#8217;s object pool lies outside every module, so an address pointing into the middle of one of a module&#8217;s own privileged allocations is outside the module and would pass a range check while denoting no object at all. The bytes at such an address are bytes the module placed there through ordinary create and set services, including the control block ID at the front of them, so the ID alone establishes nothing.</p>
+</div>
+<div class="paragraph">
+<p>Every service that takes a kernel object therefore authenticates it separately, and the rule is exact:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The address must be the <strong>exact</strong> address of a live kernel object of the type the service expects. An address inside an object is not that object, and neither is the address one past its end.</p>
+</li>
+<li>
+<p>Authentication is answered from the kernel&#8217;s created list for the type. That list is maintained by the create and delete services, so membership establishes at one stroke that the address is an object start, that the object is of the expected type, and that it has not been deleted.</p>
+</li>
+<li>
+<p>Memory obtained from <strong><em>txm_module_object_allocate</em></strong> is not an object until a create service has made it one. A raw allocation of exactly the right size is refused.</p>
+</li>
+<li>
+<p>A type is never taken from the object itself. Distinct object types of equal size exist, so an object created as one type is refused when presented as another even where the two control blocks are the same size.</p>
+</li>
+<li>
+<p>An address a module names is not read at all until a kernel record says there is an object there.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A rejected object causes the service to return <strong>TXM_MODULE_INVALID_MEMORY</strong>.</p>
+</div>
+<div class="paragraph">
+<p>The same rule is what allows an object the application created to be shared with a module. Such an object is not in the Module Manager&#8217;s object pool and the manager has no record of its own to consult, so the kernel created list stands in place of one. An application object found by <strong><em>txm_module_object_pointer_get</em></strong> is authenticated exactly as a module&#8217;s own object is, and needs no separate registration. It must have been created: a control block the application has declared but not yet created is not yet an object.</p>
+</div>
+<div class="paragraph">
+<p>What object authentication settles is identity, type and liveness. It does not settle whether the requesting module is <strong>authorised</strong> to operate on an authentic object that belongs to somewhere else. An application that shares objects between modules, or between itself and a module, decides that question for itself.</p>
+</div>
+<div class="paragraph">
+<p>Authenticating an object costs a walk of the created list for its type, bounded by the count the kernel maintains beside that list, and the walk runs with interrupts disabled because that is the protection the list is maintained under. It introduces no blocking point and no priority inversion into a kernel request. Only modules built with <strong>TXM_MODULE_MEMORY_PROTECTION</strong> pay it.</p>
+</div>
+<div class="paragraph">
+<p>Two services behave differently as a consequence:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>tx_thread_reset</em></strong> returns <strong>TX_NOT_DONE</strong> for a thread that is not a module thread. Resetting a thread rebuilds its stack around the shell entry function of the module that created it, and a thread the application created has no such module.</p>
+</li>
+<li>
+<p><strong><em>txm_module_object_deallocate</em></strong> clears the control block ID of the memory it gives back, so that memory returning to the pool carries no ID for whatever is allocated there next. Memory that still holds a live object is not released at all.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_object_ownership"><a class="anchor" href="#_object_ownership"></a>Object ownership</h3>
+<div class="paragraph">
+<p>Being allowed to use a kernel object is not the same as being allowed to destroy it, and the Module Manager asks the two questions separately.</p>
+</div>
+<div class="paragraph">
+<p>A module may pass any object outside its own memory to an ordinary service. That is what makes sharing work: <strong><em>txm_module_object_pointer_get_extended</em></strong> searches the system&#8217;s created objects by name and hands back objects the application created and objects other modules created, so that a module can send to a queue, take a semaphore or get a mutex that belongs to someone else.</p>
+</div>
+<div class="paragraph">
+<p>Deleting an object is the inverse of creating one, and it asks what creating one asks. A memory-protected module may delete a kernel object only if the object is one it allocated for itself from the Module Manager&#8217;s object pool, at the exact address the manager returned to it, and the allocation was made for an object of that type&#8217;s control block size. A module that names an object the application owns, an object another module owns, or an address that is not the start of one of its own allocations, gets <strong>TXM_MODULE_INVALID_MEMORY</strong> from the <strong><em>tx</em>*<em>delete</em></strong> service.</p>
+</div>
+<div class="paragraph">
+<p>The refusal happens before the kernel is asked to delete anything, which is the part that matters: the object stays created, nothing waiting on it is resumed with <strong>TX_DELETED</strong>, the created count for its type does not change, and the caller&#8217;s own objects are untouched. There is no state to undo, because none was changed.</p>
+</div>
+<div class="paragraph">
+<p>The rule also governs the memory. The address a module hands back is looked up in that module&#8217;s own allocation list rather than by reading the manager&#8217;s private header from in front of it, so an address the manager never gave that module — including one nowhere near the object pool — is refused without any privileged read of the words in front of it.</p>
+</div>
+<div class="paragraph">
+<p>Two of the eight object types are already unreachable by name for a memory-protected module: <strong><em>txm_module_object_pointer_get_extended</em></strong> refuses <strong>TXM_BLOCK_POOL_OBJECT</strong> and <strong>TXM_BYTE_POOL_OBJECT</strong> with <strong>TXM_MODULE_INVALID</strong>, so such a module can only name a block pool or byte pool it created itself or was given a pointer to by other means.</p>
+</div>
+<div class="paragraph">
+<p>Modules loaded without memory protection are not subject to this check, as they are not subject to the other pointer checks in the dispatch layer. <strong><em>txm_module_manager_stop</em></strong> is likewise unaffected: it deletes the objects a module created through the Module Manager&#8217;s own internal path rather than through a module request, so unloading a module still cleans up everything it created.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_object_memory"><a class="anchor" href="#_object_memory"></a>Object memory</h3>
+<div class="paragraph">
+<p>Memory a module obtains from the Module Manager&#8217;s object pool carries a private header immediately in front of the address the module is given, recording which module the allocation belongs to and how large it is. An address a module asks to have deallocated is therefore accepted only if it lies far enough inside the pool for that whole header to be in front of it, and if the allocation the header describes also ends inside the pool; anything else returns <strong>TXM_MODULE_INVALID_MEMORY</strong>, and the header is not read to reach that answer.</p>
+</div>
+<div class="paragraph">
+<p>The Module Manager will not release memory that holds a live kernel object. Giving an object&#8217;s memory back is not the same as deleting the object: the object would stay on the created list for its type, a thread would stay schedulable, and an active timer would stay on the timer list, while the pool went on to hand the same bytes to another allocation. <strong><em>txm_module_object_deallocate</em></strong> returns <strong>TX_DELETE_ERROR</strong> for such a request and changes nothing. Memory holding no live object — storage allocated for an object that was never created, or one that has since been deleted — is released as usual, which is how the dispatch layer releases an object&#8217;s memory for the module after a successful <strong><em>tx</em>*<em>delete</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>Whether an object is live is answered from the kernel&#8217;s own created lists rather than from the control block, because a control block ID is not evidence that an object is there: an allocation that was never created can be carrying the value of an ID, and objects of different types share a size.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cortex_a7_mmu_ports"><a class="anchor" href="#_cortex_a7_mmu_ports"></a>Cortex-A7 MMU ports</h3>
+<div class="paragraph">
+<p>On the Cortex-A7 MMU ports the module&#8217;s own data region is answered from the Module Manager&#8217;s records, which name it exactly. Shared and external memory has no such record, so the port asks the MMU to translate every page the range touches, using an unprivileged read or an unprivileged write according to what the service will do with it.</p>
+</div>
+<div class="paragraph">
+<p>Because a module chooses the size it passes, the number of pages a single request can ask the port to translate is bounded. <strong>TXM_MODULE_MANAGER_DATA_CHECK_MAX_PAGES</strong> sets that bound and defaults to 1024, which allows a 4 MB range. A range spanning more pages than this is rejected. An application that passes larger shared-memory ranges to ThreadX services can define a larger value before including <strong><em>txm_module_port.h</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>The check is only meaningful while the requesting module&#8217;s translation context is the one loaded in the processor, which is the case for a module&#8217;s own kernel requests. If the contexts do not match, the port reports the range as neither inside nor outside the module, and the service fails rather than acting on an answer that describes some other address space.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_manager_example"><a class="anchor" href="#_module_manager_example"></a>Module Manager example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following is an example of Module Manager code that launches the example module previously defined in Chapter 2. It is assumed that the module is already loaded, presumably by the debugger, at ROM address 0x00800000.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#include "tx_api.h"
+#include "txm_module.h"
+
+#define DEMO_STACK_SIZE 1024
+
+/* Define the ThreadX object control blocks. */
+TX_THREAD   module_manager;
+
+/* Define thread prototype. */
+void        module_manager_entry(ULONG thread_input);
+
+/* Define the module object pool area. */
+UCHAR       object_memory[8192];
+
+/* Define the module data pool area. */
+#define MODULE_DATA_SIZE 65536
+UCHAR       module_data_area[MODULE_DATA_SIZE];
+
+/* Define module instances. */
+TXM_MODULE_INSTANCE     my_module1;
+TXM_MODULE_INSTANCE     my_module2;
+
+/* Define the count of memory faults. */
+ULONG memory_faults;
+
+/* Define fault handler. */
+VOID module_fault_handler(TX_THREAD *thread, TXM_MODULE_INSTANCE *module)
+{
+    /* Just increment the fault counter. */
+    memory_faults++;
+}
+
+/* Define main entry point. */
+int main()
+{
+    /* Enter the ThreadX kernel. */
+    tx_kernel_enter();
+}
+
+/* Define what the initial system looks like. */
+void tx_application_define(void *first_unused_memory)
+{
+    /* Create the module manager thread. */
+    tx_thread_create(&amp;module_manager, "Module Manager Thread", module_manager_entry, 0,
+                    first_unused_memory, DEMO_STACK_SIZE,
+                    1, 1, TX_NO_TIME_SLICE, TX_AUTO_START);
+}
+
+/* Define the test threads. */
+void module_manager_entry(ULONG thread_input)
+{
+    /* Initialize the module manager. */
+    txm_module_manager_initialize((VOID *) module_data_area, MODULE_DATA_SIZE);
+
+    /* Create a pool for module objects. */
+    txm_module_manager_object_pool_create(object_memory, sizeof(object_memory));
+
+    /* Register a fault handler. */
+    txm_module_manager_memory_fault_notify(module_fault_handler);
+
+    /* Load the module that is already there,
+        in this example it is placed at 0x00800000. */
+    txm_module_manager_in_place_load(&amp;my_module1, "my module1", (VOID *) 0x00800000);
+
+    /* Load a second instance of the module. */
+    txm_module_manager_in_place_load(&amp;my_module2, "my module2", (VOID *) 0x00800000);
+
+    /* Enable shared memory region for module2. */
+    txm_module_manager_external_memory_enable(&amp;my_module2, (void*)0x20600000, 0x010000, 0x3F);
+
+    /* Start the modules. */
+    txm_module_manager_start(&amp;my_module1);
+    txm_module_manager_start(&amp;my_module2);
+
+    /* Sleep for a while and let the modules run... */
+    tx_thread_sleep(300);
+
+    /* Stop the modules. */
+    txm_module_manager_stop(&amp;my_module1);
+    txm_module_manager_stop(&amp;my_module2);
+
+    /* Unload the modules. */
+    txm_module_manager_unload(&amp;my_module1);
+    txm_module_manager_unload(&amp;my_module2);
+
+    /* Reload the modules. */
+    txm_module_manager_in_place_load(&amp;my_module2, "my module2", (VOID *) 0x00800000);
+    txm_module_manager_in_place_load(&amp;my_module1, "my module1", (VOID *) 0x00800000);
+
+    /* Give both modules shared memory. */
+    txm_module_manager_external_memory_enable(&amp;my_module2, (void*)0x20600000, 0x010000, 0x3F);
+    txm_module_manager_external_memory_enable(&amp;my_module1, (void*)0x20600000, 0x010000, 0x3F);
+
+    /* Set maximum module1 priority to 5. */
+    txm_module_manager_maximum_module_priority_set(&amp;my_module1, 5);
+
+    /* Start the modules again. */
+    txm_module_manager_start(&amp;my_module2);
+    txm_module_manager_start(&amp;my_module1);
+
+    /* Now just spin... */
+    while(1)
+    {
+        tx_thread_sleep(100);
+
+        /* Threads 0 and 5 in module1 are not created because they violate the maximum priority. */
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_module_manager_building"><a class="anchor" href="#_module_manager_building"></a>Module Manager building</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <strong><em>txm_module_manager</em>*_</strong> source files must be added to the ThreadX library.</p>
+</div>
+<div class="paragraph">
+<p>A ThreadX Module Manager application is effectively the same as a standard ThreadX application, which is one or more application files linked together with the ThreadX library <strong><em>tx.a</em></strong>. Building a module manager application is dependent on the tool chain being used. See <a href="appendix.html" class="xref page">appendix</a> for port-specific examples.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

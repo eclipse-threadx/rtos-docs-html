@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>What Phase 0 demonstrates, and what it does not :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/zonex/main/what-phase-0-demonstrates.html">
+    <meta name="description" content="The evidenced claim for ZoneX Phase 0, the measurements behind it, and the boundary of what it establishes.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="zonex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">ZoneX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">ZoneX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">ZoneX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ZoneX guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="overview.html">Overview of ZoneX</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="what-phase-0-demonstrates.html">What Phase 0 demonstrates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="platform-requirements.html">Platform requirements and the region budget</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="writing-a-manifest.html">Writing a partition manifest</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="roadmap.html">Later phases</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ZoneX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">ZoneX User Guide</a></li>
+    <li><a href="index.html">ZoneX</a></li>
+    <li>ZoneX guide</li>
+    <li><a href="what-phase-0-demonstrates.html">What Phase 0 demonstrates</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/zonex/modules/ROOT/pages/what-phase-0-demonstrates.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">What Phase 0 demonstrates, and what it does not</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>ZoneX is at Phase 0. This page is the claim and the non-claim, and it is written to be quoted: if you are deciding whether ZoneX can carry a function you care about, this is the page that answers it.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Phase 0 is a demonstrator, not production software.</strong> It was built to establish that a small set of mechanisms work on real Armv8-R silicon and to measure what they cost. Every timing figure below comes from one part on one bench, with the EL2 caches off, built for debuggability rather than speed, and with no clock tree configured&#8201;&#8212;&#8201;the core runs on the part&#8217;s power-up oscillator. Read them as a first measurement with its conditions stated, not as characterisation across a population.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_it_demonstrates"><a class="anchor" href="#_what_it_demonstrates"></a>What it demonstrates</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Two ThreadX kernels run at EL1 on one logical Cortex-R52 core, each confined to its own stage-2 window, time-sharing the core under a static major frame taken from a manifest&#8201;&#8212;&#8201;on the Armv8-R AEM fixed virtual platform and on the NXP S32Z280-594EVB.</p>
+</div>
+<div class="paragraph">
+<p><strong>Neither partition can reach the other&#8217;s memory, or the hypervisor&#8217;s.</strong> Not by convention: a partition that grants itself its neighbour&#8217;s memory in its own EL1 memory protection unit is still refused by stage 2, stopped, and reported with the partition, the faulting address and the guest program counter. The other partition runs to the end of the frame with its schedule untouched, so being attacked costs the neighbour nothing.</p>
+</div>
+<div class="paragraph">
+<p><strong>A window ends whether the partition agrees or not.</strong> The hypervisor&#8217;s timer is routed as a fast interrupt to EL2, which the architecture does not let a guest mask. A partition that masks everything it can and spins for ever is preempted exactly on schedule.</p>
+</div>
+<div class="paragraph">
+<p><strong>Each partition&#8217;s clock is its own</strong>, and advances in its own windows and in nobody else&#8217;s.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_temporal_claim_stated_exactly"><a class="anchor" href="#_the_temporal_claim_stated_exactly"></a>The temporal claim, stated exactly</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is the sentence that matters, and it has two halves because the causes are different.</p>
+</div>
+<div class="paragraph">
+<p><strong>Nothing a partition does through the schedule reaches its neighbour.</strong> Computing, masking its own interrupts and violating its boundary without pause each move the critical partition&#8217;s period by tens of counts.</p>
+</div>
+<div class="paragraph">
+<p><strong>What reaches it is the hypervisor&#8217;s own console driver.</strong> A guest that prints moves that period by up to one line tag&#8201;&#8212;&#8201;22 bytes at 115,200 8N1, 17,640 counts of the board&#8217;s 8 MHz counter&#8201;&#8212;&#8201;every run. That is a defect in ZoneX, not a limit of the partitioning, and it is bounded, derived and reproducible.</p>
+</div>
+<div class="sect2">
+<h3 id="_the_measurement_behind_it"><a class="anchor" href="#_the_measurement_behind_it"></a>The measurement behind it</h3>
+<div class="paragraph">
+<p>A regression sweeps fourteen isolation cases in one run and measures the critical partition&#8217;s window period continuously while the untrusted partition is steered through five behaviours. Measured on the S32Z280-594EVB over six hundred major frames, with a window of 80,000 counts of an 8 MHz counter and a major frame of 800,000:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 42.8571%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2858%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">While the untrusted partition is…</th>
+<th class="tableblock halign-left valign-top">min</th>
+<th class="tableblock halign-left valign-top">mean</th>
+<th class="tableblock halign-left valign-top">max</th>
+<th class="tableblock halign-left valign-top">spread</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">idle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">799,989</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">799,999</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">800,011</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">in a tight compute loop</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">799,990</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">799,999</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">800,010</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">computing with its own interrupts masked</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">799,989</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">799,999</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">800,013</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">storming the console</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">791,111</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">800,085</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">809,062</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17,951</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">violating its boundary on every iteration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">799,922</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">800,000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">800,107</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">185</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The last row is the comparison that carries the claim: the untrusted partition committed a hundred and three thousand boundary violations in that phase, and its neighbour&#8217;s period moved by under two hundred counts out of eight hundred thousand.</p>
+</div>
+<div class="paragraph">
+<p>An independent run six days earlier, on an earlier revision of the same code, produced 21, 21, 22 and 304 counts for those rows and 17,830 for the console&#8201;&#8212;&#8201;agreeing with the table to within the run-to-run scatter, and showing the same 22-byte console hypercall. The figures above are therefore a reproduced measurement rather than one run&#8217;s luck, which is the only basis on which a single bench is worth quoting at all.</p>
+</div>
+<div class="paragraph">
+<p>The console row is the hypervisor&#8217;s defect. A guest&#8217;s console is one hypercall per character, answered at EL2 with fast interrupts masked, so the interrupt that ends a window waits for it. Nearly every one of those hypercalls writes the single byte the guest asked for. The one that opens a line writes twenty-two&#8201;&#8212;&#8201;a deferred newline, the tag naming the partition, and the guest&#8217;s own character&#8201;&#8212;&#8201;and that is 106,116 core cycles, 2.2 ms, with the boundary interrupt held off throughout.</p>
+</div>
+<div class="paragraph">
+<p>The bound is one line tag, and it is derived rather than observed. A period is a difference between two window entries, so a constant deferral cancels in it and only a change reaches the number: one long period and one short correction, 35,280 counts against a half-window bound of 40,000. Every other phase is held to one eighth of a window.</p>
+</div>
+<div class="paragraph">
+<p><strong>What removes it is a console the hypervisor can hand a byte to without waiting for the wire</strong>, which is an interrupt-driven driver plus a polled fallback the fault path can force&#8201;&#8212;&#8201;because the fault reporter prints at the moment ZoneX has already failed once. That work is named and costed in the repository and is not done.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_it_does_not_demonstrate"><a class="anchor" href="#_what_it_does_not_demonstrate"></a>What it does not demonstrate</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>It is not spatial partitioning across cores.</strong> Dual-core lockstep presents as one logical core, so Phase 0 is temporal and memory partitioning on a single core. Spatial partitioning across multiple cores needs split-mode symmetric multiprocessing and is deferred.</p>
+</div>
+<div class="paragraph">
+<p><strong>Interrupt latency is not measured at all.</strong> Guest interrupts go straight to EL1 and cost what they always did. Bounding them needs the interrupt controller&#8217;s list registers, which this core has and this phase does not use.</p>
+</div>
+<div class="paragraph">
+<p><strong>There is no structural coverage of the port.</strong> The architecture-independent core is held to a full line and branch coverage floor enforced by the build. The port&#8201;&#8212;&#8201;the coprocessor assembly, the EL2 vectors, memory protection unit programming and the context switch&#8201;&#8212;&#8201;cannot be measured that way from a workstation, and instrumenting it on the target would change the code generation of the thing being measured. Its evidence is a set of builds that must fail, each on the check it was built to violate. Structural and modified condition/decision coverage of the port need their own tooling and are a later concern; no number published for ZoneX today stands in for them.</p>
+</div>
+<div class="paragraph">
+<p><strong>And these are not in Phase 0 at all:</strong> interrupt virtualisation with a bounded worst-case latency, inter-partition communication, the full time-partition scheduler, supervised partition restart, TraceX integration, and the safety-artifact package. See <a href="roadmap.html" class="xref page">Later phases</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_the_claim_is_written_this_way"><a class="anchor" href="#_why_the_claim_is_written_this_way"></a>Why the claim is written this way</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The unqualified sentence was available. Stating that a partition&#8217;s period is unaffected by anything its neighbour does, and leaving the console out of it, would have read better and would have been an overclaim that a customer&#8217;s own bench would find.</p>
+</div>
+<div class="paragraph">
+<p>A qualified claim with a number attached is the stronger artifact, and it is the one a safety-savvy reader can act on: the mechanism is named, the cost is measured, the bound is derived from the mechanism rather than fitted to a run, and the cure is scoped.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

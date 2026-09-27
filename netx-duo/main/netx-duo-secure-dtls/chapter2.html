@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 2: Installation and use of NetX Duo Secure DTLS :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-secure-dtls/chapter2.html">
+    <meta name="description" content="This chapter contains a description of various issues related to installation, setup, and usage of the NetX Duo Secure DTLS component.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo User Guide</a></li>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo Secure DTLS user guide</li>
+    <li><a href="chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-secure-dtls/chapter2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 2: Installation and use of NetX Duo Secure DTLS</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of various issues related to installation, setup, and usage of the NetX Duo Secure DTLS component.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_product_distribution"><a class="anchor" href="#_product_distribution"></a>Product Distribution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo Secure is available at <a href="https://github.com/eclipse-threadx/netxduo" class="bare">https://github.com/eclipse-threadx/netxduo</a>. The package includes source files, include files, and a PDF file that contains this document, as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>nx_secure_dtls_api.h</strong> Public API header file for NetX Duo Secure DTLS</p>
+</li>
+<li>
+<p><strong>nx_secure_dtls_user.h</strong> User defines header file for NetX Duo Secure DTLS</p>
+</li>
+<li>
+<p><strong>nx_secure_ port.h</strong> Platform-specific definitions for NetX Duo Secure</p>
+</li>
+<li>
+<p><strong>nx_secure_dtls.h</strong> Header file for NetX Duo Secure DTLS</p>
+</li>
+<li>
+<p><strong>nx_secure_tls.h</strong> Header file for NetX Duo Secure TLS</p>
+</li>
+<li>
+<p><strong>nx_secure_dtls</strong>.c/h* C/H Source files for NetX Duo Secure DTLS</p>
+</li>
+<li>
+<p><strong>nx_secure_tls</strong>.c/h* C/H Source files for NetX Duo Secure TLS</p>
+</li>
+<li>
+<p><strong>nx_crypto</strong>.c/h* C/H Source files for NetX Duo Secure Cryptography</p>
+</li>
+<li>
+<p><strong>nx_secure_x509</strong>.c/h* C/H Source files for X.509 digital certificates.</p>
+</li>
+<li>
+<p><strong>demo_netx_secure_dtls.c</strong> C Source file for NetX Duo Secure DTLS Demo</p>
+</li>
+<li>
+<p><strong>NetX_Secure_DTLS_User_Guide.pdf</strong> PDF description of NetX Duo Secure product</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The nx_crypto* files are provided for different hardware platforms in a subdirectory of the NetX Duo Secure parent directory.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_secure_dtls_installation"><a class="anchor" href="#_netx_duo_secure_dtls_installation"></a>NetX Duo Secure DTLS Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to use NetX Duo Secure DTLS, the entire distribution mentioned previously should be copied to the same directory level where NetX Duo is installed. For example, if NetX Duo is installed in the directory "<em>\threadx\arm7\NetX</em>" then the <em>nx_secure*.*</em> directories should be copied into "<em>\threadx\arm7\NetXSecure</em>".</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_netx_duo_secure_dtls"><a class="anchor" href="#_using_netx_duo_secure_dtls"></a>Using NetX Duo Secure DTLS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using NetX Duo Secure DTLS is straightforward. The application code must include <em>nx_secure_dtls_api.h</em> after it includes <em>tx_api.h</em> and <em>nx_api.h</em> (which are for ThreadX and NetX Duo, respectively). Once <em>nx_secure_dtls_api.h</em> is included, the application code is then able to make the NetX Duo Secure DTLS function calls specified later in this guide. The application must also import the <em>nx_secure*.<strong></em> files into a NetXSecure library, and the platform-specific <em>nx_crypto</strong>.*</em> files into a NetXCrypto library which are then linked into the final application binary.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_small_example_system_dtls_client"><a class="anchor" href="#_small_example_system_dtls_client"></a>Small Example System (DTLS Client)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An example of how easy it is to use NetX Duo Secure DTLS is described below and demonstrates a simple DTLS Client, designed to work with an OpenSSL (or similar) DTLS server. Note that the DTLS client program structure is very similar to a NetX Duo Secure TLS Client (see NetX Duo Secure TLS documentation). This is because the DTLS protocol is essentially a version of TLS for use over unreliable transport network protocols such as UDP.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">#include "tx_api.h"
+#include "nx_api.h"
+#include "nx_secure_dtls_api.h"
+
+/* Define the size of our application stack. */
+#define     DEMO_STACK_SIZE             4096
+
+/* Define the remote server IP address using NetX IP_ADDRESS macro. */
+#define     REMOTE_SERVER_IP_ADDRESS      IP_ADDRESS(192, 168, 1, 1)
+
+/* Define the remote server port. */
+#define     REMOTE_SERVER_PORT           4443
+
+/* Define the size of the buffer used for incoming certificates. The
+   Buffer will contain both the raw certificate data and an instance
+   of the NX_SECURE_X509_CERT structure used for X.509 parsing. */
+#define     REMOTE_CERT_BUFFER_SIZE     (sizeof(NX_SECURE_X509_CERT) + 2000)
+
+/* Define the number of certificates we expect to receive from the server
+   so we can allocate enough space for them. */
+#define     REMOTE_CERT_NUMBER          2
+
+/* Define the ThreadX and NetX object control blocks...  */
+
+NX_PACKET_POOL          pool_0;
+NX_IP                   ip_0;
+NX_UDP_SOCKET udp_socket;
+NX_SECURE_DTLS_SESSION dtls_session;
+NX_SECURE_X509_CERTIFICATE dtls_certificate;
+
+/* Define space for remote certificate storage. The size of the
+buffer is determined by the expected number of certificates times
+the expected size of each certificate.   */
+UCHAR remote_certificate_buffer[REMOTE_CERT_BUFFER_SIZE * REMOTE_CERT_NUMBER];
+
+/* Define some data to send to the DTLS server. */
+UCHAR request_data[] = { … };
+
+/* Define the IP thread's stack area.  */
+ULONG ip_thread_stack[3 * 1024 / sizeof(ULONG)];
+
+/* Define packet pool for the demonstration.  */
+#define NX_PACKET_POOL_SIZE ((1536 + sizeof(NX_PACKET)) * 32)
+
+ULONG packet_pool_area[NX_PACKET_POOL_SIZE/sizeof(ULONG) + 64 / sizeof(ULONG)];
+
+/* Define the ARP cache area.  */
+ULONG arp_space_area[512 / sizeof(ULONG)];
+
+/* Define the DTLS Client thread.  */
+ULONG             dtls_client_thread_stack[6 * 1024 / sizeof(ULONG)];
+TX_THREAD         dtls_client_thread;
+void              client_thread_entry(ULONG thread_input);
+
+/* Define the DTLS packet reassembly buffer. */
+UCHAR dtls_packet_buffer[4000];
+
+/* Define the metadata area for TLS cryptography. The actual size needed can be
+   Ascertained by calling nx_secure_tls_metadata_size_calculate.
+*/
+UCHAR dtls_crypto_metadata[14000];
+
+/* Pointer to the TLS/DTLS ciphersuite table that is included in the platform-
+specific cryptography subdirectory. The table maps the cryptographic routines for
+the platform to function pointers usable by the DTLS library.
+*/
+extern const NX_SECURE_TLS_CRYPTO nx_crypto_tls_ciphers;
+
+/* Binary data for the DTLS Client X.509 trusted root CA certificate: ASN.1 DER-
+   encoded. A trusted certificate must be provided for TLS/DTLS Client applications
+   (unless an alternate authentication mechanism is used, such as PSK) or DTLS will
+treat all certificates as untrusted and the handshake will fail.
+*/
+const UCHAR trusted_ca_data[] = { … }; /* DER-encoded binary certificate. */
+const UINT trusted_ca_length[] = 0x574;
+
+/* Define the application – initialize drivers and UDP setup.  */
+void    tx_application_define(void *first_unused_memory)
+{
+    UINT  status;
+
+    /* Initialize the NetX system.  */
+    nx_system_initialize();
+
+    /* Create a packet pool. Check status for errors. */
+    status =  nx_packet_pool_create(&amp;pool_0, "NetX Main Packet Pool", 1536,
+   (ULONG*)(((int)packet_pool_area + 64) &amp; ~63) ,
+   NX_PACKET_POOL_SIZE);
+
+    /* Create an IP instance for the specific target. Check status for errors. */
+    status = nx_ip_create(&amp;ip_0, …);
+
+    /* Enable ARP and supply ARP cache memory for IP Instance 0. Check status for
+         errors. */
+    status =  nx_arp_enable(&amp;ip_0, (void *)arp_space_area, sizeof(arp_space_area));
+
+    /* Enable UDP traffic. Check status for errors. */
+    status =  nx_udp_enable(&amp;ip_0);
+
+    status =  nx_ip_fragment_enable(&amp;ip_0);
+
+    /* Initialize the NetX Duo Secure TLS/DTLS system.  */
+   nx_secure_tls_initialize();
+
+    /* Create the client thread to start handling incoming requests. */
+    tx_thread_create(&amp;dtls_client_thread, "DTLS Client thread", client_thread_entry,
+        0, dtls_client_thread_stack, sizeof(dtls_client_thread_stack),
+        16, 16, 4, TX_AUTO_START);
+}
+
+     /* Thread to handle the DTLS Client instance. */
+void client_thread_entry(ULONG thread_input)
+{
+    UINT       status;
+    NX_PACKET *send_packet;
+    NX_PACKET *receive_packet;
+    UCHAR receive_buffer[100];
+    ULONG bytes;
+    ULONG server_ipv4_address;
+
+     /* We are not using the thread input parameter so suppress compiler warning. */
+    NX_PARAMETER_NOT_USED(thread_input);
+
+    /* Ensure the IP instance has been initialized.  */
+    status =  nx_ip_status_check(&amp;ip_0, NX_IP_INITIALIZE_DONE, &amp;actual_status,
+        NX_IP_PERIODIC_RATE);
+
+    /* Check status for errors... */
+
+    /* Create a UDP socket to use for our DTLS session.  */
+    status =  nx_udp_socket_create(&amp;ip_0, &amp;udp_socket, "DTLS Client Socket",
+        NX_IP_NORMAL, NX_FRAGMENT_OKAY, NX_IP_TIME_TO_LIVE, 8192);
+
+    /* Check status for errors... */
+
+    /* Create a DTLS session for our socket. This sets up the DTLS session object for
+            later use with encryption, packet buffer space for decryption, and buffer
+    space for incoming server X.509 certificates. */
+    status =  nx_secure_dtls_session_create(&amp;dtls_session,
+        &amp;nx_crypto_tls_ciphers,
+        tls_crypto_metadata,
+        sizeof(tls_crypto_metadata),
+        dtls_packet_buffer,
+        sizeof(dtls_packet_buffer),
+        REMOTE_CERT_NUMBER,
+        remote_certificate_buffer,
+        sizeof(remote_certificate_buffer) );
+
+    /* Initialize an X.509 certificate with our CA root certificate data. */
+    nx_secure_x509_certificate_initialize(&amp;certificate, trusted_ca_data,
+        trusted_ca_length, NX_NULL, 0, NX_NULL, 0,
+        NX_SECURE_X509_KEY_TYPE_NONE);
+
+    /* Add the initialized certificate as a trusted root certificate. */
+    nx_secure_dtls_session_trusted_certificate_add(&amp;dtls_session, &amp;certificate);
+
+    /* Setup this thread to open a connection on the UDP socket to a remote server.
+       The IP address can be used directly or it can be obtained via DNS or other
+       means.  */
+   server_ipv4_address = REMOTE_SERVER_IP_ADDRESS;
+
+   /* Check for errors…  */
+
+    /* Start the DTLS Session using the given UDP socket, remote server IP Address,
+        and remote server port. */
+    status = nx_secure_dtls_client_session_start(&amp;dtls_session, &amp;udp_socket,
+        &amp;ip_address, REMOTE_SERVER_PORT, NX_WAIT_FOREVER);
+
+        /* Allocate a DTLS packet to send some encrypted data to the server. */
+        status = nx_secure_dtls_packet_allocate(&amp;dtls_session, &amp;pool_0, &amp;send_packet,
+     NX_TLS_PACKET, NX_WAIT_FOREVER);
+
+        /* Check for errors…  */
+
+         /* Populate the packet with some data. */
+        nx_packet_data_append(send_packet, request_data, sizeof(request_data), &amp;pool_0,
+            NX_WAIT_FOREVER);
+
+         /* Send the request over the DTLS Session, encrypting it before sending. */
+    status = nx_secure_dtls_session_send(&amp;dtls_session, send_packet, NX_WAIT_FOREVER);
+
+        /* Check for errors…  */
+        if (status)
+        {
+              /* Release the packet since we could not send it.  */
+              nx_packet_release(send_packet);
+        }
+
+     /* Receive the response from the server. */
+    status = nx_secure_dtls_session_receive(&amp;dtls_session, &amp;receive_packet,
+       NX_WAIT_FOREVER);
+
+    /* Extract the data we received from the remote server. */
+    status = nx_packet_data_extract_offset(receive_packet, 0, receive_buffer, 100,
+        &amp;bytes);
+    /* Display the response data. */
+    receive_buffer[bytes] = 0;
+    printf("Received data: %s\n", receive_buffer)
+     /* End the DTLS session now that we have received our response. */
+    status = nx_secure_dtls_session_end(&amp;tls_session, NX_WAIT_FOREVER)
+
+     /* Check for errors to make sure the session ended cleanly. */
+     /* Clean up the UDP socket. */
+    status =  nx_udp_socket_delete(&amp;udp_socket)
+
+    /* Check for errors... */
+
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_small_example_system_dtls_server"><a class="anchor" href="#_small_example_system_dtls_server"></a>Small Example System (DTLS Server)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An example of how easy it is to use NetX Duo Secure is described in Figure 1.2, which appears below and demonstrates a simple DTLS Server. Note that the DTLS Server functionality is quite different from DTLS Client and TLS Client/Server since the DTLS Server needs to manage multiple incoming client requests on a single UDP port (stored in the DTLS Server instance).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">#include "tx_api.h"
+#include "nx_api.h"
+#include "nx_secure_dtls_api.h"
+
+#define     DEMO_STACK_SIZE         4096
+
+/* Define the ThreadX and NetX object control blocks.
+   NOTE: These must be initialized for the target platform. See the
+   NetX documentation for details. */
+
+NX_PACKET_POOL          pool_0;
+NX_IP                   ip_0;
+
+/* Define the IP thread's stack area.  */
+ULONG ip_thread_stack[3 * 1024 / sizeof(ULONG)];
+
+/* Define packet pool for the demonstration.  */
+#define NX_PACKET_POOL_SIZE ((1536 + sizeof(NX_PACKET)) * 32)
+
+ULONG packet_pool_area[NX_PACKET_POOL_SIZE/sizeof(ULONG) + 64 / sizeof(ULONG)];
+
+/* Define the ARP cache area.  */
+ULONG arp_space_area[512 / sizeof(ULONG)];
+
+
+/* Define the DTLS Server thread.  */
+ULONG             dtls_server_thread_stack[6 * 1024 / sizeof(ULONG)];
+TX_THREAD         dtls_server_thread;
+void              server_thread_entry(ULONG thread_input);
+
+/* Define the DTLS packet reassembly buffer. */
+UCHAR packet_buffer[4000];
+
+/* Define the metadata area for TLS/DTLS cryptography. The actual size needed can be
+   Ascertained by calling nx_secure_tls_metadata_size_calculate.
+*/
+UCHAR crypto_metadata_buffer[4000];
+
+/* Pointer to the TLS ciphersuite table that is included in the platform-specific
+   cryptography subdirectory. The table maps the cryptographic routines for the
+   platform to function pointers usable by the TLS library. The TLS structure is also
+   used for DTLS. See the NetX Duo Secure TLS User Guide for more information.
+*/
+extern const NX_SECURE_TLS_CRYPTO nx_crypto_tls_ciphers;
+
+/* Define our server certificate structure. */
+NX_SECURE_X509_CERTIFICATE certificate;
+
+/* DER-encoded certificate data for the server identity X.509 certificate. */
+UCHAR device_cert_der[] = { … };
+UCHAR device_cert_der_length[] = { … };
+UCHAR device_cert_key_der[] = { … };
+UCHAR device_cert_key_der_length[] = { … };
+
+/* Define the number of sessions we want to allocate to our DTLS Server. */
+#define DTLS_SERVER_SESSIONS (3)
+
+/* Our DTLS Server instance. */
+NX_SECURE_DTLS_SERVER dtls_server;
+
+/* Allocate space for DTLS sessions in the DTLS server. */
+UCHAR dtls_server_session_buffer[sizeof(NX_SECURE_DTLS_SESSION) * DTLS_SERVER_SESSIONS];
+
+/* Flag used to indicate that a DTLS Client has connected. */
+UINT connect_flag = 0;
+
+/* Flag used to indicate application data reception. */
+UINT receive_flag = 0;
+
+/* Pointer to newly-connected DTLS session.
+   NOTE: In practice this should be an array or list in case a new connection is
+         attempted while a previous session is being started. */
+NX_SECURE_DTLS_SESSION *new_dtls_session;
+
+/* Pointer to session for application data receive. NOTE: Should be an array or list as
+   with new_dtls_session */
+NX_SECURE_DTLS_SESSION *receive_dtls_session;
+
+/* Connect notify callback routine. */
+UINT dtls_server_connect_notify(NX_SECURE_DTLS_SESSION *dtls_session,
+    NXD_ADDRESS *ip_address, UINT port)
+{
+    /* NOTE: proper inter-thread communication procedures (e.g. mutex handling)
+             Omitted for clarity. */
+
+    /* Notify application thread that a connection request has been received. */
+    connect_flag = 1;
+    new_dtls_session = dtls_session;
+
+    return(NX_SUCCESS);
+}
+
+/* Receive notify callback routine invoked when DTLS application data is received
+   on an existing DTLS server session. */
+UINT dtls_server_receive_notify(NX_SECURE_DTLS_SESSION *dtls_session)
+{
+    /* Receive and process DTLS record.
+       NOTE: Mutex handling omitted for clarity. */
+    receive_flag = 1;
+    receive_dtls_session = dtls_session;
+
+    return(NX_SUCCESS);
+}
+
+/* Define the application – initialize drivers and UDP setup.  */
+void    tx_application_define(void *first_unused_memory)
+{
+    UINT  status;
+
+    /* Initialize the NetX system.  */
+    nx_system_initialize();
+
+    /* Create a packet pool. Check status for errors. */
+    status =  nx_packet_pool_create(&amp;pool_0, "NetX Main Packet Pool", 1536,
+   (ULONG*)(((int)packet_pool_area + 64) &amp; ~63) ,
+   NX_PACKET_POOL_SIZE);
+
+    /* Create an IP instance for the specific target. Check status for errors. */
+    status = nx_ip_create(&amp;ip_0, …);
+
+    /* Enable ARP and supply ARP cache memory for IP Instance 0. Check status for
+         errors. */
+    status =  nx_arp_enable(&amp;ip_0, (void *)arp_space_area, sizeof(arp_space_area));
+
+    /* Enable UDP traffic. Check status for errors. */
+    status =  nx_udp_enable(&amp;ip_0);
+
+    status =  nx_ip_fragment_enable(&amp;ip_0);
+
+    /* Initialize the NetX Duo Secure TLS/DTLS system.  */
+    nx_secure_tls_initialize();
+
+     /* Create the server thread to start handling incoming requests. */
+    tx_thread_create(&amp;dtls_server_thread, "DTLS Server thread", server_thread_entry,
+       0, dtls_server_thread_stack, sizeof(dtls_server_thread_stack),
+       16, 16, 4, TX_AUTO_START);
+}
+
+
+/* Primary application thread for handling DTLS server operations. */
+void server_thread_entry(ULONG thread_input)
+{
+    NX_PACKET *send_packet;
+    NX_PACKET *receive_packet;
+    UCHAR receive_buffer[100];
+    ULONG bytes;
+    UINT status;
+
+    NX_PARAMETER_NOT_USED(thread_input);
+
+    /* Ensure the IP instance has been initialized.  */
+    status =  nx_ip_status_check(&amp;ip_0, NX_IP_INITIALIZE_DONE, &amp;actual_status,
+        NX_IP_PERIODIC_RATE);
+
+    /* Setup DTLS Server instance. */
+    status = nx_secure_dtls_server_create(&amp;dtls_server, &amp;ip_instance, LOCAL_SERVER_PORT,
+        NX_IP_PERIODIC_RATE, dtls_server_session_buffer,
+        sizeof(dtls_server_session_buffer),
+        &amp;tls_crypto_table, crypto_metadata_buffer,
+        sizeof(crypto_metadata_buffer), packet_buffer,
+        sizeof(packet_buffer),
+        dtls_server_connect_notify,
+        dtls_server_receive_notify);
+
+    /* Initialize local server identity certificate with key and add to server. */
+    status = nx_secure_x509_certificate_initialize(&amp;certificate, device_cert_der,
+                        device_cert_der_len, NX_NULL, 0,
+                        device_cert_key_der, device_cert_key_der_len,
+                        NX_SECURE_X509_KEY_TYPE_RSA_PKCS1_DER);
+
+    /* Add local server identity certificate to DTLS server with ID of 1. */
+    status = nx_secure_dtls_server_local_certificate_add(&amp;dtls_server, &amp;certificate, 1);
+
+
+    /* Start server. */
+    status = nx_secure_dtls_server_start(&amp;dtls_server);
+
+    /* Loop continuously to handle incoming data. */
+    while(1)
+    {
+        /* Check for new connections. Mutex handling omitted for clarity. */
+        if(connect_flag)
+        {
+            /* We have a new connection attempt, start the DTLS session. */
+            status = nx_secure_dtls_server_session_start(new_dtls_session,
+                                            NX_IP_PERIODIC_RATE);
+
+        }
+
+        /* Check for received application data. */
+        if(receive_flag)
+        {
+            /* We have received data over a previously-established DTLS session.
+               Mutex handling omitted for clarity. */
+            status = nx_secure_dtls_session_receive(receive_dtls_session, &amp;receive_packet,
+            NX_IP_PERIODIC_RATE);
+
+
+            /* Process received data… */
+            status = nx_packet_data_extract_offset(receive_packet, 0, receive_buffer, 100,
+                 &amp;bytes);
+            /* Display the Client request data. */
+           receive_buffer[bytes] = 0;
+           printf("Received data: %s\n", receive_buffer);
+
+
+            /* Prepare and send response to client. */
+            status = nx_secure_dtls_packet_allocate(receive_dtls_session, &amp;packet_pool,
+                &amp;send_packet, NX_IP_PERIODIC_RATE);
+
+
+           /* Populate the packet with our response data. */
+           nx_packet_data_append(send_packet, response_data, response_data_length,
+                &amp;pool_0, NX_WAIT_FOREVER);
+
+            /* Send response to client. */
+            status = nx_secure_dtls_server_session_send(receive_dtls_session,send_packet);
+        }
+
+        /* If not processing connections or received data, let the thread sleep. */
+        if(!connect_flag &amp;&amp; !receive_flag)
+        {
+            tx_thread_sleep(100);
+        }
+    }
+
+    /* Server processing is done, stop the server instance from accepting requests. */
+    status = nx_secure_dtls_server_stop(&amp;dtls_server);
+
+    /* If we exit the processing loop, clean up the server. */
+    status = nx_secure_dtls_server_delete(&amp;dtls_server);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_options"><a class="anchor" href="#_configuration_options"></a>Configuration Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several configuration options for building NetX Duo Secure.
+Following is a list of all options, where each is described in detail:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Define</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_ENABLE_DTLS</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This macro must be defined to enable DTLS logic in NetX Duo Secure.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_DISABLE_ERROR_CHECKING</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option removes the basic NetX Duo Secure error checking. It is typically used after the application has been debugged.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_TLS_CLIENT_DISABLED</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option removes all TLS/DTLS stack code related to Client mode, reducing code and data usage.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_TLS_SERVER_DISABLED</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option removes all TLS/DTLS stack code related to Server mode, reducing code and data usage.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_ENABLE_PSK_CIPHERSUITES</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option enables Pre-Shared Key (PSK) functionality. It does not disable digital certificates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_ENABLE_ECJPAKE_CIPHERSUITE</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option enables ECJPAKE ciphersuites for DTLS.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_X509_STRICT_NAME_COMPARE</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option enables strict distinguished name comparison for X.509 certificates for certificate searching and verification. The default is to only compare the Common Name fields the Distinguished Names.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_X509_USE_EXTENDED_DISTINGUISHED_NAMES</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option enables the optional X.509 Distinguished Name fields, at the expense of extra memory use for X.509 certificates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_CRYPTO_MAX_RSA_MODULUS_SIZE</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option gives the maximum RSA modulus expected, in bits. The default value is 4096 for a 4096-bit modulus. Other values can be 3072, 2048, or 1024 (not recommended).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_TLS_CERTIFICATE_VERIFY_SIGNATURE_SIZE</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option gives the size in bytes of the per-session buffer used to build and check the PKCS#1 encoded CertificateVerify signature. It must be at least as large as the largest RSA modulus in use, so the default of 600 covers the 4096-bit default of NX_CRYPTO_MAX_RSA_MODULUS_SIZE. Lower it to reduce the cryptographic metadata each TLS session needs when the largest certificate key in use is known to be smaller.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_TLS_CERTIFICATE_VERIFY_PSS_SCRATCH_SIZE</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option gives the size in bytes of the per-session EMSA-PSS working area used when checking an RSA-PSS CertificateVerify signature in TLS 1.3. The default of 600 covers a 4096-bit modulus with SHA-512. It has no effect unless TLS 1.3 is enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_DTLS_COOKIE_LENGTH</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option gives the maximum length of DTLS cookie.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_DTLS_MAXIMUM_RETRANSMIT_RETRIES</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option gives the maximum retransmit retries for DTLS handshake packet.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_DTLS_MAXIMUM_RETRANSMIT_TIMEOUT</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option gives the maximum DTLS retransmit rate.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_DTLS_RETRANSMIT_RETRY_SHIFT</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option describes how the retransmit timeout period changes between successive retries. If this value is 0, the initial retransmit timeout is the same as subsequent retransmit timeouts. If this value is 1, each successive retransmit is twice as long.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NX_SECURE_DTLS_MAXIMUM_RETRANSMIT_TIMEOUT</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, this option gives the initial DTLS retransmit rate.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

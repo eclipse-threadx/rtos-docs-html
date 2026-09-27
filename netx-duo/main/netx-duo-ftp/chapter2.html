@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 2 - Installation and use of FTP :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-ftp/chapter2.html">
+    <meta name="description" content="This chapter contains a description of various issues related to installation, set up, and usage of the NetX Duo FTP services.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo User Guide</a></li>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo FTP user guide</li>
+    <li><a href="chapter2.html">Ch. 2 - Installation and use of FTP</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-ftp/chapter2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 2 - Installation and use of FTP</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of various issues related to installation, set up, and usage of the NetX Duo FTP services.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_product_distribution"><a class="anchor" href="#_product_distribution"></a>Product Distribution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NetX Duo FTP is available at <a href="https://github.com/eclipse-threadx/netxduo" class="bare">https://github.com/eclipse-threadx/netxduo</a>. The package includes two source files and a PDF file that contains this document, as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>nxd_ftp_client.h</strong> Header file for NetX Duo FTP Client</p>
+</li>
+<li>
+<p><strong>nxd_ftp_client.c</strong> C Source file for NetX Duo FTP Client</p>
+</li>
+<li>
+<p><strong>nxd_ftp_server.h</strong> Header file for NetX Duo FTP Server</p>
+</li>
+<li>
+<p><strong>nxd_ftp_server.c</strong> C Source file for NetX Duo FTP Server</p>
+</li>
+<li>
+<p><strong>filex_stub.h</strong> Stub file if FileX is not present</p>
+</li>
+<li>
+<p><strong>nxd_ftp.pdf</strong> PDF description of FTP for NetX Duo</p>
+</li>
+<li>
+<p><strong>demo_netxduo_ftp.c</strong> FTP demonstration system</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netx_duo_ftp_installation"><a class="anchor" href="#_netx_duo_ftp_installation"></a>NetX Duo FTP Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to use the NetX Duo FTP API, the entire distribution mentioned previously should be copied to the same directory where NetX Duo is installed. For example, if NetX Duo is installed in the directory "<em>\threadx\arm7\green</em>" then the <em>nxd_ftp_client.h</em> and <em>nxd_ftp_client.c</em> should be copied into this directory for FTP Client applications, and <em>nxd_ftp_server.h</em> and <em>nxd_ftp_server.c</em> files should be copied into this directory for FTP Server applications.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_netx_duo_ftp"><a class="anchor" href="#_using_netx_duo_ftp"></a>Using NetX Duo FTP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using the NetX Duo FTP API is easy. Basically, the application code must include either <em>nxd_ftp_client.h</em> for FTP Client applications or <em>nxd_ftp_server</em> for FTP Server applications, after it includes <em>tx_api.h, fx_api.h,</em> and <em>nx_api.h</em>, in order to use ThreadX, FileX, and NetX Duo, respectively. The build project must include the FTP source code and the host application file, and of course the ThreadX and NetX Duo library files. This is all that is required to use NetX Duo FTP.</p>
+</div>
+<div class="paragraph">
+<p>Note that since FTP utilizes NetX Duo TCP services, TCP must be enabled with the <em>nx_tcp_enable</em> call prior to using FTP.</p>
+</div>
+<div class="paragraph">
+<p>Note that the NetX Duo library can be enabled for IPv6 and still support IPv4 networks. However, NetX Duo cannot support IPv6 unless it is enabled. To disable IPv6 processing in NetX Duo, the <strong>NX_DISABLE_IPV6</strong> must be defined in the <em>nx_user.h</em> file, and that file must be included in the NetX Duo library build by defining <strong>NX_INCLUDE_USER_DEFINE_FILE</strong> in the <em>nx_port.h</em> file. By default, <strong>NX_DISABLE_IPV6</strong> is not defined (IPv6 is enabled). This is different from the <em>nxd_ipv6_enable</em> service that sets up the IPv6 protocols and services on the IP task, and requires <strong>NX_DISABLE_IPV6</strong> to be not defined.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_small_example_system_of_netx_duo_ftp"><a class="anchor" href="#_small_example_system_of_netx_duo_ftp"></a>Small Example System of NetX Duo FTP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An example of how easy it is to use NetX Duo FTP is described below. In this example, both an FTP Server and an FTP Client are created. Therefore both FTP include files <em>nxd_ftp_client.h and nxd_ftp_server.h are</em> brought in at line 10 and 11. Next, the FTP Server is created in &#8220;_tx_application_define_&#8221; at line 99. Note that the FTP Server and Client control blocks are defined as global variables at line 26 previously.</p>
+</div>
+<div class="paragraph">
+<p>This demo shows how to use the duo functions available in NetX Duo FTP as well as the legacy IPv4 limited FTP services. To use the IPv6 functions, the demo defines USE_IPV6 in line 16</p>
+</div>
+<div class="paragraph">
+<p>At line 162 the FTP Server is created with <strong><em>nxd_ftp_server_create</em></strong> if the host application defines USE_IPV6 which supports both IPv4 and IPv6. If it is not, the FTP Server is created with <strong><em>nx_ftp_server_create</em></strong> on line 166 with the IPv4 limited service. Note that the 'duo' function uses different login and logout function arguments than the IPv4 service, both of which are defined at the bottom of the file on lines 534 -568.</p>
+</div>
+<div class="paragraph">
+<p>The FTP server must then establish its IPv6 address (global and link local) with NetX Duo, starting at line 466 in the FTP server thread entry function. The FTP server is then started on line 518 and is ready for FTP client requests.</p>
+</div>
+<div class="paragraph">
+<p>The FTP Client is created in line 316 and goes through the same process as the FTP Server to get the FTP Client IP task IPv6 enabled, and its IPv6 addresses validated starting on lines 263-313.</p>
+</div>
+<div class="paragraph">
+<p>Then the Client connects to the FTP Server using <strong><em>nxd_ftp_client_connect</em></strong> in line 334 if it has defined USE_IPV6, or line 340 if it is using the IPv4 limited service <strong><em>nx_ftp_client_connect</em></strong>. Over the course of the FTP Client thread function, it writes a file to the FTP server and reads it back before disconnecting.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">/* This is a small demo of NetX FTP on the high-performance NetX TCP/IP stack.  This demo
+   relies on ThreadX, NetX, and FileX to show a simple file transfer from the client
+   and then back to the server.  */
+
+
+
+#include    "tx_api.h"
+#include    "fx_api.h"
+#include    "nx_api.h"
+#include    "nxd_ftp_client.h"
+#include    "nxd_ftp_server.h"
+
+#define     DEMO_STACK_SIZE         4096
+
+#ifdef FEATURE_NX_IPV6
+#define USE_IPV6
+#endif /* FEATURE_NX_IPV6 */
+
+
+/* Define the ThreadX, NetX, and FileX object control blocks...  */
+
+TX_THREAD               server_thread;
+TX_THREAD               client_thread;
+NX_PACKET_POOL          server_pool;
+NX_IP                   server_ip;
+NX_PACKET_POOL          client_pool;
+NX_IP                   client_ip;
+FX_MEDIA                ram_disk;
+
+
+/* Define the NetX FTP object control blocks.  */
+
+NX_FTP_CLIENT           ftp_client;
+NX_FTP_SERVER           ftp_server;
+
+
+/* Define the counters used in the demo application...  */
+
+ULONG                   error_counter = 0;
+
+
+/* Define the memory area for the FileX RAM disk.  */
+
+UCHAR                   ram_disk_memory[32000];
+UCHAR                   ram_disk_sector_cache[512];
+
+
+#define FTP_SERVER_ADDRESS  IP_ADDRESS(1,2,3,4)
+#define FTP_CLIENT_ADDRESS  IP_ADDRESS(1,2,3,5)
+
+extern UINT  _fx_media_format(FX_MEDIA *media_ptr, VOID (*driver)(FX_MEDIA *media),
+                        VOID *driver_info_ptr, UCHAR *memory_ptr, UINT memory_size,
+                        CHAR *volume_name, UINT number_of_fats, UINT directory_entries,
+                        UINT hidden_sectors, ULONG total_sectors, UINT bytes_per_sector,
+                        UINT sectors_per_cluster, UINT heads, UINT sectors_per_track);
+
+/* Define the FileX and NetX driver entry functions.  */
+VOID    _fx_ram_driver(FX_MEDIA *media_ptr);
+
+/* Replace the 'ram' driver with your own Ethernet driver. */
+VOID    _nx_ram_network_driver(NX_IP_DRIVER *driver_req_ptr);
+
+
+void    client_thread_entry(ULONG thread_input);
+void    thread_server_entry(ULONG thread_input);
+
+
+#ifdef USE_IPV6
+/* Define NetX Duo IP address for the NetX Duo FTP Server and Client. */
+NXD_ADDRESS     server_ip_address;
+NXD_ADDRESS     client_ip_address;
+endif
+
+
+/* Define server login/logout functions.  These are stubs for functions that would
+   validate a client login request.   */
+
+#ifdef USE_IPV6
+UINT    server_login6(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address,
+    UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info);
+UINT    server_logout6(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address,
+    UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info);
+#else
+UINT    server_login(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr,
+    ULONG client_ip_address, UINT client_port,
+    CHAR *name, CHAR *password, CHAR *extra_info);
+UINT    server_logout(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr,
+    ULONG client_ip_address, UINT client_port,
+    CHAR *name, CHAR *password, CHAR *extra_info);
+#endif
+
+
+/* Define main entry point.  */
+
+int main()
+{
+
+    /* Enter the ThreadX kernel.  */
+    tx_kernel_enter();
+    return(0);
+}
+
+
+/* Define what the initial system looks like.  */
+
+void    tx_application_define(void *first_unused_memory)
+{
+
+    UINT    status;
+    UCHAR   *pointer;
+
+
+    /* Setup the working pointer.  */
+    pointer =  (UCHAR *) first_unused_memory;
+
+    /* Create a helper thread for the server. */
+    tx_thread_create(&amp;server_thread, "FTP Server thread", thread_server_entry, 0,
+                     pointer, DEMO_STACK_SIZE,
+                     4, 4, TX_NO_TIME_SLICE, TX_AUTO_START);
+
+    pointer =  pointer + DEMO_STACK_SIZE;
+
+    /* Initialize NetX.  */
+    nx_system_initialize();
+
+    /* Create the packet pool for the FTP Server.  */
+    status = nx_packet_pool_create(&amp;server_pool, "NetX Server Packet Pool", 256, pointer, 8192);
+    pointer = pointer + 8192;
+
+    /* Check for errors.  */
+    if (status)
+        error_counter++;
+
+    /* Create the IP instance for the FTP Server.  */
+    status = nx_ip_create(&amp;server_ip, "NetX Server IP Instance", FTP_SERVER_ADDRESS, 0xFFFFFF00UL,
+                                        &amp;server_pool, _nx_ram_network_driver, pointer, 2048, 1);
+    pointer = pointer + 2048;
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Enable ARP and supply ARP cache memory for server IP instance.  */
+    nx_arp_enable(&amp;server_ip, (void *) pointer, 1024);
+    pointer = pointer + 1024;
+
+    /* Enable TCP.  */
+    nx_tcp_enable(&amp;server_ip);
+
+#ifdef USE_IPV6
+
+    /* Next set the NetX Duo FTP Server and Client addresses. */
+    server_ip_address.nxd_ip_address.v6[3] = 0x105;
+    server_ip_address.nxd_ip_address.v6[2] = 0x0;
+    server_ip_address.nxd_ip_address.v6[1] = 0x0000f101;
+    server_ip_address.nxd_ip_address.v6[0] = 0x20010db8;
+    server_ip_address.nxd_ip_version = NX_IP_VERSION_V6;
+
+    client_ip_address.nxd_ip_address.v6[3] = 0x101;
+    client_ip_address.nxd_ip_address.v6[2] = 0x0;
+    client_ip_address.nxd_ip_address.v6[1] = 0x0000f101;
+    client_ip_address.nxd_ip_address.v6[0] = 0x20010db8;
+    client_ip_address.nxd_ip_version = NX_IP_VERSION_V6;
+
+    /* Create the FTP server.  */
+    status =  nxd_ftp_server_create(&amp;ftp_server, "FTP Server Instance", &amp;server_ip,
+                                    &amp;ram_disk, pointer, DEMO_STACK_SIZE, &amp;server_pool,
+                                    server_login6, server_logout6);
+#else
+    /* Create the FTP server.  */
+    status =  nx_ftp_server_create(&amp;ftp_server, "FTP Server Instance", &amp;server_ip,
+                                    &amp;ram_disk, pointer, DEMO_STACK_SIZE, &amp;server_pool,
+                                    server_login, server_logout);
+#endif
+    pointer =  pointer + DEMO_STACK_SIZE;
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Now set up the FTP Client. */
+
+    /* Create the main FTP client thread.  */
+    status = tx_thread_create(&amp;client_thread, "FTP Client thread ", client_thread_entry, 0,
+            pointer, DEMO_STACK_SIZE,
+            6, 6, TX_NO_TIME_SLICE, TX_AUTO_START);
+    pointer = pointer + DEMO_STACK_SIZE ;
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Create a packet pool for the FTP client.  */
+    status =  nx_packet_pool_create(&amp;client_pool, "NetX Client Packet Pool", 256, pointer, 8192);
+    pointer =  pointer + 8192;
+
+    /* Create an IP instance for the FTP client.  */
+    status = nx_ip_create(&amp;client_ip, "NetX Client IP Instance", FTP_CLIENT_ADDRESS, 0xFFFFFF00UL,
+                                                &amp;client_pool, _nx_ram_network_driver, pointer, 2048, 1);
+    pointer = pointer + 2048;
+
+    /* Enable ARP and supply ARP cache memory for the FTP Client IP.  */
+    nx_arp_enable(&amp;client_ip, (void *) pointer, 1024);
+
+    pointer = pointer + 1024;
+
+    /* Enable TCP for client IP instance.  */
+    nx_tcp_enable(&amp;client_ip);
+
+    return;
+
+}
+
+/* Define the FTP client thread.  */
+
+void    client_thread_entry(ULONG thread_input)
+{
+
+NX_PACKET   *my_packet;
+UINT        status;
+
+#ifdef USE_IPV6
+UINT        iface_index, address_index;
+#endif
+
+
+    /* Format the RAM disk - the memory for the RAM disk was defined above.  */
+    status = _fx_media_format(&amp;ram_disk,
+                            _fx_ram_driver,                  /* Driver entry                */
+                            ram_disk_memory,                 /* RAM disk memory pointer     */
+                            ram_disk_sector_cache,           /* Media buffer pointer        */
+                            sizeof(ram_disk_sector_cache),   /* Media buffer size           */
+                            "MY_RAM_DISK",                   /* Volume Name                 */
+                            1,                               /* Number of FATs              */
+                            32,                              /* Directory Entries           */
+                            0,                               /* Hidden sectors              */
+                            256,                             /* Total sectors               */
+                            128,                             /* Sector size                 */
+                            1,                               /* Sectors per cluster         */
+                            1,                               /* Heads                       */
+                            1);                              /* Sectors per track           */
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Open the RAM disk.  */
+    status = fx_media_open(&amp;ram_disk, "RAM DISK", _fx_ram_driver, ram_disk_memory,
+        ram_disk_sector_cache, sizeof(ram_disk_sector_cache));
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Let the IP threads and driver initialize the system.    */
+    tx_thread_sleep(100);
+
+#ifdef USE_IPV6
+
+    /* Here's where we make the FTP Client IPv6 enabled. */
+    status = nxd_ipv6_enable(&amp;client_ip);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+        error_counter++;
+        return;
+    }
+
+    status = nxd_icmp_enable(&amp;client_ip);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+        error_counter++;
+        return;
+    }
+
+    /* Set the Client link local and global addresses. */
+    iface_index = 0;
+
+    /* This assumes we are using the primary network interface (index 0). */
+    status = nxd_ipv6_address_set(&amp;client_ip, iface_index, NX_NULL, 10, &amp;address_index);
+
+    /* Check for link local address set error.  */
+    if (status != NX_SUCCESS)
+    {
+
+        error_counter++;
+        return;
+     }
+
+     /* Set the host global IP address. We are assuming a 64
+       bit prefix here but this can be any value (&lt; 128). */
+    status = nxd_ipv6_address_set(&amp;client_ip, iface_index, &amp;client_ip_address, 64, &amp;address_index);
+
+    /* Check for global address set error.  */
+    if (status != NX_SUCCESS)
+    {
+
+        error_counter++;
+        return;
+     }
+
+    /* Let NetX Duo validate the addresses. */
+    tx_thread_sleep(400);
+
+#endif  /* USE_IPV6 */
+
+    /* Create an FTP client.  */
+    status =  nx_ftp_client_create(&amp;ftp_client, "FTP Client", &amp;client_ip, 2000, &amp;client_pool);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+
+        error_counter++;
+        return;
+     }
+
+    printf("Created the FTP Client\n");
+
+#ifdef USE_IPV6
+
+    do
+    {
+
+        /* Now connect with the NetX Duo FTP (IPv6) server. */
+        status =  nxd_ftp_client_connect(&amp;ftp_client, &amp;server_ip_address, "name", "password", 100);
+    } while (status != NX_SUCCESS);
+
+#else
+
+    /* Now connect with the NetX FTP (IPv4) server. */
+    status =  nx_ftp_client_connect(&amp;ftp_client, FTP_SERVER_ADDRESS, "name", "password", 100);
+
+#endif  /* USE_IPV6 */
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+
+        error_counter++;
+        return;
+     }
+
+    printf("Connected to the FTP Server\n");
+
+    /* Open a FTP file for writing.  */
+    status =  nx_ftp_client_file_open(&amp;ftp_client, "test.txt", NX_FTP_OPEN_FOR_WRITE, 100);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+
+        error_counter++;
+        return;
+     }
+
+    printf("Opened the FTP client test.txt file\n");
+
+    /* Allocate a FTP packet.  */
+    status =  nx_packet_allocate(&amp;client_pool, &amp;my_packet, NX_TCP_PACKET, 100);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+
+        error_counter++;
+        return;
+     }
+
+    /* Write ABCs into the packet payload!  */
+    memcpy(my_packet -&gt; nx_packet_prepend_ptr, "ABCDEFGHIJKLMNOPQRSTUVWXYZ  ", 28);
+
+    /* Adjust the write pointer.  */
+    my_packet -&gt; nx_packet_length =  28;
+    my_packet -&gt; nx_packet_append_ptr =  my_packet -&gt; nx_packet_prepend_ptr + 28;
+
+    /* Write the packet to the file test.txt.  */
+    status =  nx_ftp_client_file_write(&amp;ftp_client, my_packet, 100);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+        error_counter++;
+    }
+    else
+        printf("Wrote to the FTP client test.txt file\n");
+
+
+    /* Close the file.  */
+    status =  nx_ftp_client_file_close(&amp;ftp_client, 100);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+        error_counter++;
+    else
+        printf("Closed the FTP client test.txt file\n");
+
+
+    /* Now open the same file for reading.  */
+    status =  nx_ftp_client_file_open(&amp;ftp_client, "test.txt", NX_FTP_OPEN_FOR_READ, 100);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+        error_counter++;
+    else
+        printf("Reopened the FTP client test.txt file\n");
+
+    /* Read the file.  */
+    status =  nx_ftp_client_file_read(&amp;ftp_client, &amp;my_packet, 100);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+        error_counter++;
+    else
+    {
+            printf("Reread the FTP client test.txt file\n");
+            nx_packet_release(my_packet);
+    }
+
+    /* Close this file.  */
+    status =  nx_ftp_client_file_close(&amp;ftp_client, 100);
+
+    if (status != NX_SUCCESS)
+        error_counter++;
+
+    /* Disconnect from the server.  */
+    status =  nx_ftp_client_disconnect(&amp;ftp_client, 100);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+        error_counter++;
+
+
+    /* Delete the FTP client.  */
+    status =  nx_ftp_client_delete(&amp;ftp_client);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+        error_counter++;
+}
+
+
+/* Define the helper FTP server thread.  */
+void    thread_server_entry(ULONG thread_input)
+{
+
+    UINT            status;
+#ifdef  USE_IPV6
+    UINT            iface_index, address_index;
+#endif
+
+    /* Wait till the IP thread and driver have initialized the system. */
+    tx_thread_sleep(100);
+
+#ifdef USE_IPV6
+
+    /* Here's where we make the FTP server IPv6 enabled. */
+    status = nxd_ipv6_enable(&amp;server_ip);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+
+        error_counter++;
+        return;
+     }
+
+    status = nxd_icmp_enable(&amp;server_ip);
+
+    /* Check status.  */
+    if (status != NX_SUCCESS)
+    {
+
+        error_counter++;
+        return;
+     }
+
+     /* Set the link local address with the host MAC address. */
+    iface_index = 0;
+
+    /* This assumes we are using the primary network interface (index 0). */
+    status = nxd_ipv6_address_set(&amp;server_ip, iface_index, NX_NULL, 10, &amp;address_index);
+
+    /* Check for link local address set error.  */
+    if (status)
+    {
+
+        error_counter++;
+        return;
+     }
+
+    /* Set the host global IP address. We are assuming a 64
+       bit prefix here but this can be any value (&lt; 128). */
+    status = nxd_ipv6_address_set(&amp;server_ip, iface_index, &amp;server_ip_address, 64, &amp;address_index);
+
+    /* Check for global address set error.  */
+    if (status)
+    {
+
+        error_counter++;
+        return;
+     }
+
+    /* Wait while NetX Duo validates the link local and global address. */
+    tx_thread_sleep(500);
+
+#endif /* USE_IPV6 */
+
+    /* OK to start the FTP Server.   */
+    status = nx_ftp_server_start(&amp;ftp_server);
+
+    if (status != NX_SUCCESS)
+        error_counter++;
+
+    printf("Server started!\n");
+
+    /* FTP server ready to take requests! */
+
+    /* Let the IP threads execute.    */
+    tx_thread_relinquish();
+
+    return;
+}
+
+
+#ifdef USE_IPV6
+UINT  server_login6(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr,
+                    NXD_ADDRESS *client_ipduo_address, UINT client_port,
+                    CHAR *name, CHAR *password, CHAR *extra_info)
+{
+    printf("Logged in6!\n");
+
+    /* Always return success.  */
+    return(NX_SUCCESS);
+}
+
+UINT  server_logout6(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address,
+                     UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info)
+{
+    printf("Logged out6!\n");
+
+    /* Always return success.  */
+    return(NX_SUCCESS);
+}
+#else
+UINT  server_login(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_ip_address,
+                    UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info)
+{
+
+    printf("Logged in!\n");
+    /* Always return success.  */
+    return(NX_SUCCESS);
+}
+
+UINT  server_logout(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_ip_address,
+                    UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info)
+{
+    printf("Logged out!\n");
+
+    /* Always return success.  */
+    return(NX_SUCCESS);
+}
+#endif  /* USE_IPV6 */</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_options"><a class="anchor" href="#_configuration_options"></a>Configuration Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several configuration options for building NetX Duo FTP. The default values are listed, but each define can be set by the application prior to inclusion of the specified NetX Duo FTP header file. If no header file is specified, the option is available in both <em>nxd_ftp_client.h and nxd_ftp_server.h</em>. The following list describes each in detail:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_FTP_SERVER_PRIORITY</strong> The priority of the FTP Server thread. By default, this value is defined as 16 to specify priority 16.</p>
+</li>
+<li>
+<p><strong>NX_FTP_MAX_CLIENTS</strong> The maximum number of Clients the Server can handle at one time. By default, this value is 4 to support 4 Clients at once.</p>
+</li>
+<li>
+<p><strong>NX_FTP_SERVER_MIN_PACKET_PAYLOAD</strong> The minimum size of the Server packet pool payload in bytes, including TCP, IP and network frame headers plus HTTP data. The default value is 256 (maximum length of filename in FileX) + 12 bytes for file information, and NX_PHYSICAL_TRAILER.</p>
+</li>
+<li>
+<p><strong>NX_FTP_SERVER_TIMEOUT</strong> Specifies the number of ThreadX  ticks that internal services will  suspend for. The default value  is set to 1 second (1 *  NX_IP_PERIODIC_RATE).</p>
+</li>
+<li>
+<p><strong>NX_FTP_ACTIVITY_TIMEOUT</strong> Specifies the number of seconds  a Client connection is maintained  if there is no activity. The default  value is set to 240.</p>
+</li>
+<li>
+<p><strong>NX_FTP_TIMEOUT_PERIOD</strong> Specifies the intervals in seconds  when the Server checks for  Client activity. The default value is set to 60.</p>
+</li>
+<li>
+<p><strong>NX_FTP_SERVER_RETRY_SECONDS</strong> Specifies the initial timeout in seconds before retransmitting server response. The default value is 2.</p>
+</li>
+<li>
+<p><strong>NX_FTP_SERVER_TRANSMIT_QUEUE_DEPTH</strong> Specifies the maximum of depth of queued transmit packets on Server socket. The default value is 20.</p>
+</li>
+<li>
+<p><strong>NX_FTP_SERVER_RETRY_MAX</strong> Specifies the maximum retries per packet. The default value is 10.</p>
+</li>
+<li>
+<p><strong>NX_FTP_SERVER_RETRY_SHIFT</strong> Specifies the number of bits to shift in setting the retry timeout. The default value is 2, e.g. every retry timeout is twice as long as the previous retry.</p>
+</li>
+<li>
+<p><strong>NX_FTP_NO_FILEX</strong> Defined, this option provides a  stub for FileX dependencies. The  FTP Client will function without  any change if this option is  defined. The FTP Server will  need to either be modified or the  user will have to create a handful  of FileX services in order to  function properly.</p>
+</li>
+<li>
+<p><strong>NX_FTP_CONTROL_TOS</strong> Type of service required for the FTP control requests. By default, this value is defined as NX_IP_NORMAL to indicate normal IP packet service.</p>
+</li>
+<li>
+<p><strong>NX_FTP_DATA_TOS</strong> Type of service required for the FTP data requests. By default, this value is defined as NX_IP_NORMAL to indicate normal IP packet service.</p>
+</li>
+<li>
+<p><strong>NX_FTP_FRAGMENT_OPTION</strong> Fragment enable for FTP requests. By default, this value is NX_DONT_FRAGMENT to disable FTP TCP fragmenting.</p>
+</li>
+<li>
+<p><strong>NX_FTP_CONTROL_WINDOW_SIZE</strong> TCP Control socket window size. By default, this value is 400 bytes.</p>
+</li>
+<li>
+<p><strong>NX_FTP_DATA_WINDOW_SIZE</strong> TCP Data socket window size. By default, this value is 2048 bytes.</p>
+</li>
+<li>
+<p><strong>NX_FTP_TIME_TO_LIVE</strong> Specifies the number of routers this packet can pass before it is discarded. The default value is set to 0x80.</p>
+</li>
+<li>
+<p><strong>NX_FTP_USERNAME_SIZE</strong> Specifies the number of bytes allowed in a Client supplied <em>username</em>. The default value is set to 20 <em>.</em></p>
+</li>
+<li>
+<p><strong>NX_FTP_PASSWORD_SIZE</strong> Specifies the number of bytes allowed in a client supplied
+<em>password</em>. The default value is set to 20.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

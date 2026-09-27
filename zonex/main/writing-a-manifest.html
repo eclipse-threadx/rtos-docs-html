@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Writing a partition manifest :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/zonex/main/writing-a-manifest.html">
+    <meta name="description" content="How a ZoneX system is declared, what the validator checks before anything is programmed, and the rules that decide whether a manifest is accepted.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="zonex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">ZoneX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">ZoneX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">ZoneX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ZoneX guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="overview.html">Overview of ZoneX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="what-phase-0-demonstrates.html">What Phase 0 demonstrates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="platform-requirements.html">Platform requirements and the region budget</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="writing-a-manifest.html">Writing a partition manifest</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="roadmap.html">Later phases</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ZoneX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">ZoneX User Guide</a></li>
+    <li><a href="index.html">ZoneX</a></li>
+    <li>ZoneX guide</li>
+    <li><a href="writing-a-manifest.html">Writing a partition manifest</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/zonex/modules/ROOT/pages/writing-a-manifest.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Writing a partition manifest</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>A ZoneX system is declared entirely in a <strong>manifest</strong>: the partitions, the memory regions each one owns, the window each one holds in the major frame, and any granule shared between them. There is no allocator, no filesystem and no partition creation at run time, so the manifest is the whole configuration.</p>
+</div>
+<div class="paragraph">
+<p>The manifest is validated before any hardware is programmed. A configuration that cannot fit the part is refused at boot with a specific diagnosis, rather than programmed partially and discovered later.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_where_it_lives_and_why_a_guest_cannot_read_it"><a class="anchor" href="#_where_it_lives_and_why_a_guest_cannot_read_it"></a>Where it lives, and why a guest cannot read it</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The manifest sits in the hypervisor&#8217;s own read-only data, covered by no enabled stage-2 region. That is not a separate protection mechanism: ZoneX&#8217;s own memory is protected precisely by <strong>not</strong> being covered by any enabled region, so a guest cannot read the manifest for exactly the same reason it cannot read the hypervisor&#8217;s code.</p>
+</div>
+<div class="paragraph">
+<p>This is stated outright because "the manifest is unreachable from a guest" is a property a reviewer should not have to derive.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_four_objects"><a class="anchor" href="#_the_four_objects"></a>The four objects</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>A region</strong> is a base address, a limit and a set of attributes. The limit is the <strong>last byte, inclusive</strong>, not one past the end&#8201;&#8212;&#8201;this matches how the hardware describes a region, and mixing the two conventions is the mistake the validator&#8217;s alignment rules exist to catch. Base and limit must both be granule-aligned.</p>
+</div>
+<div class="paragraph">
+<p><strong>A partition</strong> carries an identifier, a name, the range of the guest image embedded in the hypervisor&#8217;s own image, the address it starts executing at, its list of regions, and its window in the major frame expressed in ticks.</p>
+</div>
+<div class="paragraph">
+<p><strong>A shared range</strong> is one granule with a single nominated publisher. The publisher may write it; every other partition may only read it.</p>
+</div>
+<div class="paragraph">
+<p><strong>The manifest</strong> is the list of partitions, the list of shared ranges, and the major frame length in ticks.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_major_frame_is_carried_not_computed"><a class="anchor" href="#_the_major_frame_is_carried_not_computed"></a>The major frame is carried, not computed</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The manifest states the major frame length explicitly, even though it is the sum of the partition windows.</p>
+</div>
+<div class="paragraph">
+<p>That is deliberate. A computed field could never disagree with its parts, and therefore could never be wrong&#8201;&#8212;&#8201;so a frame length that does not match the sum of its windows would be undetectable. Carrying it explicitly lets the validator disagree with it, which turns a class of configuration error into a boot-time diagnosis.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_a_partition_may_not_be_granted"><a class="anchor" href="#_what_a_partition_may_not_be_granted"></a>What a partition may not be granted</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>No partition in the Phase-0 demonstrator is granted a device region of any kind.</strong> There is one console, and a guest reaches it by asking the hypervisor rather than by being given the peripheral. That is why the temporal figures on <a href="what-phase-0-demonstrates.html" class="xref page">the claim page</a> describe two partitions that share nothing but a core.</p>
+</div>
+<div class="paragraph">
+<p>Granting a partition a device is a later phase, and on this part it carries a constraint worth knowing in advance: peripheral privilege for accesses from this core cannot rest on the memory-domain access controllers, so partition-level device isolation has to be carried by the stage-2 memory protection unit and its region attributes.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_isolation_comes_from_which_regions_are_enabled"><a class="anchor" href="#_isolation_comes_from_which_regions_are_enabled"></a>Isolation comes from which regions are enabled</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A partition is isolated from another by <strong>which regions are enabled while it runs</strong>, never by permission bits.</p>
+</div>
+<div class="paragraph">
+<p>This matters when reading the attribute encodings: at stage 2 there is no encoding that grants a guest access while denying EL2. So a region that grants a partition access must be <strong>disabled</strong> while any other partition runs, and a partition switch is one write that changes the whole enabled set. See <a href="platform-requirements.html#a-region-must-also-be-reachable-by-the-partition-switch" class="xref page">the switch-mask budget</a> for the constraint that follows.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_validator"><a class="anchor" href="#_the_validator"></a>The validator</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>One error code per rule, and no code shared between two rules.</strong> That is what makes a failure a diagnosis rather than a hint: "the manifest is invalid" sends a reader back to the whole manifest, while an unaligned-limit code carrying a partition index and a region index sends them to the line.</p>
+</div>
+<div class="paragraph">
+<p>The rules fall into groups.</p>
+</div>
+<div class="paragraph">
+<p><strong>Shape.</strong> A non-null manifest with at least one partition and no more than the build-time maximum; no duplicate partition identifiers; at least one region per partition and no more than the maximum; a non-empty image range that fits the region it is loaded into.</p>
+</div>
+<div class="paragraph">
+<p><strong>Geometry.</strong> Every base and every limit granule-aligned; no limit below its base; no partition&#8217;s regions overlapping each other; <strong>no partition&#8217;s region overlapping another partition&#8217;s</strong>; no region overlapping the hypervisor&#8217;s own device memory.</p>
+</div>
+<div class="paragraph">
+<p><strong>Attributes.</strong> Every access-permission, execute-never and shareability field a legal encoding; every attribute index in range; and every attribute field actually written, so that a partly initialised descriptor is refused rather than programmed.</p>
+</div>
+<div class="paragraph">
+<p><strong>Executability.</strong> Every partition must have at least one executable region and at least one writable region, and <strong>its entry point must lie inside one of its own executable regions</strong>. A four-byte error in an entry point cost a silicon run during earlier port work, which is why this is a rule rather than an assumption.</p>
+</div>
+<div class="paragraph">
+<p><strong>Time.</strong> No zero-length window, and the major frame must equal the sum of the windows.</p>
+</div>
+<div class="paragraph">
+<p><strong>Sharing.</strong> No more shared ranges than the maximum; each exactly one granule; each with a valid publisher; and access permissions consistent with one writer and any number of readers.</p>
+</div>
+<div class="paragraph">
+<p><strong>Budget.</strong> The planned layout must fit the part&#8217;s region count <strong>and</strong> its switch mask, and every region assigned must have a switch-mask enable bit.</p>
+</div>
+<div class="paragraph">
+<p>The overlap rule is unconditional and is the one the memory claim rests on: every byte outside a declared shared range is governed by it, with no exceptions.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_a_worked_example"><a class="anchor" href="#_a_worked_example"></a>A worked example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A real system&#8217;s manifest is a constant. The demonstrator images in the repository build theirs at run time from linker symbols instead, because a harness must not restate addresses the linker chose&#8201;&#8212;&#8201;but that is the harness&#8217;s shape, not the product&#8217;s, so what follows is the constant form.</p>
+</div>
+<div class="paragraph">
+<p>Two partitions, a code and a data region each, seven ticks of every ten against three, and no shared range:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#include "zx_api.h"
+#include "zx_manifest.h"
+
+#define P_A_ID  1U
+#define P_B_ID  2U
+
+static const ZX_REGION regions_a[] = {
+    { .zx_region_base  = 0x31780000U, .zx_region_limit = 0x3179FFFFU,
+      .zx_region_ap    = ZX_AP_EL2_RW_GUEST_RW,
+      .zx_region_xn    = ZX_XN_EXECUTABLE,
+      .zx_region_sh    = ZX_SH_NON_SHAREABLE,
+      .zx_region_attr_index = (UCHAR)ZX_ATTR_NORMAL_WB },
+    { .zx_region_base  = 0x317A0000U, .zx_region_limit = 0x317BFFFFU,
+      .zx_region_ap    = ZX_AP_EL2_RW_GUEST_RW,
+      .zx_region_xn    = ZX_XN_NEVER,
+      .zx_region_sh    = ZX_SH_NON_SHAREABLE,
+      .zx_region_attr_index = (UCHAR)ZX_ATTR_NORMAL_WB },
+};
+
+static const ZX_REGION regions_b[] = {
+    { .zx_region_base  = 0x317C0000U, .zx_region_limit = 0x317DFFFFU,
+      .zx_region_ap    = ZX_AP_EL2_RW_GUEST_RW,
+      .zx_region_xn    = ZX_XN_EXECUTABLE,
+      .zx_region_sh    = ZX_SH_NON_SHAREABLE,
+      .zx_region_attr_index = (UCHAR)ZX_ATTR_NORMAL_WB },
+    { .zx_region_base  = 0x317E0000U, .zx_region_limit = 0x317FFFFFU,
+      .zx_region_ap    = ZX_AP_EL2_RW_GUEST_RW,
+      .zx_region_xn    = ZX_XN_NEVER,
+      .zx_region_sh    = ZX_SH_NON_SHAREABLE,
+      .zx_region_attr_index = (UCHAR)ZX_ATTR_NORMAL_WB },
+};
+
+static const ZX_PARTITION partitions[] = {
+    { .zx_partition_id           = P_A_ID,
+      .zx_partition_name         = "critical",
+      .zx_partition_image_start  = 0x79910000U,
+      .zx_partition_image_end    = 0x7991FFFFU,
+      .zx_partition_entry        = 0x31780000U,
+      .zx_partition_regions      = regions_a,
+      .zx_partition_region_count = 2U,
+      .zx_partition_window_ticks = 7U },
+    { .zx_partition_id           = P_B_ID,
+      .zx_partition_name         = "untrusted",
+      .zx_partition_image_start  = 0x79910000U,
+      .zx_partition_image_end    = 0x7991FFFFU,
+      .zx_partition_entry        = 0x317C0000U,
+      .zx_partition_regions      = regions_b,
+      .zx_partition_region_count = 2U,
+      .zx_partition_window_ticks = 3U },
+};
+
+static const ZX_MANIFEST manifest = {
+    .zx_manifest_partitions        = partitions,
+    .zx_manifest_partition_count   = 2U,
+    .zx_manifest_shared            = NULL,
+    .zx_manifest_shared_count      = 0U,
+    .zx_manifest_major_frame_ticks = 10U
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Three things about it are worth more than the syntax.</p>
+</div>
+<div class="paragraph">
+<p><strong>Every field is named.</strong> Positional initialisers compile and a dropped field then reads as zero&#8201;&#8212;&#8201;which for an attribute index means index 0, a memory type that happens to be correct here and would not be in general. Naming the fields makes a missing one a compiler diagnostic.</p>
+</div>
+<div class="paragraph">
+<p><strong>Both regions are granule-aligned at both ends</strong>, and the limit is the LAST byte: <code>0x3179FFFF</code>, not <code>0x317A0000</code>. <code>ZX_MPU_GRANULE</code> is the alignment every base and limit is checked against.</p>
+</div>
+<div class="paragraph">
+<p><strong>The manifest needs no port header.</strong> <code>zx_api.h</code> and <code>zx_manifest.h</code> are enough to declare a whole system, which is what lets the host-side validator check the same objects with no target header in reach.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_validator_run_against_the_example_above"><a class="anchor" href="#_the_validator_run_against_the_example_above"></a>The validator, run against the example above</h2>
+<div class="sectionbody">
+<div class="literalblock">
+<div class="content">
+<pre>zx_manifest_verify = 0x00</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Moving partition B&#8217;s code region&#8201;&#8212;&#8201;and its entry point with it, so that the entry rule does not fire first&#8201;&#8212;&#8201;onto partition A&#8217;s data:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>zx_manifest_verify      = 0x10
+  partition 0, region 1
+  other:  partition 1, region 0</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>which is <code>ZX_MANIFEST_PARTITION_OVERLAP</code>, and it names <strong>both</strong> offenders: A&#8217;s data region and B&#8217;s code region, each by partition and index. An overlap has two parties and a diagnosis that named only one would send a reader to look at the innocent half.</p>
+</div>
+<div class="paragraph">
+<p>Setting the major frame to eleven ticks while the windows still sum to ten gives <code>0x18</code>, <code>ZX_MANIFEST_FRAME_MISMATCH</code>, and that one carries no indices at all&#8201;&#8212;&#8201;the fault belongs to the frame rather than to any partition, and reporting a partition would be inventing a culprit.</p>
+</div>
+<div class="paragraph">
+<p>For the run-time form built from linker symbols, and for the negative builds that prove each rule can reject, see <code>examples/common/</code> in the repository.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_a_shared_granule_costs_stated_plainly"><a class="anchor" href="#_what_a_shared_granule_costs_stated_plainly"></a>What a shared granule costs, stated plainly</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A shared range is a deliberate hole in total disjointness, and it is worth being honest about its consequence.</p>
+</div>
+<div class="paragraph">
+<p>It does not weaken the claim that a partition cannot reach another partition&#8217;s private memory: every byte outside a declared range is still governed by the unconditional overlap rule. It does mean the two partitions are not information-theoretically isolated&#8201;&#8212;&#8201;the publisher can signal the reader at one granule&#8217;s bandwidth, and a reader cannot be prevented from timing those writes.</p>
+</div>
+<div class="paragraph">
+<p>A system that needs no covert channel at all declares no shared ranges, and the validator then enforces total disjointness with no exceptions.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>What is Eclipse ThreadX? :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/home/main/index.html">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="home" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">Home</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Home</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hardware-support.html">Hardware Support</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="cortex-r52-port.html">Cortex-R52 Port</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="continuous-integration.html">Continuous Integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="releases-and-support.html">Releases and Support</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security-updates.html">Security Updates</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Home</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link is-current"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/home/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">What is Eclipse ThreadX?</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Eclipse ThreadX is a real time operating system (RTOS) for Internet of Things (IoT) and edge devices powered by microcontroller units (MCUs). Eclipse ThreadX is designed to support most highly constrained devices (battery powered and having less than 64 KB of flash memory).</p>
+</div>
+<div class="paragraph">
+<p>Eclipse ThreadX provides full IP layer security via IPsec and socket layer security via TLS and DTLS. Our software crypto library has achieved FIPS 140-2 certification. We also leverage hardware cryptographic capabilities, memory protection via ThreadX MODULES, and support for ARM&#8217;s TrustZone ARMv8-M security features.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Microsoft Azure RTOS, an embedded development suite with the ThreadX real-time operating system, has been deployed on more than 12 billion devices worldwide. Azure RTOS has now transitioned to an open-source project under the stewardship of the Eclipse Foundation, a recognized leader in hosting open-source IoT projects.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>With Eclipse Foundation as the new home, Azure RTOS becomes Eclipse ThreadX. For more information, see the following pages:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://techcommunity.microsoft.com/t5/internet-of-things-blog/microsoft-contributes-azure-rtos-to-open-source/ba-p/3986318">Microsoft IoT blog</a></p>
+</li>
+<li>
+<p><a href="https://threadx.io/">Eclipse ThreadX project</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_eclipse_threadx_resources"><a class="anchor" href="#_eclipse_threadx_resources"></a>Eclipse ThreadX resources</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://github.com/eclipse-threadx/">Eclipse ThreadX repositories</a></p>
+</div>
+<div class="paragraph">
+<p>Documentation for components:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="../../threadx/main/index.html" class="xref page">ThreadX</a></p>
+</li>
+<li>
+<p><a href="../../threadx-modules/main/index.html" class="xref page">ThreadX Modules</a></p>
+</li>
+<li>
+<p><a href="../../netx-duo/main/index.html" class="xref page">NetX Duo</a></p>
+</li>
+<li>
+<p><a href="../../guix/main/index.html" class="xref page">GUIX</a></p>
+</li>
+<li>
+<p><a href="../../filex/main/index.html" class="xref page">FileX</a></p>
+</li>
+<li>
+<p><a href="../../levelx/main/index.html" class="xref page">LevelX</a></p>
+</li>
+<li>
+<p><a href="../../usbx/main/index.html" class="xref page">USBX</a></p>
+</li>
+<li>
+<p><a href="../../tracex/main/index.html" class="xref page">TraceX</a></p>
+</li>
+<li>
+<p><a href="../../samplex/main/index.html" class="xref page">SampleX</a></p>
+</li>
+<li>
+<p><a href="../../zonex/main/index.html" class="xref page">ZoneX</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Other resources:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="hardware-support.html" class="xref page">Hardware Support</a></p>
+</li>
+<li>
+<p><a href="continuous-integration.html" class="xref page">Continuous Integration</a></p>
+</li>
+<li>
+<p><a href="releases-and-support.html" class="xref page">Releases And Product Support Policy</a></p>
+</li>
+<li>
+<p><a href="security-updates.html" class="xref page">Security Updates</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_components_of_eclipse_threadx"><a class="anchor" href="#_components_of_eclipse_threadx"></a>Components of Eclipse ThreadX</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Eclipse ThreadX platform is the collection of run-time solutions including ThreadX, NetX Duo, FileX, GUIX and USBX.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/eclipse-threadx-system-components.png" alt="The diagram of Eclipse ThreadX system components.">
+</div>
+</div>
+<div class="sect2">
+<h3 id="_threadx"><a class="anchor" href="#_threadx"></a>ThreadX</h3>
+<div class="paragraph">
+<p>ThreadX is an advanced Real-Time Operating System (RTOS) designed specifically for deeply embedded applications. Among the multiple benefits ThreadX provides are advanced scheduling facilities, message passing, interrupt management, and messaging services. ThreadX has many advanced features, including its picokernel architecture, preemption-threshold scheduling, event-chaining, and a rich set of system services.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_filex"><a class="anchor" href="#_filex"></a>FileX</h3>
+<div class="paragraph">
+<p>FileX is a high-performance FAT-compatible file system. It is fully integrated with ThreadX and is available for all supported processors. Like ThreadX, FileX is designed to have a small footprint and high performance, making it ideal for today&#8217;s deeply embedded applications that require file operations. FileX supports most physical media, including RAM disk, USBX, SD CARD, and NAND/NOR flash memories via LevelX.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_guix"><a class="anchor" href="#_guix"></a>GUIX</h3>
+<div class="paragraph">
+<p>GUIX is a professional quality graphical user interface package, created to meet the needs of embedded systems developers. Unlike the alternatives, GUIX is small, fast, and easily ported to virtually any hardware configuration capable of supporting graphical output. GUIX also delivers exceptional visual appeal and an intuitive and powerful API for application-level user interface development.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_netx_duo"><a class="anchor" href="#_netx_duo"></a>NetX Duo</h3>
+<div class="paragraph">
+<p>NetX Duo is an advanced, Industrial Grade TCP/IP network stacks designed specifically for deeply embedded, real-time, and IoT applications. NetX Duo is a dual IPv4 and IPv6 network stack.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_usbx"><a class="anchor" href="#_usbx"></a>USBX</h3>
+<div class="paragraph">
+<p>USBX is a high-performance USB host, device, and On-The-Go (OTG) embedded stack. It is fully integrated with ThreadX and is available for all ThreadX supported processors. Like ThreadX, USBX is designed to have a small footprint and high performance, making it ideal for deeply embedded applications that require an interface with USB devices.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_windows_tools"><a class="anchor" href="#_windows_tools"></a>Windows tools</h3>
+<div class="paragraph">
+<p>GUIX Studio provides a complete GUI application design environment, facilitating the creation and maintenance of all graphical elements in the application&#8217;s GUI. GUIX Studio automatically generates C code compatible with the GUIX library, ready to be compiled and run on the target.</p>
+</div>
+<div class="paragraph">
+<p>TraceX is a host-based analysis tool that provides developers with a graphical view of real-time system events and enables them to visualize and better understand the behavior of their real-time systems.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_eclipse_threadx_advantage"><a class="anchor" href="#_the_eclipse_threadx_advantage"></a>The Eclipse ThreadX Advantage</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Eclipse ThreadX provides the following advantages over other real-time operating systems.</p>
+</div>
+<div class="sect2">
+<h3 id="_most_deployed_rtos"><a class="anchor" href="#_most_deployed_rtos"></a>Most deployed RTOS</h3>
+<div class="paragraph">
+<p>Eclipse ThreadX has over 12 billion deployments worldwide. The popularity of Eclipse ThreadX is a testament to its reliability, quality, size, performance, advanced features, ease-of-use, and overall time-to-market advantages.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_intuitive_and_consistent_api_design"><a class="anchor" href="#_intuitive_and_consistent_api_design"></a>Intuitive and consistent API design</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Intuitive and consistent API.</p>
+</li>
+<li>
+<p>Noun-verb naming convention.</p>
+</li>
+<li>
+<p>All APIs have leading prefix, such as _tx<em> for ThreadX and _fx</em> for FileX, to easily identify the Eclipse ThreadX component they belong to.</p>
+</li>
+<li>
+<p>Functional consistency throughout the APIs. For example, all API functions that suspend have an optional timeout that functions in an identical manner.</p>
+</li>
+<li>
+<p>Many APIs are directly available from application ISRs.</p>
+</li>
+<li>
+<p>Optional user-notification callbacks for media and file operations.</p>
+</li>
+<li>
+<p>Event-driven programming model (API).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_high_efficiency"><a class="anchor" href="#_high_efficiency"></a>High efficiency</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Small code footprint.</p>
+</li>
+<li>
+<p>Scalable code footprint based on the services used.</p>
+</li>
+<li>
+<p>Fast execution. Eclipse ThreadX is designed for speed and has minimal internal function call layering to help achieve the fastest possible performance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_fastest_time_to_market"><a class="anchor" href="#_fastest_time_to_market"></a>Fastest time-to-market</h3>
+<div class="paragraph">
+<p>Eclipse ThreadX is easy to install, learn, use, debug, verify, certify, and maintain. As a result, Eclipse ThreadX is one of the most popular real time operating systems for embedded IoT devices, including many SoCs from Broadcom, Gainspan, and so forth. Our consistent time-to-market advantage is built on:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Complete source code availability.</p>
+</li>
+<li>
+<p>Easy-to-use API.</p>
+</li>
+<li>
+<p>Comprehensive and advanced feature set.</p>
+</li>
+<li>
+<p>Quality documentation.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_full_highest_quality_source_code"><a class="anchor" href="#_full_highest_quality_source_code"></a>Full, highest-quality source code</h3>
+<div class="paragraph">
+<p>Throughout the years, Eclipse ThreadX source code has set the bar in quality and ease of understanding. In addition, the convention of having one function per file provides for easy source navigation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pre_certified_by_sgs_tüv_saar"><a class="anchor" href="#_pre_certified_by_sgs_tüv_saar"></a>Pre-certified by SGS-TÜV Saar</h3>
+<div class="paragraph">
+<p>Eclipse ThreadX has been certified by SGS-TÜV Saar for use in safety-critical systems, according to IEC-61508 SIL 4. The certification confirms that Eclipse ThreadX can be used in the development of safety-related software for the highest safety integrity levels of IEC-61508 for the "Functional Safety of electrical, electronic, and programmable electronic safety-related systems." SGS-TUV Saar, formed through a joint venture of Germany&#8217;s SGS-Group and TUV Saarland, has become the leading accredited, independent company for testing, auditing, verifying, and certifying embedded software for safety-related systems worldwide.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/partener-logo-sgs-tuv-saar.png" alt="SGS-TUV certification">
+</div>
+</div>
+<div class="paragraph">
+<p>Artifacts (Certificate, Safety Manual, Test Report, etc.) associated with the TUV certification are available to license. Please visit <a href="https://threadxalliance.org">the ThreadX Alliance website</a> for more details.</p>
+</div>
+<div class="paragraph">
+<p>In cases where the application needs additional certification, a certification service is available through Eclipse Foundation for providing turn-key certification to various standards using the actual hardware platform and even covering the application code. Contact us for more details on our certification service.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_supports_most_popular_architectures"><a class="anchor" href="#_supports_most_popular_architectures"></a>Supports most popular architectures</h3>
+<div class="paragraph">
+<p>Eclipse ThreadX works on most popular 32/64-bit microprocessors, out-of-the-box, fully tested and fully supported. For the complete, up-to-date list of supported cores and toolchains, see the <a href="hardware-support.html" class="xref page">Hardware Support</a> page.</p>
+</div>
+<div class="paragraph">
+<p><em>All timing and size figures listed are estimates and may be different on your development platform.</em></p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,3434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 3 - Description of NetX Duo DHCP Client services :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-dhcp-client/chapter3.html">
+    <meta name="description" content="This chapter contains a description of all NetX Duo DHCP Client services (listed below) in alphabetic order.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mqtt/chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo User Guide</a></li>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo DHCP client user guide</li>
+    <li><a href="chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-dhcp-client/chapter3.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 3 - Description of NetX Duo DHCP Client services</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of all NetX Duo DHCP Client services (listed below) in alphabetic order.</p>
+</div>
+<div class="paragraph">
+<p>In the <strong>Return Values</strong> section in the following API descriptions, values in <strong>BOLD</strong> are not affected by the <strong>NX_DISABLE_ERROR_CHECKING</strong> define that is used to disable API error checking, while non-bold values are completely disabled.</p>
+</div>
+<div class="paragraph">
+<p>Under the "Allowed From" heading, "Initialization" means from <strong><em>tx_application_define</em></strong> onward. It does not extend to code that runs before <strong><em>tx_kernel_enter</em></strong>, such as a C++ static constructor or preliminary processing in <em>main</em>. See "Calling ThreadX Services During Initialization" in <a href="../../../threadx/main/chapter3.html" class="xref page">Chapter 3 of the ThreadX User Guide</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_create"><a class="anchor" href="#_nx_dhcp_create"></a>nx_dhcp_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create a DHCP instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_create(
+    NX_DHCP *dhcp_ptr,
+    NX_IP *ip_ptr,
+    CHAR *name_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates a DHCP instance for the previously created IP instance. By default the primary interface is enabled for running DHCP. The name input, while not used in the NetX Duo implementation of DHCP Client, must follow RFC 1035 criteria for host names. The total length must not exceed 255 characters, the labels separate by dots must begin with a letter, and end with a letter or number, and may contain hyphens but no other non-alphanumeric character.</p>
+</div>
+<div class="paragraph">
+<p>If the application would like to run DHCP another interface registered with the IP instance, (using <em>nx_ip_interface_attach</em>), the application can call <strong><em>nx_dhcp_set_interface_index</em></strong> to run DHCP on just that interface, or <em>nx_dhcp_interface_enable</em> to run DHCP on that interface as well. See description of these services for more details.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The application must make sure the DHCP Client packet pool payload can support the minimum DHCP message size specified by the RFC 2131 Section 2 (548 bytes of DHCP message data plus UDP, IP and physical network frame headers).
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters"><a class="anchor" href="#_input_parameters"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block.</p>
+</li>
+<li>
+<p><em>ip_ptr</em>: Pointer to previously created IP instance.</p>
+</li>
+<li>
+<p><em>name_ptr</em>: Pointer to host name for DHCP instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DHCP create</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INVALID_NAME</strong>: (0xA8) Invalid host name</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INVALID_PAYLOAD</strong>: (0x9C) Payload too small for DHCP message</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid IP or DHCP pointer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from"><a class="anchor" href="#_allowed_from"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads, Initialization</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Create a DHCP instance.  */
+status =  nx_dhcp_create(&amp;my_dhcp, &amp;my_ip, "My-DHCP");
+
+/* If status is NX_SUCCESS a DHCP instance was successfully created.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_enable"><a class="anchor" href="#_nx_dhcp_interface_enable"></a>nx_dhcp_interface_enable</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Enable the specified interface to run DHCP</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_enable(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This service enables the specified interface for running DHCP. By default the primary interface is enabled for DHCP Client. At this point, DHCP can be started on this interface either by calling <strong><em>nx_dhcp_interface_start</em></strong> or to start DHCP on all enabled interfaces <strong><em>nx_dhcp_start</em></strong>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The application must first register this interface with the IP instance, using <em>nx_ip_interface_attach.</em>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Further, there must be an available DHCP Client interface 'record' to add this interface to the list of enabled interfaces. By default NX_DHCP_CLIENT_MAX_RECORDS is defined to 1. Set this option to the maximum number of interfaces expected to run DHCP Client simultaneously. Typically NX_DHCP_CLIENT_MAX_RECORDS will equal NX_MAX_PHYSICAL_INTERFACES; however, if a device has more physical interfaces than it expects to run DHCP Client, it can save memory by setting NX_DHCP_CLIENT_MAX_RECORDS to less than that number. There is not a one to one mapping of physical interfaces with DHCP Client interface records.</p>
+</div>
+<div class="paragraph">
+<p>The difference between this service and <strong><em>nx_dhcp_set_interface_index</em></strong> is the latter sets only a single interface to run DHCP whereas this service simply adds the specified interface to the list of Client interfaces enabled for DHCP.</p>
+</div>
+<div class="paragraph">
+<p>To disable an interface for DHCP, the application can call the <strong><em>nx_dhcp_interface_disable</em></strong> service.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_2"><a class="anchor" href="#_input_parameters_2"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block.</p>
+</li>
+<li>
+<p><em>interface_index</em>: Index of interface to enable DHCP on</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DHCP enable</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NO_RECORDS_AVAILABLE</strong>: (0xA7) No record available for another Interface to be enabled for DHCP</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INTERFACE_ALREADY_ENABLED</strong>: (0xA3) Interface enabled for DHCP</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid IP or DHCP pointer</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_2"><a class="anchor" href="#_allowed_from_2"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads, Initialization</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Enable DHCP on a secondary interface. It is already enabled on the primary
+   interface.  NX_DHCP_CLIENT_MAX_RECORDS is set to 2. */
+
+status =  nx_dhcp_interface_enable(&amp;my_dhcp, 1);
+/* If status is NX_SUCCESS the interface was successfully enabled.  */
+
+
+status = nx_dhcp_start(&amp;my_dhcp);
+/* If status is NX_SUCCESS DHCP is running on interface 0 and 1.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_disable"><a class="anchor" href="#_nx_dhcp_interface_disable"></a>nx_dhcp_interface_disable</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Disable the specified interface to run DHCP</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_disable(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This service disables the specified interface for running DHCP. It reinitializes the DHCP Client on this interface.</p>
+</div>
+<div class="paragraph">
+<p>To restart the DHCP Client the application must re-enable the interface using <em>nx_dhcp_interface_enable</em> and restart DHCP by calling <em>nx_dhcp_interface_start</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_3"><a class="anchor" href="#_input_parameters_3"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block.</p>
+</li>
+<li>
+<p><em>interface_index</em>: Index of interface to disable DHCP on</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DHCP create</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INTERFACE_NOT_ENABLED</strong>: (0xA4) Interface not enabled for DHCP</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid IP or DHCP pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_3"><a class="anchor" href="#_allowed_from_3"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Disable DHCP on a secondary interface. */
+
+status =  nx_dhcp_interface_disable(&amp;my_dhcp, 1);
+/* If status is NX_SUCCESS the interface is successfully disabled.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_clear_broadcast_flag"><a class="anchor" href="#_nx_dhcp_clear_broadcast_flag"></a>nx_dhcp_clear_broadcast_flag</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the DHCP broadcast flag</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_clear_broadcast_flag(NX_DHCP *dhcp_ptr, UINT clear_flag);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets or clears the broadcast flag the DHCP message header for all interfaces enabled for DHCP. For some DHCP messages (e.g. DISCOVER) the broadcast flag is set to broadcast because the Client does not have an IP address.</p>
+</div>
+<div class="paragraph">
+<p>clear_flag values:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_TRUE</strong>: broadcast flag is cleared (request unicast response)</p>
+</li>
+<li>
+<p><strong>NX_FALSE</strong>: broadcast flag is set (request broadcast response)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This service is intended for DHCP Clients that must go through a router to get to the DHCP Server, where the router rejects forwarding broadcast messages.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_4"><a class="anchor" href="#_input_parameters_4"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block</p>
+</li>
+<li>
+<p><em>clear_flag</em>: Value to set the broadcast flag to</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successfully set flag</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid IP or DHCP pointer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_4"><a class="anchor" href="#_allowed_from_4"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads, Initialization</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Send DHCP Client messages with the broadcast flag cleared (e.g. request a
+    unicast response).  */
+status =  nx_dhcp_clear_broadcast_flag(&amp;my_dhcp, NX_TRUE);
+
+/* If status is NX_SUCCESS the DHCP Client broadcast flag is updated.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_clear_broadcast_flag"><a class="anchor" href="#_nx_dhcp_interface_clear_broadcast_flag"></a>nx_dhcp_interface_clear_broadcast_flag</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set or clear the broadcast flag on the specified interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_clear_broadcast_flag(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index,
+    UINT clear_flag);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>This service enables the DHCP Client host application to set or clear the broadcast flag in DHCP Client messages to the DHCP Server on the specified interface. For more details see <strong><em>nx_dhcp_clear_broadcast_flag</em></strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_5"><a class="anchor" href="#_input_parameters_5"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block</p>
+</li>
+<li>
+<p><em>interface_index</em>: Index of interface to set the broadcast flag</p>
+</li>
+<li>
+<p><em>clear_flag</em>: Value to set the broadcast flag to</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successfully set flag</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INTERFACE_NOT_ENABLED</strong>: (0xA4) Interface not enabled for DHCP</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid IP or DHCP pointer</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_5"><a class="anchor" href="#_allowed_from_5"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads, Initialization</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Send DHCP Client messages with the broadcast flag cleared (e.g. request a
+   unicast response) on a previously attached secondary interface.  */
+
+iface_index = 1;
+
+status =  nx_dhcp_interface_clear_broadcast_flag(&amp;my_dhcp, iface_index, NX_TRUE);
+
+/* If status is NX_SUCCESS the DHCP Client broadcast flag is updated.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_delete"><a class="anchor" href="#_nx_dhcp_delete"></a>nx_dhcp_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete a DHCP instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_delete(NX_DHCP *dhcp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes a previously created DHCP instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_6"><a class="anchor" href="#_input_parameters_6"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DHCP delete.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_6"><a class="anchor" href="#_allowed_from_6"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_6"><a class="anchor" href="#_example_6"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Delete a DHCP instance.  */
+status =  nx_dhcp_delete(&amp;my_dhcp);
+
+/* If status is NX_SUCCESS the DHCP instance was successfully deleted.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_force_renew"><a class="anchor" href="#_nx_dhcp_force_renew"></a>nx_dhcp_force_renew</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send a force renew message</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_force_renew(NX_DHCP *dhcp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This service enables the host application to send a force renew message on all interfaces enabled for DHCP. The DHCP Client must be in a BOUND state. This function sets the state to RENEW such that the DHCP Client will try to renew before the T1 timeout expires.</p>
+</div>
+<div class="paragraph">
+<p>To send a force renew on a specific interface when multiple interfaces are DHCP-enabled, use <strong><em>nx_dhcp_interface_force_renew</em></strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_7"><a class="anchor" href="#_input_parameters_7"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_7"><a class="anchor" href="#_return_values_7"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successfully sent force renew.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_BOUND</strong>: (0x94) Client IP address not bound.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_7"><a class="anchor" href="#_allowed_from_7"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_7"><a class="anchor" href="#_example_7"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Send a force renew message from the Client.  */
+status =  nx_dhcp_force_renew(&amp;my_dhcp);
+
+/* If status is NX_SUCCESS the DHCP client state is the RENEWING state and the
+   DHCP Client thread task will begin renewing before T1 is expired.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_force_renew"><a class="anchor" href="#_nx_dhcp_interface_force_renew"></a>nx_dhcp_interface_force_renew</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send a force renew message on the specified interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_force_renew(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>This service enables the host application to send a force renew message on the input interface as long as that interface has been enabled for DHCP (see <strong><em>nx_dhcp_interface_enable</em></strong>). The DHCP Client on the specified interface must be in a BOUND state. This function sets the state to RENEW such that the DHCP Client will try to renew before the T1 timeout expires.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_8"><a class="anchor" href="#_input_parameters_8"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_8"><a class="anchor" href="#_return_values_8"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successfully sent force renew.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INTERFACE_NOT_ENABLED</strong>: (0xA4) Interface not enabled for DHCP</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid IP or DHCP pointer</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_8"><a class="anchor" href="#_allowed_from_8"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Send a force renew message to the server on interface 1.  */
+status =  nx_dhcp_interface_force_renew(&amp;my_dhcp, 1);
+
+
+/* If status is NX_SUCCESS the DHCP client state is the RENEWING state and the
+   DHCP Client thread task will begin renewing before T1 is expired.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_packet_pool_set"><a class="anchor" href="#_nx_dhcp_packet_pool_set"></a>nx_dhcp_packet_pool_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set the DHCP Client packet pool</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_packet_pool_set(
+    NX_DHCP *dhcp_ptr,
+    NX_PACKET_POOL *packet_pool_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>This service allows the application to create the DHCP Client packet pool by passing in a pointer to a previously created packet pool in this service call. To use this feature, the host application must define <strong>NX_DHCP_CLIENT_USER_CREATE_PACKET_POOL</strong>. When defined, the <em>nx_dhcp_create</em> service will not create the Client&#8217;s packet pool.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The application is recommended to use the default values for the DHCP client packet pool payload, defined as NX_DHCP_PACKET_PAYLOAD in <em>nxd_dhcp_client.h</em> when creating the packet pool.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_9"><a class="anchor" href="#_input_parameters_9"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block.</p>
+</li>
+<li>
+<p><em>packet_pool_ptr</em>: Pointer to previously created packet pool</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_9"><a class="anchor" href="#_return_values_9"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) DHCP Client packet pool is set</p>
+</li>
+<li>
+<p><strong>NX_NOT_ENABLED</strong>: (0x14) Service is not enabled</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer</p>
+</li>
+<li>
+<p>NX_DHCP_INVALID_PAYLOAD: (0x9C) Payload is too small</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_9"><a class="anchor" href="#_allowed_from_9"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Application code</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Create the packet pool. */
+status =  nx_packet_pool_create(&amp;dhcp_pool, "DHCP Client Packet Pool",
+                                 NX_DHCP_PACKET_PAYLOAD, pointer,
+                                 (15 * NX_DHCP_PACKET_PAYLOAD));
+
+/* Create the DHCP Client. */
+status =  nx_dhcp_create(&amp;dhcp_0, &amp;ip_0, "janetsdhcp1");
+
+/* Set the DHCP Client packet pool.  */
+status =  nx_dhcp_packet_pool_set(&amp;my_dhcp, packet_pool_ptr);
+/* If status is NX_SUCCESS packet pool was successfully set.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_request_client_ip"><a class="anchor" href="#_nx_dhcp_request_client_ip"></a>nx_dhcp_request_client_ip</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set requested IP address for DHCP instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_request_client_ip(
+    NX_DHCP *dhcp_ptr,
+    ULONG client_ip_address,
+    UINT skip_discover_message);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the IP address for the DHCP Client to request from the DHCP Server on the first interface enabled for DHCP in the DHCP Client record. If the <em>skip_discover_message</em> flag is set, the DHCP Client skips the Discover message and sends a Request message.</p>
+</div>
+<div class="paragraph">
+<p>To set the request for a specific IP for DHCP messages on a specific interface, use the <em>nx_dhcp_interface_request_client_ip</em> service.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_10"><a class="anchor" href="#_input_parameters_10"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block.</p>
+</li>
+<li>
+<p><em>client_ip_address</em>: IP address to request from DHCP server</p>
+</li>
+<li>
+<p><strong>skip_discover_message</strong>*:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>If true, DHCP Client sends Request message</p>
+</li>
+<li>
+<p>If false, it sends the Discover message.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_10"><a class="anchor" href="#_return_values_10"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Requested IP address is set.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer</p>
+</li>
+<li>
+<p>NX_DHCP_INVALID_IP_REQUEST: (0x9D) NULL IP address requested</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_10"><a class="anchor" href="#_allowed_from_10"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Set the DHCP Client requested IP address and skip the discover message.  */
+
+status =  nx_dhcp_request_client_ip(&amp;my_dhcp, IP(192,168,0,6), NX_TRUE);
+
+/* If status is NX_SUCCESS requested IP address was successfully set.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_request_client_ip"><a class="anchor" href="#_nx_dhcp_interface_request_client_ip"></a>nx_dhcp_interface_request_client_ip</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set requested IP address for DHCP instance on specified interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_request_client_ip(
+    NX_DHCP *dhcp_ptr,
+    UINT  interface_index,
+    ULONG client_ip_address,
+    UINT skip_discover_message);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the IP address for the DHCP Client to request from the DHCP Server on the specified interface, if that interface is enabled for DHCP (see <em>nx_dhcp_interface_enable</em>). If the <strong><em>skip_discover_message</em></strong> flag is set, the DHCP Client skips the Discover message and sends a Request message.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_11"><a class="anchor" href="#_input_parameters_11"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block.</p>
+</li>
+<li>
+<p><em>Interface_index</em>: Index of interface to request IP address on</p>
+</li>
+<li>
+<p><em>client_ip_address</em>: IP address to request from DHCP server</p>
+</li>
+<li>
+<p><em>skip_discover_message</em>: If true, DHCP Client sends Request message; else it sends the Discover message.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_11"><a class="anchor" href="#_return_values_11"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Requested IP address is set.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INTERFACE_NOT_ENABLED</strong>: (0xA4) Interface not enabled for DHCP</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid IP or DHCP pointer</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_11"><a class="anchor" href="#_allowed_from_11"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_11"><a class="anchor" href="#_example_11"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Set the DHCP Client requested IP address and skip the discover message on
+   interface 0.  */
+status =  nx_dhcp_interface_request_client_ip(&amp;my_dhcp, 0, IP(192,168,0,6), NX_TRUE);
+
+/* If status is NX_SUCCESS requested IP address was successfully set.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_reinitialize"><a class="anchor" href="#_nx_dhcp_reinitialize"></a>nx_dhcp_reinitialize</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clear the DHCP client network parameters</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_reinitialize(NX_DHCP *dhcp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>This service clears the host application network parameters (IP address, network address and network mask), and clears the DHCP Client state on all interfaces enabled for DHCP. It is used in combination with <em>nx_dhcp_stop</em> and <strong><em>nx_dhcp_start</em></strong> to 'restart' the DHCP state machine:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">nx_dhcp_stop(&amp;my_dhcp);
+nx_dhcp_reinitialize(&amp;my_dhcp);
+nx_dhcp_start(&amp;my_dhcp);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To reinitialize the DHCP Client on a specific interface when multiple interfaces are enabled for DHCP, use the <strong><em>nx_dhcp_interface_reinitialize</em></strong> service.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_12"><a class="anchor" href="#_input_parameters_12"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_12"><a class="anchor" href="#_return_values_12"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) DHCP successfully reinitialized</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_12"><a class="anchor" href="#_allowed_from_12"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_12"><a class="anchor" href="#_example_12"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Reinitialize the previously started DHCP client.  */
+status =  nx_dhcp_reinitialize(&amp;my_dhcp);
+
+/* If status is NX_SUCCESS the host application successfully reinitialized its network parameters and DHCP client state. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_reinitialize"><a class="anchor" href="#_nx_dhcp_interface_reinitialize"></a>nx_dhcp_interface_reinitialize</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clear the DHCP client network parameters on the specified interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_reinitialize(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This service clears the network parameters (IP address, network address and network mask) on the specified interface if that interface is enabled for DHCP (see <strong><em>nx_dhcp_interface_enable</em></strong>). See <strong><em>nx_dhcp_reinitialize</em></strong> for more details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_13"><a class="anchor" href="#_input_parameters_13"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance</p>
+</li>
+<li>
+<p><em>interface_index</em>: Index of interface to reinitialize</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_13"><a class="anchor" href="#_return_values_13"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Interface successfully reinitialized</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INTERFACE_NOT_ENABLED</strong>: (0xA4) Interface not enabled for DHCP</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_13"><a class="anchor" href="#_allowed_from_13"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_13"><a class="anchor" href="#_example_13"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Reinitialize the previously started DHCP client on interface 1.  */
+status =  nx_dhcp_interface_reinitialize(&amp;my_dhcp, 1);
+
+/* If status is NX_SUCCESS the host application successfully reinitialized its network parameters and DHCP client state. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_release"><a class="anchor" href="#_nx_dhcp_release"></a>nx_dhcp_release</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Release Leased IP address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_14"><a class="anchor" href="#_prototype_14"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_release(NX_DHCP *dhcp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_14"><a class="anchor" href="#_description_14"></a>Description</h3>
+<div class="paragraph">
+<p>This service releases the IP address obtained from a DHCP server by sending the RELEASE message to that server. It then reinitializes the DHCP Client. This service is applied to all interfaces enabled for DHCP.</p>
+</div>
+<div class="paragraph">
+<p>The application can restart the DHCP Client by calling <strong><em>nx_dhcp_start</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>To release an address back to the DHCP server on a specific interface, use the <em>nx_dhcp_interface_release</em> service</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_14"><a class="anchor" href="#_input_parameters_14"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_14"><a class="anchor" href="#_return_values_14"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DHCP release.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_BOUND</strong>: (0x94) The IP address has not been leased so it can&#8217;t be released.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_14"><a class="anchor" href="#_allowed_from_14"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_14"><a class="anchor" href="#_example_14"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Release the previously leased IP address.  */
+status =  nx_dhcp_release(&amp;my_dhcp);
+
+/* If status is NX_SUCCESS the previous IP lease was successfully released.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_release"><a class="anchor" href="#_nx_dhcp_interface_release"></a>nx_dhcp_interface_release</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Release IP address on the specified interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_15"><a class="anchor" href="#_prototype_15"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_release(NX_DHCP *dhcp_ptr, UINT interface_index);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_15"><a class="anchor" href="#_description_15"></a>Description</h3>
+<div class="paragraph">
+<p>This service releases the IP address obtained from a DHCP server on the specified interface and reinitializes the DHCP Client. The DHCP Client can be restarted by calling <strong><em>nx_dhcp_start</em></strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_15"><a class="anchor" href="#_input_parameters_15"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_15"><a class="anchor" href="#_return_values_15"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DHCP release.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INTERFACE_NOT_ENABLED</strong>: (0xA4) Interface not enabled for DHCP</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_BOUND</strong>: (0x94) The IP address has not been leased so it can&#8217;t be released.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_15"><a class="anchor" href="#_allowed_from_15"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_15"><a class="anchor" href="#_example_15"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Release the previously leased IP address on interface 1.  */
+status =  nx_dhcp_interface_release(&amp;my_dhcp, 1);
+
+/* If status is NX_SUCCESS the previous IP lease was successfully released.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_decline"><a class="anchor" href="#_nx_dhcp_decline"></a>nx_dhcp_decline</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Decline IP address from DHCP Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_16"><a class="anchor" href="#_prototype_16"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_decline(NX_DHCP *dhcp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_16"><a class="anchor" href="#_description_16"></a>Description</h3>
+<div class="paragraph">
+<p>This service declines an IP address leased from the DHCP server on all interfaces enabled for DHCP. If <strong>NX_DHCP_CLIENT_SEND_ ARP_PROBE</strong> is defined, the DHCP Client will send a DECLINE message if it detects that the IP address is already in use. See <strong>ARP Probes</strong> in Chapter One for more information on ARP probe configuration in the NetX Duo DHCP Client.</p>
+</div>
+<div class="paragraph">
+<p>The application can use this service to decline its IP address if it discovers the address is in use by other means.</p>
+</div>
+<div class="paragraph">
+<p>This service reinitializes the DHCP Client to that it can be restarted by calling <strong><em>nx_dhcp_start</em></strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_16"><a class="anchor" href="#_input_parameters_16"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_16"><a class="anchor" href="#_return_values_16"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Decline successfully sent</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_BOUND</strong>: (0x94) DHCP Client not bound</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_16"><a class="anchor" href="#_allowed_from_16"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_16"><a class="anchor" href="#_example_16"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Decline the IP address offered by the DHCP server.  */
+status =  nx_dhcp_decline(&amp;my_dhcp);
+
+/* If status is NX_SUCCESS the previous IP address decline message was successfully transmitted.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_decline"><a class="anchor" href="#_nx_dhcp_interface_decline"></a>nx_dhcp_interface_decline</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Decline IP address from DHCP Server on the specified interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_17"><a class="anchor" href="#_prototype_17"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_decline(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_17"><a class="anchor" href="#_description_17"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends the DECLINE message to the server to decline an IP address assigned by the DHCP server. It also reinitializes the DHCP Client. See <strong><em>nx_dhcp_decline</em></strong> for more details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_17"><a class="anchor" href="#_input_parameters_17"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+<li>
+<p><em>Interface_index</em>: Index of interface to decline IP address</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_17"><a class="anchor" href="#_return_values_17"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) DHCP decline message sent</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_BOUND</strong>: (0x94) DHCP Client not bound</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INTERFACE_NOT_ENABLED</strong>: (0xA4) Interface not enabled for DHCP</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_17"><a class="anchor" href="#_allowed_from_17"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_17"><a class="anchor" href="#_example_17"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Decline the IP address offered by the DHCP server on interface 2.  */
+status =  nx_dhcp_interface_decline(&amp;my_dhcp, 2);
+
+/* If status is NX_SUCCESS the previous IP address decline message was successfully transmitted.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_send_request"><a class="anchor" href="#_nx_dhcp_send_request"></a>nx_dhcp_send_request</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send DHCP message to Server</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_18"><a class="anchor" href="#_prototype_18"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_send_request(
+    NX_DHCP *dhcp_ptr,
+    UINT dhcp_message_type);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_18"><a class="anchor" href="#_description_18"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends the specified DHCP message to the DHCP server on the first interface enabled for DHCP found in the DHCP Client record. To send a RELEASE or DECLINE message, the application must use the <strong><em>nx_dhcp[_interface]_release</em></strong> or <strong><em>nx_dhcp_interface_decline</em></strong> services respectively.</p>
+</div>
+<div class="paragraph">
+<p>The DHCP Client must be started to use this service except for sending the INFORM_REQUEST message type.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This service is not intended for the host application to 'drive' the DHCP Client state machine.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_18"><a class="anchor" href="#_input_parameters_18"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block.</p>
+</li>
+<li>
+<p><em>dhcp_message_type</em>: Message request (defined in <em>nxd_dhcp_client.h</em>)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_18"><a class="anchor" href="#_return_values_18"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) DHCP message sent</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_STARTED</strong>: (0x96) Invalid interface index</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INVALID_MESSAGE</strong>: (0x9B) Invalid message type to send</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid pointer input</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_18"><a class="anchor" href="#_allowed_from_18"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_18"><a class="anchor" href="#_example_18"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Send the DHCP INFORM REQUEST message to the server.  */
+
+status =  nx_dhcp_send_request(&amp;my_dhcp, NX_DHCP_TYPE_DHCPINFORM);
+/* If status is NX_SUCCESS a DHCP message was successfully sent.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_send_request"><a class="anchor" href="#_nx_dhcp_interface_send_request"></a>nx_dhcp_interface_send_request</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send DHCP message to Server on a specific interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_19"><a class="anchor" href="#_prototype_19"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_send_request(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index,
+    UINT dhcp_message_type);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_19"><a class="anchor" href="#_description_19"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends a message to the DHCP server on the specified interface if that interface is enabled for DHCP. To send a RELEASE or DECLINE message, the application must use the <strong><em>nx_dhcp[_interface]_release</em></strong> or <strong><em>nx_dhcp_interface_decline</em></strong> services respectively.</p>
+</div>
+<div class="paragraph">
+<p>The DHCP Client must be started to use this service except for sending the DHCP INFORM REQUEST message type.</p>
+</div>
+<div class="paragraph">
+<p>This service is not intended for the host application to 'drive' the DHCP Client state machine.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_19"><a class="anchor" href="#_input_parameters_19"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block.</p>
+</li>
+<li>
+<p><em>Interface_index</em>: Index of interface to send message on</p>
+</li>
+<li>
+<p><em>dhcp_message_type</em>: Message request (defined in nxd_dhcp_client.h)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_19"><a class="anchor" href="#_return_values_19"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) DHCP message sent</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_STARTED</strong>: (0x96) Invalid interface index</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INVALID_MESSAGE</strong>: (0x9B) Invalid message type to send</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INTERFACE_NOT_ENABLED</strong>: (0xA4) Interface not enabled for DHCP</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_19"><a class="anchor" href="#_allowed_from_19"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_19"><a class="anchor" href="#_example_19"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Send the INFORM REQUEST message to the server on the primary interface.  */
+
+status =  nx_dhcp_interface_send_request(&amp;my_dhcp, 0, NX_DHCP_TYPE_DHCPINFORM);
+/* If status is NX_SUCCESS a DHCP message was successfully sent.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_server_address_get"><a class="anchor" href="#_nx_dhcp_server_address_get"></a>nx_dhcp_server_address_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get the DHCP Client&#8217;s DHCP server IP address</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_20"><a class="anchor" href="#_prototype_20"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_server_address_get(
+    NX_DHCP *dhcp_ptr,
+    ULONG server_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_20"><a class="anchor" href="#_description_20"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the DHCP Client DHCP server IP address on the first interface enabled for DHCP found in the DHCP Client record. The caller can only use this service after the DHCP Client is bound to an IP address assigned by the DHCP Server. The host application can use the <strong><em>nx_ip_status_check</em></strong> service to verify IP address is set, or it can use the <strong><em>nx_dhcp_state_change_notify</em></strong> and query the DHCP Client state is <strong>NX_DHCP_STATE_BOUND</strong>. See <em>nx_dhcp_state_change_notify</em> for more details about setting the state change callback function.</p>
+</div>
+<div class="paragraph">
+<p>To find the DHCP server on a specific interface when multiple interfaces are enabled for DHCP Client, use the <em>nx_dhcp_interface_server_address_get</em> service</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_20"><a class="anchor" href="#_input_parameters_20"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block.</p>
+</li>
+<li>
+<p><em>server_address</em>: Pointer to server IP address</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_20"><a class="anchor" href="#_return_values_20"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) DHCP server address returned</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NO_INTERFACES_ENABLED</strong>: (0xA5) No interfaces enabled for DHCP</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid input pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_20"><a class="anchor" href="#_allowed_from_20"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_20"><a class="anchor" href="#_example_20"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Use the state change notify service to determine the Client transition to the bound state and get its DHCP server IP address.*/
+
+void dhcp_state_change(NX_DHCP *dhcp_ptr, UCHAR new_state)
+{
+ULONG server_address;
+UINT  status;
+
+/* Increment state changes counter.  */
+state_changes++;
+
+if (dhcp_0.nx_dhcp_state == NX_DHCP_STATE_BOUND)
+    	{
+            status = nx_dhcp_server_address_get(&amp;dhcp_0, &amp;server_address);
+    	}
+
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_server_address_get"><a class="anchor" href="#_nx_dhcp_interface_server_address_get"></a>nx_dhcp_interface_server_address_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get the DHCP Client&#8217;s DHCP server IP address on the specified interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_21"><a class="anchor" href="#_prototype_21"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_server_address_get(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index,
+    ULONG server_address);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_21"><a class="anchor" href="#_description_21"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the DHCP Client DHCP server IP address on the specified interface if that interface is enabled for DHCP. The DHCP Client must be in the Bound state. After starting the DHCP Client on that interface, the host application can either use the <strong><em>nx_ip_status_check</em></strong> service to verify the IP address is set, or it can use the DHCP Client state change callback and query the DHCP Client state is NX_DHCP_STATE_BOUND. See <strong><em>nx_dhcp_state_change_notify</em></strong> for more details about setting the state change callback function.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_21"><a class="anchor" href="#_input_parameters_21"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block.</p>
+</li>
+<li>
+<p><em>Interface_index</em>: Index of interface to obtain IP address</p>
+</li>
+<li>
+<p><em>server_address</em>: Pointer to server IP address</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_21"><a class="anchor" href="#_return_values_21"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) DHCP server address returned</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NO_INTERFACES_ENABLED</strong>: (0xA5) No interfaces enabled for DHCP</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_BOUND</strong>: (0x94) DHCP Client not bound</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_21"><a class="anchor" href="#_allowed_from_21"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_21"><a class="anchor" href="#_example_21"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Use the state change notify service to determine the Client transition to the
+bound state and get its DHCP server IP address. */
+
+void dhcp_state_change(NX_DHCP *dhcp_ptr, UCHAR new_state)
+{
+
+ULONG server_address;
+UINT  status;
+
+/* Increment state changes counter.  */
+state_changes++;
+
+/* Get the DHCP server IP address on interface 1 */
+if (dhcp_0.nx_dhcp_state == NX_DHCP_STATE_BOUND)
+    	{
+         status = nx_dhcp_interface_server_address_get(&amp;dhcp_0, 1,
+                                                       &amp;server_address);
+    	}
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_set_interface_index"><a class="anchor" href="#_nx_dhcp_set_interface_index"></a>nx_dhcp_set_interface_index</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set network interface for DHCP instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_22"><a class="anchor" href="#_prototype_22"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_set_interface_index(
+    NX_DHCP *dhcp_ptr,
+    UINT index);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_22"><a class="anchor" href="#_description_22"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the network interface for the DHCP instance to connect to the DHCP Server on when running DHCP Client configured for a single network interface.</p>
+</div>
+<div class="paragraph">
+<p>By default the DHCP Client runs on the primary interface. To run DHCP on a secondary service, use this service to set the secondary interface as the DHCP Client interface. The application must previously register the specified interface to the IP instance using the <strong><em>nx_ip_interface_attach</em></strong> service.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This service is intended for applications that intend to run the DHCP Client on only one interface. To run DHCP on multiple interfaces see <strong><em>nx_dhcp_interface_enable</em></strong> for more details.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_22"><a class="anchor" href="#_input_parameters_22"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to DHCP control block.</p>
+</li>
+<li>
+<p><em>index</em>: Index of device network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_22"><a class="anchor" href="#_return_values_22"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Interface is successfully set.</p>
+</li>
+<li>
+<p><strong>NX_INVALID_INTERFACE</strong>: (0x4C) Invalid network interface</p>
+</li>
+<li>
+<p><strong>NX_DHCP_INTERFACE_ALREADY_ENABLED</strong>: (0xA3) Interface enabled for DHCP</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NO_RECORDS_AVAILABLE</strong>: (0xA7) No record available for another</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_22"><a class="anchor" href="#_allowed_from_22"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_22"><a class="anchor" href="#_example_22"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Set the DHCP Client interface to the secondary interface (index 1).  */
+status =  nx_dhcp_set_interface_index(&amp;my_dhcp, 1);
+/* If status is NX_SUCCESS a DHCP interface was successfully set.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_start"><a class="anchor" href="#_nx_dhcp_start"></a>nx_dhcp_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start DHCP processing</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_23"><a class="anchor" href="#_prototype_23"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_start(NX_DHCP *dhcp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_23"><a class="anchor" href="#_description_23"></a>Description</h3>
+<div class="paragraph">
+<p>This service starts DHCP processing on all interfaces enabled for DHCP. By default the primary interface is enabled for DHCP when the application calls <strong><em>nx_dhcp_create</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>To verify when the IP instance is bound to an IP address on the DHCP Client interface, use <em>nx_ip_status_check</em> to see confirm the IP address is valid.</p>
+</div>
+<div class="paragraph">
+<p>If there are other interfaces already running DHCP, this service will not affect them.</p>
+</div>
+<div class="paragraph">
+<p>To start DHCP on a specific interface when multiple interfaces are enabled, use the <strong><em>nx_dhcp_interface_start</em></strong> service.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_23"><a class="anchor" href="#_input_parameters_23"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_23"><a class="anchor" href="#_return_values_23"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DHCP start.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_ALREADY_STARTED</strong>: (0x93) DHCP already started.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_23"><a class="anchor" href="#_allowed_from_23"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_23"><a class="anchor" href="#_example_23"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Start the DHCP processing for this IP instance.  */
+status =  nx_dhcp_start(&amp;my_dhcp);
+
+/* If status is NX_SUCCESS the DHCP was successfully started.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_start"><a class="anchor" href="#_nx_dhcp_interface_start"></a>nx_dhcp_interface_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start DHCP processing on the specified interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_24"><a class="anchor" href="#_prototype_24"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_start(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_24"><a class="anchor" href="#_description_24"></a>Description</h3>
+<div class="paragraph">
+<p>This service starts DHCP processing on the specified interface if that interface is enabled for DHCP. See <strong><em>nx_dhcp_interface_enable</em></strong> for more details about enabling an interface for DHCP. By default the primary interface is enabled for DHCP when the application calls <em>*nx_dhcp_create*.</em></p>
+</div>
+<div class="paragraph">
+<p>If there are no other interfaces running DHCP Client this service will start/resume the DHCP Client thread and (re)activate the DHCP Client timer.</p>
+</div>
+<div class="paragraph">
+<p>The application should use <strong><em>nx_ip_status_check</em></strong> to verify if an IP address is obtained.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_24"><a class="anchor" href="#_input_parameters_24"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+<li>
+<p><em>Interface_index</em>: Index on which to start the DHCP Client</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_24"><a class="anchor" href="#_return_values_24"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DHCP start.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_ALREADY_STARTED</strong>: (0x93) DHCP already started.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of service.</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_24"><a class="anchor" href="#_allowed_from_24"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_24"><a class="anchor" href="#_example_24"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Start the DHCP processing for this IP instance on interface 1.  */
+status =  nx_dhcp_interface_start(&amp;my_dhcp, 1);
+
+/* If status is NX_SUCCESS the DHCP was successfully started.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_state_change_notify"><a class="anchor" href="#_nx_dhcp_state_change_notify"></a>nx_dhcp_state_change_notify</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set DHCP state change callback function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_25"><a class="anchor" href="#_prototype_25"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_state_change_notify(
+    NX_DHCP *dhcp_ptr,
+    VOID (*dhcp_state_change_notify)(
+        NX_DHCP *dhcp_ptr,
+        UCHAR new_state));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_25"><a class="anchor" href="#_description_25"></a>Description</h3>
+<div class="paragraph">
+<p>This service registers the specified callback function dhcp_state_change_notify for notifying an application of DHCP state changes. The callback function supplies the state the DHCP Client has transitioned into.</p>
+</div>
+<div class="paragraph">
+<p>Following are values associated with the various DHCP states:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_DHCP_STATE_BOOT</strong>: 1</p>
+</li>
+<li>
+<p><strong>NX_DHCP_STATE_INIT</strong>: 2</p>
+</li>
+<li>
+<p><strong>NX_DHCP_STATE_SELECTING</strong>: 3</p>
+</li>
+<li>
+<p><strong>NX_DHCP_STATE_REQUESTING</strong>: 4</p>
+</li>
+<li>
+<p><strong>NX_DHCP_STATE_BOUND</strong>: 5</p>
+</li>
+<li>
+<p><strong>NX_DHCP_STATE_RENEWING</strong>: 6</p>
+</li>
+<li>
+<p><strong>NX_DHCP_STATE_REBINDING</strong>: 7</p>
+</li>
+<li>
+<p><strong>NX_DHCP_STATE_FORCERENEW</strong>: 8</p>
+</li>
+<li>
+<p><strong>NX_DHCP_STATE_ADDRESS_PROBING</strong>: 9</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_25"><a class="anchor" href="#_input_parameters_25"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+<li>
+<p><em>dhcp_state_change_notify</em>: State change callback function pointer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_25"><a class="anchor" href="#_return_values_25"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful callback set.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_25"><a class="anchor" href="#_allowed_from_25"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads, Initialization</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_25"><a class="anchor" href="#_example_25"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Register the "my_state_change" function to be called on any DHCP state change, assuming DHCP has already been created.  */
+status =  nx_dhcp_state_change_notify(&amp;my_dhcp, my_state_change);
+
+/* If status is NX_SUCCESS the callback function was successfully
+   registered.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_state_change_notify"><a class="anchor" href="#_nx_dhcp_interface_state_change_notify"></a>nx_dhcp_interface_state_change_notify</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set DHCP state change callback function on the specified interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_26"><a class="anchor" href="#_prototype_26"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_state_change_notify(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index,
+    VOID (*dhcp_state_change_notify)(
+        NX_DHCP *dhcp_ptr,
+        UINT interface_index,
+        UCHAR new_state));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_26"><a class="anchor" href="#_description_26"></a>Description</h3>
+<div class="paragraph">
+<p>This service registers the specified callback function for notifying an application of DHCP state changes. The callback function input arguments are the interface index and the state the DHCP Client has transitioned to on that interface.</p>
+</div>
+<div class="paragraph">
+<p>For more information about state change functions, see <em>nx_dhcp_state_change_notify</em>().</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_26"><a class="anchor" href="#_input_parameters_26"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+<li>
+<p><em>dhcp_interface_state_change_notify</em>: Application callback function pointer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_26"><a class="anchor" href="#_return_values_26"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful callback set.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_26"><a class="anchor" href="#_allowed_from_26"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads, Initialization</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_26"><a class="anchor" href="#_example_26"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Register the "my_state_change" function to be called on any DHCP state change,
+   assuming DHCP has already been created.  */
+
+void dhcp_interstate_state_change(NX_DHCP *dhcp_ptr, UINT iface_index,
+                                  UCHAR new_state);
+
+
+status =  nx_dhcp_interstate_state_change_notify(&amp;my_dhcp,
+                                                 dhcp_interstate_state_change);
+
+/* If status is NX_SUCCESS the callback function was successfully
+   registered.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_stop"><a class="anchor" href="#_nx_dhcp_stop"></a>nx_dhcp_stop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Stops DHCP processing</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_27"><a class="anchor" href="#_prototype_27"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_stop(NX_DHCP *dhcp_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_27"><a class="anchor" href="#_description_27"></a>Description</h3>
+<div class="paragraph">
+<p>This service stops DHCP processing on all interfaces that have started DHCP processing. If there are no interfaces processing DHCP, this service will suspend the DHCP Client thread, and inactivate the DHCP Client timer.</p>
+</div>
+<div class="paragraph">
+<p>To stop DHCP on a specific interface if multiple interfaces are enabled for DHCP, use the <em>nx_dhcp_interface_stop</em> service.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_27"><a class="anchor" href="#_input_parameters_27"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_27"><a class="anchor" href="#_return_values_27"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DHCP stop</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_STARTED</strong>: (0x96) The DHCP instance not started.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_27"><a class="anchor" href="#_allowed_from_27"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_27"><a class="anchor" href="#_example_27"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Stop the DHCP processing for this IP instance.  */
+status =  nx_dhcp_stop(&amp;my_dhcp);
+
+/* If status is NX_SUCCESS the DHCP was successfully stopped.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_stop"><a class="anchor" href="#_nx_dhcp_interface_stop"></a>nx_dhcp_interface_stop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Stop DHCP processing on the specified interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_28"><a class="anchor" href="#_prototype_28"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_stop(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_28"><a class="anchor" href="#_description_28"></a>Description</h3>
+<div class="paragraph">
+<p>This service stops DHCP processing on the specified interface if DHCP is already started. If there are no other interfaces running DHCP, the DHCP thread and timer are suspended.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_28"><a class="anchor" href="#_input_parameters_28"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+<li>
+<p><em>Interface_index</em>: Interface on which to stop DHCP processing</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_28"><a class="anchor" href="#_return_values_28"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful DHCP stop</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_STARTED</strong>: (0x96) DHCP not started.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of service.</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_28"><a class="anchor" href="#_allowed_from_28"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_28"><a class="anchor" href="#_example_28"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Stop DHCP processing for this IP instance on interface 1.  */
+status =  nx_dhcp_interface_stop(&amp;my_dhcp, 1);
+
+/* If status is NX_SUCCESS the DHCP was successfully stopped.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_user_option_retrieve"><a class="anchor" href="#_nx_dhcp_user_option_retrieve"></a>nx_dhcp_user_option_retrieve</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieve a DHCP option from last server response</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_29"><a class="anchor" href="#_prototype_29"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_user_option_retrieve(
+    NX_DHCP *dhcp_ptr,
+    UINT request_option,
+    UCHAR *destination_ptr,
+    UINT *destination_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_29"><a class="anchor" href="#_description_29"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the specified DHCP option from the DHCP options buffer on the first interface enabled for DHCP found on the DHCP Client record. If successful, the option data is copied into the specified buffer.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_29"><a class="anchor" href="#_input_parameters_29"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+<li>
+<p><em>request_option</em>: DHCP option, as specified by the RFCs. See the NX_DHCP_OPTION option in <em>nxd_dhcp_client.h</em>.</p>
+</li>
+<li>
+<p><em>destination_ptr</em>: Pointer to the destination for the response string.</p>
+</li>
+<li>
+<p><em>destination_size</em>: Pointer to the size of the destination and on return, the destination to place the number of bytes returned.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_29"><a class="anchor" href="#_return_values_29"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful option retrieval.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_BOUND</strong>: (0x94) DHCP Client not bound.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NO_INTERFACES_ENABLED</strong>: (0xA5) No interfaces enabled for DHCP</p>
+</li>
+<li>
+<p><strong>NX_DHCP_DEST_TO_SMALL</strong>: (0x95) Destination is too small to hold response.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_PARSE_ERROR</strong>: (0x97) Option not found in Server response.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid input pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of this service.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_29"><a class="anchor" href="#_allowed_from_29"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_29"><a class="anchor" href="#_example_29"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UCHAR  dns_ip_string[4];
+ULONG  size;
+
+/* Obtain the IP address of the DNS server.  */
+size =    sizeof(dnx_ip_string);
+status =  nx_dhcp_user_option_retrieve(&amp;my_dhcp, NX_DHCP_OPTION_DNS_SVR,
+                                        dns_ip_string, &amp;size);
+
+/* If status is NX_SUCCESS the DNS IP address is in dns_ip_string.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_interface_user_option_retrieve"><a class="anchor" href="#_nx_dhcp_interface_user_option_retrieve"></a>nx_dhcp_interface_user_option_retrieve</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieve a DHCP option from last server response on the specified interface</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_30"><a class="anchor" href="#_prototype_30"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nx_dhcp_interface_user_option_retrieve(
+    NX_DHCP *dhcp_ptr,
+    UINT interface_index,
+    UINT request_option, UCHAR *destination_ptr,
+    UINT *destination_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_30"><a class="anchor" href="#_description_30"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the specified DHCP option from the DHCP options buffer on the specified interface, if that interface is enabled for DHCP. If successful, the option data is copied into the specified buffer.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_30"><a class="anchor" href="#_input_parameters_30"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+<li>
+<p><em>Interface_index</em>: Index on which to retrieve the specified option</p>
+</li>
+<li>
+<p><em>request_option</em>: DHCP option, as specified by the RFCs. See the NX_DHCP_OPTION option: in <em>nxd_dhcp_client.h</em>.</p>
+</li>
+<li>
+<p><em>destination_ptr</em>: Pointer to the destination for the response string.</p>
+</li>
+<li>
+<p><em>destination_size</em>: Pointer to the size of the destination and on return, the destination to place the number of bytes returned.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_30"><a class="anchor" href="#_return_values_30"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful option retrieval.</p>
+</li>
+<li>
+<p><strong>NX_DHCP_NOT_BOUND</strong>: (0x94) IP address not assigned</p>
+</li>
+<li>
+<p><strong>NX_DHCP_DEST_TO_SMALL</strong>: (0x95) Buffer is too small</p>
+</li>
+<li>
+<p><strong>NX_DHCP_PARSE_ERROR</strong>: (0x97) DHCP Option not found in Server response.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid DHCP pointer.</p>
+</li>
+<li>
+<p>NX_CALLER_ERROR: (0x11) Invalid caller of service.</p>
+</li>
+<li>
+<p>NX_INVALID_INTERFACE: (0x4C) Invalid network interface</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_30"><a class="anchor" href="#_allowed_from_30"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_30"><a class="anchor" href="#_example_30"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UCHAR  dns_ip_string[4];
+ULONG  size;
+
+/* Obtain the IP address of the DNS server on the primary interface.  */
+size =    sizeof(dnx_ip_string);
+status =  nx_dhcp_interface_user_option_retrieve(&amp;my_dhcp, 0, NX_DHCP_OPTION_DNS_SVR,
+                                                  dns_ip_string, &amp;size);
+
+/* If status is NX_SUCCESS the DNS IP address is in dns_ip_string.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_user_option_convert"><a class="anchor" href="#_nx_dhcp_user_option_convert"></a>nx_dhcp_user_option_convert</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Convert four bytes to ULONG</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_31"><a class="anchor" href="#_prototype_31"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG nx_dhcp_user_option_convert(UCHAR *option_string_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_31"><a class="anchor" href="#_description_31"></a>Description</h3>
+<div class="paragraph">
+<p>This service converts the four characters pointed to by <em>"option_string_ptr"</em> into an unsigned long value. It is especially useful when IP addresses are<br>
+present.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_31"><a class="anchor" href="#_input_parameters_31"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>option_string_ptr</em>: Pointer to previously retrieved option string.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_31"><a class="anchor" href="#_return_values_31"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Value</strong>: Value of first four bytes.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_31"><a class="anchor" href="#_allowed_from_31"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_31"><a class="anchor" href="#_example_31"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UCHAR  dns_ip_string[4];
+ULONG  dns_ip;
+
+/* Convert the first four bytes of "dns_ip_string" to an actual IP
+address in "dns_ip."  */
+dns_ip=  nx_dhcp_user_option_convert(dns_ip_string);
+
+/* If status is NX_SUCCESS the DNS IP address is in "dns_ip."  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_dhcp_user_option_add_callback_set"><a class="anchor" href="#_nx_dhcp_user_option_add_callback_set"></a>nx_dhcp_user_option_add_callback_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set callback function for adding user supplied options</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_32"><a class="anchor" href="#_prototype_32"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG nx_dhcp_user_option_add_callback_set(
+    NX_DHCP *dhcp_ptr,
+    UINT (*dhcp_user_option_add)(
+        NX_DHCP *dhcp_ptr,
+        UINT iface_index,
+        UINT message_type,
+        UCHAR *user_option_ptr,
+        UINT *user_option_length));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_32"><a class="anchor" href="#_description_32"></a>Description</h3>
+<div class="paragraph">
+<p>This service registers the specified callback function for adding user supplied options.</p>
+</div>
+<div class="paragraph">
+<p>If the callback function specified, the applications can add user supplied options into the packet by iface_index and message_type.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In user&#8217;s routine. Applications must follow the DHCP options format when add user supplied options. The total size of user options must be less or equal to user_option_length, and update the user_option_length as real options length. Return NX_TRUE if add options successfully, else return NX_FALSE.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_32"><a class="anchor" href="#_input_parameters_32"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>dhcp_ptr</em>: Pointer to previously created DHCP instance.</p>
+</li>
+<li>
+<p><em>dhcp_user_option_add</em>: Pointer to user option add function.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_32"><a class="anchor" href="#_return_values_32"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: (0x00) Successful callback set.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR: (0x16) Invalid pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_32"><a class="anchor" href="#_allowed_from_32"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_32"><a class="anchor" href="#_example_32"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Register the "my_dhcp_user_option_add" function to be called when add DHCP
+options, assuming DHCP has already been created.  */
+
+status =  nx_dhcp_user_option_add_callback_set(&amp;my_dhcp, my_dhcp_user_option_add);
+
+/* If status is NX_SUCCESS the callback function was successfully registered.  */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

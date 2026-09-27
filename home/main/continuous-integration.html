@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Continuous Integration :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/home/main/continuous-integration.html">
+    <meta name="description" content="How automated builds and tests are configured across Eclipse ThreadX repositories.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="home" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">Home</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Home</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hardware-support.html">Hardware Support</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="cortex-r52-port.html">Cortex-R52 Port</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="continuous-integration.html">Continuous Integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="releases-and-support.html">Releases and Support</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security-updates.html">Security Updates</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Home</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="continuous-integration.html">Continuous Integration</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/home/modules/ROOT/pages/continuous-integration.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Continuous Integration</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each Eclipse ThreadX source repository defines its own GitHub Actions workflows under <code>.github/workflows/</code>. There is no single job that tests every component, port, and board. The workflow files are the source of truth for triggers, toolchain versions, and selected test configurations; this page explains what their results cover.</p>
+</div>
+<div class="paragraph">
+<p>Most component pull requests target <code>dev</code>, but the workflows do not all use the same branch policy. Some also run against a release branch, and TraceX packaging runs only when manually dispatched. A green check means that the jobs selected for that event passed. It does not imply that unselected configurations, embedded hardware, or every supported compiler was tested.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_shared_regression_infrastructure"><a class="anchor" href="#_shared_regression_infrastructure"></a>Shared regression infrastructure</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ThreadX, USBX, FileX, LevelX, and GUIX use the <a href="https://github.com/eclipse-threadx/threadx/blob/dev/.github/workflows/regression_template.yml">ThreadX reusable regression workflow</a> for Linux host suites. That worker runs on Ubuntu 24.04 and accepts suite-specific install, build, and test scripts and coverage settings. NetX Duo uses a <a href="https://github.com/eclipse-threadx/netxduo/blob/dev/.github/workflows/_test-suite.yml">repository-local worker</a> for its <code>dev</code> workflow and the ThreadX reusable workflow for its <code>master</code> regression workflow.</p>
+</div>
+<div class="paragraph">
+<p>Host regression tests exercise C code on the runner. Cross-build jobs compile and link code for an embedded target, but do not execute it. Emulator and FVP jobs execute target images in a model; physical hardware requires separate testing. Coverage percentages below describe the configured CI gates, not whole-repository or hardware coverage.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_component_workflows"><a class="anchor" href="#_component_workflows"></a>Component workflows</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_threadx_and_threadx_modules"><a class="anchor" href="#_threadx_and_threadx_modules"></a>ThreadX and ThreadX Modules</h3>
+<div class="paragraph">
+<p>The <a href="https://github.com/eclipse-threadx/threadx/blob/dev/.github/workflows/regression_test.yml">regression workflow</a> runs single-core kernel, SMP, FreeRTOS compatibility, and RISC-V suites. The merged single-core and SMP host reports each require at least 99% line coverage; these gates do not measure branch coverage. The <a href="https://github.com/eclipse-threadx/threadx/tree/dev/.github/workflows">port workflows</a> check Arm builds with GCC and Clang, selected Cortex-M builds, port-tree consistency, and Cortex-R52 FVP images. Module manager sources and ports are checked in the ThreadX repository; ThreadX Modules has no separate source repository or CI pipeline.</p>
+</div>
+<div class="paragraph">
+<p>Most port checks have path filters. Cortex-R52 execution requires the <code>FVP_AEMV8R_URL</code> repository variable. If it is unset, the workflow builds the images and reports that execution was skipped. A successful cross-build in that case is not an FVP run.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_netx_duo"><a class="anchor" href="#_netx_duo"></a>NetX Duo</h3>
+<div class="paragraph">
+<p>The <a href="https://github.com/eclipse-threadx/netxduo/blob/dev/.github/workflows/ci-dev.yml"><code>dev</code> workflow</a> always runs a core coverage smoke profile. A change classifier selects additional protocol, 64-bit, fast-path, Secure, crypto, and interoperability profiles, and a final job requires every selected profile to pass. The job summary identifies what ran. Classification failure selects the full suite and fails the gate. The separate <a href="https://github.com/eclipse-threadx/netxduo/blob/master/.github/workflows/regression_test.yml"><code>master</code> workflow</a> runs broad regression suites.</p>
+</div>
+<div class="paragraph">
+<p>Selected Linux coverage profiles upload reports, but the <code>dev</code> workflow does not enforce a single numerical coverage floor. Windows simulator scripts are available for local testing; these CI suites run on Linux.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_usbx"><a class="anchor" href="#_usbx"></a>USBX</h3>
+<div class="paragraph">
+<p>The <a href="https://github.com/eclipse-threadx/usbx/blob/dev/.github/workflows/regression_test.yml">regression workflow</a> runs on pull requests and pushes to <code>dev</code> and <code>master</code>, and by manual dispatch. Automatic Linux runs test all 17 configurations and merge their coverage. The full-suite gate requires at least 66% line and 54.5% branch coverage. Manual runs can select configurations and omit coverage. Windows simulator and USB hardware tests are outside this workflow.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_filex"><a class="anchor" href="#_filex"></a>FileX</h3>
+<div class="paragraph">
+<p>The <a href="https://github.com/eclipse-threadx/filex/blob/dev/.github/workflows/regression_test.yml">regression workflow</a> runs on pull requests and pushes to <code>dev</code> and <code>master</code>, and by manual dispatch. Its Linux job tests nine configurations and requires at least 99.9% merged line and 99.4% merged branch coverage. A separate Win64 job builds and tests the same nine configurations with PowerShell scripts. Win32 and physical media are not exercised by this workflow.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_levelx"><a class="anchor" href="#_levelx"></a>LevelX</h3>
+<div class="paragraph">
+<p>The <a href="https://github.com/eclipse-threadx/levelx/blob/dev/.github/workflows/regression_test.yml">regression workflow</a> runs on pull requests and pushes to <code>dev</code> and <code>master</code>, and by manual dispatch. It tests ten Linux configurations and requires at least 68.0% merged line and 65.4% merged branch coverage. It does not run Windows or NAND and NOR flash hardware tests.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_guix"><a class="anchor" href="#_guix"></a>GUIX</h3>
+<div class="paragraph">
+<p>The <a href="https://github.com/eclipse-threadx/guix/blob/dev/.github/workflows/regression_test.yml">Linux regression workflow</a> runs all 18 GUIX configurations and requires at least 98.3% merged line and 96.0% merged branch coverage. Three <a href="https://github.com/eclipse-threadx/guix/tree/dev/.github/workflows">Windows workflows</a> check GUIX Studio demo generation, generated-demo compilation, and Studio View on pull requests and pushes to <code>dev</code> and <code>master</code>. The Studio MSIX packaging workflow is manual; display-driver hardware is not exercised by these jobs.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_samplex"><a class="anchor" href="#_samplex"></a>SampleX</h3>
+<div class="paragraph">
+<p>The <a href="https://github.com/eclipse-threadx/samplex/blob/dev/.github/workflows/ci.yml">SampleX workflow</a> runs on pull requests to <code>dev</code>, <code>main</code>, and <code>master</code>, as well as configured pushes and manual dispatch. Three Ubuntu jobs cross-build the PolarFire Icicle, NUCLEO-F401RE, and MIMXRT1064-EVK demos; three dependent jobs run their assertions in Renode. The shared ThreadX demo runs on both 64-bit RISC-V and Cortex-M4. The workflow does not collect a whole-repository coverage report or run on physical boards.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zonex"><a class="anchor" href="#_zonex"></a>ZoneX</h3>
+<div class="paragraph">
+<p>Five <a href="https://github.com/eclipse-threadx/zonex/tree/dev/.github/workflows">workflows</a> run on pull requests and pushes to <code>dev</code> and <code>main</code>. They check repository terminology and references, run GCC host unit tests, cross-build Cortex-R52 images with GCC and Clang, and run images on the Armv8-R AEM FVP when configured. The host coverage gate requires 100% line and branch coverage for the selected architecture-independent core files. Architecture-dependent behavior needs execution on the FVP or on silicon; CI can run the FVP when configured.</p>
+</div>
+<div class="paragraph">
+<p>The FVP workflow uses the <code>FVP_AEMV8R_URL</code> repository variable. Without it, image execution is skipped and reported, while the other checks still run. The repository checks are unfiltered; the four build and test workflows use path filters.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tracex"><a class="anchor" href="#_tracex"></a>TraceX</h3>
+<div class="paragraph">
+<p>The <a href="https://github.com/eclipse-threadx/tracex/tree/main/.github/workflows">TraceX workflows</a> build a Windows installer and an MSIX package when manually dispatched. They do not run automatically for pull requests, and they are packaging jobs rather than a regression or coverage gate.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_interpreting_a_pull_request_result"><a class="anchor" href="#_interpreting_a_pull_request_result"></a>Interpreting a pull request result</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Check the workflow event, selected jobs, and job summary before citing a CI result. A path-filtered workflow may not run for a change; NetX Duo may select only some profiles; and an FVP job may build without executing when its model URL is unavailable. Coverage gates apply only to the instrumented suites named above. For commands to reproduce checks or test on Windows, an emulator, or hardware, consult the repository workflow, its <code>CONTRIBUTING.md</code>, and target-specific instructions.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

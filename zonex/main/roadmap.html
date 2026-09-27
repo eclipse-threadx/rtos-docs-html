@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Later phases :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/zonex/main/roadmap.html">
+    <meta name="description" content="What ZoneX does not yet do, in the order it would be built, and what Phase 0 established about each.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="zonex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">ZoneX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">ZoneX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">ZoneX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ZoneX guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="overview.html">Overview of ZoneX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="what-phase-0-demonstrates.html">What Phase 0 demonstrates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="platform-requirements.html">Platform requirements and the region budget</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="writing-a-manifest.html">Writing a partition manifest</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="roadmap.html">Later phases</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ZoneX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">ZoneX User Guide</a></li>
+    <li><a href="index.html">ZoneX</a></li>
+    <li>ZoneX guide</li>
+    <li><a href="roadmap.html">Later phases</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/zonex/modules/ROOT/pages/roadmap.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Later phases</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Nothing on this page is shipped.</strong> Every item below is future work. Phase 0, described in <a href="what-phase-0-demonstrates.html" class="xref page">What Phase 0 demonstrates</a>, is the only part of ZoneX that exists, and it is a demonstrator rather than a product. Do not plan against a date for anything here; there is none.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Phase 0 was built to de-risk the work below by establishing that the hard mechanisms are real on silicon and by measuring what they cost. This page says what it established about each, so that the list reads as an engineering sequence rather than a wish.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_phase_0_already_settled"><a class="anchor" href="#_what_phase_0_already_settled"></a>What Phase 0 already settled</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>These are done and measured, and the phases below inherit them rather than repeating them.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Stage-2 region programming</strong>, including that region limits are exact to the granule, with a build that proves the adjacent-granule check can fail.</p>
+</li>
+<li>
+<p><strong>EL2 residency</strong>&#8201;&#8212;&#8201;the vector table, the exception syndrome decode for every class the hypervisor sees, and the fault report.</p>
+</li>
+<li>
+<p><strong>The guest launch path</strong>, including what the hypervisor must take over from a guest&#8217;s boot sequence.</p>
+</li>
+<li>
+<p><strong>The partition switch and its cost</strong>, broken down by group, with the largest term identified as a fixed cost rather than a data-dependent one.</p>
+</li>
+<li>
+<p><strong>Temporal isolation against a hostile neighbour</strong>, with one exception the repository names and bounds.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_next_change_and_it_is_not_one_of_the_phases"><a class="anchor" href="#_the_next_change_and_it_is_not_one_of_the_phases"></a>The next change, and it is not one of the phases</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Take the console off the hypercall path.</strong> This is not a feature and it is not a phase; it is the defect that <a href="what-phase-0-demonstrates.html" class="xref page">the claim page</a> carves a clause out of, and it is <strong>the only thing standing between a temporal claim that needs a qualification and one that does not</strong>.</p>
+</div>
+<div class="paragraph">
+<p>It is scoped: an interrupt-driven console driver, plus a polled fallback that the fault path can force&#8201;&#8212;&#8201;because the fault reporter prints at the moment the hypervisor has already failed once, which is exactly when an interrupt-driven driver cannot be trusted. Two code paths, and a test that proves the fallback actually works.</p>
+</div>
+<div class="paragraph">
+<p><strong>It is tracked as its own change, ahead of everything below and dependent on none of it.</strong> That is deliberate rather than tidy: it is far smaller than any phase on this page, it is the highest-value change available at its size, and grouping it with work of a different order of magnitude would be the surest way to leave the qualification standing indefinitely.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_phases"><a class="anchor" href="#_the_phases"></a>The phases</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Interrupt worst-case execution time.</strong> Phase 0 does not measure interrupt latency at all: guest interrupts go straight to EL1 and cost what they always did. Bounding them needs the interrupt controller&#8217;s list registers, which this core has and Phase 0 does not use. The reason for deferring injection is the shared distributor and the worst-case-execution-time argument, not missing hardware.</p>
+</div>
+<div class="paragraph">
+<p><strong>Inter-partition communication.</strong> A declared, bounded channel between partitions, replacing the single shared granule the manifest allows today.</p>
+</div>
+<div class="paragraph">
+<p><strong>The full time-partition scheduler.</strong> Phase 0 runs one static major frame. A product needs mode changes, partition criticality levels, and a defined behaviour when a partition overruns.</p>
+</div>
+<div class="paragraph">
+<p><strong>Supervised partition restart.</strong> Phase 0&#8217;s policy on a violation is to report and halt, and that is deliberate&#8201;&#8212;&#8201;continuing would assert a recovery story it does not have. Restarting a failed partition without disturbing its neighbours is its own phase.</p>
+</div>
+<div class="paragraph">
+<p><strong>Unified TraceX integration.</strong> One trace view across partitions and the hypervisor.</p>
+</div>
+<div class="paragraph">
+<p><strong>The safety-artifact package.</strong> The certification evidence: structural and modified condition/decision coverage of the port, which needs its own tooling; a full worst-case-execution-time analysis, for which the repository already carries the data-dependence survey as input; the deviation record; and the tool qualification.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_beyond_armv8_r"><a class="anchor" href="#_beyond_armv8_r"></a>Beyond Armv8-R</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ZoneX is meant to be cross-silicon, and the manifest was written with a width-correct address type from the first commit so that a 64-bit platform does not require a redesign of the configuration format. Additional architectures and parts are long-term intent rather than planned work, and none is committed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spatial_partitioning_across_cores"><a class="anchor" href="#_spatial_partitioning_across_cores"></a>Spatial partitioning across cores</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Worth separating from the list above because it is the item most often assumed to be present.</p>
+</div>
+<div class="paragraph">
+<p>Phase 0 runs on a Cortex-R52 in lockstep, which presents as <strong>one logical core</strong>. Partitioning across multiple physical cores needs split-mode symmetric multiprocessing, and it is deferred rather than scheduled&#8201;&#8212;&#8201;it will follow demand, not sequence.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

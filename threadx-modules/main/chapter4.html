@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 4 - Module APIs :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx-modules/main/chapter4.html">
+    <meta name="description" content="This article is a summary of the additional APIs available to a module.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx-modules" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">ThreadX Modules User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">ThreadX Modules</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">ThreadX Modules documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX Modules user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Module requirements</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Module Manager requirements</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Module APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - Module Manager APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix.html">Appendix - Port-specific examples</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX Modules User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">ThreadX Modules User Guide</a></li>
+    <li><a href="index.html">ThreadX Modules</a></li>
+    <li>ThreadX Modules user guide</li>
+    <li><a href="chapter4.html">Ch. 4 - Module APIs</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/threadx-modules/modules/ROOT/pages/chapter4.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 4 - Module APIs</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several additional API functions available to a module, as follows:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_threadx_module_apis"><a class="anchor" href="#_threadx_module_apis"></a>Threadx_Module_APIs</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#txm_module_application_request">txm_module_application_request</a></p>
+</li>
+<li>
+<p><a href="#txm_module_object_allocate">txm_module_object_allocate</a></p>
+</li>
+<li>
+<p><a href="#txm_module_object_deallocate">txm_module_object_deallocate</a></p>
+</li>
+<li>
+<p><a href="#txm_module_object_pointer_get">txm_module_object_pointer_get</a></p>
+</li>
+<li>
+<p><a href="#txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_return_values"><a class="anchor" href="#_return_values"></a>Return values</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Additional error codes are returned for some ThreadX APIs. These additional error codes are defined as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>TXM_MODULE_INVALID_PROPERTIES</strong> (0xF3): Indicates the module does not have the correct properties to make an API call. For example, calling trace APIs in user mode.</p>
+</li>
+<li>
+<p><strong>TXM_MODULE_INVALID_MEMORY</strong> (0xF4): Indicates the memory supplied by the module is invalid or is in an invalid location. For example, in memory protected modules, object control blocks are not allowed to be located in memory the module can access.</p>
+</li>
+<li>
+<p><strong>TXM_MODULE_INVALID_CALLBACK</strong> (0xF5): Callback specified in the API is outside the range of the module&#8217;s code and is therefore invalid.</p>
+</li>
+<li>
+<p><strong>TXM_MODULE_MATH_OVERFLOW</strong> (0xF8): A size supplied by the module is too large for the module manager to work with. The manager adds its own bookkeeping to the sizes it is given, and refuses a size for which that addition would not be representable rather than proceeding on a value that has wrapped.</p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_txm_module_application_request"><a class="anchor" href="#_txm_module_application_request"></a>txm_module_application_request</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Application-specific request to resident code.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT txm_module_application_request(
+    ULONG request,
+    ULONG param_1,
+    ULONG param_2,
+    ULONG param_3);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This service makes the specified request to the resident portion of the application. It is assumed that the request structure is prepared prior to the call. The actual processing of the request takes place in the resident code in the function <strong><em>_txm_module_manager_application_request</em></strong>. By default, this function is left empty and is designed for the resident application developer to modify.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters"><a class="anchor" href="#_input_parameters"></a>Input parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>request</strong> Request ID (application defined)</p>
+</li>
+<li>
+<p><strong>param_1</strong> First parameter</p>
+</li>
+<li>
+<p><strong>param_2</strong> Second parameter</p>
+</li>
+<li>
+<p><strong>param_3</strong> Third parameter</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>TX_SUCCESS</strong> (0x00) Successful request.</p>
+</li>
+<li>
+<p><strong>TX_NOT_AVAILABLE</strong> (0x1D) Request not supported by resident code.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from"><a class="anchor" href="#_allowed_from"></a>Allowed from</h3>
+<div class="paragraph">
+<p>Module threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Call application resident code with ID=77 and the
+   parameters set to 1, 2, 3. */
+status = txm_module_application_request(77, 1, 2, 3);
+
+/* If status is TX_SUCCESS the request was successful. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also"><a class="anchor" href="#_see_also"></a>See also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_threadx_module_apis">Threadx Module APIs</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_txm_module_object_allocate"><a class="anchor" href="#_txm_module_object_allocate"></a>txm_module_object_allocate</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Allocate memory in the object pool (created by the resident application) for a module object control block.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT txm_module_object_allocate(
+   VOID **object_ptr,
+   ULONG object_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This service allocates memory for a module object from memory outside of the module, which helps prevent corruption of the object control block by the module&#8217;s code. In memory protected systems, all object control blocks must be allocated with this API before they can be created.</p>
+</div>
+<div class="paragraph">
+<p>The module manager allocates more than <strong>object_size</strong> bytes: it keeps a header of its own in front of the memory the module receives, recording the owning module, the size and the links that let the allocation be reclaimed when the module is unloaded. <strong>object_size</strong> is therefore bounded above by what the object pool holds, less that header, and a size too large to add the header to at all is refused with <strong>TXM_MODULE_MATH_OVERFLOW</strong>. Pass <strong>sizeof</strong> the control block being allocated, as in the example below.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_2"><a class="anchor" href="#_input_parameters_2"></a>Input parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>object_ptr</strong> Destination of object pointer on successful allocation.</p>
+</li>
+<li>
+<p><strong>object_size</strong> Size in bytes of the object to be allocated.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>TX_SUCCESS</strong> (0x00) Successful object allocate.</p>
+</li>
+<li>
+<p><strong>TX_SIZE_ERROR</strong> (0x05) <strong>object_size</strong>, together with the manager&#8217;s own object header, is larger than the whole object pool.</p>
+</li>
+<li>
+<p><strong>TX_NO_MEMORY</strong> (0x10) Not enough memory.</p>
+</li>
+<li>
+<p><strong>TX_NOT_AVAILABLE</strong> (0x1D) Module manager has not created an object pool to allocate from</p>
+</li>
+<li>
+<p><strong>TXM_MODULE_INVALID_MEMORY</strong> (0xF4) <strong>object_ptr</strong> is NULL, so there is nowhere to return the allocation.</p>
+</li>
+<li>
+<p><strong>TXM_MODULE_MATH_OVERFLOW</strong> (0xF8) <strong>object_size</strong> is so large that adding the manager&#8217;s own object header to it would not be representable. Nothing is allocated and the object pool is left untouched.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_2"><a class="anchor" href="#_allowed_from_2"></a>Allowed from</h3>
+<div class="paragraph">
+<p>Module threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_QUEUE *queue_pointer;
+
+/* Allocate a control block for a module message queue. */
+status = txm_module_object_allocate(&amp;queue_pointer, sizeof(TX_QUEUE));
+
+/* If status is TX_SUCCESS the queue_pointer points to
+   memory allocated outside of the module and can be supplied
+   to tx_queue_create to create a queue for the module. */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_2"><a class="anchor" href="#_see_also_2"></a>See also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_threadx_module_apis">Threadx Module APIs</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_txm_module_object_deallocate"><a class="anchor" href="#_txm_module_object_deallocate"></a>txm_module_object_deallocate</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Deallocate previously allocated object memory</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<strong><em>This service is deprecated. Do not use it in new code, and remove any existing calls from your modules.</em></strong>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_reason_for_deprecation"><a class="anchor" href="#_reason_for_deprecation"></a>Reason for deprecation</h3>
+<div class="paragraph">
+<p>When a module calls a standard kernel delete service such as <strong><em>tx_timer_delete</em></strong>, <strong><em>tx_semaphore_delete</em></strong>, <strong><em>tx_queue_delete</em></strong>, or any other <strong><em>tx</em>*<em>delete</em></strong> service, the Module Manager dispatch layer automatically releases the associated object pool memory after the kernel cleanup completes. No separate deallocation call is required.</p>
+</div>
+<div class="paragraph">
+<p>Deallocation is not deletion. Calling <strong><em>txm_module_object_deallocate</em></strong> on a live kernel object — one whose <strong><em>tx</em>*<em>delete</em></strong> service has not yet been called — asks the Module Manager to release memory the kernel is still using as a control block: the object remains on the created list for its type, a thread remains schedulable, and an active timer remains on the timer list, none of which look at whether the memory has been given back. The Module Manager therefore refuses such a request and returns <strong>TX_DELETE_ERROR</strong>, leaving the object, the allocation and the memory exactly as they were. Delete the object first.</p>
+</div>
+<div class="paragraph">
+<p>Memory that holds no live object is still released, so a module can still give back storage it allocated for an object it never created, or for one it has since deleted.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_to_do_instead"><a class="anchor" href="#_what_to_do_instead"></a>What to do instead</h3>
+<div class="paragraph">
+<p>Remove any call to <strong><em>txm_module_object_deallocate</em></strong> from your module. Calling the appropriate <strong><em>tx</em>*<em>delete</em></strong> service is sufficient; pool memory deallocation is handled automatically by the Module Manager dispatch layer.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_TIMER my_timer;
+
+/* Allocate and create the timer. */
+txm_module_object_allocate(&amp;my_timer, sizeof(TX_TIMER));
+tx_timer_create(&amp;my_timer, "my timer", my_callback, 0, 10, 10, TX_AUTO_ACTIVATE);
+
+/* When done: delete the timer. The dispatch layer releases pool memory
+   automatically. Do NOT call txm_module_object_deallocate. */
+tx_timer_delete(&amp;my_timer);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT txm_module_object_deallocate(VOID *object_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_3"><a class="anchor" href="#_input_parameters_3"></a>Input parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>object_ptr</strong> Object pointer to deallocate.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>TX_SUCCESS</strong> (0x00) Successful object deallocation.</p>
+</li>
+<li>
+<p><strong>TX_DELETE_ERROR</strong> (0x11) The memory holds a live kernel object. Nothing was released. Call the object&#8217;s <strong><em>tx</em>*<em>delete</em></strong> service, which releases the memory itself.</p>
+</li>
+<li>
+<p><strong>TX_PTR_ERROR</strong> (0x03) The address is not one the Module Manager handed this module, or the module has no allocations.</p>
+</li>
+<li>
+<p><strong>TX_NOT_AVAILABLE</strong> (0x1D) No Module Manager object pool has been created.</p>
+</li>
+<li>
+<p><strong>TXM_MODULE_INVALID_MEMORY</strong> (0xF4) The address does not lie inside the object pool with room for the manager&#8217;s private header in front of it and for the allocation the header describes.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_3"><a class="anchor" href="#_allowed_from_3"></a>Allowed from</h3>
+<div class="paragraph">
+<p>Module threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_3"><a class="anchor" href="#_see_also_3"></a>See also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_threadx_module_apis">Threadx Module APIs</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_txm_module_object_pointer_get"><a class="anchor" href="#_txm_module_object_pointer_get"></a>txm_module_object_pointer_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Find system object and retrieve object pointer</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<strong><em>This service is deprecated. Do not use it in new code.</em></strong> Use <a href="#txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a> instead, passing the actual length of the name buffer.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This function passes <code>UINT_MAX</code> as the name-buffer length to the underlying search. If the <code>name</code> pointer addresses a buffer shorter than the object name being compared, the comparison loop reads past the end of the buffer, which is undefined behavior.</p>
+</div>
+<div class="paragraph">
+<p>Because no length is passed, the Module Manager cannot establish how much of the buffer it is allowed to read, and a module loaded with <strong>TXM_MODULE_MEMORY_PROTECTION</strong> is therefore refused this service with <strong>TXM_MODULE_INVALID_MEMORY</strong>. Such a module must use <a href="#txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a>. Modules loaded without memory protection are unaffected.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT txm_module_object_pointer_get(
+   UINT object_type, CHAR *name,
+   VOID **object_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p><strong><em>Deprecated — see above.</em></strong> This service retrieves the object pointer of a particular type with a particular name. If the object is not found, an error is returned. Otherwise, if the object is found, the address of that object is placed in "object_ptr."</p>
+</div>
+<div class="paragraph">
+<p>The pointer this service returns grants use of the object, not authority to destroy it. See <a href="#txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_4"><a class="anchor" href="#_input_parameters_4"></a>Input parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>object_type</strong> Type of ThreadX object requested. Valid types are as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>TXM_BLOCK_POOL_OBJECT</p>
+</li>
+<li>
+<p>TXM_BYTE_POOL_OBJECT</p>
+</li>
+<li>
+<p>TXM_EVENT_FLAGS_OBJECT</p>
+</li>
+<li>
+<p>TXM_MUTEX_OBJECT</p>
+</li>
+<li>
+<p>TXM_QUEUE_OBJECT</p>
+</li>
+<li>
+<p>TXM_SEMAPHORE_OBJECT</p>
+</li>
+<li>
+<p>TXM_THREAD_OBJECT</p>
+</li>
+<li>
+<p>TXM_TIMER_OBJECT</p>
+</li>
+<li>
+<p>TXM_IP_OBJECT</p>
+</li>
+<li>
+<p>TXM_PACKET_POOL_OBJECT</p>
+</li>
+<li>
+<p>TXM_UDP_SOCKET_OBJECT</p>
+</li>
+<li>
+<p>TXM_TCP_SOCKET_OBJECT</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>name</strong> Application-specific object name as defined when the object was created.</p>
+</li>
+<li>
+<p><strong>object_ptr</strong> Destination for object pointer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>TX_SUCCESS</strong> (0x00) Successful object get.</p>
+</li>
+<li>
+<p><strong>TX_OPTION_ERROR</strong> (0x08) Invalid object type.</p>
+</li>
+<li>
+<p><strong>TX_PTR_ERROR</strong> (0x03) Invalid destination.</p>
+</li>
+<li>
+<p><strong>TX_SIZE_ERROR</strong> (0x05) Invalid size.</p>
+</li>
+<li>
+<p><strong>TX_NO_INSTANCE</strong> (0x0D) Object not found.</p>
+</li>
+<li>
+<p><strong>TXM_MODULE_INVALID</strong> (0xF2) A memory-protected module asked for a block pool or a byte pool.</p>
+</li>
+<li>
+<p><strong>TXM_MODULE_INVALID_MEMORY</strong> (0xF4) The requesting module is memory-protected, and this service cannot bound the read.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_4"><a class="anchor" href="#_allowed_from_4"></a>Allowed from</h3>
+<div class="paragraph">
+<p>Module threads without memory protection</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_QUEUE *queue_pointer;
+
+/* Find the pointer for "fft_queue" in the resident part
+   of the application. */
+status = txm_module_object_pointer_get(TXM_QUEUE_OBJECT,
+         "fft_queue", &amp;queue_pointer);
+
+/* If status is TX_SUCCESS the found queue pointer is in
+   "queue_pointer". This queue pointer can then be used to
+   send messages to the "fft_queue." */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_4"><a class="anchor" href="#_see_also_4"></a>See also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_threadx_module_apis">Threadx Module APIs</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_txm_module_object_pointer_get_extended"><a class="anchor" href="#_txm_module_object_pointer_get_extended"></a>txm_module_object_pointer_get_extended</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Find system object and retrieve object pointer</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT txm_module_object_pointer_get_extended(UINT object_type,
+                                            CHAR *name,
+                                            UINT name_length,
+                                            VOID **object_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves the object pointer of a particular type with a particular name. If the object is not found, an error is returned. Otherwise, if the object is found, the address of that object is placed in "object_ptr." This pointer can then be used to make system service calls, to interact with the resident code, and/or other loaded modules in the system.</p>
+</div>
+<div class="paragraph">
+<p>The pointer grants use of the object, not authority to destroy it. A memory-protected module may only delete a kernel object it allocated for itself from the Module Manager&#8217;s object pool; passing a pointer obtained here to <strong><em>tx_queue_delete</em></strong>, <strong><em>tx_semaphore_delete</em></strong> or any other <strong><em>tx</em>*<em>delete</em></strong> service returns <strong>TXM_MODULE_INVALID_MEMORY</strong> and leaves the object created and its waiters undisturbed. Objects a module does not own are shared with it to be used, and the owner remains responsible for deleting them.</p>
+</div>
+<div class="paragraph">
+<p>A memory-protected module cannot look up a block pool or a byte pool at all: <strong>TXM_BLOCK_POOL_OBJECT</strong> and <strong>TXM_BYTE_POOL_OBJECT</strong> return <strong>TXM_MODULE_INVALID</strong> for such a module, which may use only the pools it created itself.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_5"><a class="anchor" href="#_input_parameters_5"></a>Input parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>object_type</strong> Type of ThreadX object requested. Valid types are as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>TXM_BLOCK_POOL_OBJECT</p>
+</li>
+<li>
+<p>TXM_BYTE_POOL_OBJECT</p>
+</li>
+<li>
+<p>TXM_EVENT_FLAGS_OBJECT</p>
+</li>
+<li>
+<p>TXM_MUTEX_OBJECT</p>
+</li>
+<li>
+<p>TXM_QUEUE_OBJECT</p>
+</li>
+<li>
+<p>TXM_SEMAPHORE_OBJECT</p>
+</li>
+<li>
+<p>TXM_THREAD_OBJECT</p>
+</li>
+<li>
+<p>TXM_TIMER_OBJECT</p>
+</li>
+<li>
+<p>TXM_IP_OBJECT</p>
+</li>
+<li>
+<p>TXM_PACKET_POOL_OBJECT</p>
+</li>
+<li>
+<p>TXM_UDP_SOCKET_OBJECT</p>
+</li>
+<li>
+<p>TXM_TCP_SOCKET_OBJECT</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>name</strong> Application-specific object name as defined when the object was created.</p>
+</li>
+<li>
+<p><strong>name_length</strong> Number of characters in <strong>name</strong>, not counting the terminating null character. Passing <code>strlen(name)</code> is correct; passing <code>sizeof</code> a string literal is one too many.</p>
+</li>
+<li>
+<p><strong>object_ptr</strong> Destination for object pointer.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The search compares the name a character at a time and stops at the terminating null, so it reads <code>name_length + 1</code> bytes at most: the characters, and the terminator that follows them. For a module loaded with <strong>TXM_MODULE_MEMORY_PROTECTION</strong> the whole of that range, from <code>name[0]</code> through <code>name[name_length]</code>, must be inside memory the module may read — its own data, its own code, or shared memory registered to it. A request whose range is not entirely readable is refused with <strong>TXM_MODULE_INVALID_MEMORY</strong> before any comparison is made, so a name buffer at the very end of a region must have room for the terminator as well as the characters.</p>
+</div>
+<div class="paragraph">
+<p>A <code>name_length</code> of <code>UINT_MAX</code> is always refused, because the range it describes cannot be expressed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>TX_SUCCESS</strong> (0x00) Successful object get.</p>
+</li>
+<li>
+<p><strong>TX_OPTION_ERROR</strong> (0x08) Invalid object type.</p>
+</li>
+<li>
+<p><strong>TX_PTR_ERROR</strong> (0x03) Invalid destination.</p>
+</li>
+<li>
+<p><strong>TX_SIZE_ERROR</strong> (0x05) Invalid size.</p>
+</li>
+<li>
+<p><strong>TX_NO_INSTANCE</strong> (0x0D) Object not found.</p>
+</li>
+<li>
+<p><strong>TXM_MODULE_INVALID</strong> (0xF2) A memory-protected module asked for a block pool or a byte pool.</p>
+</li>
+<li>
+<p><strong>TXM_MODULE_INVALID_MEMORY</strong> (0xF4) The name range, or the destination, is not memory the requesting module may use.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_5"><a class="anchor" href="#_allowed_from_5"></a>Allowed from</h3>
+<div class="paragraph">
+<p>Module threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_QUEUE *queue_pointer;
+
+/* Find the pointer for "fft_queue" in the resident part
+   of the application. The name is nine characters, and the
+   tenth byte of the buffer is its terminator. */
+   status = txm_module_object_pointer_get_extended(TXM_QUEUE_OBJECT,
+            "fft_queue", 9, &amp;queue_pointer);
+
+/* If status is TX_SUCCESS the found queue pointer is in
+   "queue_pointer". This queue pointer can then be used to
+   send messages to the "fft_queue." */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_also_5"><a class="anchor" href="#_see_also_5"></a>See also</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_threadx_module_apis">Threadx Module APIs</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

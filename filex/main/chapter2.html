@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 2 - Installation and use of FileX :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/filex/main/chapter2.html">
+    <meta name="description" content="This chapter contains an introduction to FileX and a description of installation conditions, procedures, and use, including the following.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="filex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">FileX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">FileX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">FileX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-filex.html">Overview of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">FileX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to FileX</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Functional components of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - Description of FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - I/O drivers for FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - FileX fault tolerant module</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-a.html">App. A - FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-b.html">App. B - FileX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-c.html">App. C - FileX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">FileX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">FileX User Guide</a></li>
+    <li><a href="index.html">FileX</a></li>
+    <li>FileX user guide</li>
+    <li><a href="chapter2.html">Ch. 2 - Installation and use of FileX</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/filex/modules/ROOT/pages/chapter2.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 2 - Installation and use of FileX</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains an introduction to FileX and a description of installation conditions, procedures, and use.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_host_considerations"><a class="anchor" href="#_host_considerations"></a>Host Considerations</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_computer_type"><a class="anchor" href="#_computer_type"></a>Computer Type</h3>
+<div class="paragraph">
+<p>Embedded development is usually performed on Windows or Linux (Unix) host computers. After the application is compiled, linked, and located on the host, it is downloaded to the target hardware for execution.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_download_interfaces"><a class="anchor" href="#_download_interfaces"></a>Download Interfaces</h3>
+<div class="paragraph">
+<p>Usually the target download is done from within the development tool&#8217;s debugger. After download, the debugger is responsible for providing target execution control (go, halt, breakpoint, etc.) as well as access to memory and processor registers.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_debugging_tools"><a class="anchor" href="#_debugging_tools"></a>Debugging Tools</h3>
+<div class="paragraph">
+<p>Most development tool debuggers communicate with the target hardware via on-chip debug (OCD) connections such as JTAG (IEEE 1149.1) and Background Debug Mode (BDM). Debuggers also communicate with target hardware through In-Circuit Emulation (ICE) connections. Both OCD and ICE connections provide robust solutions with minimal intrusion on the target resident software.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_required_hard_disk_space"><a class="anchor" href="#_required_hard_disk_space"></a>Required Hard Disk Space</h3>
+<div class="paragraph">
+<p>The source code for FileX is delivered in ASCII format and requires approximately 500 KBytes of space on the host computer&#8217;s hard disk</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_target_considerations"><a class="anchor" href="#_target_considerations"></a>Target Considerations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FileX requires between 6 KBytes and 30 KBytes of  Read-Only Memory (ROM) on the target. Another  100 bytes of the target&#8217;s Random Access Memory (RAM) are required for FileX global data structures. Each opened media also requires 1.5 KBytes of RAM for the control block in addition to RAM for storing data for one sector (typically 512 bytes).</p>
+</div>
+<div class="paragraph">
+<p>For date/time stamping to function properly, FileX relies on ThreadX timer facilities. This is implemented by creating a FileX-specific timer during FileX initialization. FileX also relies on ThreadX semaphores for multiple thread protection and I/O suspension.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_product_distribution"><a class="anchor" href="#_product_distribution"></a>Product Distribution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FileX can be obtained from our public source code repository at <a href="https://github.com/eclipse-threadx/filex/" class="bare">https://github.com/eclipse-threadx/filex/</a>.</p>
+</div>
+<div class="paragraph">
+<p>The following is a list of several important files in the repository:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>fx_api.h</em></strong> : This C header file contains all system equates, data structures, and service prototypes.</p>
+</li>
+<li>
+<p><strong><em>fx_port.h</em></strong> : This C header file contains all development-tool-specific data definitions and structures.</p>
+</li>
+<li>
+<p><strong><em>demo_filex.c</em></strong> : This C file contains a small demo application.</p>
+</li>
+<li>
+<p><strong><em>fx.a (or fx.lib)</em></strong> : This is the binary version of the FileX C library. It is distributed with the standard package.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<em>All file names are in lower-case. This naming convention makes it easier to convert the commands to Linux (Unix) development platforms.</em>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_filex_installation"><a class="anchor" href="#_filex_installation"></a>FileX Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FileX is installed by cloning the GitHub repository to your local machine. The following is typical syntax for creating a clone of the FileX repository on your PC:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">    git clone https://github.com/eclipse-threadx/filex</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively you can download a copy of the repository using the download button on the GitHub main page.</p>
+</div>
+<div class="paragraph">
+<p>You will also find instructions for building the FileX library on the front page of the online repository.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Application software needs access to the FileX library file (usually called* usually <strong><em>fx.a</em></strong> or <strong><em>fx.lib</em></strong>) <strong>and the C include files *fx_api.h</strong> and <strong>fx_port.h</strong>. This is accomplished either by setting the appropriate path for the development tools or by copying these files into the application development area.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_filex"><a class="anchor" href="#_using_filex"></a>Using FileX</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using FileX is easy. Basically, the application code must include <strong><em>fx_api.h</em></strong> during compilation and link with the FileX run-time library <strong><em>fx.a</em></strong> (or <strong><em>fx.lib</em></strong>). Of course, the ThreadX files, namely <strong><em>tx_api.h</em></strong> and <strong><em>tx.a</em></strong> (or <strong><em>tx.lib</em></strong>)<em>,</em> are also required.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+When using FileX in Standalone mode (<strong>FX_STANDALONE_ENABLE</strong> must be defined), ThreadX files/libraries are not required.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Assuming you are already using ThreadX, there are four steps required to build a FileX application:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Include the <strong><em>fx_api.h</em></strong> file in all application files that use FileX services or data structures.</p>
+</li>
+<li>
+<p>Initialize the FileX system by calling <strong><em>fx_system_initialize</em></strong> from the <strong><em>tx_application_define</em></strong> function or an application thread.</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+When using FileX in Standalone mode, <strong><em>fx_system_initialize</em></strong> should be directly called from application code.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Add one or more calls to <strong><em>fx_media_open</em></strong> to set up the FileX media. This call must be made from the context of an application thread.</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<em>Remember that the <strong>fx_media_open</strong> call requires enough RAM to store data for one sector.</em>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Compile application source and link with the FileX and ThreadX run-time libraries, <strong><em>fx.a</em></strong> (or <strong><em>fx.lib</em></strong>) and <strong><em>tx.a</em></strong> (or <strong><em>tx.lib</em></strong>). The resulting image can be downloaded to the target and executed!</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>Troubleshooting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each FileX port is delivered with a demonstration application. It is always a good idea to get the demonstration system running first&#8212;&#8203;either on the target hardware or a specific demonstration environment.</p>
+</div>
+<div class="paragraph">
+<p>If the demonstration system does not work, try the following things to narrow the problem:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Determine how much of the demonstration is running.</p>
+</li>
+<li>
+<p>Increase stack sizes (this is more important in actual application code than it is for the demonstration).</p>
+</li>
+<li>
+<p>Ensure there is enough RAM for the 32KBytes default RAM disk size. The basic system will operate on much less RAM; however, as more of the RAM disk is used, problems will surface if there is not enough memory.</p>
+</li>
+<li>
+<p>Temporarily bypass any recent changes to see if the problem disappears or changes.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_options"><a class="anchor" href="#_configuration_options"></a>Configuration Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several configuration options when building the FileX library and the application using FileX. The options below can be defined in the application source, on the command line, or within the <strong><em>fx_user.h</em></strong> include file.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<em>Options defined in <strong>fx_user.h</strong> are applied only if the application and ThreadX library are built with <strong>*FX_INCLUDE_USER_DEFINE_FILE*</em> defined.</strong>
+When using FileX in Standalone mode (<strong>FX_STANDALONE_ENABLE</strong> must be defined), ThreadX files/libraries are not required.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following list describes each configuration option in detail:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Define</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_LAST_NAME_LEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This value defines the maximum file name length, which includes full path name. By default, this value is 256.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DONT_UPDATE_OPEN_FILES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, FileX does not update already opened files.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_DISABLE_SEARCH_CACHE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, the file search cache optimization is disabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_DISABLE_SEARCH_CACHE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, the file search cache optimization is disabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DISABLE_DIRECT_DATA_READ_CACHE_FILL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, the direct read sector update of cache is disabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MEDIA_STATISTICS_DISABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, gathering of media statistics is disabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SINGLE_OPEN_LEGACY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, legacy single open logic for the same file is enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_RENAME_PATH_INHERIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, renaming inherits path information.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DISABLE_ERROR_CHECKING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Removes the basic FileX error checking API and results in improved performance (as much as 30%) and smaller code size.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_LONG_NAME_LEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum file name size for FileX. The default value is 256, but this can be overridden with a command-line define. Legal values range between 13 and 256.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_SECTOR_CACHE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum number of logical sectors that can be cached by FileX. The actual number of sectors that can be cached is lesser of this constant and how many sectors can fit in the amount of memory supplied at fx_media_open. The default value is 256. All values must be a power of 2.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAT_MAP_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of sectors that can be represented in the FAT update map. The default value is 256, but this can be overridden with a command-line define. Larger values help reduce unneeded updates of secondary FAT sectors.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_MAX_FAT_CACHE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of entries in the internal FAT cache. The default value is 16, but this can be overridden with a command-line define. All values must be a power of 2.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAULT_TOLERANT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When defined, FileX immediately passes write requests of all system sectors (boot, FAT, and directory sectors) to the media&#8217;s driver. This potentially decreases performance, but helps limit corruption to lost clusters. Note that enabling this feature does not automatically enable FileX Fault Tolerant Module, which is enabled by defining</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAULT_TOLERANT_DATA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When defined, FileX immediately passes all file data write requests to the media&#8217;s driver. This potentially decreases performance, but helps limit lost file data. Note that enabling this feature does not automatically enable FileX Fault Tolerant Module, which is enabled by defining <strong><em>FX_ENABLE_FAULT_TOLERANT</em></strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NO_LOCAL_PATH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Removes local path logic from FileX, resulting in smaller code size.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_NO_TIMER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Eliminates the ThreadX timer setup to update the FileX system time and date. Doing so causes default time and date to be placed on all file operations.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_UPDATE_RATE_IN_SECONDS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies rate at which system time in FileX is adjusted. By default, value is 10, specifying that the FileX system time is updated every 10 seconds.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_UPDATE_RATE_IN_TICKS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the same rate as <strong><em>FX_UPDATE_RATE_IN_SECONDS</em></strong> (see above), except in terms of the underlying ThreadX timer frequency. The default is 1000, which assumes a 10ms ThreadX timer rate and a 10 second interval.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_SINGLE_THREAD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Eliminates ThreadX protection logic from the FileX source. It should be used if FileX is being used only from one thread or if FileX is being used without ThreadX.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_DRIVER_USE_64BIT_LBA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When defined, enables 64-bit sector addresses used in I/O driver. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_ENABLE_FAULT_TOLERANT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When defined, enables FileX Fault Tolerant Module. Enabling Fault Tolerant automatically defines the symbol <strong><em>FX_FAULT_TOLERANT</em></strong> and <strong><em>FX_FAULT_TOLERANT_DATA</em></strong>. By default this option is not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAULT_TOLERANT_BOOT_INDEX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines byte offset in the boot sector where the cluster for the fault tolerant log is. By default this value is 116. This field takes 4 bytes. Bytes 116 through 119 are chosen because they are marked as reserved by FAT 12/16/32 specification.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_FAULT_TOLERANT_MINIMAL_CLUSTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This symbol is deprecated. It is no longer being used by FileX Fault Tolerant.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FX_STANDALONE_ENABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined, enables FileX to be used in standalone mode (without Eclipse ThreadX). By default this symbol is not defined.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+When <strong>FX_STANDALONE_ENABLE</strong> is defined, Local path logic and ThreadX timer setup are disabled.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_filex_version_id"><a class="anchor" href="#_filex_version_id"></a>FileX Version ID</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The current version of FileX is available both to the user and the application software during run-time. The programmer can obtain the FileX version from examination of the <strong>fx_port.h</strong> file. In addition, this file also contains a version history of the corresponding port. Application software can obtain the FileX version by examining the global string <strong><em>_fx_version_id</em></strong>.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

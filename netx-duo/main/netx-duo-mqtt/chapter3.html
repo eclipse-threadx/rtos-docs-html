@@ -1,0 +1,2130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 3 - Description of NetX Duo MQTT client services :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/netx-duo/main/netx-duo-mqtt/chapter3.html">
+    <meta name="description" content="This chapter contains a description of all NetX Duo MQTT Client services (listed below) in alphabetical order.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="netx-duo" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">NetX Duo User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">NetX Duo</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">NetX Duo documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-netx-duo.html">Overview of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - NetX Duo network drivers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - NetX Duo services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - NetX Duo constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - NetX Duo data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - BSD-compatible socket API</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo addons</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo AutoIP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter1.html">Ch. 1 - Introduction to NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter2.html">Ch. 2 - Installation and use of NetX Duo AutoIP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-auto-ip/chapter3.html">Ch. 3 - Description of NetX Duo AutoIP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo BSD Services user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter1.html">Ch. 1 - Introduction to NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter2.html">Ch. 2 - Installation and use of NetX Duo BSD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-bsd/chapter3.html">Ch. 3 - NetX Duo BSD Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Crypto user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter1.html">Ch. 1 - Introduction to NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter2.html">Ch. 2 - Installation and use of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter3.html">Ch. 3 - Functional components of NetX Duo Crypto</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/chapter4.html">Ch. 4 - NetX Duo Crypto API description</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-crypto/appendix-a.html">App. A - NetX Duo Crypto CAVS test</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/chapter3.html">Ch. 3 - Description of NetX Duo DHCP client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-client/appendix-a.html">App. A - Description of the Restore state feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCP server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter2.html">Ch. 2 - Installation and use of the NetX Duo DHCP server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcp-server/chapter3.html">Ch. 3 - Description of NetX Duo DHCP server services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter3.html">Ch. 3 - NetX Duo DHCPv6 configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/chapter4.html">Ch. 4 - NetX Duo DHCPv6 client services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-client/appendix-a.html">App. A - Description of the Restore State Feature</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DHCPv6 server user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter1.html">Ch. 1 - Introduction to NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter2.html">Ch. 2 - Installation and use of NetX Duo DHCPv6 server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter3.html">Ch. 3 - NetX Duo DHCPv6 server configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/chapter4.html">Ch. 4 - NetX Duo DHCPv6 server services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-a.html">App. A - NetX Duo DHCPv6 option codes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-b.html">App. B- NetX Duo DHCPv6 server status code</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-c.html">App. C - NetX Duo DHCPv6 unique identifiers (DUIDs)</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dhcpv6-server/appendix-d.html">App. D - Advanced NetX Duo DHCPv6 server example</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo DNS client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter1.html">Ch. 1 - Introduction to the NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter2.html">Ch. 2 - Installation and Use of NetX Duo DNS client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-dns/chapter3.html">Ch. 3 - Description of NetX Duo DNS client Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo FTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter1.html">Ch. 1 - Introduction to NetX Duo FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter2.html">Ch. 2 - Installation and use of FTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ftp/chapter3.html">Ch. 3 - Description of FTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo HTTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter1.html">Chapter 1 - Introduction to NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter2.html">Chapter 2 - Installation and Use of NetX Duo HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-http/Chapter3.html">Chapter 3 - Description of NetX HTTP Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Iperf user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter1.html">Chapter 1 - Introduction to NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter2.html">Chapter 2 - Installing and using NetX Duo Iperf</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-iperf/chapter3.html">Chapter 3 - Running the Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo mDNS/DNS-SD user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter1.html">Ch. 1 - Introduction to NetX Duo mDNS/DNS-SD</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter2.html">Ch. 2 - Installation and use of mDNS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter3.html">Ch. 3 - Description of internal service cache</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-mdns/chapter4.html">Ch. 4 - Description of mDNS services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo MQTT client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Introduction to NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of NetX Duo MQTT client</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo NAT user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter1.html">Ch. 1 - Introduction to NetX Duo NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter2.html">Ch. 2 - Installation and use of NAT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter3.html">Ch. 3 - NAT configuration options</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-nat/chapter4.html">Ch. 4 - Description of NAT services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo POP3 client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter1.html">Ch. 1 - Introduction to NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo POP3 client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-pop3-client/chapter3.html">Ch. 3 - Description of POP3 client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PPP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter1.html">Ch. 1 - Introduction to the NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter2.html">Ch. 2 - Installation and use of NetX Duo PPP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ppp/chapter3.html">Ch. 3 - Description of NetX Duo PPP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo PTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter1.html">Ch. 1 - Introduction to the NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo PTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-ptp-client/chapter3.html">Ch. 3 - Description of NetX Duo PTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTP Sender</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtp/chapter3.html">Ch. 3 - Description of NetX Duo RTP Sender Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo RTSP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter1.html">Ch. 1 - Introduction to the NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter2.html">Ch. 2 - Installation and use of NetX Duo RTSP Server</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-rtsp/chapter3.html">Ch. 3 - Description of NetX Duo RTSP Server Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SMTP client user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter2.html">Ch. 2 - Installation and use of NetX Duo SMTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-smtp-client/chapter3.html">Ch. 3 - client description of SMTP client services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter1.html">Ch. 1 - Introduction to NetX Duo SNMP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter2.html">Ch. 2 - Installation and use of the NetX Duo SNMP agent</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-snmp/chapter3.html">Ch. 3 - Description of NetX Duo SNMP agent services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo SNTP client</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter1.html">Ch. 1 - Introduction to NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter2.html">Ch. 2 - Installation and Use of NetX Duo SNTP client</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/chapter3.html">Ch. 3 - Description of NetX Duo SNTP client Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-sntp-client/appendix-a.html">App. A - NetX Duo SNTP Fatal Error Codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Telnet user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter1.html">Ch. 1 - Introduction to NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter2.html">Ch. 2 - Installation and use of NetX Duo Telnet</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-telnet/chapter3.html">Ch. 3 - Description of NetX Duo Telnet services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo TFTP</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter1.html">Ch. 1 - Introduction to NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter2.html">Ch. 2 - Installation and use of NetX Duo TFTP</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-tftp/chapter3.html">Ch. 3 - Description of NetX Duo TFTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Web HTTP and HTTPS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter1.html">Ch. 1 - Introduction to NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter2.html">Ch. 2 - Installation and use of NetX Duo HTTP and HTTPS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-web-http/chapter3.html">Ch. 3 - Description of HTTP services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure DTLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure DTLS</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/chapter4.html">Ch. 4 - Description of NetX Duo Secure DTLS services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-dtls/appendix-a.html">App. A - NetX Duo Secure DTLS return/error codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">NetX Duo Secure TLS user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter1.html">Ch. 1 - Introduction to NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter2.html">Ch. 2 - Installation and use of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter3.html">Ch. 3 - Functional description of NetX Duo Secure</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/chapter4.html">Ch. 4 - Description of NetX Duo Secure services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../netx-duo-secure-tls/appendix-a.html">App. A - NetX Duo Secure return/error codes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NetX Duo User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NetX Duo User Guide</a></li>
+    <li><a href="../index.html">NetX Duo</a></li>
+    <li>NetX Duo addons</li>
+    <li>NetX Duo MQTT client user guide</li>
+    <li><a href="chapter3.html">Ch. 3 - Description of NetX Duo MQTT client services</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/netx-duo/modules/ROOT/pages/netx-duo-mqtt/chapter3.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 3 - Description of NetX Duo MQTT client services</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter contains a description of all NetX Duo MQTT client services (listed below) in alphabetical order.</p>
+</div>
+<div class="paragraph">
+<p>In the "Return Values" section in the following API descriptions, values in <strong>BOLD</strong> are not affected by the <strong>NX_DISABLE_ERROR_CHECKING</strong> define that is used to disable API error checking, while non-bold values are completely disabled.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_create"><a class="anchor" href="#_nxd_mqtt_client_create"></a>nxd_mqtt_client_create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create MQTT Client Instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype"><a class="anchor" href="#_prototype"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_create(
+    NXD_MQTT_CLIENT *client_ptr,
+    CHAR *client_name,
+    CHAR *client_id,
+    UINT client_id_length,
+    NX_IP *ip_ptr,
+    NX_PACKET_POOL
+    *pool_ptr,
+    VOID *stack_ptr,
+    ULONG stack_size, UINT
+    mqtt_thread_priority,
+    VOID *memory_ptr,
+    ULONG memory_size);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description"><a class="anchor" href="#_description"></a>Description</h3>
+<div class="paragraph">
+<p>This service creates an MQTT Client instance on the specified IP instance. The <em>client_id</em> string is passed to the server during MQTT connection phase as the <em>Client Identifier (ClientId)</em>. It also creates the necessary ThreadX resources (MQTT Client task thread, mutex, event flag group, and TCP socket).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters"><a class="anchor" href="#_input_parameters"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+<li>
+<p><em>client_name</em>: Client name string.</p>
+</li>
+<li>
+<p><em>client_id</em>: Client ID string used during connection phase. MQTT broker uses this client_id to uniquely identify a client.</p>
+</li>
+<li>
+<p><em>client_id_length</em>: Length of the client ID string, in bytes.</p>
+</li>
+<li>
+<p><em>ip_ptr</em>: Pointer to IP instance.</p>
+</li>
+<li>
+<p><em>pool_ptr</em>: Pointer to a packet pool MQTT client uses for its operation.</p>
+</li>
+<li>
+<p><em>stack_ptr</em>: Stack area for the MQTT Client thread.</p>
+</li>
+<li>
+<p><em>stack_size</em>: Size of the stack area, in bytes.</p>
+</li>
+<li>
+<p><em>mqtt_thread_priority</em>: The priority of the MQTT Thread.</p>
+</li>
+<li>
+<p><em>memory_ptr</em>: Deprecated. Not used anymore.</p>
+</li>
+<li>
+<p><em>memory_size</em>: Deprecated. Not used anymore.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values"><a class="anchor" href="#_return_values"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successfully created MQTT client.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_INTERNAL_ERROR</strong> (0x10004) Internal logic error</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block, ip_ptr, or packet pool pointer.</p>
+</li>
+<li>
+<p>NXD_MQTT_INVALID_PARAMETER (0x10009) Invalid will topic string, will_retrain_flag, or will_QoS value.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from"><a class="anchor" href="#_allowed_from"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#define CLIENT_ID_STRING "My Test Client"
+
+#define MQTT_THREAD_PRIORITY 2
+
+NXD_MQTT_CLIENT my_client;
+NX_IP ip_0; /* Assume ip_0 is created prior to MQTT client creation. */
+NX_PACKET_POOL pool_0;/* Assume pool_0 is created prior to MQTT client creation. */
+UCHAR mqtt_thread_stack[STACK_SIZE];
+
+/* Create the MQTT Client instance on "ip_0". */
+status = **nxd_mqtt_client_create**(&amp;my_client, "my client",
+    CLIENT_ID_STRING, stlren(CLIENT_ID_STRING),
+    &amp;ip_0, &amp;pool_0, (VOID*)mqtt_thread_stack, STACK_SIZE,
+    MQTT_THREAD_PRIORITY, NX_NULL, 0);
+
+/* If status is NXD_MQTT_SUCCESS an MQTT Client instance was successfully created. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_will_message_set"><a class="anchor" href="#_nxd_mqtt_client_will_message_set"></a>nxd_mqtt_client_will_message_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sets the Will message</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_2"><a class="anchor" href="#_prototype_2"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_will_message_set(
+    NXD_MQTT_CLIENT *client_ptr,
+    Const UCHAR *will_topic,
+    UINT will_topic_length
+    Const UCHAR *will_message,
+    UINT will_message_length,
+    UINT will_retain_flag,
+    UINT will_QoS);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_2"><a class="anchor" href="#_description_2"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the optional will topic and will message before the client connects to the server. Will topic must be UTF-8 encoded string.</p>
+</div>
+<div class="paragraph">
+<p>The will message, if set, is transmitted to the broker as part of the CONNECT message. Therefore application wishing to use will message must use this service before the MQTT connection is make.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_2"><a class="anchor" href="#_input_parameters_2"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+<li>
+<p><em>will_topic</em>: UTF-8 encoded will topic string. Will topic must be present. Caller must keep the will_topic string valid till the <em>nx_mqtt_client_connect</em> call is made.</p>
+</li>
+<li>
+<p><em>will_topic_length</em>: Number of bytes in the will topic string</p>
+</li>
+<li>
+<p><em>will_message</em>: Application defined will message. If will message is not required, application can set this field to <em>NX_NULL.</em></p>
+</li>
+<li>
+<p><em>will_message_length</em>: Number of bytes in the will message string. If will_message is set to NULL, will_message_length must be set to 0.</p>
+</li>
+<li>
+<p><em>will_retain_flag</em>: Whether the server publishes the will message as a retained message. Valid values are <em>NX_TRUE</em> or <em>NX_FALSE.</em></p>
+</li>
+<li>
+<p><em>will_QoS</em>: QoS value used by the server when sending will message. Valid values are 0 or 1.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_2"><a class="anchor" href="#_return_values_2"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successfully sets the will message.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_QOS2_NOT_SUPPORTED</strong> (0x1000C) QoS level 2 messages are not supported.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block.</p>
+</li>
+<li>
+<p>NXD_MQTT_INVALID_PARAMETER (0x10009) Invalid will topic string, will_retrain_flag, or will_QoS value.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_2"><a class="anchor" href="#_allowed_from_2"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#define WILL_TOPIC "my_will_topic"
+
+#define WILL_MESSAGE "my will message"
+
+/* Create the MQTT Client instance "my_client" on "ip_0". */
+status = nxd_mqtt_client_will_message_set(&amp;my_client,
+    WILL_TOPIC, STRLEN(WILL_TOPIC),
+    WILL_MESSAGE, STRLEN(WILL_MESSAGE),
+    NX_TRUE, 0);
+
+/* If status is NXD_MQTT_SUCCESS the will message is properly
+configured for the session. It will be transmitted to the server
+during MQTT connection. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_login_set"><a class="anchor" href="#_nxd_mqtt_client_login_set"></a>nxd_mqtt_client_login_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sets MQTT client login username and password</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_3"><a class="anchor" href="#_prototype_3"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_login_set(
+    NXD_MQTT_CLIENT *client_ptr,
+    Const UCHAR *username,
+    UINT username_length
+    Const UCHAR *password,
+    UINT password_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
+<div class="paragraph">
+<p>This service sets the username and password, which is used during MQTT connection phase for log in authentication purpose.</p>
+</div>
+<div class="paragraph">
+<p>The MQTT client login with username and password is optional. In situations where the server requires a user name and password, the user name and password must be set before the connection is established.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_3"><a class="anchor" href="#_input_parameters_3"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+<li>
+<p><em>username</em>: UTF-8 encoded user name string. Caller must keep the username string valid till the <em>nx_mqtt_client_connect</em> call is made.</p>
+</li>
+<li>
+<p><em>username_length</em>: Number of bytes in the username string</p>
+</li>
+<li>
+<p><em>password</em>: Password string. If password is not required, this field may be set to NX_NULL.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_3"><a class="anchor" href="#_return_values_3"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successfully sets the will message.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block.</p>
+</li>
+<li>
+<p>NXD_MQTT_INVALID_PARAMETER (0x10009) Invalid username string or the password string.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_3"><a class="anchor" href="#_allowed_from_3"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_3"><a class="anchor" href="#_example_3"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#define USERNAME "MY_NAME"
+
+#define PASSWORD "MY_LOGIN_SECRET"
+
+/* Create the MQTT Client instance "my_client" on "ip_0". */
+status = nxd_mqtt_client_login_set(&amp;my_client,
+    USERNAME, STRLEN(USERNAME),
+    PASSWORD, STRLEN(PASSWORD));
+
+/* If status is NXD_MQTT_SUCCESS the username and the password
+are set for the session. This information will be
+transmitted to the server during MQTT connection. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_connect"><a class="anchor" href="#_nxd_mqtt_client_connect"></a>nxd_mqtt_client_connect</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Connect MQTT Client to the broker</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_connect(
+    NXD_MQTT_CLIENT *client_ptr,
+    NXD_ADDRESS *server_ip,
+    UINT server_port,
+    UINT keepalive, UINT clean_session,
+    ULONG wait_option));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_4"><a class="anchor" href="#_description_4"></a>Description</h3>
+<div class="paragraph">
+<p>This service initiates a connection to the broker. First it binds a TCP socket, then makes a TCP connection. Assuming that succeeds, it creates a timer if the MQTT keep alive feature is enabled. Then it connects with the MQTT server (broker).</p>
+</div>
+<div class="paragraph">
+<p>Note that this service creates an MQTT connection with no TLS protection. To create a secure MQTT connection, the application shall use the service <strong><em>nxd_mqtt_client_secure_connect.</em></strong></p>
+</div>
+<div class="paragraph">
+<p>Upon the connection, if the client sets the <em>clean_session</em> to NX_FALSE, the client will retransmit any messages stored that have not been acknowledged yet.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_4"><a class="anchor" href="#_input_parameters_4"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+<li>
+<p><em>server_ip</em>: Broker IP address.</p>
+</li>
+<li>
+<p><em>server_port</em>: Broker port number. The default port for MQTT is defined as <strong>NXD_MQTT_PORT</strong> (1883).</p>
+</li>
+<li>
+<p><em>keep_alive</em>: The keep alive value, in seconds, to be used during the session. The value indicates the maximum time between two MQTT control messages being sent to the broker before the broker times out this client. The value 0 turns off the keep-alive feature.</p>
+</li>
+<li>
+<p><em>clean_session</em>: Whether the server shall start this session clean. Valid options are <strong>NX_TRUE</strong> or <strong>NX_FALSE.</strong></p>
+</li>
+<li>
+<p><em>wait_option</em>: Connection wait time.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_4"><a class="anchor" href="#_return_values_4"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successful MQTT connection</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ALREADY_CONNECTED</strong> (0x10001) The client is already connected to the broker.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_MUTEX_FAILURE</strong> (0x10003) Failed to obtain MQTT mutex</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_INTERNAL_ERROR</strong> (0x10004) Internal logic error</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_CONNECT_FAILURE</strong> (0x10005) Failed to connect to the broker.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_COMMUNICATION_FAILURE</strong> (0x10007) Unable to send messages to the broker.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_SERVER_MESSAGE_FAILURE</strong> (0x10008) Server responded with error</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ERROR_UNACCEPTABLE_PROTOCOL</strong> (0x10081) Server response code</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ERROR_IDENTIFIER_REJECTED</strong> (0x10082) Server response code</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ERROR_SERVER_UNAVAILABLE</strong> (0x10083) Server response code</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ERROR_BAD_USERNAME_PASSWORD</strong> (0x10084) Server response code</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ERROR_NOT_AUTHORIZED</strong> (0x10085) Server response code</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block, ip_ptr, or packet pool pointer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_4"><a class="anchor" href="#_allowed_from_4"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_4"><a class="anchor" href="#_example_4"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">NXD_ADDRESS broker_address;
+
+/* Set up broker IP address */
+broker_address.nxd_ip_version = 4;
+broker_address.nxd_ip_address.v4 = MQTT_BROKER_ADDRESS;
+
+/* Create the MQTT Client instance "my_client" on "ip_0". */
+status = nxd_mqtt_client_connect(&amp;my_client, &amp;broker_address,
+    NXD_MQTT_PORT,
+    0, /* Turn off keepalive */
+    NX_TRUE, /* Clean session flag set */
+    NX_WAIT_FOREVER);
+
+/* If status is NXD_MQTT_SUCCESS a connection to the broker is successfully established. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_secure_connect"><a class="anchor" href="#_nxd_mqtt_client_secure_connect"></a>nxd_mqtt_client_secure_connect</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Connect MQTT client to the broker with TLS security</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_5"><a class="anchor" href="#_prototype_5"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_secure_connect(
+    NXD_MQTT_CLIENT *client_ptr,
+    NXD_ADDRESS *server_ip,
+    UINT server_port,
+    UINT (*tls_setup)(
+        NXD_MQTT_CLIENT *,
+        NX_SECURE_TLS_SESSION *,
+        NX_SECURE_TLS_CERTIFICATE *,
+        NX_SECURE_TLS_CERTIFICATE *),
+    UINT keepalive,
+    UINT connection_flag,
+    UINT clean_session,
+    ULONG wait_option));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_5"><a class="anchor" href="#_description_5"></a>Description</h3>
+<div class="paragraph">
+<p>This service is identical to <strong><em>nxd_mqtt_client_connect</em></strong> except that the connection goes through TLS layer instead of TCP. Therefore, communication between the client and the broker is secured.</p>
+</div>
+<div class="paragraph">
+<p>The user-defined <em>tls_setup</em> is a callback function that the MQTT client uses prior to making a MQTT client connection. The application shall initialize NetX Duo Secure TLS, configure security parameters, and load relevant certificates to be used during TLS handshake. The actual TLS handshake happens after a TCP connection is established on the broker&#8217;s MQTT TLS port (default TCP port 8883). Once the TLS handshake is successful, the MQTT CONNECT control packet is sent via TLS.</p>
+</div>
+<div class="paragraph">
+<p>To make secure connections, the NetX Duo Secure TLS library must be available, and the NetX Duo MQTT client must be built with <strong>NX_SECURE_ENABLE</strong> defined.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_5"><a class="anchor" href="#_input_parameters_5"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+<li>
+<p><em>server_ip</em>: Broker IP address.</p>
+</li>
+<li>
+<p><em>server_port</em>: Broker port number. The default port for MQTT is defined as <strong>NXD_MQTT_TLS_PORT</strong>: (8883).</p>
+</li>
+<li>
+<p><em>tls_setup</em>: User-provided TLS Setup callback function. This callback function is invoked to set up TLS client connection parameters.</p>
+</li>
+<li>
+<p><em>keep_alive</em>: The keep-alive value to be used during the session. The value 0 turns off the keep-alive feature.</p>
+</li>
+<li>
+<p><em>clean_session</em>: Whether or not the server shall start this session clean. Valid options are <strong>NX_TRUE</strong> or <strong>NX_FALSE.</strong></p>
+</li>
+<li>
+<p><em>wait_option</em>: Connection wait time.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_5"><a class="anchor" href="#_return_values_5"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successful MQTT client connection established via TLS.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ALREADY_CONNECTED</strong> (0x10001) The client is already connected to the broker.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_MUTEX_FAILURE</strong> (0x10003) Failed to obtain MQTT mutex</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_INTERNAL_ERROR</strong> (0x10004) Internal logic error</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_CONNECT_FAILURE</strong> (0x10005) Failed to connect to the broker.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_COMMUNICATION_FAILURE</strong> (0x10007) Unable to send messages to the broker.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_SERVER_MESSAGE_FAILURE</strong> (0x10008) Server responded with error message.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ERROR_UNACCEPTABLE_PROTOCOL</strong> (0x10081) Server response code</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ERROR_IDENTIFIER_REJECTED</strong> (0x10082) Server response code</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ERROR_SERVER_UNAVAILABLE</strong> (0x10083) Server response code</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ERROR_BAD_USERNAME_PASSWORD</strong> (0x10084) Server response code</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_ERROR_NOT_AUTHORIZED</strong> (0x10085) Server response code</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block or sever address structure.</p>
+</li>
+<li>
+<p>NX_INVALID_PORT (0x46) Server port cannot be 0.</p>
+</li>
+<li>
+<p>NXD_MQTT_INVALID_PARAMETER (0x10009) Input parameter error</p>
+</li>
+<li>
+<p>NXD_MQTT_CLIENT_NOT_RUNNING (0x1000E) MQTT Thread has not started running yet.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_5"><a class="anchor" href="#_allowed_from_5"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_5"><a class="anchor" href="#_example_5"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* TLS setup routine. This function is responsible for setting up TLS parameters.*/
+UINT tls_setup_callback(NXD_MQTT_CLIENT *client_ptr,
+    NX_SECURE_TLS_SESSION *session_ptr,
+    NX_SECURE_TLS_CERTIFICATE *certificate_ptr,
+    NX_SECURE_TLS_CERTIFICATE *trusted_certificate,
+    UINT timeout)
+{
+/* Note this routine is simplified to highlight the
+necessary steps to setup a TLS session. Each
+application may employ different procedures suitable for
+its TLS settings, such as cipher suite, certificates. */
+
+/* Create a TLS session for the MQTT connection, and pass
+in various crypto methods this session can use for the
+initial TLS handshake. */
+
+/* Load appropriate certificates, or set up session key for Pre-share key operation. */
+
+/* Start the TLS session */
+
+/* Return NX_SUCCESS if the TLS session is established. */
+    return(NX_SUCCESS);
+}
+
+NXD_ADDRESS broker_address;
+
+/* Set up broker IP address */
+broker_address.nxd_ip_version = 4;
+broker_address.nxd_ip_address.v4 = MQTT_BROKER_ADDRESS;
+
+/* Create the MQTT Client instance "my_client" on "ip_0". */
+status = nxd_mqtt_client_secure_connect(&amp;my_client,
+    &amp;server_address, NXD_MQTT_TLS_PORT, tls_setup_callback,
+    0, /* Turn off keepalive */
+    NX_TRUE, /* Clean session set */
+    NX_WAIT_FOREVER);
+
+/* If status is NXD_MQTT_SUCCESS the MQTT Client was successfully connected to the broker via TLS. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_publish"><a class="anchor" href="#_nxd_mqtt_client_publish"></a>nxd_mqtt_client_publish</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Publish a message through the broker</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_6"><a class="anchor" href="#_prototype_6"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_publish(
+    NXD_MQTT_CLIENT *client_ptr,
+    CHAR *topic_name,
+    UINT topic_name_length,
+    CHAR *message, UINT
+    message_length,
+    UINT retain,
+    UINT QoS,
+    ULONG timeout);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
+<div class="paragraph">
+<p>This service publishes a message through the broker. Publishing QoS level 2 messages is not supported yet.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_6"><a class="anchor" href="#_input_parameters_6"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+<li>
+<p><em>topic_name</em>: Topic to publish to.</p>
+</li>
+<li>
+<p><em>topic_name_length</em>: Length of the topic, in bytes.</p>
+</li>
+<li>
+<p><em>message</em>: Pointer to the message buffer.</p>
+</li>
+<li>
+<p><em>message_length</em>: Size of the message, in bytes</p>
+</li>
+<li>
+<p><em>retain</em>: Determines if the broker shall retain the message.</p>
+</li>
+<li>
+<p><em>QoS</em>: The desired QoS value: 0 or 1.</p>
+</li>
+<li>
+<p><em>timeout</em>: Timeout value</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_6"><a class="anchor" href="#_return_values_6"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successful MQTT Client create</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_INTERNAL_ERROR</strong> (0x10004) Internal logic error.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_PACKET_POOL_FAILURE</strong> (0x10006) Failed to obtain packet from the packet pool.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_COMMUNICATION_FAILURE</strong> (0x10007) Failed to communication with the broker.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_QOS2_NOT_SUPPORTED</strong> (0x1000C) QoS level 2 messages are not supported.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block, ip_ptr, or packet pool pointer</p>
+</li>
+<li>
+<p>NXD_MQTT_INVALID_PARAMETER (0x10009) Input parameter error</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_6"><a class="anchor" href="#_allowed_from_6"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_6"><a class="anchor" href="#_example_6"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">CHAR *topic = "temperature";
+CHAR *message = "100";
+
+/* Publish the temperature value. */
+status = nxd_mqtt_client_publish(&amp;my_client,
+    topic, STRLEN(topic),
+    message, STRLEN(message),
+    NX_TRUE, /* Server retains message. */);
+    0, /* QOS */
+    NX_WAIT_FOREVER);
+
+/* If status is NXD_MQTT_SUCCESS the message has been
+successfully sent to the broker. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_subscribe"><a class="anchor" href="#_nxd_mqtt_client_subscribe"></a>nxd_mqtt_client_subscribe</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Subscribe to a topic</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_7"><a class="anchor" href="#_prototype_7"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_subscribe(
+    NXD_MQTT_CLIENT *mqtt_client_ptr,
+    CHAR *topic_name,
+    UINT topic_name_length,
+    UINT QoS);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
+<div class="paragraph">
+<p>This service subscribes to a specific topic. Subscribing to QoS level 2 messages is not supported yet.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_7"><a class="anchor" href="#_input_parameters_7"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+<li>
+<p><em>topic_name</em>: Topic to publish to.</p>
+</li>
+<li>
+<p><em>topic_name_length</em>: Length of the topic, in bytes.</p>
+</li>
+<li>
+<p><em>QoS The desired QoS level:</em>: 0 or 1.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_7"><a class="anchor" href="#_return_values_7"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successfully subscribed to the topic.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_NOT_CONNECTED</strong> (0x10002) The client is not connected to the broker.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_MUTEX_FAILURE</strong> (0x10003) Failed to obtain MQTT mutex</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_INTERNAL_ERROR</strong> (0x10004) Internal logic error</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_COMMUNICATION_FAILURE</strong> (0x10007) Unable to send messages to the broker.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_QOS2_NOT_SUPPORTED</strong> (0x1000C) QoS level 2messages are not supported.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block, ip_ptr, or packet pool pointer</p>
+</li>
+<li>
+<p>NXD_MQTT_INVALID_PARAMETER (0x10009) topic_name is not set, or topic_name_length is zero, or QoS is value is invalid.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_7"><a class="anchor" href="#_allowed_from_7"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_7"><a class="anchor" href="#_example_7"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Subscribe to the topic "temperature" with QoS level 0 */
+CHAR *topic = "temperature";
+
+status = nxd_mqtt_client_subscribe(&amp;my_client, topic,
+    STRLEN(topic), 0);
+
+/* If status is NXD_MQTT_SUCCESS, the client successfully
+subscribes to the topic "temperate". At this point the client
+is ready for receiving messages from the broker. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_unsubscribe"><a class="anchor" href="#_nxd_mqtt_client_unsubscribe"></a>nxd_mqtt_client_unsubscribe</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Unsubscribe from a topic</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_8"><a class="anchor" href="#_prototype_8"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_unsubscribe(
+    NXD_MQTT_CLIENT *mqtt_client_pr,
+    CHAR *topic_name,
+    UINT topic_name_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_8"><a class="anchor" href="#_description_8"></a>Description</h3>
+<div class="paragraph">
+<p>This service unsubscribes from a topic.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_8"><a class="anchor" href="#_input_parameters_8"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+<li>
+<p><em>topic_name</em>: Topic to unsubscribe from.</p>
+</li>
+<li>
+<p><em>topic_name_length</em>: Length of the topic, in bytes.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_8"><a class="anchor" href="#_return_values_8"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successfully unsubscribed from the topic.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_NOT_CONNECTED</strong> (0x10002) The client is not connected to the broker.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_MUTEX_FAILURE</strong> (0x10003) Failed to obtain MQTT mutex.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_INTERNAL_ERROR</strong> (0x10004) Internal logic error</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_COMMUNICATION_FAILURE</strong> (0x10007) Unable to send messages to the broker.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block pointer</p>
+</li>
+<li>
+<p>NXD_MQTT_INVALID_PARAMETER (0x10009) topic_name is not set, or topic_name_length is zero.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_8"><a class="anchor" href="#_allowed_from_8"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Subscribe to the topic "temperature" with QoS level 0 */
+CHAR *topic = "temperature";
+
+status = nxd_mqtt_client_unsubscribe(&amp;my_client, topic,
+    STRLEN(topic));
+
+/* If status is NXD_MQTT_SUCCESS, the client successfully
+unsubscribes the topic "temperate". */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_receive_notify_set"><a class="anchor" href="#_nxd_mqtt_client_receive_notify_set"></a>nxd_mqtt_client_receive_notify_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set MQTT message receive notify callback function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_9"><a class="anchor" href="#_prototype_9"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_receive_notify_set(
+    NXD_MQTT_CLIENT *client_ptr,
+    VOID(*receive_notify)(
+        NXD_MQTT_CLIENT* client_ptr,
+        UINT message_count));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_9"><a class="anchor" href="#_description_9"></a>Description</h3>
+<div class="paragraph">
+<p>This service registers a callback function with the MQTT client. Upon receiving a message published by the broker, MQTT client stores the message in the receive queue. If the callback function is set, the callback function is invoked to notify the application that a message is ready to be retrieved. The receive notify function takes a pointer to the MQTT client control block, and a <em>message_count</em> indicating the number of messages available in the receive queue. Note that the number may change between the receive notification and when the application retrieves these messages, as new messages may have arrived in the interval.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_9"><a class="anchor" href="#_input_parameters_9"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+<li>
+<p><em>receive_notify</em>: User supplied callback function to be invoked on receiving a message.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_9"><a class="anchor" href="#_return_values_9"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successfully set the receive notify function.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_9"><a class="anchor" href="#_allowed_from_9"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Sample MQTT receive notify function. */
+
+VOID my_notify_func(NXD_MQTT_CLIENT* client_ptr,
+    UINT message_count)
+{
+
+/* On receiving a message, set an event flag to wake up the
+application thread. The message will be received and
+processed in the application thread. */
+tx_event_flags_set(&amp;mqtt_app_flag,
+    MESSAGE_RECEIVED_EVENT, TX_OR);
+
+/* All done. Return to the caller. */
+    return;
+}
+
+/* Set the receive callback function. */
+status = **nxd_mqtt_client_receive_notify_set**(&amp;my_client,
+    my_notify_func);
+
+/* If status is NXD_MQTT_SUCCESS the notify function is properly set. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_message_get"><a class="anchor" href="#_nxd_mqtt_client_message_get"></a>nxd_mqtt_client_message_get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Retrieve a message from the broker</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_10"><a class="anchor" href="#_prototype_10"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_message_get(
+    NXD_MQTT_CLIENT *client_ptr,
+    UCHAR *topic_buffer,
+    UINT topic_buffer_size,
+    UINT *actual_topic_length,
+    UCHAR *message_buffer,
+    UINT message_buffer_size,
+    UINT *actual_message_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_10"><a class="anchor" href="#_description_10"></a>Description</h3>
+<div class="paragraph">
+<p>This service retrieves a message published by the broker. All incoming messages are stored in the receive queue. The application uses this service to retrieve these messages. This call is non-blocking. If the receive queue is empty, this service returns <strong>NXD_MQTT_NO_MESSAGE</strong>. An application wishing to be notified of incoming message can call the service <strong><em>nxd_mqtt_client_receive_notify_set</em></strong> to register a receive callback function.</p>
+</div>
+<div class="paragraph">
+<p>The caller needs to provide memory space for the topic string and the message body. The sizes of these two buffers are passed in using <em>topic_buffer_size</em> and <em>message_buffer_size</em>. The actual number of bytes in the topic string and the message body are returned in <em>actual_topic_length</em> and <em>actual_message_length</em>. If topic length or massage length is greater than the buffer space provided, this service returns error code <em>NXD_MQTT_INSUFFICIENT_BUFFER_SIZE</em>.</p>
+</div>
+<div class="paragraph">
+<p>The application shall allocate a bigger buffer and try again.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_10"><a class="anchor" href="#_input_parameters_10"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+<li>
+<p><em>topic_buffer</em>: Pointer to the memory location where the topic string
+is copied into.</p>
+</li>
+<li>
+<p><em>topic_buffer_size</em>: Size of the topic buffer.</p>
+</li>
+<li>
+<p><em>actual_topic_length</em>: Pointer to the memory location where the actual topic length is returned.</p>
+</li>
+<li>
+<p><em>message_buffer</em>: Pointer to the memory location where the message string is copied into.</p>
+</li>
+<li>
+<p><em>message_buffer_size</em>: Size of the message buffer.</p>
+</li>
+<li>
+<p><em>actual_message_length</em>: Pointer to the memory location where the message length is returned.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_10"><a class="anchor" href="#_return_values_10"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successfully retrieved message.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_INTERNAL_ERROR</strong> (0x10004) Internal logic error</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_NO_MESSAGE</strong> (0x1000A) The receive queue is empty.</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_INSUFFICIENT_BUFFER_SIZE</strong> (0x1000D) Topic buffer or message buffer is too small for the topic or the message.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block, ip_ptr, or packet pool pointer</p>
+</li>
+<li>
+<p>NXD_MQTT_INVALID_PARAMETER (0x10009) message_buffer or topic_buffer pointer is NULL</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_10"><a class="anchor" href="#_allowed_from_10"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UCHAR topic[MAX_TOPIC_SIZE];
+UCHAR message[MAX_TOPIC_SIZE];
+UINT topic_length;
+UINT message_length;
+
+/* Retrieve a message from MQTT client receive queue. */
+status = nxd_mqtt_client_message_get(&amp;my_client, topic,
+    sizeof(topic), &amp;topic_length, message, sizeof(message),
+    &amp;message_length);
+
+/* Check the return value. */
+if(status == NXD_MQTT_SUCCESS)
+{
+/* A message is received. All done. */
+}
+else if (status == NXD_MQTT_NO_MESSAGE)
+{
+/* No more messages in the receive queue. All done. */
+}
+else
+{
+/* Receive error. */
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_disconnect_notify_set"><a class="anchor" href="#_nxd_mqtt_client_disconnect_notify_set"></a>nxd_mqtt_client_disconnect_notify_set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Set MQTT message disconnect notify callback function</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_11"><a class="anchor" href="#_prototype_11"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_disconnect_notify_set(
+    NXD_MQTT_CLIENT *client_ptr,
+    VOID(*disconnect_notify)(NXD_MQTT_CLIENT* client_ptr));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_11"><a class="anchor" href="#_description_11"></a>Description</h3>
+<div class="paragraph">
+<p>This service registers a callback function with the MQTT client. When MQTT detects the connection to the broker is lost, it calls this notify function to alert the application. Therefore, the application can use this callback function to detect a lost connection, and to be able to re-establish connection to the broker.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">VOID callback_func(NXD_MQTT_CLIENT *client_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_11"><a class="anchor" href="#_input_parameters_11"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+<li>
+<p><em>disconnect_notify</em>: User supplied callback function to be invoked when MQTT detects the connection to the broker is lost.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_11"><a class="anchor" href="#_return_values_11"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successfully set the disconnect notify function.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_11"><a class="anchor" href="#_allowed_from_11"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_11"><a class="anchor" href="#_example_11"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">VOID disconnect_notify(NXD_MQTT_CLIENT *client_ptr)
+{
+/* MQTT client is disconnected from the broker. Notify the application so it can re-connect to the broker. */
+}
+
+status = nxd_mqtt_client_disconnect_notify_set(client_ptr,
+    disconnect_notify);</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_disconnect"><a class="anchor" href="#_nxd_mqtt_client_disconnect"></a>nxd_mqtt_client_disconnect</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Disconnect MQTT client from the broker</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_12"><a class="anchor" href="#_prototype_12"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_disconnect(NXD_MQTT_CLIENT *client_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_12"><a class="anchor" href="#_description_12"></a>Description</h3>
+<div class="paragraph">
+<p>This service disconnects the client from the broker. Note that messages on the receive queue are released. Messages with QoS 1 in the transmit queue are not released. After the client reconnects to the server, QoS 1 messages can be processed, unless the client reconnects to the server with <em>clean_session</em> flag set to <strong>NX_TRUE</strong>.</p>
+</div>
+<div class="paragraph">
+<p>If the connection was made with TLS security protection, this service will close the TLS session before disconnecting the TCP connection.</p>
+</div>
+<div class="paragraph">
+<p>The actual TCP socket disconnect call has a wait option defined by NXD_MQTT_SOCKET_TIMEOUT (timer ticks). The default value is NX_WAIT_FOREVER. To avoid indefinite suspension in the event that the network connection is lost or the server is not responding, set this option to a finite value.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_12"><a class="anchor" href="#_input_parameters_12"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_12"><a class="anchor" href="#_return_values_12"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successfully disconnected from broker</p>
+</li>
+<li>
+<p><strong>NXD_MQTT_MUTEX_FAILURE</strong> (0x10003) Failed to obtain MQTT mutex.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_12"><a class="anchor" href="#_allowed_from_12"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_12"><a class="anchor" href="#_example_12"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Disconnect from the broker. */
+status = nxd_mqtt_client_disconnect(&amp;my_client);
+
+/* If status is NXD_MQTT_SUCCESS the client is successfully
+disconnected from the broker. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nxd_mqtt_client_delete"><a class="anchor" href="#_nxd_mqtt_client_delete"></a>nxd_mqtt_client_delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete the MQTT client instance</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_13"><a class="anchor" href="#_prototype_13"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT nxd_mqtt_client_delete(NXD_MQTT_CLIENT *client_ptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_13"><a class="anchor" href="#_description_13"></a>Description</h3>
+<div class="paragraph">
+<p>This service deletes the MQTT client instance and releases internal resources. This service automatically disconnects the client from the broker if it is still connected. Messages not yet transmitted or not been acknowledged are released. Messages received but not retrieved by the application are also released.</p>
+</div>
+<div class="paragraph">
+<p>If the connection was made with TLS security protection, this service closes the TLS session before disconnecting the TCP connection.</p>
+</div>
+<div class="paragraph">
+<p>After the client is deleted, an application wishing to use MQTT service needs to create a new instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_13"><a class="anchor" href="#_input_parameters_13"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>client_ptr</em>: Pointer to MQTT Client control block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_13"><a class="anchor" href="#_return_values_13"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NXD_MQTT_SUCCESS</strong> (0x00) Successfully deleted MQTT client.</p>
+</li>
+<li>
+<p>NX_PTR_ERROR (0x07) Invalid MQTT control block</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_allowed_from_13"><a class="anchor" href="#_allowed_from_13"></a>Allowed From</h3>
+<div class="paragraph">
+<p>Threads</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_13"><a class="anchor" href="#_example_13"></a>Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* Delete the MQTT client instance. */
+status = nxd_mqtt_client_delete(&amp;my_client);
+
+/* If status is NXD_MQTT_SUCCESS the client is successfully
+deleted from the system. */</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

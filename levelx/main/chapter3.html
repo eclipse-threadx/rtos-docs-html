@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter 3 - LevelX NAND support :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/levelx/main/chapter3.html">
+    <meta name="description" content="NAND flash memory is commonly utilized within LevelX for large data storage, which is typical of file systems.">
+    <meta name="generator" content="Antora 3.2.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="levelx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">LevelX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">LevelX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">LevelX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">LevelX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter1.html">Ch. 1 - Overview of LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter2.html">Ch. 2 - Installation and use of LevelX</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="chapter3.html">Ch. 3 - LevelX NAND support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter4.html">Ch. 4 - LevelX NAND APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter5.html">Ch. 5 - LevelX NOR support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="chapter6.html">Ch. 6 - LevelX NOR APIs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security/index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">LevelX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">LevelX User Guide</a></li>
+    <li><a href="index.html">LevelX</a></li>
+    <li>LevelX user guide</li>
+    <li><a href="chapter3.html">Ch. 3 - LevelX NAND support</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/levelx/modules/ROOT/pages/chapter3.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Chapter 3 - LevelX NAND support</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>NAND flash memory is commonly utilized for large data storage, which is typical of file systems. NAND memory consists of <em>blocks</em>. Within each NAND block is a series of <em>pages</em>. NAND blocks are erasable, which means that all pages within the NAND block are erased (set to all ones). Each NAND block page has a set of <em>spare bytes</em> that are utilized by LevelX for bookkeeping, bad block management, and error detection. NAND block pages are available in a variety of sizes. The most common page sizes are:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Page Size</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Spare Bytes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">256</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">512</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2048</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>NAND memory differs from NOR memory in that there is no direct access, i.e., NAND memory cannot be read directly from the processor like NOR memory. NAND memory can only be written to after an erase a limited number of times. Again, this differs from NOR memory that can be written an unlimited number of times providing the write request is clearing set bits. Finally, the spare bytes associated with each page are unique to NAND flash. Typical spare byte configurations are as shown in the table below.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Spare Bytes</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Byte numbers</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Configuration</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bytes 0-2:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECC bytes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bytes 3,4,6,7:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LevelX Metadata</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Byte 5:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bad block flag</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bytes 0-3,6-7:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECC bytes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bytes 8-11:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LevelX Metadata</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bytes 12-15:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unused</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Byte 5:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bad block flag</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Byte 0:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bad block flag</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bytes 2-5:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LevelX Metadata</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bytes 6-39:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unused</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bytes 40-63:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECC bytes</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>LevelX Utilizes 4 of the spare bytes of each NAND page for keeping track of the data stored in the each page. These 4 bytes are used to implement a 32-bit unsigned integer with a LevelX proprietary format. The upper 4 bits of the 32-bit field (bit 31 to bit 28) are used to indicate the data type stored in the page. The data type can be user sector data and metadata. If the data type indicate it as user sector data, the bit 28-0 of this field stores the logic sector number. If the data type indicate it as metadata, the bit 7-0 of this field stores the metadata page number. The format of the spare bytes is shown below.</p>
+</div>
+<div class="paragraph">
+<p><strong>LevelX Spare Bytes Format</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Bit(s)</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">31-29</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data type. Specify the data type of the data stored in the page. It can be LevelX metadata or user sector data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28-0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Logical sector number, if the data type is user sector data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7-0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Metadata page number if data type is metadata.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>LevelX utilizes a few NAND blocks for the metadata. The metadata blocks are used to store the mapping information between the logical block and the physical block and other tables used to keep track of the blocks and pages.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nand_bad_block_support"><a class="anchor" href="#_nand_bad_block_support"></a>NAND Bad Block Support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NAND memory is also more likely to have bad blocks than NOR memory. This is largely because NAND manufacturers can increase yield by allowing bad blocks and requiring software to work-around such bad blocks. LevelX handles NAND bad block management by simply mapping around bad blocks.</p>
+</div>
+<div class="paragraph">
+<p>LevelX also provides APIs for 256-byte Hamming Error Correction Codes (ECC) for the underlying LevelX driver to utilize for calculating new ECC codes or to perform 1-bit error correction on page reading within each 256-byte section of the page.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nand_driver_requirements"><a class="anchor" href="#_nand_driver_requirements"></a>NAND Driver Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>LevelX requires an underlying NAND flash driver that is specific to the underlying flash part and hardware implementation. The driver is specified to LevelX during initialization via the API <strong><em>lx_nand_flash_open</em></strong> and <strong><em>lx_nand_flash_format</em></strong>. If <strong>LX_NAND_ENABLE_CONTROL_BLOCK_FOR_DRIVER_INTERFACE</strong> is defined, the driver services functions will have pointer to the NAND control block as the first parameter. The driver may access the user extensions in the control block for driver specific data. The prototype of the LevelX driver is as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nand_driver_initialize(LX_NAND_FLASH *instance);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <em>instance</em> parameter specifies the LevelX NAND control block. The driver initialization function is responsible for setting up all the other driver-level services for the associated LevelX instance. The services required for each LevelX NAND instance are shown in the list below.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Read Pages</p>
+</li>
+<li>
+<p>Write Pages</p>
+</li>
+<li>
+<p>Copy Pages</p>
+</li>
+<li>
+<p>Block Erase</p>
+</li>
+<li>
+<p>Block Erased Verify</p>
+</li>
+<li>
+<p>Page Erased Verify</p>
+</li>
+<li>
+<p>Block Status Get</p>
+</li>
+<li>
+<p>Block Status Set</p>
+</li>
+<li>
+<p>System Error Handler</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_initialization"><a class="anchor" href="#_driver_initialization"></a>Driver Initialization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>These services are setup via setting function pointers in the <strong>LX_NAND_FLASH</strong> instance within the driver&#8217;s initialization function. The driver initialization function also specifies the total number of block, pages per block, bytes per page, spare data offsets and lengths and total spare byte length. There are two spare data stored in each page, spare data 1 and spare data 2. The spare data 1 is used to store data type as described above and must be at least 4 bytes and ECC protected. The spare data 2 is optional and may be used to indicate the start of metadata blocks. The driver initialization function likely also performs additional device and/or implementation-specific initialization duties before returning <strong>LX_SUCCESS</strong>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_read_pages"><a class="anchor" href="#_driver_read_pages"></a>Driver Read Pages</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NAND driver "read pages" service is responsible for reading one or more pages in a specific block of the NAND flash. All error checking and correcting logic is the responsibility of the driver service. If successful, the LevelX NAND driver returns <strong>LX_SUCCESS</strong>. If not successful, the LevelX NAND driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NAND driver "read pages" service is given below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nand_driver_read_pages(
+    LX_NAND_FLASH *nand_flash,
+    ULONG block,
+    ULONG page,
+    UCHAR* main_buffer,
+    UCHAR* spare_buffer,
+    ULONG pages);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <em>block</em> and <em>page</em> identify the first page to read and <em>main_buffer</em> and <em>spare_buffer</em> specify where to place the page contents and spare data. And <em>pages</em> specify how many pages to read. The <em>nand_flash</em> parameter is provided for driver to access the NAND control block if needed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_write_pages"><a class="anchor" href="#_driver_write_pages"></a>Driver Write Pages</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NAND driver "write pages" service is responsible for writing one or more pages into the specified block of the NAND flash. All error checking and ECC computation is the responsibility of the driver service. If successful, the LevelX NAND driver returns <strong>LX_SUCCESS</strong>. If not successful, the LevelX NAND driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NAND driver "write pages" service is shown below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nand_driver_write_pages(
+    LX_NAND_FLASH *nand_flash,
+    ULONG block,
+    ULONG page,
+    UCHAR* main_buffer,
+    UCHAR* spare_buffer,
+    ULONG pages);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <em>block</em> and <em>page</em> identify the first page to write and <em>main_buffer</em> and <em>spare_buffer</em> specify the source of the page contents and spare data. And <em>pages</em> specify how many pages to write. The <em>nand_flash</em> parameter is provided for driver to access the NAND control block if needed.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+LevelX relies on the driver for low-level error detection when writing to the flash page, which typically involves reading back the page and comparing with the write buffer to ensure the write was successful.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_copy_pages"><a class="anchor" href="#_driver_copy_pages"></a>Driver Copy Pages</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NAND driver "copy pages" service is responsible for copying one or more pages from one block of the NAND flash to another block of the NAND flash. All error checking and ECC computation is the responsibility of the driver service. If successful, the LevelX NAND driver returns <strong>LX_SUCCESS</strong>. If not successful, the LevelX NAND driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NAND driver "copy pages" service is shown below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nand_driver_copy_pages(
+    LX_NAND_FLASH *nand_flash,
+    ULONG source_block,
+    ULONG source_page,
+    ULONG destination_block,
+    ULONG destination_page,
+    ULONG pages,
+    UCHAR *data_buffer);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <em>source_block</em> and <em>source_page</em> identify the first page to copy and <em>destination_block</em> and <em>destination_page</em> specifies the first destination block and page. And <em>pages</em> specify how many pages to copy. The parameter <em>data_buffer</em> is provided for driver to store one page and spare data for copy operation if the driver needs to read the source page before writing to the destination page.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_block_erase"><a class="anchor" href="#_driver_block_erase"></a>Driver Block Erase</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NAND driver "block erase" service is responsible for erasing the specified block of the NAND flash. If successful, the LevelX NAND driver returns <strong>LX_SUCCESS</strong>. If not successful, the LevelX NAND driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NAND driver "block erase" service is as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nand_driver_block_erase(
+    LX_NAND_FLASH *nand_flash,
+    ULONG block,
+    ULONG erase_count);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <em>block</em> identifies which block to erase. The parameter <em>erase_count</em> is provided for diagnostic purposes. For example, the driver may want to alert another portion of the application software when the erase count exceeds a specific threshold. The <em>nand_flash</em> parameter is provided for driver to access the NAND control block if needed.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+LevelX relies on the driver for low-level error detection when the block is erased, which typically involves ensuring that all pages of the block are all ones.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_block_erased_verify"><a class="anchor" href="#_driver_block_erased_verify"></a>Driver Block Erased Verify</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NAND driver "block erased verify" service is responsible for verifying that the specified block of the NAND flash is erased. If it is erased, the LevelX NAND driver returns <strong>LX_SUCCESS</strong>. If the block is not erased, the LevelX NAND driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NAND driver "block erased verify" service is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nand_driver_block_erased_verify(
+    LX_NAND_FLASH *nand_flash,
+    ULONG block);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <em>block</em> specifies which block to verify that it is erased. The <em>nand_flash</em> parameter is provided for driver to access the NAND control block if needed.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+LevelX relies on the driver to examine all pages and all bytes of each page&#8201;&#8212;&#8201;including spare and data bytes&#8201;&#8212;&#8201;to ensure they are erased (contain all ones).
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_page_erased_verify"><a class="anchor" href="#_driver_page_erased_verify"></a>Driver Page Erased Verify</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NAND driver "page erased verify" service is responsible for verifying that the specified page of the specified block of the NAND flash is erased. If it is erased, the LevelX NAND driver returns <strong>LX_SUCCESS</strong>. If the page is not erased, the LevelX NAND driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NAND driver "page erased verify" service is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nand_driver_page_erased_verify(
+    LX_NAND_FLASH *nand_flash,
+    ULONG block,
+    ULONG page);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <em>block</em> specifies which block and <em>page</em> specifies the page to verify that it is erased. The <em>nand_flash</em> parameter is provided for driver to access the NAND control block if needed.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+LevelX relies on the driver to examine all bytes of the specified page&#8201;&#8212;&#8201;including spare and data bytes&#8201;&#8212;&#8201;to ensure they are erased (contain all ones).
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_block_status_get"><a class="anchor" href="#_driver_block_status_get"></a>Driver Block Status Get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NAND driver "block status get" service is responsible for retrieving the bad block flag of the specified block of the NAND flash. If it is successful, the LevelX NAND driver returns <strong>LX_SUCCESS</strong>. If it is not successful, the LevelX NAND driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NAND driver "block status get" service is: shown below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nand_driver_block_status_get(
+    LX_NAND_FLASH *nand_flash,
+    ULONG block,
+    UCHAR *bad_block_byte);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <em>block</em> specifies which block and <em>bad_block_byte</em> specifies the destination for the bad block flag. The <em>nand_flash</em> parameter is provided for driver to access the NAND control block if needed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_block_status_set"><a class="anchor" href="#_driver_block_status_set"></a>Driver Block Status Set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NAND driver "block status set" service is responsible for setting the bad block flag of the specified block of the NAND flash. If it is successful, the LevelX NAND driver returns <strong>LX_SUCCESS</strong>. If it is not successful, the LevelX NAND driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NAND driver "block status set" service is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nand_driver_block_status_set(
+    LX_NAND_FLASH *nand_flash,
+    ULONG block,
+    UCHAR bad_block_byte);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <em>block</em> specifies which block and <em>bad_block_byte</em> specifies the value of the bad block flag. The <em>nand_flash</em> parameter is provided for driver to access the NAND control block if needed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_driver_system_error"><a class="anchor" href="#_driver_system_error"></a>Driver System Error</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LevelX NAND driver "system error handler" service is responsible for setting handling system errors detected by LevelX. The processing in this routine is application dependent. If it is successful, the LevelX NAND driver returns <strong>LX_SUCCESS</strong>. If it is not successful, the LevelX NAND driver returns <strong>LX_ERROR</strong>. The prototype of the LevelX NAND driver "system error" service is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">INT nand_driver_system_error(
+    LX_NAND_FLASH *nand_flash,
+    UINT error_code,
+    ULONG block,
+    ULONG page);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <em>block</em> specifies which block, and <em>page</em> specifies the specific page the error represented by <em>error_code</em> occurred. The <em>nand_flash</em> parameter is provided for driver to access the NAND control block if needed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nand_simulated_driver"><a class="anchor" href="#_nand_simulated_driver"></a>NAND Simulated Driver</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>LevelX provides a simulated NAND flash driver that simply uses RAM to simulate the operation of a NAND flash part. By default, the NAND simulated driver provides 8 NAND flash blocks with 16 pages per block and 2048 bytes per page.</p>
+</div>
+<div class="paragraph">
+<p>The simulated NAND flash driver initialization function is <strong><em>lx_nand_flash_simulator_initialize</em></strong> and is defined in <strong><em>lx_nand_flash_simulator.c</em></strong>. This driver also provides a good template for writing specific NAND flash drivers.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nand_filex_integration"><a class="anchor" href="#_nand_filex_integration"></a>NAND FileX Integration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As mentioned earlier, LevelX does not rely on FileX for operation. All the LevelX APIs may be called directly by the application software to store/retrieve raw data to the logical sectors provided by LevelX. However, LevelX also supports FileX.</p>
+</div>
+<div class="paragraph">
+<p>The file <strong><em>fx_nand_flash_simulated_driver.c</em></strong> contains an example FileX driver for use with the NAND flash simulation. An interesting aspect of this driver is that it combines 512-byte logical sectors typically used by FileX into single logical sector read/write requests to the LevelX simulator using 2048-byte pages. This results in more efficient use of the NAND flash memory. The NAND flash FileX driver for LevelX provides a good starting point for writing custom FileX drivers.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The FileX NAND flash format should be one full block size of sectors less than the NAND flash provides. This will help ensure best performance during the wear level processing. Additional techniques to improve write performance in the LevelX wear leveling algorithm include the following.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ensure that all writes are exactly one or more clusters in size and start on exact cluster boundaries.</p>
+</li>
+<li>
+<p>Pre-allocate clusters before performing large file write operations via the FileX <strong><em>fx_file_allocate</em></strong> class of APIs.</p>
+</li>
+<li>
+<p>Ensure the FileX driver is enabled to receive release sector information and requests made to the driver to release sectors are handled in the driver by calling <strong><em>lx_nor_flash_sector_release</em></strong>.</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
