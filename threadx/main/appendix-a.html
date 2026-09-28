@@ -370,7 +370,7 @@
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT      tx_block_pool_create(TX_BLOCK_POOL *pool_ptr,
-            const CHAR *name_ptr, ULONG block_size,
+            CHAR *name_ptr, ULONG block_size,
             VOID *pool_start, ULONG pool_size);</code></pre>
 </div>
 </div>
@@ -382,7 +382,7 @@
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT      tx_block_pool_info_get(TX_BLOCK_POOL *pool_ptr,
-            const CHAR **name,
+            CHAR **name,
             ULONG *available_blocks, ULONG *total_blocks,
             TX_THREAD **first_suspended,
             ULONG *suspended_count,
@@ -427,7 +427,7 @@
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT      tx_byte_pool_create(TX_BYTE_POOL *pool_ptr,
-              const CHAR *name_ptr,
+              CHAR *name_ptr,
               VOID *pool_start, ULONG pool_size);</code></pre>
 </div>
 </div>
@@ -439,7 +439,7 @@
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT      tx_byte_pool_info_get(TX_BYTE_POOL *pool_ptr,
-              const CHAR **name, ULONG *available_bytes,
+              CHAR **name, ULONG *available_bytes,
               ULONG *fragments, TX_THREAD **first_suspended,
               ULONG *suspended_count,
               TX_BYTE_POOL **next_pool);</code></pre>
@@ -478,7 +478,7 @@
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT      tx_event_flags_create(TX_EVENT_FLAGS_GROUP *group_ptr,
-            const CHAR *name_ptr);</code></pre>
+            CHAR *name_ptr);</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -496,7 +496,7 @@
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT      tx_event_flags_info_get(TX_EVENT_FLAGS_GROUP *group_ptr,
-            const CHAR **name, ULONG *current_flags,
+            CHAR **name, ULONG *current_flags,
             TX_THREAD **first_suspended,
             ULONG *suspended_count,
             TX_EVENT_FLAGS_GROUP **next_group);</code></pre>
@@ -545,7 +545,7 @@
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_mutex_create(TX_MUTEX *mutex_ptr, const CHAR *name_ptr,
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_mutex_create(TX_MUTEX *mutex_ptr, CHAR *name_ptr,
               UINT inherit);</code></pre>
 </div>
 </div>
@@ -561,7 +561,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_mutex_info_get(TX_MUTEX *mutex_ptr, const CHAR **name,
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_mutex_info_get(TX_MUTEX *mutex_ptr, CHAR **name,
               ULONG *count, TX_THREAD **owner,
               TX_THREAD **first_suspended,
               ULONG *suspended_count,
@@ -600,7 +600,7 @@
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_queue_create(TX_QUEUE *queue_ptr, const CHAR *name_ptr,
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_queue_create(TX_QUEUE *queue_ptr, CHAR *name_ptr,
               UINT message_size, VOID *queue_start,
               ULONG queue_size);</code></pre>
 </div>
@@ -623,7 +623,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_queue_info_get(TX_QUEUE *queue_ptr, const CHAR **name,
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_queue_info_get(TX_QUEUE *queue_ptr, CHAR **name,
               ULONG *enqueued, ULONG *available_storage,
               TX_THREAD **first_suspended,
               ULONG *suspended_count, TX_QUEUE **next_queue);</code></pre>
@@ -682,7 +682,7 @@
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_semaphore_create(TX_SEMAPHORE *semaphore_ptr,
-              const CHAR *name_ptr, ULONG initial_count);</code></pre>
+              CHAR *name_ptr, ULONG initial_count);</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -698,7 +698,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_semaphore_info_get(TX_SEMAPHORE *semaphore_ptr, const CHAR **name,
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_semaphore_info_get(TX_SEMAPHORE *semaphore_ptr, CHAR **name,
               ULONG *current_value,
               TX_THREAD **first_suspended,
               ULONG *suspended_count,
@@ -742,7 +742,7 @@
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_thread_create(TX_THREAD *thread_ptr,
-              const CHAR *name_ptr,
+              CHAR *name_ptr,
               VOID (*entry_function)(ULONG), ULONG entry_input,
               VOID *stack_start, ULONG stack_size,
               UINT priority, UINT preempt_threshold,
@@ -767,7 +767,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_thread_info_get(TX_THREAD *thread_ptr, const CHAR **name,
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_thread_info_get(TX_THREAD *thread_ptr, CHAR **name,
               UINT *state, ULONG *run_count, UINT *priority,
               UINT *preemption_threshold, ULONG *time_slice,
               TX_THREAD **next_thread,
@@ -887,7 +887,7 @@ VOID       tx_time_set(ULONG new_time);</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_timer_create(TX_TIMER *timer_ptr,
-              const CHAR *name_ptr,
+              CHAR *name_ptr,
               VOID (*expiration_function)(ULONG),
               ULONG expiration_input, ULONG initial_ticks,
               ULONG reschedule_ticks, UINT auto_activate);</code></pre>
@@ -905,7 +905,7 @@ VOID       tx_time_set(ULONG new_time);</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_timer_info_get(TX_TIMER *timer_ptr, const CHAR **name,
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT       tx_timer_info_get(TX_TIMER *timer_ptr, CHAR **name,
               UINT *active, ULONG *remaining_ticks,
               ULONG *reschedule_ticks,
               TX_TIMER **next_timer);</code></pre>

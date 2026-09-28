@@ -837,6 +837,12 @@ TX_INLINE_THREAD_RESUME_SUSPEND</code></pre>
 <p>When defined, disables placing the 0xEF value in each byte of each thread&#8217;s stack when created. By default, this option is not defined.</p>
 </div>
 <div class="paragraph">
+<p><strong>TX_ENABLE_CONST_NAMES</strong></p>
+</div>
+<div class="paragraph">
+<p>When defined, object names become pointers to const: create services accept <code>const CHAR <strong></code> and information services return names through <code>const CHAR *</strong></code>. This accepts string literals in C++ and stops a caller modifying a name an object still holds. It changes the type of a public control-block field, so application code that copies a name into a writable <code>CHAR *</code> must be updated before defining it. By default, this option is not defined.</p>
+</div>
+<div class="paragraph">
 <p><strong>TX_ENABLE_EVENT_TRACE</strong></p>
 </div>
 <div class="paragraph">
@@ -859,12 +865,6 @@ TX_INLINE_THREAD_RESUME_SUSPEND</code></pre>
 </div>
 <div class="paragraph">
 <p>When defined, ThreadX improves the <strong><em>tx_thread_resume</em></strong> and <strong><em>tx_thread_suspend</em></strong> API calls via in-line code. This increases code size but enhances performance of these two API calls.</p>
-</div>
-<div class="paragraph">
-<p><strong>TX_LEGACY_NON_CONST_NAMES</strong></p>
-</div>
-<div class="paragraph">
-<p>When defined, restores the earlier object-name declarations: create services accept <code>CHAR *</code> and information services return names through <code>CHAR <strong></code>. Use this transition option while updating application code to const-qualified object-name pointers. By default, create services accept <code>const CHAR *</code>, information services return names through <code>const CHAR </strong></code>, and this option is not defined. This option is available for one release cycle.</p>
 </div>
 <div class="paragraph">
 <p><strong>TX_MAX_PRIORITIES</strong></p>

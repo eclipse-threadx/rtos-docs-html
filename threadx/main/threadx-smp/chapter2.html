@@ -786,6 +786,9 @@ Options defined in <strong>tx_user.h</strong> are applied only if the applicatio
 <p><strong>TX_DISABLE_STACK_FILLING</strong> : When defined, disables placing the 0xEF value in each byte of each thread&#8217;s stack when created. By default, this option is not defined.</p>
 </li>
 <li>
+<p><strong>TX_ENABLE_CONST_NAMES</strong> : When defined, object names become pointers to const: create services accept <code>const CHAR <strong></code> and information services return names through <code>const CHAR *</strong></code>. This accepts string literals in C++ and stops a caller modifying a name an object still holds. It changes the type of a public control-block field, so application code that copies a name into a writable <code>CHAR *</code> must be updated before defining it. By default, this option is not defined.</p>
+</li>
+<li>
 <p><strong>TX_ENABLE_EVENT_TRACE</strong> : When defined, ThreadX SMP enables the event gathering code for creating a TraceX trace buffer. See the TraceX User Guide for more details.</p>
 </li>
 <li>
@@ -796,9 +799,6 @@ Options defined in <strong>tx_user.h</strong> are applied only if the applicatio
 </li>
 <li>
 <p><strong>TX_INLINE_THREAD_RESUME_SUSPEND</strong> : When defined, ThreadX SMP improves the <strong><em>tx_thread_resume</em></strong> and <strong><em>tx_thread_suspend</em></strong> API calls via in-line code. This increases code size but enhances performance of these two API calls.</p>
-</li>
-<li>
-<p><strong>TX_LEGACY_NON_CONST_NAMES</strong> : When defined, restores the earlier object-name declarations: create services accept <code>CHAR *</code> and information services return names through <code>CHAR <strong></code>. Use this transition option while updating application code to const-qualified object-name pointers. By default, create services accept <code>const CHAR *</code>, information services return names through <code>const CHAR </strong></code>, and this option is not defined. This option is available for one release cycle.</p>
 </li>
 <li>
 <p><strong>TX_MAX_PRIORITIES</strong> : Defines the priority levels for ThreadX SMP. Legal values range from 32 through 1024 (inclusive) and must be evenly divisible by 32. Increasing the number of priority levels supported increases the RAM usage by 128 bytes for every group of 32 priorities. However, there is only a negligible effect on performance. By default, this value is set to 32 priority levels.</p>

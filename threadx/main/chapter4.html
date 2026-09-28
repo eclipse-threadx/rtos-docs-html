@@ -848,7 +848,7 @@ the allocated block of memory. */</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_block_pool_create(
     TX_BLOCK_POOL *pool_ptr,
-    const CHAR *name_ptr,
+    CHAR *name_ptr,
     ULONG block_size,
     VOID *pool_start,
     ULONG pool_size);</code></pre>
@@ -1076,7 +1076,7 @@ status = tx_block_pool_delete(&amp;my_pool);
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_block_pool_info_get(
     TX_BLOCK_POOL *pool_ptr,
-    const CHAR **name,
+    CHAR **name,
     ULONG *available,
     ULONG *total_blocks,
     TX_THREAD **first_suspended,
@@ -1161,7 +1161,7 @@ status = tx_block_pool_delete(&amp;my_pool);
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_BLOCK_POOL my_pool;
-const CHAR *name;
+CHAR *name;
 ULONG available;
 ULONG total_blocks;
 TX_THREAD *first_suspended;
@@ -1832,7 +1832,7 @@ address of the allocated memory area. */</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_byte_pool_create(
     TX_BYTE_POOL *pool_ptr,
-    const CHAR *name_ptr,
+    CHAR *name_ptr,
     VOID *pool_start,
     ULONG pool_size);</code></pre>
 </div>
@@ -2033,7 +2033,7 @@ status = tx_byte_pool_delete(&amp;my_pool);
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_byte_pool_info_get(
     TX_BYTE_POOL *pool_ptr,
-    const CHAR **name,
+    CHAR **name,
     ULONG *available,
     ULONG *fragments,
     TX_THREAD **first_suspended,
@@ -2118,7 +2118,7 @@ status = tx_byte_pool_delete(&amp;my_pool);
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_BYTE_POOL my_pool;
-const CHAR *name;
+CHAR *name;
 ULONG available;
 ULONG fragments;
 TX_THREAD *first_suspended;
@@ -2658,7 +2658,7 @@ memory_ptr has been returned to the pool. */</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_event_flags_create(
     TX_EVENT_FLAGS_GROUP *group_ptr,
-    const CHAR *name_ptr);</code></pre>
+    CHAR *name_ptr);</code></pre>
 </div>
 </div>
 </div>
@@ -3007,7 +3007,7 @@ actual events obtained. */</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_event_flags_info_get(
     TX_EVENT_FLAGS_GROUP *group_ptr,
-    const CHAR **name, ULONG *current_flags,
+    CHAR **name, ULONG *current_flags,
     TX_THREAD **first_suspended,
     ULONG *suspended_count,
     TX_EVENT_FLAGS_GROUP **next_group);</code></pre>
@@ -3087,7 +3087,7 @@ actual events obtained. */</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_EVENT_FLAGS_GROUP my_event_group;
-const CHAR *name;
+CHAR *name;
 ULONG current_flags;
 TX_THREAD *first_suspended;
 ULONG suspended_count;
@@ -3689,7 +3689,7 @@ tx_interrupt_control(my_old_posture);</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_mutex_create(
     TX_MUTEX *mutex_ptr,
-    const CHAR *name_ptr,
+    CHAR *name_ptr,
     UINT priority_inherit);</code></pre>
 </div>
 </div>
@@ -4017,7 +4017,7 @@ status = tx_mutex_get(&amp;my_mutex, TX_WAIT_FOREVER);</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_mutex_info_get(
     TX_MUTEX *mutex_ptr,
-    const CHAR **name,
+    CHAR **name,
     ULONG *count,
     TX_THREAD **owner,
     TX_THREAD **first_suspended,
@@ -4102,7 +4102,7 @@ status = tx_mutex_get(&amp;my_mutex, TX_WAIT_FOREVER);</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_MUTEX my_mutex;
-const CHAR *name;
+CHAR *name;
 ULONG count;
 TX_THREAD *owner;
 TX_THREAD *first_suspended;
@@ -4619,7 +4619,7 @@ count has been decremented and if zero, released. */</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_queue_create(
     TX_QUEUE *queue_ptr,
-    const CHAR *name_ptr,
+    CHAR *name_ptr,
     UINT message_size,
     VOID *queue_start,
     ULONG queue_size);</code></pre>
@@ -5058,7 +5058,7 @@ of the specified queue. */</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_queue_info_get(
     TX_QUEUE *queue_ptr,
-    const CHAR **name,
+    CHAR **name,
     ULONG *enqueued,
     ULONG *available_storage
     TX_THREAD **first_suspended,
@@ -5143,7 +5143,7 @@ of the specified queue. */</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_QUEUE my_queue;
-const CHAR *name;
+CHAR *name;
 ULONG enqueued;
 ULONG available_storage;
 TX_THREAD *first_suspended;
@@ -6026,7 +6026,7 @@ incremented. */</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_semaphore_create(
     TX_SEMAPHORE *semaphore_ptr,
-    const CHAR *name_ptr,
+    CHAR *name_ptr,
     ULONG initial_count);</code></pre>
 </div>
 </div>
@@ -6340,7 +6340,7 @@ an instance of the semaphore. */</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_semaphore_info_get(
     TX_SEMAPHORE *semaphore_ptr,
-    const CHAR **name, ULONG *current_value,
+    CHAR **name, ULONG *current_value,
     TX_THREAD **first_suspended,
     ULONG *suspended_count,
     TX_SEMAPHORE **next_semaphore);</code></pre>
@@ -6420,7 +6420,7 @@ an instance of the semaphore. */</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_SEMAPHORE my_semaphore;
-const CHAR *name;
+CHAR *name;
 ULONG current_value;
 TX_THREAD *first_suspended;
 ULONG suspended_count;
@@ -7015,7 +7015,7 @@ void my_semaphore_put_notify(TX_SEMAPHORE *semaphore_ptr)
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_thread_create(
     TX_THREAD *thread_ptr,
-    const CHAR *name_ptr,
+    CHAR *name_ptr,
     VOID (*entry_function)(ULONG),
     ULONG entry_input,
     VOID *stack_start,
@@ -7516,7 +7516,7 @@ interrupt occurred. */</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_thread_info_get(
     TX_THREAD *thread_ptr,
-    const CHAR **name,
+    CHAR **name,
     UINT *state,
     ULONG *run_count,
     UINT *priority,
@@ -7647,7 +7647,7 @@ thread in suspension list.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_THREAD my_thread;
-const CHAR *name;
+CHAR *name;
 UINT state;
 ULONG run_count;
 UINT priority;
@@ -9574,7 +9574,7 @@ status = tx_timer_activate(&amp;my_timer);</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_timer_create(
     TX_TIMER *timer_ptr,
-    const CHAR *name_ptr,
+    CHAR *name_ptr,
     VOID (*expiration_function)(ULONG),
     ULONG expiration_input,
     ULONG initial_ticks,
@@ -9904,7 +9904,7 @@ deleted. */</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UINT tx_timer_info_get(
     TX_TIMER *timer_ptr,
-    const CHAR **name,
+    CHAR **name,
     UINT *active,
     ULONG *remaining_ticks,
     ULONG *reschedule_ticks,
@@ -9985,7 +9985,7 @@ deleted. */</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">TX_TIMER my_timer;
-const CHAR *name;
+CHAR *name;
 UINT active;
 ULONG remaining_ticks;
 ULONG reschedule_ticks;
