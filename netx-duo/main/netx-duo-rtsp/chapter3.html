@@ -940,7 +940,7 @@ status = nx_rtsp_server_delete(&amp;rtsp_0);
 <div class="sect2">
 <h3 id="_description_3"><a class="anchor" href="#_description_3"></a>Description</h3>
 <div class="paragraph">
-<p>This service sets callback function for DESCRIBE request. This callback function is called when an RTSP client sends a DESCRIBE request to the server. <a href="#nx_rtsp_server_sdp_set">nx_rtsp_server_sdp_set</a> should be called in the callback function to set the SDP information for the DESCRIBE response.</p>
+<p>This service sets callback function for DESCRIBE request. This callback function is called when an RTSP client sends a DESCRIBE request to the server. <a href="#_nx_rtsp_server_sdp_set">nx_rtsp_server_sdp_set</a> should be called in the callback function to set the SDP information for the DESCRIBE response.</p>
 </div>
 </div>
 <div class="sect2">
@@ -951,7 +951,7 @@ status = nx_rtsp_server_delete(&amp;rtsp_0);
 <p><em>rtsp_server_ptr</em>: Pointer to RTSP server.</p>
 </li>
 <li>
-<p><em>callback</em>: Pointer to DESCRIBE request callback function. If the URI is valid and the SDP string is set successfully, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
+<p><em>callback</em>: Pointer to DESCRIBE request callback function. If the URI is valid and the SDP string is set successfully, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#_nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -1164,7 +1164,7 @@ status = nx_rtsp_server_keepalive_update(rtsp_client_ptr);
 <div class="sect2">
 <h3 id="_description_6"><a class="anchor" href="#_description_6"></a>Description</h3>
 <div class="paragraph">
-<p>This service sets callback function for PAUSE request. This callback function is called when an RTSP client sends a PAUSE request to the server. <a href="#nx_rtsp_server_range_npt_set">nx_rtsp_server_range_npt_set</a> can be called in the callback function to set the NPT range for the PAUSE response.</p>
+<p>This service sets callback function for PAUSE request. This callback function is called when an RTSP client sends a PAUSE request to the server. <a href="#_nx_rtsp_server_range_npt_set">nx_rtsp_server_range_npt_set</a> can be called in the callback function to set the NPT range for the PAUSE response.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1175,7 +1175,7 @@ status = nx_rtsp_server_keepalive_update(rtsp_client_ptr);
 <p><em>rtsp_server_ptr</em>: Pointer to RTSP server.</p>
 </li>
 <li>
-<p><em>callback</em>: Pointer to PAUSE request callback function. If the URI is valid and the stream delivery can be paused, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
+<p><em>callback</em>: Pointer to PAUSE request callback function. If the URI is valid and the stream delivery can be paused, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#_nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -1256,7 +1256,7 @@ status = nx_rtsp_server_pause_callback_set(&amp;rtsp_0, rtsp_pause_callback);
 <div class="sect2">
 <h3 id="_description_7"><a class="anchor" href="#_description_7"></a>Description</h3>
 <div class="paragraph">
-<p>This service sets callback function for PLAY request. This callback function is called when an RTSP client sends a PLAY request to the server. <a href="#nx_rtsp_server_range_npt_set">nx_rtsp_server_range_npt_set</a> can be called in the callback function to set the NPT range for the PLAY response. <a href="#nx_rtsp_server_rtp_info_set">nx_rtsp_server_rtp_info_set</a> must be called in the callback function to set the RTP-Info header for the PLAY response.</p>
+<p>This service sets callback function for PLAY request. This callback function is called when an RTSP client sends a PLAY request to the server. <a href="#_nx_rtsp_server_range_npt_set">nx_rtsp_server_range_npt_set</a> can be called in the callback function to set the NPT range for the PLAY response. <a href="#_nx_rtsp_server_rtp_info_set">nx_rtsp_server_rtp_info_set</a> must be called in the callback function to set the RTP-Info header for the PLAY response.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1267,7 +1267,7 @@ status = nx_rtsp_server_pause_callback_set(&amp;rtsp_0, rtsp_pause_callback);
 <p><em>rtsp_server_ptr</em>: Pointer to RTSP server.</p>
 </li>
 <li>
-<p><em>callback</em>: Pointer to PLAY request callback function. If the URI is valid and the stream delivery can be started, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
+<p><em>callback</em>: Pointer to PLAY request callback function. If the URI is valid and the stream delivery can be started, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#_nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -1600,7 +1600,7 @@ status = nx_rtsp_server_sdp_set(rtsp_client_ptr, sdp, strlen(sdp));
 <p><em>rtsp_server_ptr</em>: Pointer to RTSP server.</p>
 </li>
 <li>
-<p><em>callback</em>: Pointer to SETUP request callback function. If the URI is valid and the transport information can be resolved and set successfully, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
+<p><em>callback</em>: Pointer to SETUP request callback function. If the URI is valid and the transport information can be resolved and set successfully, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#_nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -1689,7 +1689,7 @@ status = nx_rtsp_server_setup_callback_set(&amp;rtsp_0, rtsp_setup_callback);;
 <p><em>rtsp_server_ptr</em>: Pointer to RTSP server.</p>
 </li>
 <li>
-<p><em>callback</em>: Pointer to SET_PARAMETER request callback function. If the URI is valid and the parameters can be updated successfully, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
+<p><em>callback</em>: Pointer to SET_PARAMETER request callback function. If the URI is valid and the parameters can be updated successfully, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#_nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -1913,7 +1913,7 @@ status = nx_rtsp_server_stop(&amp;rtsp_0);
 <p><em>rtsp_server_ptr</em>: Pointer to RTSP server.</p>
 </li>
 <li>
-<p><em>callback</em>: Pointer to TEARDOWN request callback function. If the URI is valid and the transport session can be closed successfully, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
+<p><em>callback</em>: Pointer to TEARDOWN request callback function. If the URI is valid and the transport session can be closed successfully, this function should return <strong>NX_SUCCESS</strong>. Otherwise, this function should return another status. In addition, <a href="#_nx_rtsp_server_error_response_send">nx_rtsp_server_error_response_send</a> can be called to send the specified error status code. The parameters of this callback function are:</p>
 <div class="ulist">
 <ul>
 <li>

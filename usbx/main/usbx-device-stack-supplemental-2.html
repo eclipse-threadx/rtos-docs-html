@@ -3352,7 +3352,7 @@ static VOID    test_printer_instance_deactivate(VOID *dummy_instance)
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This functions reads raw bulk data from device, so it keeps pending until buffer is full or device terminates the transfer by a short packet (including Zero Length Packet). For more details, please refer to <a href="usbx-device-stack-5.md#general-considerations-for-bulk-transfer"><strong>General Considerations for Bulk Transfer</strong></a>.
+This functions reads raw bulk data from device, so it keeps pending until buffer is full or device terminates the transfer by a short packet (including Zero Length Packet). For more details, please refer to <a href="usbx-device-stack-5.html#_general_considerations_for_bulk_transfer" class="xref page"><strong>General Considerations for Bulk Transfer</strong></a>.
 </td>
 </tr>
 </table>
@@ -3436,7 +3436,7 @@ if (status != UX_SUCCESS)
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This function writes bulk data to host. The host keeps waiting until buffer is full or there is short packet. So if transfer size is multiple of max packet size of the IN endpoint, it&#8217;s better to add another call with transfer size 0 to send ZLP, to tell host that all data is done. For more details, please refer to <a href="usbx-device-stack-5.md#general-considerations-for-bulk-transfer"><strong>General Considerations for Bulk Transfer</strong></a>.
+This function writes bulk data to host. The host keeps waiting until buffer is full or there is short packet. So if transfer size is multiple of max packet size of the IN endpoint, it&#8217;s better to add another call with transfer size 0 to send ZLP, to tell host that all data is done. For more details, please refer to <a href="usbx-device-stack-5.html#_general_considerations_for_bulk_transfer" class="xref page"><strong>General Considerations for Bulk Transfer</strong></a>.
 </td>
 </tr>
 </table>
