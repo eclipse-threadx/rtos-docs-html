@@ -1592,7 +1592,7 @@ while (remote_control != UX_NULL)
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This functions reads raw bulk data from device, so it keeps pending until buffer is full or device terminates the transfer by a short packet (including Zero Length Packet). For more details, please refer to <a href="usbx-device-stack-5.md#general-considerations-for-bulk-transfer"><strong>General Considerations for Bulk Transfer</strong></a>.
+This functions reads raw bulk data from device, so it keeps pending until buffer is full or device terminates the transfer by a short packet (including Zero Length Packet). For more details, please refer to <a href="usbx-device-stack-5.html#_general_considerations_for_bulk_transfer" class="xref page"><strong>General Considerations for Bulk Transfer</strong></a>.
 The function reads bytes from the device packet by packet. If the prepared buffer size is smaller than a packet and the device sends more data than expected (in other words, the prepared buffer size is not a multiple of the USB endpoint&#8217;s max packet size), then buffer overflow will occur. To avoid this issue, the recommended way to read is to allocate a buffer exactly one packet size (USB endpoint max packet size). This way if there is more data, the next read can get it and no buffer overflow will occur. If there is less data, the current read can get a short packet instead of generating an error.
 </td>
 </tr>

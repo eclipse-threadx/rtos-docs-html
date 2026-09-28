@@ -770,7 +770,7 @@
 <p>When the network driver returns from its initialization processing, the IP creation is complete.</p>
 </div>
 <div class="paragraph">
-<p>Initialization of IPv6 in NetX Duo requires a few additional NetX Duo services. These are described in greater detail in the section <a href="#ipv6-in-netx-duo">IPv6 in NetX Duo</a> later in this chapter.</p>
+<p>Initialization of IPv6 in NetX Duo requires a few additional NetX Duo services. These are described in greater detail in the section <a href="#_ipv6_in_netx_duo">IPv6 in NetX Duo</a> later in this chapter.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -779,7 +779,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<em>The NetX Duo service <strong>nx_ip_status_check</strong> is available to obtain information on the IP instance and its primary interface status. Such status information includes whether or not the link is initialized, enabled and IP address is resolved. This information is used to synchronize application threads needing to use a newly created IP instance. For multihome systems, see <a href="#multihome-support">Multihome Support</a>. <strong>nx_ip_interface_status_check</strong> is available to obtain 3information on the specified interface.</em>
+<em>The NetX Duo service <strong>nx_ip_status_check</strong> is available to obtain information on the IP instance and its primary interface status. Such status information includes whether or not the link is initialized, enabled and IP address is resolved. This information is used to synchronize application threads needing to use a newly created IP instance. For multihome systems, see <a href="#_multihome_support">Multihome Support</a>. <strong>nx_ip_interface_status_check</strong> is available to obtain 3information on the specified interface.</em>
 </td>
 </tr>
 </table>
@@ -2035,7 +2035,7 @@ supports 48-bit addresses. The need for ARP is determined by the network driver 
 <div class="sect2">
 <h3 id="_rarp_request"><a class="anchor" href="#_rarp_request"></a>RARP Request</h3>
 <div class="paragraph">
-<p>The format of an RARP request packet is almost identical to the ARP packet shown in <a href="#arp-messages">Figure 6</a>.The only difference is the frame type field is 0x8035 and the <em>Operation Code</em> field is 3, designating an RARP request. As mentioned previously, RARP requests will be sent periodically (every <strong><em>NX_RARP_UPDATE_RATE</em></strong> seconds) until a RARP reply with the network assigned IP address is received.</p>
+<p>The format of an RARP request packet is almost identical to the ARP packet shown in <a href="#_arp_messages">Figure 6</a>.The only difference is the frame type field is 0x8035 and the <em>Operation Code</em> field is 3, designating an RARP request. As mentioned previously, RARP requests will be sent periodically (every <strong><em>NX_RARP_UPDATE_RATE</em></strong> seconds) until a RARP reply with the network assigned IP address is received.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2269,7 +2269,7 @@ and control information and is required for address resolution protocols such as
 <div class="sect2">
 <h3 id="_multicast_ipv4_addressing"><a class="anchor" href="#_multicast_ipv4_addressing"></a>Multicast IPv4 Addressing</h3>
 <div class="paragraph">
-<p>As mentioned previously, multicast addresses are actually Class D IP addresses as shown in <a href="#ipv4-addresses">Figure 4</a>. The lower 28-bits of the Class D address correspond to the multicast group ID. There are a series of pre-defined multicast addresses; however, the <em>all hosts address</em> (244.0.0.1) is particularly important to IGMP processing. The <em>all hosts address</em> is used by routers to query all multicast members to report on which multicast groups they belong to.</p>
+<p>As mentioned previously, multicast addresses are actually Class D IP addresses as shown in <a href="#_ipv4_addresses">Figure 4</a>. The lower 28-bits of the Class D address correspond to the multicast group ID. There are a series of pre-defined multicast addresses; however, the <em>all hosts address</em> (244.0.0.1) is particularly important to IGMP processing. The <em>all hosts address</em> is used by routers to query all multicast members to report on which multicast groups they belong to.</p>
 </div>
 </div>
 <div class="sect2">
@@ -4061,7 +4061,7 @@ VOID _nx_udp_socket_driver_packet_receive(NX_UDP_SOCKET *socket_ptr, NX_PACKET *
 <div class="sect2">
 <h3 id="_tcpip_offload_driver"><a class="anchor" href="#_tcpip_offload_driver"></a>TCP/IP Offload Driver</h3>
 <div class="paragraph">
-<p>A driver function is needed for each IP interface. Refer to <a href="chapter5.md#tcpip-offload-driver-guidance">Chapter 5</a> for more details on how to develop NetX Duo driver functions.</p>
+<p>A driver function is needed for each IP interface. Refer to <a href="chapter5.html#_tcpip_offload_driver_guidance" class="xref page">Chapter 5</a> for more details on how to develop NetX Duo driver functions.</p>
 </div>
 </div>
 <div class="sect2">
