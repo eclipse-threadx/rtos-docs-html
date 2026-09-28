@@ -283,19 +283,19 @@
 <div class="ulist">
 <ul>
 <li>
-<p><a href="#txm_module_application_request">txm_module_application_request</a></p>
+<p><a href="#_txm_module_application_request">txm_module_application_request</a></p>
 </li>
 <li>
-<p><a href="#txm_module_object_allocate">txm_module_object_allocate</a></p>
+<p><a href="#_txm_module_object_allocate">txm_module_object_allocate</a></p>
 </li>
 <li>
-<p><a href="#txm_module_object_deallocate">txm_module_object_deallocate</a></p>
+<p><a href="#_txm_module_object_deallocate">txm_module_object_deallocate</a></p>
 </li>
 <li>
-<p><a href="#txm_module_object_pointer_get">txm_module_object_pointer_get</a></p>
+<p><a href="#_txm_module_object_pointer_get">txm_module_object_pointer_get</a></p>
 </li>
 <li>
-<p><a href="#txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a></p>
+<p><a href="#_txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a></p>
 </li>
 </ul>
 </div>
@@ -628,7 +628,7 @@ tx_timer_delete(&amp;my_timer);</code></pre>
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-<strong><em>This service is deprecated. Do not use it in new code.</em></strong> Use <a href="#txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a> instead, passing the actual length of the name buffer.
+<strong><em>This service is deprecated. Do not use it in new code.</em></strong> Use <a href="#_txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a> instead, passing the actual length of the name buffer.
 </td>
 </tr>
 </table>
@@ -637,7 +637,7 @@ tx_timer_delete(&amp;my_timer);</code></pre>
 <p>This function passes <code>UINT_MAX</code> as the name-buffer length to the underlying search. If the <code>name</code> pointer addresses a buffer shorter than the object name being compared, the comparison loop reads past the end of the buffer, which is undefined behavior.</p>
 </div>
 <div class="paragraph">
-<p>Because no length is passed, the Module Manager cannot establish how much of the buffer it is allowed to read, and a module loaded with <strong>TXM_MODULE_MEMORY_PROTECTION</strong> is therefore refused this service with <strong>TXM_MODULE_INVALID_MEMORY</strong>. Such a module must use <a href="#txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a>. Modules loaded without memory protection are unaffected.</p>
+<p>Because no length is passed, the Module Manager cannot establish how much of the buffer it is allowed to read, and a module loaded with <strong>TXM_MODULE_MEMORY_PROTECTION</strong> is therefore refused this service with <strong>TXM_MODULE_INVALID_MEMORY</strong>. Such a module must use <a href="#_txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a>. Modules loaded without memory protection are unaffected.</p>
 </div>
 <div class="sect2">
 <h3 id="_prototype_4"><a class="anchor" href="#_prototype_4"></a>Prototype</h3>
@@ -655,7 +655,7 @@ tx_timer_delete(&amp;my_timer);</code></pre>
 <p><strong><em>Deprecated — see above.</em></strong> This service retrieves the object pointer of a particular type with a particular name. If the object is not found, an error is returned. Otherwise, if the object is found, the address of that object is placed in "object_ptr."</p>
 </div>
 <div class="paragraph">
-<p>The pointer this service returns grants use of the object, not authority to destroy it. See <a href="#txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a>.</p>
+<p>The pointer this service returns grants use of the object, not authority to destroy it. See <a href="#_txm_module_object_pointer_get_extended">txm_module_object_pointer_get_extended</a>.</p>
 </div>
 </div>
 <div class="sect2">

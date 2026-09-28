@@ -341,7 +341,7 @@
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-<strong><em>This service is deprecated. Do not use it in new code.</em></strong> Use <a href="#txm_module_manager_absolute_load_extended">txm_module_manager_absolute_load_extended</a> instead, passing the address of the module&#8217;s data area.
+<strong><em>This service is deprecated. Do not use it in new code.</em></strong> Use <a href="#_txm_module_manager_absolute_load_extended">txm_module_manager_absolute_load_extended</a> instead, passing the address of the module&#8217;s data area.
 </td>
 </tr>
 </table>
@@ -375,7 +375,7 @@
 <p><strong><em>Deprecated — see above.</em></strong> This service initializes the module contained in the specified location and prepares it for execution. There is no code or data relocation, thus position-independence is not necessary.</p>
 </div>
 <div class="paragraph">
-<p>This service calls <a href="#txm_module_manager_absolute_load_extended">txm_module_manager_absolute_load_extended</a> with an unknown data area location. The module instance&#8217;s data start address, data end address, data size, and module data base address are left empty, and modules requesting memory protection are rejected.</p>
+<p>This service calls <a href="#_txm_module_manager_absolute_load_extended">txm_module_manager_absolute_load_extended</a> with an unknown data area location. The module instance&#8217;s data start address, data end address, data size, and module data base address are left empty, and modules requesting memory protection are rejected.</p>
 </div>
 </div>
 <div class="sect2">
@@ -500,7 +500,7 @@ status = txm_module_manager_start(&amp;my_module);</code></pre>
 <p>This service initializes the module contained in the specified location and prepares it for execution. There is no code or data relocation, thus position-independence is not necessary.</p>
 </div>
 <div class="paragraph">
-<p>Unlike <a href="#txm_module_manager_absolute_load">txm_module_manager_absolute_load</a>, this service also receives the address of the module&#8217;s data area. That address is the RAM segment start address defined in the module&#8217;s linker script. It cannot be derived by the Module Manager, because the module preamble carries the data size but not the data address.</p>
+<p>Unlike <a href="#_txm_module_manager_absolute_load">txm_module_manager_absolute_load</a>, this service also receives the address of the module&#8217;s data area. That address is the RAM segment start address defined in the module&#8217;s linker script. It cannot be derived by the Module Manager, because the module preamble carries the data size but not the data address.</p>
 </div>
 <div class="paragraph">
 <p>Supplying the data area address allows the Module Manager to describe the module&#8217;s data area in the module instance. This is required for memory protection, for the object memory checks performed by the kernel dispatch layer, and for the cleanup performed when the module is stopped.</p>

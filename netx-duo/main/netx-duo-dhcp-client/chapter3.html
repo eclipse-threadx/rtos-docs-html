@@ -3095,7 +3095,7 @@ status =  nx_dhcp_interface_stop(&amp;my_dhcp, 1);
 <div class="sect2">
 <h3 id="_description_29"><a class="anchor" href="#_description_29"></a>Description</h3>
 <div class="paragraph">
-<p>This service retrieves the specified DHCP option from the DHCP options buffer on the first interface enabled for DHCP found on the DHCP Client record. If successful, the option data is copied into the specified buffer.</p>
+<p>This service retrieves the specified DHCP option from the DHCP options buffer on the first interface enabled for DHCP found on the DHCP Client record. If successful, the option data is copied into the specified buffer. Address options, including <code>NX_DHCP_OPTION_DNS_SVR</code>, are returned as 32-bit values in host byte order; the destination must be aligned for <code>ULONG</code> values. The returned size is in bytes and may contain more than one address.</p>
 </div>
 </div>
 <div class="sect2">
@@ -3155,15 +3155,15 @@ status =  nx_dhcp_interface_stop(&amp;my_dhcp, 1);
 <h3 id="_example_29"><a class="anchor" href="#_example_29"></a>Example</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UCHAR  dns_ip_string[4];
-ULONG  size;
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG  dns_addresses[4];
+UINT   size;
 
-/* Obtain the IP address of the DNS server.  */
-size =    sizeof(dnx_ip_string);
+/* Obtain up to four DNS server addresses.  */
+size =    sizeof(dns_addresses);
 status =  nx_dhcp_user_option_retrieve(&amp;my_dhcp, NX_DHCP_OPTION_DNS_SVR,
-                                        dns_ip_string, &amp;size);
+                                        (UCHAR *)dns_addresses, &amp;size);
 
-/* If status is NX_SUCCESS the DNS IP address is in dns_ip_string.  */</code></pre>
+/* If successful, size / 4 addresses are in dns_addresses.  */</code></pre>
 </div>
 </div>
 </div>
@@ -3190,7 +3190,7 @@ status =  nx_dhcp_user_option_retrieve(&amp;my_dhcp, NX_DHCP_OPTION_DNS_SVR,
 <div class="sect2">
 <h3 id="_description_30"><a class="anchor" href="#_description_30"></a>Description</h3>
 <div class="paragraph">
-<p>This service retrieves the specified DHCP option from the DHCP options buffer on the specified interface, if that interface is enabled for DHCP. If successful, the option data is copied into the specified buffer.</p>
+<p>This service retrieves the specified DHCP option from the DHCP options buffer on the specified interface, if that interface is enabled for DHCP. If successful, the option data is copied into the specified buffer. Address options, including <code>NX_DHCP_OPTION_DNS_SVR</code>, are returned as 32-bit values in host byte order; the destination must be aligned for <code>ULONG</code> values. The returned size is in bytes and may contain more than one address.</p>
 </div>
 </div>
 <div class="sect2">
@@ -3253,15 +3253,15 @@ status =  nx_dhcp_user_option_retrieve(&amp;my_dhcp, NX_DHCP_OPTION_DNS_SVR,
 <h3 id="_example_30"><a class="anchor" href="#_example_30"></a>Example</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UCHAR  dns_ip_string[4];
-ULONG  size;
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">ULONG  dns_addresses[4];
+UINT   size;
 
-/* Obtain the IP address of the DNS server on the primary interface.  */
-size =    sizeof(dnx_ip_string);
+/* Obtain up to four DNS server addresses on the primary interface.  */
+size =    sizeof(dns_addresses);
 status =  nx_dhcp_interface_user_option_retrieve(&amp;my_dhcp, 0, NX_DHCP_OPTION_DNS_SVR,
-                                                  dns_ip_string, &amp;size);
+                                                  (UCHAR *)dns_addresses, &amp;size);
 
-/* If status is NX_SUCCESS the DNS IP address is in dns_ip_string.  */</code></pre>
+/* If successful, size / 4 addresses are in dns_addresses.  */</code></pre>
 </div>
 </div>
 </div>
@@ -3284,8 +3284,7 @@ status =  nx_dhcp_interface_user_option_retrieve(&amp;my_dhcp, 0, NX_DHCP_OPTION
 <div class="sect2">
 <h3 id="_description_31"><a class="anchor" href="#_description_31"></a>Description</h3>
 <div class="paragraph">
-<p>This service converts the four characters pointed to by <em>"option_string_ptr"</em> into an unsigned long value. It is especially useful when IP addresses are<br>
-present.</p>
+<p>This service converts four bytes in network byte order, such as a raw IPv4 address, to an unsigned long value in host byte order. The DHCP option retrieval services already convert address options to host byte order, so do not apply this service to their output.</p>
 </div>
 </div>
 <div class="sect2">
@@ -3318,14 +3317,11 @@ present.</p>
 <h3 id="_example_31"><a class="anchor" href="#_example_31"></a>Example</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UCHAR  dns_ip_string[4];
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">UCHAR  raw_address[4] = {10, 6, 6, 1};
 ULONG  dns_ip;
 
-/* Convert the first four bytes of "dns_ip_string" to an actual IP
-address in "dns_ip."  */
-dns_ip=  nx_dhcp_user_option_convert(dns_ip_string);
-
-/* If status is NX_SUCCESS the DNS IP address is in "dns_ip."  */</code></pre>
+/* Convert a raw network-order address to 0x0A060601.  */
+dns_ip = nx_dhcp_user_option_convert(raw_address);</code></pre>
 </div>
 </div>
 </div>

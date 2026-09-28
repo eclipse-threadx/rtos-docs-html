@@ -334,7 +334,7 @@
 <p>A partition is isolated from another by <strong>which regions are enabled while it runs</strong>, never by permission bits.</p>
 </div>
 <div class="paragraph">
-<p>This matters when reading the attribute encodings: at stage 2 there is no encoding that grants a guest access while denying EL2. So a region that grants a partition access must be <strong>disabled</strong> while any other partition runs, and a partition switch is one write that changes the whole enabled set. See <a href="platform-requirements.html#a-region-must-also-be-reachable-by-the-partition-switch" class="xref page">the switch-mask budget</a> for the constraint that follows.</p>
+<p>This matters when reading the attribute encodings: at stage 2 there is no encoding that grants a guest access while denying EL2. So a region that grants a partition access must be <strong>disabled</strong> while any other partition runs, and a partition switch is one write that changes the whole enabled set. See <a href="platform-requirements.html#_a_region_must_also_be_reachable_by_the_partition_switch" class="xref page">the switch-mask budget</a> for the constraint that follows.</p>
 </div>
 </div>
 </div>

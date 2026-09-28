@@ -5726,13 +5726,136 @@ status = nx_web_http_server_cache_info_callback_set(&amp;my_server, cache_info_g
 </div>
 </div>
 <div class="sect1">
+<h2 id="_nx_web_http_server_event_stream_start"><a class="anchor" href="#_nx_web_http_server_event_stream_start"></a>nx_web_http_server_event_stream_start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start a Server-Sent Events response from a GET request callback.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_37"><a class="anchor" href="#_prototype_37"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_event_stream_start(
+    NX_WEB_HTTP_SERVER *server_ptr,
+    NX_TCP_SESSION **session_pptr);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_37"><a class="anchor" href="#_description_37"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends a <code>200 OK</code> response with <code>Content-Type: text/event-stream</code>, <code>Cache-Control: no-cache</code>, and <code>Connection: keep-alive</code>. It omits <code>Content-Length</code> so the response can carry events of unknown total size. The client request must permit a persistent connection. The service keeps only the selected session open while idle; other HTTP sessions retain their normal timeout. The callback should return <code>NX_WEB_HTTP_CALLBACK_COMPLETED</code> after a successful call.</p>
+</div>
+<div class="paragraph">
+<p>The returned session pointer identifies the stream for <code>nx_web_http_server_event_stream_send</code>. The application must stop using it when the client disconnects. This service is unavailable when <code>NX_WEB_HTTP_KEEPALIVE_DISABLE</code> is defined.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_37"><a class="anchor" href="#_input_parameters_37"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to the HTTP server control block.</p>
+</li>
+<li>
+<p><em>session_pptr</em>: Receives the TCP session pointer on success.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_37"><a class="anchor" href="#_return_values_37"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: The response header was sent and the stream is open.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong>: An input pointer or server control block is invalid.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_ERROR</strong>: The current request is not a persistent GET, or keep-alive is disabled.</p>
+</li>
+<li>
+<p>Other NetX Duo status codes: Packet allocation or sending failed.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nx_web_http_server_event_stream_send"><a class="anchor" href="#_nx_web_http_server_event_stream_send"></a>nx_web_http_server_event_stream_send</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Send event data on an open Server-Sent Events response.</p>
+</div>
+<div class="sect2">
+<h3 id="_prototype_38"><a class="anchor" href="#_prototype_38"></a>Prototype</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_event_stream_send(
+    NX_WEB_HTTP_SERVER *server_ptr,
+    NX_TCP_SESSION *session_ptr,
+    VOID *data_ptr,
+    ULONG data_length);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description_38"><a class="anchor" href="#_description_38"></a>Description</h3>
+<div class="paragraph">
+<p>This service sends the supplied bytes on the selected HTTP or HTTPS stream, including from an application thread after the request callback returns. The application formats the event payload according to the Server-Sent Events format, such as <code>data: ready\n\n</code>. The service allocates and releases its own packet. It does not change the session timeout or use the server&#8217;s current request pointer. A failed send means the application should stop using the session pointer.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_parameters_38"><a class="anchor" href="#_input_parameters_38"></a>Input Parameters</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>server_ptr</em>: Pointer to the HTTP server control block.</p>
+</li>
+<li>
+<p><em>session_ptr</em>: Session returned by <code>nx_web_http_server_event_stream_start</code>.</p>
+</li>
+<li>
+<p><em>data_ptr</em>: Event bytes to send.</p>
+</li>
+<li>
+<p><em>data_length</em>: Number of event bytes; must be greater than zero.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values_38"><a class="anchor" href="#_return_values_38"></a>Return Values</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NX_SUCCESS</strong>: The event data was sent.</p>
+</li>
+<li>
+<p><strong>NX_PTR_ERROR</strong>: An input pointer, server control block, or session pointer is invalid.</p>
+</li>
+<li>
+<p><strong>NX_WEB_HTTP_ERROR</strong>: The session is not an open event stream or the length is zero.</p>
+</li>
+<li>
+<p>Other NetX Duo status codes: Packet allocation or sending failed.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_nx_web_http_server_callback_generate_response_header"><a class="anchor" href="#_nx_web_http_server_callback_generate_response_header"></a>nx_web_http_server_callback_generate_response_header</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Create a response header in a callback function</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_37"><a class="anchor" href="#_prototype_37"></a>Prototype</h3>
+<h3 id="_prototype_39"><a class="anchor" href="#_prototype_39"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_callback_generate_response_header(
@@ -5746,7 +5869,7 @@ status = nx_web_http_server_cache_info_callback_set(&amp;my_server, cache_info_g
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_37"><a class="anchor" href="#_description_37"></a>Description</h3>
+<h3 id="_description_39"><a class="anchor" href="#_description_39"></a>Description</h3>
 <div class="paragraph">
 <p>This service is used in the HTTP(S) server callback routine (defined by the application) to generate an HTTP response header. The server callback routine is invoked when the HTTP server responds to Client GET, PUT and DELETE requests which require an HTTP response. This function takes the response information from the application and generates the appropriate response header. See the service <em>nx_web_http_server_create</em> for more information on the server request callback routine.</p>
 </div>
@@ -5755,7 +5878,7 @@ status = nx_web_http_server_cache_info_callback_set(&amp;my_server, cache_info_g
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_37"><a class="anchor" href="#_input_parameters_37"></a>Input Parameters</h3>
+<h3 id="_input_parameters_39"><a class="anchor" href="#_input_parameters_39"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -5793,7 +5916,7 @@ status = nx_web_http_server_cache_info_callback_set(&amp;my_server, cache_info_g
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_37"><a class="anchor" href="#_return_values_37"></a>Return Values</h3>
+<h3 id="_return_values_39"><a class="anchor" href="#_return_values_39"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -5883,7 +6006,7 @@ UINT my_request_notify(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
 <p>Create a response header in a callback function</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_38"><a class="anchor" href="#_prototype_38"></a>Prototype</h3>
+<h3 id="_prototype_40"><a class="anchor" href="#_prototype_40"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_callback_generate_response_header_extended(
@@ -5900,13 +6023,13 @@ UINT my_request_notify(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_38"><a class="anchor" href="#_description_38"></a>Description</h3>
+<h3 id="_description_40"><a class="anchor" href="#_description_40"></a>Description</h3>
 <div class="paragraph">
 <p>This service is used in the HTTP(S) server callback routine (defined by the application) to generate an HTTP response header. The server callback routine is invoked when the HTTP server responds to Client GET, PUT and DELETE requests which require an HTTP response. This function takes the response information from the application and generates the appropriate response header. See the service <em>nx_web_http_server_create</em> for more information on the server request callback routine.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_38"><a class="anchor" href="#_input_parameters_38"></a>Input Parameters</h3>
+<h3 id="_input_parameters_40"><a class="anchor" href="#_input_parameters_40"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -5953,7 +6076,7 @@ UINT my_request_notify(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_38"><a class="anchor" href="#_return_values_38"></a>Return Values</h3>
+<h3 id="_return_values_40"><a class="anchor" href="#_return_values_40"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6045,7 +6168,7 @@ UINT my_request_notify(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
 <p>Send an HTTP packet from callback function</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_39"><a class="anchor" href="#_prototype_39"></a>Prototype</h3>
+<h3 id="_prototype_41"><a class="anchor" href="#_prototype_41"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_callback_packet_send(
@@ -6055,7 +6178,7 @@ UINT my_request_notify(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_39"><a class="anchor" href="#_description_39"></a>Description</h3>
+<h3 id="_description_41"><a class="anchor" href="#_description_41"></a>Description</h3>
 <div class="paragraph">
 <p>This service sends a complete HTTP server response from an HTTP callback. HTTP server will send the packet with the NX_WEB_HTTP_SERVER _TIMEOUT_SEND. The HTTP header and data must be appended to the packet. If the return status indicates an error, the HTTP application must release the packet.</p>
 </div>
@@ -6067,7 +6190,7 @@ UINT my_request_notify(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_39"><a class="anchor" href="#_input_parameters_39"></a>Input Parameters</h3>
+<h3 id="_input_parameters_41"><a class="anchor" href="#_input_parameters_41"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6080,7 +6203,7 @@ UINT my_request_notify(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_39"><a class="anchor" href="#_return_values_39"></a>Return Values</h3>
+<h3 id="_return_values_41"><a class="anchor" href="#_return_values_41"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6124,7 +6247,7 @@ return(NX_WEB_HTTP_CALLBACK_COMPLETED);</code></pre>
 <p>Send response from callback function</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_40"><a class="anchor" href="#_prototype_40"></a>Prototype</h3>
+<h3 id="_prototype_42"><a class="anchor" href="#_prototype_42"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_callback_response_send(
@@ -6136,7 +6259,7 @@ return(NX_WEB_HTTP_CALLBACK_COMPLETED);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_40"><a class="anchor" href="#_description_40"></a>Description</h3>
+<h3 id="_description_42"><a class="anchor" href="#_description_42"></a>Description</h3>
 <div class="paragraph">
 <p>This service sends the supplied response information from the application&#8217;s callback routine. This is typically used to send custom responses associated with GET/POST requests. Note that if this function is used, the callback routine must return the status of NX_WEB_HTTP_CALLBACK_COMPLETED.</p>
 </div>
@@ -6145,7 +6268,7 @@ return(NX_WEB_HTTP_CALLBACK_COMPLETED);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_40"><a class="anchor" href="#_input_parameters_40"></a>Input Parameters</h3>
+<h3 id="_input_parameters_42"><a class="anchor" href="#_input_parameters_42"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6164,7 +6287,7 @@ return(NX_WEB_HTTP_CALLBACK_COMPLETED);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_40"><a class="anchor" href="#_return_values_40"></a>Return Values</h3>
+<h3 id="_return_values_42"><a class="anchor" href="#_return_values_42"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6215,7 +6338,7 @@ return(NX_WEB_HTTP_CALLBACK_COMPLETED);</code></pre>
 <p>Send response from callback function</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_41"><a class="anchor" href="#_prototype_41"></a>Prototype</h3>
+<h3 id="_prototype_43"><a class="anchor" href="#_prototype_43"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_callback_response_send_extended(
@@ -6229,7 +6352,7 @@ return(NX_WEB_HTTP_CALLBACK_COMPLETED);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_41"><a class="anchor" href="#_description_41"></a>Description</h3>
+<h3 id="_description_43"><a class="anchor" href="#_description_43"></a>Description</h3>
 <div class="paragraph">
 <p>This service sends the supplied response information from the application&#8217;s callback routine. This is typically used to send custom responses associated with GET/POST requests. Note that if this function is used, the callback routine must return the status of NX_WEB_HTTP_CALLBACK_COMPLETED.</p>
 </div>
@@ -6241,7 +6364,7 @@ return(NX_WEB_HTTP_CALLBACK_COMPLETED);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_41"><a class="anchor" href="#_input_parameters_41"></a>Input Parameters</h3>
+<h3 id="_input_parameters_43"><a class="anchor" href="#_input_parameters_43"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6269,7 +6392,7 @@ return(NX_WEB_HTTP_CALLBACK_COMPLETED);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_41"><a class="anchor" href="#_return_values_41"></a>Return Values</h3>
+<h3 id="_return_values_43"><a class="anchor" href="#_return_values_43"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6322,7 +6445,7 @@ return(NX_WEB_HTTP_CALLBACK_COMPLETED);</code></pre>
 <p>Get content from the request</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_42"><a class="anchor" href="#_prototype_42"></a>Prototype</h3>
+<h3 id="_prototype_44"><a class="anchor" href="#_prototype_44"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_content_get(
@@ -6336,13 +6459,13 @@ return(NX_WEB_HTTP_CALLBACK_COMPLETED);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_42"><a class="anchor" href="#_description_42"></a>Description</h3>
+<h3 id="_description_44"><a class="anchor" href="#_description_44"></a>Description</h3>
 <div class="paragraph">
 <p>This service attempts to retrieve the specified amount of content from the POST or PUT HTTP Client request. It should be called from the application&#8217;s request notify callback specified during HTTP Server creation (<em>nx_web_http_server_create</em>).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_42"><a class="anchor" href="#_input_parameters_42"></a>Input Parameters</h3>
+<h3 id="_input_parameters_44"><a class="anchor" href="#_input_parameters_44"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6367,7 +6490,7 @@ return(NX_WEB_HTTP_CALLBACK_COMPLETED);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_42"><a class="anchor" href="#_return_values_42"></a>Return Values</h3>
+<h3 id="_return_values_44"><a class="anchor" href="#_return_values_44"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6421,7 +6544,7 @@ status = nx_web_http_server_content_get(&amp;my_server, packet_ptr,
 <p>Get content from the request/supports zero length Content Length</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_43"><a class="anchor" href="#_prototype_43"></a>Prototype</h3>
+<h3 id="_prototype_45"><a class="anchor" href="#_prototype_45"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_content_get_extended(
@@ -6435,7 +6558,7 @@ status = nx_web_http_server_content_get(&amp;my_server, packet_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_43"><a class="anchor" href="#_description_43"></a>Description</h3>
+<h3 id="_description_45"><a class="anchor" href="#_description_45"></a>Description</h3>
 <div class="paragraph">
 <p>This service is almost identical to <em>nx_web_http_server_content_get</em>; it attempts to retrieve the specified amount of content from the POST or PUT HTTP Client request. However it handles requests with Content Length of zero value ('empty request') as a valid request. It should be called from the application&#8217;s request notify callback specified during HTTP Server creation (<em>nx_web_http_server_create</em>).</p>
 </div>
@@ -6444,7 +6567,7 @@ status = nx_web_http_server_content_get(&amp;my_server, packet_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_43"><a class="anchor" href="#_input_parameters_43"></a>Input Parameters</h3>
+<h3 id="_input_parameters_45"><a class="anchor" href="#_input_parameters_45"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6469,7 +6592,7 @@ status = nx_web_http_server_content_get(&amp;my_server, packet_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_43"><a class="anchor" href="#_return_values_43"></a>Return Values</h3>
+<h3 id="_return_values_45"><a class="anchor" href="#_return_values_45"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6523,7 +6646,7 @@ status = nx_web_http_server_content_get_extended(&amp;my_server, packet_ptr,
 <p>Get length of content in the request/supports Content Length of zero value</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_44"><a class="anchor" href="#_prototype_44"></a>Prototype</h3>
+<h3 id="_prototype_46"><a class="anchor" href="#_prototype_46"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_content_length_get(
@@ -6533,13 +6656,13 @@ status = nx_web_http_server_content_get_extended(&amp;my_server, packet_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_44"><a class="anchor" href="#_description_44"></a>Description</h3>
+<h3 id="_description_46"><a class="anchor" href="#_description_46"></a>Description</h3>
 <div class="paragraph">
 <p>This service attempts to retrieve the HTTP content length in the supplied packet. The return value indicates successful completion status and the actual length value is returned in the input pointer content_length. If there is no HTTP content/Content Length = 0, this routine still returns a successful completion status and the content_length input pointer points to a valid length (zero). It should be called from the application&#8217;s request notify callback specified during HTTP Server creation (<em>nx_web_http_server_create</em>).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_44"><a class="anchor" href="#_input_parameters_44"></a>Input Parameters</h3>
+<h3 id="_input_parameters_46"><a class="anchor" href="#_input_parameters_46"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6552,7 +6675,7 @@ status = nx_web_http_server_content_get_extended(&amp;my_server, packet_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_44"><a class="anchor" href="#_return_values_44"></a>Return Values</h3>
+<h3 id="_return_values_46"><a class="anchor" href="#_return_values_46"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6597,7 +6720,7 @@ status = nx_web_http_server_content_length_get(packet_ptr, &amp;content_length);
 <p>Create an HTTP Server instance</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_45"><a class="anchor" href="#_prototype_45"></a>Prototype</h3>
+<h3 id="_prototype_47"><a class="anchor" href="#_prototype_47"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_create(NX_WEB_HTTP_SERVER *http_server_ptr,
@@ -6613,7 +6736,7 @@ status = nx_web_http_server_content_length_get(packet_ptr, &amp;content_length);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_45"><a class="anchor" href="#_description_45"></a>Description</h3>
+<h3 id="_description_47"><a class="anchor" href="#_description_47"></a>Description</h3>
 <div class="paragraph">
 <p>This service creates an HTTP Server instance, which runs in the context of its own ThreadX thread. The optional <em>authentication_check</em> and <em>request_notify</em> application callback routines give the application software control over the basic operations of the HTTP Server.</p>
 </div>
@@ -6622,7 +6745,7 @@ status = nx_web_http_server_content_length_get(packet_ptr, &amp;content_length);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_45"><a class="anchor" href="#_input_parameters_45"></a>Input Parameters</h3>
+<h3 id="_input_parameters_47"><a class="anchor" href="#_input_parameters_47"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6656,7 +6779,7 @@ status = nx_web_http_server_content_length_get(packet_ptr, &amp;content_length);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_45"><a class="anchor" href="#_return_values_45"></a>Return Values</h3>
+<h3 id="_return_values_47"><a class="anchor" href="#_return_values_47"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6700,7 +6823,7 @@ status = nx_web_http_server_create(&amp;my_server, "my server", &amp;ip_0,
 <p>Delete an HTTP Server instance</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_46"><a class="anchor" href="#_prototype_46"></a>Prototype</h3>
+<h3 id="_prototype_48"><a class="anchor" href="#_prototype_48"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_delete(NX_WEB_HTTP_SERVER *http_server_ptr);</code></pre>
@@ -6708,13 +6831,13 @@ status = nx_web_http_server_create(&amp;my_server, "my server", &amp;ip_0,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_46"><a class="anchor" href="#_description_46"></a>Description</h3>
+<h3 id="_description_48"><a class="anchor" href="#_description_48"></a>Description</h3>
 <div class="paragraph">
 <p>This service deletes a previously created HTTP Server instance.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_46"><a class="anchor" href="#_input_parameters_46"></a>Input Parameters</h3>
+<h3 id="_input_parameters_48"><a class="anchor" href="#_input_parameters_48"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6724,7 +6847,7 @@ status = nx_web_http_server_create(&amp;my_server, "my server", &amp;ip_0,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_46"><a class="anchor" href="#_return_values_46"></a>Return Values</h3>
+<h3 id="_return_values_48"><a class="anchor" href="#_return_values_48"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6765,7 +6888,7 @@ status = nx_web_http_server_delete(&amp;my_server);
 <p>Retrieve the location and length of entity data</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_47"><a class="anchor" href="#_prototype_47"></a>Prototype</h3>
+<h3 id="_prototype_49"><a class="anchor" href="#_prototype_49"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_get_entity_content(
@@ -6777,7 +6900,7 @@ status = nx_web_http_server_delete(&amp;my_server);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_47"><a class="anchor" href="#_description_47"></a>Description</h3>
+<h3 id="_description_49"><a class="anchor" href="#_description_49"></a>Description</h3>
 <div class="paragraph">
 <p>This service determines the location of the start of data within the current multipart entity in the received Client messages, and the length of data not including the boundary string. Internally, the HTTP server updates its own offsets so that this function can be called again on the same Client datagram for messages with multiple entities. The packet pointer is updated to the next packet where the Client message is a multi-packet datagram.</p>
 </div>
@@ -6789,7 +6912,7 @@ status = nx_web_http_server_delete(&amp;my_server);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_47"><a class="anchor" href="#_input_parameters_47"></a>Input Parameters</h3>
+<h3 id="_input_parameters_49"><a class="anchor" href="#_input_parameters_49"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6808,7 +6931,7 @@ status = nx_web_http_server_delete(&amp;my_server);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_47"><a class="anchor" href="#_return_values_47"></a>Return Values</h3>
+<h3 id="_return_values_49"><a class="anchor" href="#_return_values_49"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6860,7 +6983,7 @@ status = nx_web_http_server_get_entity_content(&amp;my_server, &amp;packet_ptr, 
 <p>Retrieve the contents of entity header</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_48"><a class="anchor" href="#_prototype_48"></a>Prototype</h3>
+<h3 id="_prototype_50"><a class="anchor" href="#_prototype_50"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_get_entity_header(
@@ -6872,7 +6995,7 @@ status = nx_web_http_server_get_entity_content(&amp;my_server, &amp;packet_ptr, 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_48"><a class="anchor" href="#_description_48"></a>Description</h3>
+<h3 id="_description_50"><a class="anchor" href="#_description_50"></a>Description</h3>
 <div class="paragraph">
 <p>This service retrieves the entity header into the specified buffer. Internally HTTP Server updates its own pointers to locate the next multipart entity in a Client datagram with multiple entity headers. The packet pointer is updated to the next packet where the Client message is a multi-packet datagram.</p>
 </div>
@@ -6881,7 +7004,7 @@ status = nx_web_http_server_get_entity_content(&amp;my_server, &amp;packet_ptr, 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_48"><a class="anchor" href="#_input_parameters_48"></a>Input Parameters</h3>
+<h3 id="_input_parameters_50"><a class="anchor" href="#_input_parameters_50"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6900,7 +7023,7 @@ status = nx_web_http_server_get_entity_content(&amp;my_server, &amp;packet_ptr, 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_48"><a class="anchor" href="#_return_values_48"></a>Return Values</h3>
+<h3 id="_return_values_50"><a class="anchor" href="#_return_values_50"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6999,7 +7122,7 @@ UINT my_request_notify(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
 <p>Set the callback to obtain GMT date and time</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_49"><a class="anchor" href="#_prototype_49"></a>Prototype</h3>
+<h3 id="_prototype_51"><a class="anchor" href="#_prototype_51"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_gmt_callback_set(
@@ -7009,13 +7132,13 @@ UINT my_request_notify(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_49"><a class="anchor" href="#_description_49"></a>Description</h3>
+<h3 id="_description_51"><a class="anchor" href="#_description_51"></a>Description</h3>
 <div class="paragraph">
 <p>This service sets the callback to obtain GMT date and time with a previously created HTTP server. This service is invoked with the HTTP server is creating a header in HTTP server responses to the Client.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_49"><a class="anchor" href="#_input_parameters_49"></a>Input Parameters</h3>
+<h3 id="_input_parameters_51"><a class="anchor" href="#_input_parameters_51"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7031,7 +7154,7 @@ UINT my_request_notify(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_49"><a class="anchor" href="#_return_values_49"></a>Return Values</h3>
+<h3 id="_return_values_51"><a class="anchor" href="#_return_values_51"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7076,7 +7199,7 @@ status = nx_web_http_server_gmt_callback_set(&amp;my_server, gmt_get);
 <p>Set the callback to handle invalid user/password</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_50"><a class="anchor" href="#_prototype_50"></a>Prototype</h3>
+<h3 id="_prototype_52"><a class="anchor" href="#_prototype_52"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_invalid_userpassword_notify_set(
@@ -7089,13 +7212,13 @@ status = nx_web_http_server_gmt_callback_set(&amp;my_server, gmt_get);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_50"><a class="anchor" href="#_description_50"></a>Description</h3>
+<h3 id="_description_52"><a class="anchor" href="#_description_52"></a>Description</h3>
 <div class="paragraph">
 <p>This service sets the callback invoked when an invalid username and password is received in a Client get, put or delete request, either by digest or basic authentication. The HTTP server must be previously created.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_50"><a class="anchor" href="#_input_parameters_50"></a>Input Parameters</h3>
+<h3 id="_input_parameters_52"><a class="anchor" href="#_input_parameters_52"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7130,7 +7253,7 @@ status = nx_web_http_server_gmt_callback_set(&amp;my_server, gmt_get);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_50"><a class="anchor" href="#_return_values_50"></a>Return Values</h3>
+<h3 id="_return_values_52"><a class="anchor" href="#_return_values_52"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7179,7 +7302,7 @@ status = nx_web_http_server_invalid_userpassword_notify_set( (&amp;my_server,
 <p>Set additional MIME maps for HTML</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_51"><a class="anchor" href="#_prototype_51"></a>Prototype</h3>
+<h3 id="_prototype_53"><a class="anchor" href="#_prototype_53"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_mime_maps_additional_set(
@@ -7190,7 +7313,7 @@ status = nx_web_http_server_invalid_userpassword_notify_set( (&amp;my_server,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_51"><a class="anchor" href="#_description_51"></a>Description</h3>
+<h3 id="_description_53"><a class="anchor" href="#_description_53"></a>Description</h3>
 <div class="paragraph">
 <p>This service allows the HTTP application developer to add additional MIME types from the default MIME types supplied by the NetX Duo Web HTTP Server. See <em>nx_web_http_server_get_type</em> for list of defined types.</p>
 </div>
@@ -7202,7 +7325,7 @@ status = nx_web_http_server_invalid_userpassword_notify_set( (&amp;my_server,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_51"><a class="anchor" href="#_input_parameters_51"></a>Input Parameters</h3>
+<h3 id="_input_parameters_53"><a class="anchor" href="#_input_parameters_53"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7218,7 +7341,7 @@ status = nx_web_http_server_invalid_userpassword_notify_set( (&amp;my_server,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_51"><a class="anchor" href="#_return_values_51"></a>Return Values</h3>
+<h3 id="_return_values_53"><a class="anchor" href="#_return_values_53"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7264,7 +7387,7 @@ status = nx_web_http_server_mime_maps_additional_set(&amp;my_server,
 <p>Allocate an HTTP(S) packet</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_52"><a class="anchor" href="#_prototype_52"></a>Prototype</h3>
+<h3 id="_prototype_54"><a class="anchor" href="#_prototype_54"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_response_packet_allocate(
@@ -7275,7 +7398,7 @@ status = nx_web_http_server_mime_maps_additional_set(&amp;my_server,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_52"><a class="anchor" href="#_description_52"></a>Description</h3>
+<h3 id="_description_54"><a class="anchor" href="#_description_54"></a>Description</h3>
 <div class="paragraph">
 <p>This service attempts to allocates a packet for the HTTP(S) server.</p>
 </div>
@@ -7284,7 +7407,7 @@ status = nx_web_http_server_mime_maps_additional_set(&amp;my_server,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_52"><a class="anchor" href="#_input_parameters_52"></a>Input Parameters</h3>
+<h3 id="_input_parameters_54"><a class="anchor" href="#_input_parameters_54"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7313,7 +7436,7 @@ status = nx_web_http_server_mime_maps_additional_set(&amp;my_server,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_52"><a class="anchor" href="#_return_values_52"></a>Return Values</h3>
+<h3 id="_return_values_54"><a class="anchor" href="#_return_values_54"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7365,7 +7488,7 @@ status = nx_web_http_server_response_packet_allocate(&amp;my_client, &amp;packet
 <p>Extract content length and set pointer to start of data</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_53"><a class="anchor" href="#_prototype_53"></a>Prototype</h3>
+<h3 id="_prototype_55"><a class="anchor" href="#_prototype_55"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_packet_content_find(
@@ -7376,7 +7499,7 @@ status = nx_web_http_server_response_packet_allocate(&amp;my_client, &amp;packet
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_53"><a class="anchor" href="#_description_53"></a>Description</h3>
+<h3 id="_description_55"><a class="anchor" href="#_description_55"></a>Description</h3>
 <div class="paragraph">
 <p>This service extracts the content length from the HTTP header. It also updates the supplied packet as follows: the packet prepend pointer (start of location of packet buffer to write to) is set to the HTTP content (data) just passed the HTTP header.</p>
 </div>
@@ -7388,7 +7511,7 @@ status = nx_web_http_server_response_packet_allocate(&amp;my_client, &amp;packet
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_53"><a class="anchor" href="#_input_parameters_53"></a>Input Parameters</h3>
+<h3 id="_input_parameters_55"><a class="anchor" href="#_input_parameters_55"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7404,7 +7527,7 @@ status = nx_web_http_server_response_packet_allocate(&amp;my_client, &amp;packet
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_53"><a class="anchor" href="#_return_values_53"></a>Return Values</h3>
+<h3 id="_return_values_55"><a class="anchor" href="#_return_values_55"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7453,7 +7576,7 @@ status = nx_web_http_server_packet_content_find(server_ptr, recv_packet_ptr,
 <p>Receive the next HTTP packet</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_54"><a class="anchor" href="#_prototype_54"></a>Prototype</h3>
+<h3 id="_prototype_56"><a class="anchor" href="#_prototype_56"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_packet_get(NX_WEB_HTTP_SERVER *server_ptr,
@@ -7462,7 +7585,7 @@ status = nx_web_http_server_packet_content_find(server_ptr, recv_packet_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_54"><a class="anchor" href="#_description_54"></a>Description</h3>
+<h3 id="_description_56"><a class="anchor" href="#_description_56"></a>Description</h3>
 <div class="paragraph">
 <p>This service returns the next packet received on the HTTP server socket. The wait option to receive a packet is NX_WEB_HTTP_SERVER_TIMEOUT_RECEIVE.</p>
 </div>
@@ -7471,7 +7594,7 @@ status = nx_web_http_server_packet_content_find(server_ptr, recv_packet_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_54"><a class="anchor" href="#_input_parameters_54"></a>Input Parameters</h3>
+<h3 id="_input_parameters_56"><a class="anchor" href="#_input_parameters_56"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7484,7 +7607,7 @@ status = nx_web_http_server_packet_content_find(server_ptr, recv_packet_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_54"><a class="anchor" href="#_return_values_54"></a>Return Values</h3>
+<h3 id="_return_values_56"><a class="anchor" href="#_return_values_56"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7528,7 +7651,7 @@ status = nx_web_http_server_packet_get(server_ptr, &amp;recv_packet_ptr);
 <p>Get parameter from the request</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_55"><a class="anchor" href="#_prototype_55"></a>Prototype</h3>
+<h3 id="_prototype_57"><a class="anchor" href="#_prototype_57"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_param_get(
@@ -7541,13 +7664,13 @@ status = nx_web_http_server_packet_get(server_ptr, &amp;recv_packet_ptr);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_55"><a class="anchor" href="#_description_55"></a>Description</h3>
+<h3 id="_description_57"><a class="anchor" href="#_description_57"></a>Description</h3>
 <div class="paragraph">
 <p>This service attempts to retrieve the specified HTTP URL parameter in the supplied request packet. If the requested HTTP parameter is not present, this routine returns a status of NX_WEB_HTTP_NOT_FOUND. This routine should be called from the application&#8217;s request notify callback specified during HTTP Server creation (<em>nx_web_http_server_create</em>).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_55"><a class="anchor" href="#_input_parameters_55"></a>Input Parameters</h3>
+<h3 id="_input_parameters_57"><a class="anchor" href="#_input_parameters_57"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7569,7 +7692,7 @@ status = nx_web_http_server_packet_get(server_ptr, &amp;recv_packet_ptr);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_55"><a class="anchor" href="#_return_values_55"></a>Return Values</h3>
+<h3 id="_return_values_57"><a class="anchor" href="#_return_values_57"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7621,7 +7744,7 @@ status = nx_web_http_server_param_get(request_packet_ptr, 0, param_destination,
 <p>Get query from the request</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_56"><a class="anchor" href="#_prototype_56"></a>Prototype</h3>
+<h3 id="_prototype_58"><a class="anchor" href="#_prototype_58"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_query_get(
@@ -7634,13 +7757,13 @@ status = nx_web_http_server_param_get(request_packet_ptr, 0, param_destination,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_56"><a class="anchor" href="#_description_56"></a>Description</h3>
+<h3 id="_description_58"><a class="anchor" href="#_description_58"></a>Description</h3>
 <div class="paragraph">
 <p>This service attempts to retrieve the specified HTTP URL query in the supplied request packet. If the requested HTTP query is not present, this routine returns a status of NX_WEB_HTTP_NOT_FOUND. This routine should be called from the application&#8217;s request notify callback specified during HTTP Server creation (<em>nx_web_http_server_create</em>).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_56"><a class="anchor" href="#_input_parameters_56"></a>Input Parameters</h3>
+<h3 id="_input_parameters_58"><a class="anchor" href="#_input_parameters_58"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7665,7 +7788,7 @@ status = nx_web_http_server_param_get(request_packet_ptr, 0, param_destination,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_56"><a class="anchor" href="#_return_values_56"></a>Return Values</h3>
+<h3 id="_return_values_58"><a class="anchor" href="#_return_values_58"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7720,7 +7843,7 @@ status = nx_web_http_server_query_get(request_packet_ptr, 0,
 <p>Set chunked transfer for HTTP(S) response</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_57"><a class="anchor" href="#_prototype_57"></a>Prototype</h3>
+<h3 id="_prototype_59"><a class="anchor" href="#_prototype_59"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_response_chunked_set(
@@ -7731,7 +7854,7 @@ status = nx_web_http_server_query_get(request_packet_ptr, 0,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_57"><a class="anchor" href="#_description_57"></a>Description</h3>
+<h3 id="_description_59"><a class="anchor" href="#_description_59"></a>Description</h3>
 <div class="paragraph">
 <p>This service uses chunked transfer coding to send a custom HTTP(S) response data packet created with <em>nx_web_http_server_response_packet_allocate</em> to the client.</p>
 </div>
@@ -7749,7 +7872,7 @@ If the application uses chunked transfer coding to send a response data packet, 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_57"><a class="anchor" href="#_input_parameters_57"></a>Input Parameters</h3>
+<h3 id="_input_parameters_59"><a class="anchor" href="#_input_parameters_59"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7765,7 +7888,7 @@ If the application uses chunked transfer coding to send a response data packet, 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_57"><a class="anchor" href="#_return_values_57"></a>Return Values</h3>
+<h3 id="_return_values_59"><a class="anchor" href="#_return_values_59"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7816,7 +7939,7 @@ nx_web_http_server_callback_packet_send(&amp;my_server, my_packet);</code></pre>
 <p>Configure an HTTP Server to use TLS for secure HTTPS</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_58"><a class="anchor" href="#_prototype_58"></a>Prototype</h3>
+<h3 id="_prototype_60"><a class="anchor" href="#_prototype_60"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_secure_configure(
@@ -7837,7 +7960,7 @@ nx_web_http_server_callback_packet_send(&amp;my_server, my_packet);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_58"><a class="anchor" href="#_description_58"></a>Description</h3>
+<h3 id="_description_60"><a class="anchor" href="#_description_60"></a>Description</h3>
 <div class="paragraph">
 <p>This service configures a previously created NetX Duo Web HTTP server instance to use TLS for secure HTTPS communications. The parameters are used to configure all the possible TLS sessions with identical state so that each incoming HTTPS Client experiences consistent behavior. The number of TLS sessions is controlled using the macro NX_WEB_HTTP_SESSION_MAX.</p>
 </div>
@@ -7864,7 +7987,7 @@ nx_web_http_server_callback_packet_send(&amp;my_server, my_packet);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_58"><a class="anchor" href="#_input_parameters_58"></a>Input Parameters</h3>
+<h3 id="_input_parameters_60"><a class="anchor" href="#_input_parameters_60"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7907,7 +8030,7 @@ nx_web_http_server_callback_packet_send(&amp;my_server, my_packet);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_58"><a class="anchor" href="#_return_values_58"></a>Return Values</h3>
+<h3 id="_return_values_60"><a class="anchor" href="#_return_values_60"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8014,7 +8137,7 @@ status = nx_web_http_server_start(&amp;my_server);
 <p>Start the HTTP Server</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_59"><a class="anchor" href="#_prototype_59"></a>Prototype</h3>
+<h3 id="_prototype_61"><a class="anchor" href="#_prototype_61"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_start(NX_WEB_HTTP_SERVER *http_server_ptr);</code></pre>
@@ -8022,7 +8145,7 @@ status = nx_web_http_server_start(&amp;my_server);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_59"><a class="anchor" href="#_description_59"></a>Description</h3>
+<h3 id="_description_61"><a class="anchor" href="#_description_61"></a>Description</h3>
 <div class="paragraph">
 <p>This service starts a previously created HTTP or HTTPS Server instance.</p>
 </div>
@@ -8031,7 +8154,7 @@ status = nx_web_http_server_start(&amp;my_server);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_59"><a class="anchor" href="#_input_parameters_59"></a>Input Parameters</h3>
+<h3 id="_input_parameters_61"><a class="anchor" href="#_input_parameters_61"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8041,7 +8164,7 @@ status = nx_web_http_server_start(&amp;my_server);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_59"><a class="anchor" href="#_return_values_59"></a>Return Values</h3>
+<h3 id="_return_values_61"><a class="anchor" href="#_return_values_61"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8079,7 +8202,7 @@ status = nx_web_http_server_start(&amp;my_server);
 <p>Stop the HTTP Server</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_60"><a class="anchor" href="#_prototype_60"></a>Prototype</h3>
+<h3 id="_prototype_62"><a class="anchor" href="#_prototype_62"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_stop(NX_WEB_HTTP_SERVER *http_server_ptr);</code></pre>
@@ -8087,13 +8210,13 @@ status = nx_web_http_server_start(&amp;my_server);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_60"><a class="anchor" href="#_description_60"></a>Description</h3>
+<h3 id="_description_62"><a class="anchor" href="#_description_62"></a>Description</h3>
 <div class="paragraph">
 <p>This service stops the previously create HTTP Server instance. This routine should be called prior to deleting an HTTP Server instance.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_60"><a class="anchor" href="#_input_parameters_60"></a>Input Parameters</h3>
+<h3 id="_input_parameters_62"><a class="anchor" href="#_input_parameters_62"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8103,7 +8226,7 @@ status = nx_web_http_server_start(&amp;my_server);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_60"><a class="anchor" href="#_return_values_60"></a>Return Values</h3>
+<h3 id="_return_values_62"><a class="anchor" href="#_return_values_62"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8144,7 +8267,7 @@ status = nx_web_http_server_stop(&amp;my_server);
 <p>Extract file type from Client HTTP request</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_61"><a class="anchor" href="#_prototype_61"></a>Prototype</h3>
+<h3 id="_prototype_63"><a class="anchor" href="#_prototype_63"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_type_get(
@@ -8155,7 +8278,7 @@ status = nx_web_http_server_stop(&amp;my_server);
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_61"><a class="anchor" href="#_description_61"></a>Description</h3>
+<h3 id="_description_63"><a class="anchor" href="#_description_63"></a>Description</h3>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -8198,7 +8321,7 @@ This service is deprecated. Users are encouraged to use the service <em>nx_web_h
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_61"><a class="anchor" href="#_input_parameters_61"></a>Input Parameters</h3>
+<h3 id="_input_parameters_63"><a class="anchor" href="#_input_parameters_63"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8217,7 +8340,7 @@ This service is deprecated. Users are encouraged to use the service <em>nx_web_h
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_61"><a class="anchor" href="#_return_values_61"></a>Return Values</h3>
+<h3 id="_return_values_63"><a class="anchor" href="#_return_values_63"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8267,7 +8390,7 @@ string_length = nx_web_http_server_type_get(&amp;my_server_ptr,
 <p>Extract file type from Client HTTP request</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_62"><a class="anchor" href="#_prototype_62"></a>Prototype</h3>
+<h3 id="_prototype_64"><a class="anchor" href="#_prototype_64"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_type_get_extended(
@@ -8280,7 +8403,7 @@ string_length = nx_web_http_server_type_get(&amp;my_server_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_62"><a class="anchor" href="#_description_62"></a>Description</h3>
+<h3 id="_description_64"><a class="anchor" href="#_description_64"></a>Description</h3>
 <div class="paragraph">
 <p>This service extracts the HTTP request type in the buffer <em>http_type_string</em> and its length in <em>string_size</em> from the input buffer <em>name</em>, usually the URL. If no MIME map is found, it defaults to the "text/plain" type. Otherwise it compares the extracted type against the HTTP Server default MIME maps for a match. The default MIME maps in NetX Duo Web HTTP Server are:</p>
 </div>
@@ -8314,7 +8437,7 @@ string_length = nx_web_http_server_type_get(&amp;my_server_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_62"><a class="anchor" href="#_input_parameters_62"></a>Input Parameters</h3>
+<h3 id="_input_parameters_64"><a class="anchor" href="#_input_parameters_64"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8342,7 +8465,7 @@ string_length = nx_web_http_server_type_get(&amp;my_server_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_62"><a class="anchor" href="#_return_values_62"></a>Return Values</h3>
+<h3 id="_return_values_64"><a class="anchor" href="#_return_values_64"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8395,7 +8518,7 @@ ret = nx_web_http_server_type_get_extended(&amp;my_server_ptr,
 <p>Set digest authenticate callback function</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_63"><a class="anchor" href="#_prototype_63"></a>Prototype</h3>
+<h3 id="_prototype_65"><a class="anchor" href="#_prototype_65"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_digest_authenticate_notify_set(
@@ -8413,13 +8536,13 @@ ret = nx_web_http_server_type_get_extended(&amp;my_server_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_63"><a class="anchor" href="#_description_63"></a>Description</h3>
+<h3 id="_description_65"><a class="anchor" href="#_description_65"></a>Description</h3>
 <div class="paragraph">
 <p>This service sets the callback invoked when digest authenticate is performed.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_63"><a class="anchor" href="#_input_parameters_63"></a>Input Parameters</h3>
+<h3 id="_input_parameters_65"><a class="anchor" href="#_input_parameters_65"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8432,7 +8555,7 @@ ret = nx_web_http_server_type_get_extended(&amp;my_server_ptr,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_63"><a class="anchor" href="#_return_values_63"></a>Return Values</h3>
+<h3 id="_return_values_65"><a class="anchor" href="#_return_values_65"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8486,7 +8609,7 @@ status = nx_web_http_server_digest_authenticate_notify_set(&amp;my_server,
 <p>Set digest authenticate callback function</p>
 </div>
 <div class="sect2">
-<h3 id="_prototype_64"><a class="anchor" href="#_prototype_64"></a>Prototype</h3>
+<h3 id="_prototype_66"><a class="anchor" href="#_prototype_66"></a>Prototype</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-C hljs" data-lang="C">UINT nx_web_http_server_digest_authenticate_notify_set(
@@ -8505,13 +8628,13 @@ status = nx_web_http_server_digest_authenticate_notify_set(&amp;my_server,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_description_64"><a class="anchor" href="#_description_64"></a>Description</h3>
+<h3 id="_description_66"><a class="anchor" href="#_description_66"></a>Description</h3>
 <div class="paragraph">
 <p>This service sets the callback invoked when authenticate check is performed.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_parameters_64"><a class="anchor" href="#_input_parameters_64"></a>Input Parameters</h3>
+<h3 id="_input_parameters_66"><a class="anchor" href="#_input_parameters_66"></a>Input Parameters</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8524,7 +8647,7 @@ status = nx_web_http_server_digest_authenticate_notify_set(&amp;my_server,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_return_values_64"><a class="anchor" href="#_return_values_64"></a>Return Values</h3>
+<h3 id="_return_values_66"><a class="anchor" href="#_return_values_66"></a>Return Values</h3>
 <div class="ulist">
 <ul>
 <li>
