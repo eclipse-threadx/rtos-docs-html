@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>ThreadX security advisories :: Eclipse ThreadX Documentation</title>
     <link rel="canonical" href="https://threadx.io/threadx/main/security/index.html">
-    <meta name="generator" content="Antora 3.2.0">
+    <meta name="generator" content="Antora 3.2.1">
     <link rel="stylesheet" href="../../../_/css/site.css">
   </head>
   <body class="article">
@@ -367,6 +367,69 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-rrjj-jwcw-hvf8.html" class="xref page">GHSA‑rrjj‑jwcw‑hvf8</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑102757</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module Manager accepts unauthenticated kernel object pointers, allowing module-to-kernel privilege escalation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-rrg6-24r9-wqpm.html" class="xref page">GHSA‑rrg6‑24r9‑wqpm</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑95111</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module queue front-send validates a word count as a byte count</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-fvp6-37q5-c648.html" class="xref page">GHSA‑fvp6‑37q5‑c648</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑95109</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cortex-A7 module data validation checks only the first address of a caller-supplied range</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-9hhf-6357-hpgq.html" class="xref page">GHSA‑9hhf‑6357‑hpgq</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑95108</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deleting a user-mode module thread leaks its privileged kernel stack</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-63qc-jcr6-qw6r.html" class="xref page">GHSA‑63qc‑jcr6‑qw6r</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑95107</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module object allocation size overflow corrupts the manager object pool</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-5w57-xhwq-v7wq.html" class="xref page">GHSA‑5w57‑xhwq‑v7wq</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑94202</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module block-pool create validates two of the four parameter words it reads</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-57mf-w87f-rq7m.html" class="xref page">GHSA‑57mf‑w87f‑rq7m</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑94192</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module object deallocation can free a live ThreadX kernel object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-39rx-hq8c-4px8.html" class="xref page">GHSA‑39rx‑hq8c‑4px8</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑94024</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module Manager object lookup validates one byte of a module&#8217;s search name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-36vf-7cx6-9f9j.html" class="xref page">GHSA‑36vf‑7cx6‑9f9j</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑94023</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module delete dispatchers do not enforce kernel-object ownership before irreversible deletion</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2026‑01‑23</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-xj75-fc68-h4rw.html" class="xref page">GHSA‑xj75‑fc68‑h4rw</a></p></td>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GHSA-c8cj-fj9j-426v: FileX fault-tolerant log replay writes past the destination sector when mounting a crafted FAT image :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/filex/main/security/ghsa-c8cj-fj9j-426v.html">
+    <meta name="generator" content="Antora 3.2.1">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article security-advisory">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="filex" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">FileX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">FileX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">FileX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-filex.html">Overview of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">FileX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - I/O drivers for FileX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter6.html">Ch. 6 - FileX fault tolerant module</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - FileX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - FileX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - FileX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx/main/index.html">ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">FileX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx/main/index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">FileX User Guide</a></li>
+    <li><a href="ghsa-c8cj-fj9j-426v.html">GHSA-c8cj-fj9j-426v: FileX fault-tolerant log replay writes past the destination sector when mounting a crafted FAT image</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/filex/modules/ROOT/pages/security/ghsa-c8cj-fj9j-426v.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">GHSA-c8cj-fj9j-426v: FileX fault-tolerant log replay writes past the destination sector when mounting a crafted FAT image</h1>
+<div id="preamble">
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">GHSA ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/eclipse-threadx/filex/security/advisories/GHSA-c8cj-fj9j-426v">GHSA‑c8cj‑fj9j‑426v</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CVE ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑91041</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Severity</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CVSS score</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.8 (<code>CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H</code>)</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CWE</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://cwe.mitre.org/data/definitions/787.html">CWE-787</a>, <a href="https://cwe.mitre.org/data/definitions/1284.html">CWE-1284</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Published</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Last updated</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_affected_packages"><a class="anchor" href="#_affected_packages"></a>Affected packages</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 37.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Package</th>
+<th class="tableblock halign-left valign-top">Vulnerable versions</th>
+<th class="tableblock halign-left valign-top">Patched versions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FileX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8656; 6.5.1.202602</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.5.2.202603</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h3>
+<div class="paragraph">
+<p>Mounting an attacker-controlled FAT image with fault tolerance enabled causes an out-of-bounds heap write during log replay. The write is attacker-positioned and attacker-valued, and on a common embedded memory layout it reaches the FX_MEDIA driver callback, giving control of the instruction pointer.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_details"><a class="anchor" href="#_details"></a>Details</h3>
+<div class="paragraph">
+<p><code>_fx_fault_tolerant_apply_logs</code> replays directory log entries into a single sector staged at <code>fx_media_memory_buffer</code>. Both the destination offset and the copy size are read from the on-disk log. The guard before the copy bounds their sum against <code>fx_media_memory_size</code>, the size of the whole sector cache, rather than against <code>fx_media_bytes_per_sector</code>, the size of the one sector slot the copy may legitimately touch. A log entry whose offset falls inside the cache but past the sector therefore passes the check and writes outside its buffer.</p>
+</div>
+<div class="paragraph">
+<p>The reach of that write covers <code>fx_media_driver_entry</code>, the callback invoked by every media operation. The replay loop issues the directory sector write-back on the line after the copy, which calls the pointer it has just overwritten, so the hijack completes inside a single iteration with no later operation required. The on-disk value is used directly, so the outcome does not depend on address-space layout.</p>
+</div>
+<div class="paragraph">
+<p>A second, lesser problem sits at enable time: the 16-bit <code>total_size</code> field is trusted before the log checksum is verified, allowing an out-of-bounds read while the log file is being loaded.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_impact"><a class="anchor" href="#_impact"></a>Impact</h3>
+<div class="paragraph">
+<p>An attacker who can present a crafted FAT image — removable media, or any path that lets them influence the on-disk log — gains a write primitive that yields code execution on targets without an MMU, ASLR or W^X, which describes most ThreadX deployments. Where the sector cache and the FX_MEDIA structure are not co-located, the same write corrupts adjacent heap instead.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_affected_configurations"><a class="anchor" href="#_affected_configurations"></a>Affected configurations</h3>
+<div class="paragraph">
+<p>Reachability requires <code>FX_ENABLE_FAULT_TOLERANT</code> at build time and an <code>fx_fault_tolerant_enable()</code> call at runtime. That is opt-in, but it is the configuration deployed wherever power-fail safety matters. A build without fault tolerance never replays a log and is unaffected.</p>
+</div>
+<div class="paragraph">
+<p>Every release up to and including 6.5.1.202602 is affected.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_severity"><a class="anchor" href="#_severity"></a>Severity</h3>
+<div class="paragraph">
+<p><code>CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H</code> — 7.8, High.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_patches"><a class="anchor" href="#_patches"></a>Patches</h3>
+<div class="paragraph">
+<p>Fixed in FileX 6.5.2.202603. The copy is bounded against <code>fx_media_bytes_per_sector</code>, the actual destination slot; the log entry budget excludes the header, the FAT chain and the content header it sits behind; and <code>total_size</code> is validated against the structural minimum, the format maximum and the caller&#8217;s buffer before the checksum path runs.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_workarounds"><a class="anchor" href="#_workarounds"></a>Workarounds</h3>
+<div class="paragraph">
+<p>Build without <code>FX_ENABLE_FAULT_TOLERANT</code>, or do not call <code>fx_fault_tolerant_enable()</code>, on any product that mounts media it does not control.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_credits"><a class="anchor" href="#_credits"></a>Credits</h3>
+<div class="paragraph">
+<p>Reported by @adawn0106.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

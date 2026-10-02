@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GHSA-36vf-7cx6-9f9j: Module delete dispatchers do not enforce kernel-object ownership before irreversible deletion :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx/main/security/ghsa-36vf-7cx6-9f9j.html">
+    <meta name="generator" content="Antora 3.2.1">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article security-advisory">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">ThreadX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">ThreadX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">ThreadX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-threadx.html">Overview of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of ThreadX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - Device drivers for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter6.html">Ch. 6 - Demonstration system for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - ThreadX API services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - ThreadX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - ThreadX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX User Guide Addendum for ARMv8-M</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter1.html">Ch. 1 - Introduction to ThreadX for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter2.html">Ch. 2 - Installing ThreadX support for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter3.html">Ch. 3 - ThreadX APIs for ARMv8-M</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX SMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter1.html">Ch. 1 - Introduction to ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter2.html">Ch. 2 - Installation &amp; Use of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter3.html">Ch. 3 - Functional Components of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter4.html">Ch. 4 - Description of ThreadX SMP Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter5.html">Ch. 5 - Device Drivers for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter6.html">Ch. 6 - Demonstration System for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-a.html">App. A - ThreadX SMP API Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-b.html">App. B - ThreadX SMP Constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-c.html">App. C - ThreadX SMP Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-d.html">App. D - ASCII Character Codes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ThreadX SMP MISRA C compliance</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">ThreadX User Guide</a></li>
+    <li><a href="ghsa-36vf-7cx6-9f9j.html">GHSA-36vf-7cx6-9f9j: Module delete dispatchers do not enforce kernel-object ownership before irreversible deletion</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/threadx/modules/ROOT/pages/security/ghsa-36vf-7cx6-9f9j.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">GHSA-36vf-7cx6-9f9j: Module delete dispatchers do not enforce kernel-object ownership before irreversible deletion</h1>
+<div id="preamble">
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">GHSA ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-36vf-7cx6-9f9j">GHSA‑36vf‑7cx6‑9f9j</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CVE ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑94023</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Severity</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CWE</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://cwe.mitre.org/data/definitions/125.html">CWE-125</a>, <a href="https://cwe.mitre.org/data/definitions/862.html">CWE-862</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Published</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Last updated</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_affected_packages"><a class="anchor" href="#_affected_packages"></a>Affected packages</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 37.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Package</th>
+<th class="tableblock halign-left valign-top">Vulnerable versions</th>
+<th class="tableblock halign-left valign-top">Patched versions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ThreadX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&gt;= 6.0.1, &#8656; 6.5.1.202602a</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.5.2.202603</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h3>
+<div class="paragraph">
+<p>A ThreadX module reaches a kernel object&#8217;s delete service through the Module Manager&#8217;s dispatch layer, which asked one question about the pointer: does the object lie outside the module&#8217;s own code and data. That is the policy for <strong>using</strong> an object, and using an object a module does not own is supported and intended — <code>txm_module_object_pointer_get_extended</code> searches the system&#8217;s created objects by name and hands back objects the application created and objects other modules created, so that a module can send to a shared queue, take a shared semaphore or get a shared mutex.</p>
+</div>
+<div class="paragraph">
+<p>Destroying one of those is not sharing it. A module could name any object it had a pointer to and have the privileged dispatcher delete it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_details"><a class="anchor" href="#_details"></a>Details</h3>
+<div class="paragraph">
+<p>Two defects on the same path.</p>
+</div>
+<div class="paragraph">
+<p><strong>The ownership decision is reached after the irreversible act.</strong> <code><em>txm_module_manager_object_deallocate</code>, which all eight <code>_txm_module_manager_tx</em>*<em>delete_dispatch</code> functions call unconditionally after a successful <code>_txe</em>*_delete</code>, has required the memory to belong to the calling module since <code>v6.0.1_rel</code>. A module deleting anything else could therefore only ever end in <code>TX_PTR_ERROR</code>. The ownership requirement is already in the delete path, expressed as the only way that path can complete successfully — it is enforced one step too late. By the time the error is produced the object has been unlinked from the created list for its type and its created count decremented, threads suspended on it have been resumed with <code>TX_DELETED</code>, an owned mutex&#8217;s ownership list and priority inheritance have been unwound in the owning thread, an active timer has been deactivated, and a pool the application was allocating from has ceased to exist. An error returned at that point describes a cleanup failure and restores nothing.</p>
+</div>
+<div class="paragraph">
+<p><strong>A privileged read in front of a caller-named address.</strong> <code>_txm_module_manager_object_deallocate</code> reached the manager&#8217;s private header by computing <code>((TXM_MODULE_ALLOCATED_OBJECT <strong>) object_ptr) - 1</code> and read it before establishing that it *was</strong> a header — no pool bounds check of any kind. Because every delete dispatcher calls that function directly, an object the module does not own arrived there as a matter of course rather than exceptionally. For an object the application allocated statically, or for any address outside the object pool, the words in front of it are unrelated memory read in privileged mode. They are also acted on: an address whose preceding words happen to name the calling module is unlinked from that module&#8217;s allocation list — a write through pointers read out of non-pool memory — and handed to <code>_txe_byte_release</code>. Where the preceding words are unmapped or fault-protected, the read itself faults in privileged mode.</p>
+</div>
+<div class="paragraph">
+<p>The remediation below removes that read rather than bounding it. Searching the module&#8217;s own allocation list answers the ownership question without dereferencing the caller&#8217;s address at all, so a header that begins inside the object pool and ends past it, and an end-of-allocation computation that wraps, both stop being reachable.</p>
+</div>
+<div class="paragraph">
+<p>The supported way for a module to learn a foreign object&#8217;s address is the manager&#8217;s own lookup service, and it applies no ownership filter to threads, timers, queues, event flags groups, semaphores or mutexes. One lookup call and one delete call are the whole sequence: no race, no ID forgery, no address guess. Block pools and byte pools differ — <code>txm_module_object_pointer_get_extended</code> refuses those two types outright for a memory-protected module, with <code>TXM_MODULE_INVALID</code> — so for those a module needs a pointer passed to it by another component, or a stale pointer to object-pool memory it once owned.</p>
+</div>
+<div class="paragraph">
+<p>Memory protection does not help. The privileged Module Manager performs the delete on the module&#8217;s behalf, and for a module without memory protection the dispatcher&#8217;s parameter checks are skipped entirely.</p>
+</div>
+<div class="paragraph">
+<p><code>GHSA-57mf-w87f-rq7m</code> refuses to release the memory of an object that is still created. It does not reduce this advisory: by the time the unauthorised-delete path reaches the deallocation the object has been deleted, so the liveness refusal does not fire. The two compose in the deallocator — this advisory establishes that the address names one of the calling module&#8217;s allocations, and that one refuses to release it while a live object is in it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_impact"><a class="anchor" href="#_impact"></a>Impact</h3>
+<div class="paragraph">
+<p>A low-privilege module destroys kernel objects belonging to the resident application or to other modules, through the privileged dispatcher, using only services it is entitled to call. Synchronisation between components is broken, waiters are woken with <code>TX_DELETED</code> under a protocol that does not expect it, timers stop, pools disappear and a mutex owner&#8217;s effective priority is silently altered. None of it is recoverable: the object is gone before any check can refuse the request.</p>
+</div>
+<div class="paragraph">
+<p>The blind read in front of a non-pool address adds a privileged fault on an address the module named, and a write through pointers read out of memory that is not the manager&#8217;s.</p>
+</div>
+<div class="paragraph">
+<p>Confidentiality is not affected. Nothing read in front of the object reaches the module: the only value derived from that read is the deallocator&#8217;s return code, the address cannot be chosen because <code><em>txe</em>*_delete</code> requires a genuine control block ID there, and the value compared against — the module&#8217;s own instance pointer — is unknown to the module and each probe costs the destruction of a real object.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_affected_configurations"><a class="anchor" href="#_affected_configurations"></a>Affected configurations</h3>
+<div class="paragraph">
+<p>Any ThreadX Modules build with a Module Manager object pool. The defect is portable rather than port-specific: the delete dispatchers and the deallocation live in <code>common_modules</code>, and every module port reaches them through the same dispatcher.</p>
+</div>
+<div class="paragraph">
+<p>Every release from 6.0.1 through 6.5.1.202602a, verified by reading each tag rather than by inference. <code>v6.0_rel</code> predates the Modules component and is not affected. The use check became stricter over that range, but every form of it accepts an object belonging to the application or to another module, which is what the delete path needs to be given, and the lookup service applies no ownership filter to the six non-pool types in any tag.</p>
+</div>
+<div class="paragraph">
+<p>No race, ISR context or disabled error checking is required.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_severity"><a class="anchor" href="#_severity"></a>Severity</h3>
+<div class="paragraph">
+<p>CVSS v4.0 base score <strong>6.9 (Medium)</strong> <code>CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:N/VI:H/VA:H/SC:N/SI:N/SA:N</code></p>
+</div>
+<div class="paragraph">
+<p><code>AC:L</code> was checked per object type rather than assumed, and holds because the lookup service returns unowned threads, timers, queues, event flags groups, semaphores and mutexes by name with no ownership filter — six of the eight types, including the synchronisation objects a shared design is most likely to have given the module the name of.</p>
+</div>
+<div class="paragraph">
+<p><code>VC:N</code> is retained after scrutiny, for the reason given under Impact: the attacker can aim the privileged read at nothing, and learns at most one bit about an unknown constant at the price of destroying a real kernel object. Recorded sensitivities: a reviewer who counts that one bit as a limited disclosure gets <code>VC:L</code> and 7.0, which crosses into high; one who holds that a foreign object&#8217;s address is not reasonably obtainable gets <code>AC:H</code> and 5.8, still medium. <code>VI:H</code> and <code>VA:H</code> do not depend on either reading.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_patches"><a class="anchor" href="#_patches"></a>Patches</h3>
+<div class="paragraph">
+<p>Fixed in ThreadX 6.5.2.202603. The eight delete dispatchers now ask the ownership question before the delete rather than after it. A memory-protected module may delete a kernel object only if the object is one it allocated from the manager&#8217;s object pool, at the exact address the manager returned to it, for an allocation made for that type&#8217;s control block size — the same conditions the create dispatchers already apply, deletion being the inverse of creation. Anything else returns <code>TXM_MODULE_INVALID_MEMORY</code>; the object stays created, nothing waiting on it is resumed, and no created count moves, because the kernel is never asked. That status is what every other pre-service parameter rejection in the dispatch table returns, so no new value enters the module ABI, and it deliberately does not distinguish "not yours" from "not a usable address", so a module cannot use a delete request as an ownership oracle.</p>
+</div>
+<div class="paragraph">
+<p>The check sits inside the existing memory-protection test with the other parameter checks. An unprotected module skips it as it skips all of them: such a module creates objects in its own memory through no check at all, and refusing to let it delete them would break it for no security gain.</p>
+</div>
+<div class="paragraph">
+<p><code>_txm_module_manager_object_deallocate</code> no longer reads a header to find out whether there is one. It finds the allocation by searching the module&#8217;s own allocation list, comparing the caller&#8217;s address and never dereferencing it, so an address that names none of this module&#8217;s allocations is refused without a privileged read of anything in front of it. The search also establishes what the header read could not: that the address is the exact start of an allocation rather than somewhere inside one. Being in the deallocation itself rather than at a call site, it covers all eight delete dispatchers, the deallocation request a module can make directly, and a direct application call. It runs with interrupts disabled and is bounded by the count the manager keeps beside the list, so damaged links cannot make it run on.</p>
+</div>
+<div class="paragraph">
+<p>A type and lifecycle field in the private allocation header was considered and rejected, because such a field records only what the manager was told. <code>_txm_module_manager_stop</code> needs no exemption, verified rather than assumed: it deletes a module&#8217;s objects through the internal services rather than any dispatcher, so no caller-facing check is on that path.</p>
+</div>
+<div class="paragraph">
+<p>Regression coverage drives all eight object types through allocation, ownership checks from both the owning module and another, and deallocation, with the pool boundaries, interior addresses, null and stale pointers, and memory that has changed hands. Restoring the previous deallocation fails four expectations and then segmentation faults on the null-pointer case; neutralising the ownership check fails 74. The new functions and the changed deallocation reach 100% line and branch coverage, all 99 host tests pass in each of the five build configurations under GCC 14, and the changed files compile warning-neutrally at <code>-Werror</code> for every GNU 32-bit module port.</p>
+</div>
+<div class="paragraph">
+<p>Not covered by tests, stated so nothing more is read into them: the eight dispatcher call sites, because nothing in the tree compiles the kernel dispatch translation unit — they are covered by cross-compilation and review — and the ordering property, that the decision precedes <code><em>txe</em>*_delete</code>, which is established by reading the eight functions.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_workarounds"><a class="anchor" href="#_workarounds"></a>Workarounds</h3>
+<div class="paragraph">
+<p>None that preserve the feature. Every path here is reachable only from a module the Module Manager has loaded, so a system that loads only modules it builds itself is not exposed — but that is precisely the assumption module memory protection exists so that you do not have to make.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_credits"><a class="anchor" href="#_credits"></a>Credits</h3>
+<div class="paragraph">
+<p>Found and fixed by Frédéric Desbiens (@fdesbiens). The finding came from a local AI-agent source review configured and run by the maintainer, then validated against the source. The remediation, its regression test and the documentation change were produced with AI assistance under human review, in accordance with the Eclipse Foundation&#8217;s Generative AI Usage Guidelines.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

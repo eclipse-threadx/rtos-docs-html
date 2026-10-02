@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GHSA-fvp6-37q5-c648: Cortex-A7 module data validation checks only the first address of a caller-supplied range :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx/main/security/ghsa-fvp6-37q5-c648.html">
+    <meta name="generator" content="Antora 3.2.1">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article security-advisory">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">ThreadX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">ThreadX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">ThreadX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-threadx.html">Overview of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of ThreadX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - Device drivers for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter6.html">Ch. 6 - Demonstration system for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - ThreadX API services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - ThreadX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - ThreadX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX User Guide Addendum for ARMv8-M</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter1.html">Ch. 1 - Introduction to ThreadX for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter2.html">Ch. 2 - Installing ThreadX support for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter3.html">Ch. 3 - ThreadX APIs for ARMv8-M</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX SMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter1.html">Ch. 1 - Introduction to ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter2.html">Ch. 2 - Installation &amp; Use of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter3.html">Ch. 3 - Functional Components of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter4.html">Ch. 4 - Description of ThreadX SMP Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter5.html">Ch. 5 - Device Drivers for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter6.html">Ch. 6 - Demonstration System for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-a.html">App. A - ThreadX SMP API Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-b.html">App. B - ThreadX SMP Constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-c.html">App. C - ThreadX SMP Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-d.html">App. D - ASCII Character Codes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ThreadX SMP MISRA C compliance</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">ThreadX User Guide</a></li>
+    <li><a href="ghsa-fvp6-37q5-c648.html">GHSA-fvp6-37q5-c648: Cortex-A7 module data validation checks only the first address of a caller-supplied range</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/threadx/modules/ROOT/pages/security/ghsa-fvp6-37q5-c648.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">GHSA-fvp6-37q5-c648: Cortex-A7 module data validation checks only the first address of a caller-supplied range</h1>
+<div id="preamble">
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">GHSA ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-fvp6-37q5-c648">GHSA‑fvp6‑37q5‑c648</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CVE ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑95109</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Severity</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CWE</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://cwe.mitre.org/data/definitions/125.html">CWE-125</a>, <a href="https://cwe.mitre.org/data/definitions/787.html">CWE-787</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Published</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Last updated</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_affected_packages"><a class="anchor" href="#_affected_packages"></a>Affected packages</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 37.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Package</th>
+<th class="tableblock halign-left valign-top">Vulnerable versions</th>
+<th class="tableblock halign-left valign-top">Patched versions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ThreadX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&gt;= 6.1, &#8656; 6.5.1.202602a</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.5.2.202603</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h3>
+<div class="paragraph">
+<p>The Cortex-A7 MMU Modules port validates a caller-supplied buffer by translating <strong>one address</strong> — the first byte. The common Module Manager hands its range check the module instance, the start address and the complete byte size; the Cortex-A7 implementation discarded the instance and the size and asked the MMU a single question about the start.</p>
+</div>
+<div class="paragraph">
+<p>A memory-protected module therefore passed any range whose first byte was user-readable, however far the rest of it reached. Privileged dispatch code then read or wrote the whole range. Because every protected-module dispatcher that consumes a buffer or an extra-parameter array goes through this one macro, the defect is not in any individual service: it is in the primitive all of them rely on.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_details"><a class="anchor" href="#_details"></a>Details</h3>
+<div class="paragraph">
+<p><code>TXM_MODULE_MANAGER_CHECK_INSIDE_DATA</code> is the port&#8217;s answer to "may this module touch these bytes?". The Cortex-A7 version called <code>_txm_module_manager_inside_data_check((ULONG)obj_ptr)</code>, which performs a single <code>ATS1CUR</code> translation.</p>
+</div>
+<div class="paragraph">
+<p>That operation tests an unprivileged <strong>read</strong> at one address. It establishes nothing about the last byte, the 4 KiB pages in between, integer wraparound of <code>obj_ptr + obj_size</code>, ownership of the memory by the requesting module, or unprivileged <strong>write</strong> permission. The read intent is the wrong question for <code>TXM_MODULE_MANAGER_PARAM_CHECK_BUFFER_WRITE</code>, whose contract requires writable data or shared memory rather than merely readable code or data.</p>
+</div>
+<div class="paragraph">
+<p>Queue receive shows the write-oriented path. A protected module obtains a queue with a multi-word message size and passes a destination whose first byte sits in a readable mapped page but whose full range crosses the page or region end. The dispatcher computes the byte count and calls <code>PARAM_CHECK_BUFFER_WRITE</code>, the Cortex-A7 implementation translates the start address alone and returns true, and <code>_txe_queue_receive</code> then copies the complete message in privileged context — including the bytes past the end of what was checked.</p>
+</div>
+<div class="paragraph">
+<p>Read-oriented dispatchers have the inverse problem: privileged code reads beyond the module-owned source and returns or enqueues those bytes. Where the neighbouring page is unmapped, the same condition yields a privileged data abort instead.</p>
+</div>
+<div class="paragraph">
+<p>The reachable surface is wide. Queue send and receive, the information getters, event and pool services, object lookup, and the extra-parameter arrays all pass through the affected macros before privileged code dereferences a module-controlled range.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_impact"><a class="anchor" href="#_impact"></a>Impact</h3>
+<div class="paragraph">
+<p>A module whose only privilege is the right to make ordinary system calls can drive privileged code into out-of-bounds reads and writes. Depending on the service and the virtual layout, that means disclosure of adjacent privileged data, modification of memory outside the module&#8217;s writable mapping, modification of read-only module code through a write-output API, or a kernel-mode fault.</p>
+</div>
+<div class="paragraph">
+<p>The exposure is only as large as what sits next to a module mapping. Where the layout places an unmapped guard after every module region, the reachable consequence is the privileged fault rather than disclosure or corruption.</p>
+</div>
+<div class="paragraph">
+<p>No race, ISR context, disabled error checking or object corruption is required.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_affected_configurations"><a class="anchor" href="#_affected_configurations"></a>Affected configurations</h3>
+<div class="paragraph">
+<p>Cortex-A7 MMU Modules builds — GNU, AC5 or IAR — with <code>TXM_MODULE_MEMORY_PROTECTION</code>. Every other module port carries its own range-complete implementation of the same macro and is unaffected.</p>
+</div>
+<div class="paragraph">
+<p>The port and the single-address check arrived together in commit <code>1b5816a2</code>, the 6.1 minor release. Every release from <code>v6.1_rel</code> through <code>v6.5.1.202602a_rel</code> carries it, including both 6.5.1 releases. The 6.0.x releases predate the Cortex-A7 module port entirely.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_severity"><a class="anchor" href="#_severity"></a>Severity</h3>
+<div class="paragraph">
+<p>CVSS v4.0 base score <strong>8.5 (High)</strong> <code>CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N</code></p>
+</div>
+<div class="paragraph">
+<p>The actor is module code already running on the device, needing syscall access but not privileged CPU access, and no user interaction. A pointer placed near a mapped boundary and an ordinary kernel request are sufficient. The vulnerable condition is the supported memory-protected Modules configuration itself, not an exceptional runtime state. Exploit Maturity was not assessed, so EQ5 takes the v4.0 default of <code>E:A</code>.</p>
+</div>
+<div class="paragraph">
+<p>Subsequent-system metrics are <code>N</code>: only the ThreadX instance is claimed, and product-level physical effects are deployment-specific.</p>
+</div>
+<div class="paragraph">
+<p>The all-high vulnerable-system impact assumes a deployment in which a module mapping is adjacent to privileged memory or to another module&#8217;s. An integrator whose page-table layout guarantees an unmapped guard after every module region should reduce confidentiality and integrity in their Environmental metrics; the availability impact remains either way.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_patches"><a class="anchor" href="#_patches"></a>Patches</h3>
+<div class="paragraph">
+<p>Fixed in ThreadX 6.5.2.202603.</p>
+</div>
+<div class="paragraph">
+<p>The check now takes the range size and an access intent. The module&#8217;s own data region is answered from the Module Manager&#8217;s records, which name it exactly and cost no address translations; everything else is answered by translating every page the range touches with the requested unprivileged access. Empty ranges, ranges whose last byte would wrap, and ranges that leave the recorded data region partway through are refused. The page walk is bounded by <code>TXM_MODULE_MANAGER_DATA_CHECK_MAX_PAGES</code>, so one module request cannot impose unbounded work on the kernel, and translation results are trusted only while the requesting module&#8217;s own address-space context is loaded.</p>
+</div>
+<div class="paragraph">
+<p>The outside direction has its own check rather than being the negation of the inside one. Negating a range-complete inside check would report a range reaching into the module only partway as being outside it, which <code>_txm_module_manager_param_check_object_for_use</code> would then accept as a kernel object.</p>
+</div>
+<div class="paragraph">
+<p>Other ports are untouched. The backward-compatible fallbacks in <code>txm_module_manager_util.h</code> keep their single data check, and the preprocessed dispatch output for all 23 other module ports that GCC can preprocess is byte-identical to the unfixed tree.</p>
+</div>
+<div class="paragraph">
+<p>Verification: host suite 99/99 across all five build configurations under GCC 13.3.0 and GCC 14.2.0; the Cortex-A7 module manager cross-compiles clean under GCC 14.3.1 at <code>-Wall -Wextra -Werror</code> against the port&#8217;s own shipped headers; the bounded host regression test passes on an emulated Cortex-A7 at every optimisation level and fails 24 expectations against a shim reproducing the pre-fix behaviour; 100% line, branch and call coverage of the new logic.</p>
+</div>
+<div class="paragraph">
+<p>The CP15 address translation is exercised rather than stubbed. A second test builds a short-descriptor translation table, enables the MMU, and drives the real check through the real translation operations on a real Cortex-A7 translation regime. It confirms what a simulated page map could only assume: <code>ATS1CUW</code> denies a write to an unprivileged read-only mapping while <code>ATS1CUR</code> allows the read, so the write intent does what the fix depends on; a range leaving its mapping partway through is rejected, while translating only its first address accepts it; and privileged-only memory is reachable by neither intent and is reported outside the module. Reverting the page walk to a single page makes exactly the boundary case fail, so the test is known to detect the regression it guards.</p>
+</div>
+<div class="paragraph">
+<p>Still unverified: these checks run under an emulator, which implements the architecture rather than a particular silicon implementation, so errata, cache and TLB interactions and speculative effects remain outside their reach. The AC5 and IAR builds of the port also still need their native toolchains.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_workarounds"><a class="anchor" href="#_workarounds"></a>Workarounds</h3>
+<div class="paragraph">
+<p>None that preserve the feature. Every path here is reachable only from a module the Module Manager has loaded, so a system that loads only modules it builds itself is not exposed — but that is precisely the assumption module memory protection exists so that you do not have to make.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_credits"><a class="anchor" href="#_credits"></a>Credits</h3>
+<div class="paragraph">
+<p>Found and fixed by Frédéric Desbiens (@fdesbiens). The analysis, fix and regression tests were produced with AI assistance under human review, in accordance with the Eclipse Foundation&#8217;s Generative AI Usage Guidelines.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

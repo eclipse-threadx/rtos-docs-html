@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GHSA-63qc-jcr6-qw6r: Module object allocation size overflow corrupts the manager object pool :: Eclipse ThreadX Documentation</title>
+    <link rel="canonical" href="https://threadx.io/threadx/main/security/ghsa-63qc-jcr6-qw6r.html">
+    <meta name="generator" content="Antora 3.2.1">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article security-advisory">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+<style>
+  /* Asciidoctor's .tableblock wrapper is full-width; force the <table> itself
+     to match so DataTables distributes the extra space across columns instead
+     of leaving a gap on the right for small tables (e.g. FileX). */
+  table.datatable { width: 100% !important; }
+
+  /* Hide the component title that Antora's default UI inserts at the top of
+     the left nav. Our nav.adoc files already provide a top-level entry for
+     the component, so the built-in title is redundant. */
+  .nav-menu > h3.title { display: none; }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) return;
+    jQuery('table.datatable').each(function () {
+      var $table = jQuery(this);
+      // DataTables injects its own <colgroup> before Asciidoctor's, and
+      // browsers honour the first <colgroup>. Snapshot the Asciidoctor
+      // widths so we can re-apply them once DataTables is done, otherwise
+      // small tables (e.g. FileX) collapse to content width.
+      var widths = [];
+      $table.children('colgroup').children('col').each(function () {
+        widths.push(this.style.width || '');
+      });
+      $table.DataTable({
+        paging: false,
+        info: false,
+        order: [],
+        autoWidth: false,
+        language: { search: 'Filter:' }
+      });
+      $table.children('colgroup').first().children('col').each(function (i) {
+        if (widths[i]) this.style.width = widths[i];
+      });
+    });
+  });
+</script>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://threadx.io">Eclipse ThreadX Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/eclipse-threadx">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="threadx" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">ThreadX User Guide</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../home/main/index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../filex/main/index.html">FileX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../guix/main/index.html">GUIX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../levelx/main/index.html">LevelX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../netx-duo/main/index.html">NetX Duo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samplex/main/index.html">SampleX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">ThreadX</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">ThreadX documentation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../overview-threadx.html">Overview of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../about-this-guide.html">About this guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter1.html">Ch. 1 - Introduction to ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter2.html">Ch. 2 - Installation and use of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter3.html">Ch. 3 - Functional components of ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter4.html">Ch. 4 - Description of ThreadX services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter5.html">Ch. 5 - Device drivers for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../chapter6.html">Ch. 6 - Demonstration system for ThreadX</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-a.html">App. A - ThreadX API services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-b.html">App. B - ThreadX constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-c.html">App. C - ThreadX data types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-d.html">App. D - ASCII character codes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX User Guide Addendum for ARMv8-M</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter1.html">Ch. 1 - Introduction to ThreadX for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter2.html">Ch. 2 - Installing ThreadX support for ARMv8-M</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../user-guide-armv8m/chapter3.html">Ch. 3 - ThreadX APIs for ARMv8-M</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">ThreadX SMP user guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/about-this-guide.html">About This Guide</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter1.html">Ch. 1 - Introduction to ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter2.html">Ch. 2 - Installation &amp; Use of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter3.html">Ch. 3 - Functional Components of ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter4.html">Ch. 4 - Description of ThreadX SMP Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter5.html">Ch. 5 - Device Drivers for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/chapter6.html">Ch. 6 - Demonstration System for ThreadX SMP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-a.html">App. A - ThreadX SMP API Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-b.html">App. B - ThreadX SMP Constants</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-c.html">App. C - ThreadX SMP Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../threadx-smp/appendix-d.html">App. D - ASCII Character Codes</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix-e.html">App. E - ThreadX SMP MISRA C compliance</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">Security advisories</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../threadx-modules/main/index.html">ThreadX Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../tracex/main/index.html">TraceX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../usbx/main/index.html">USBX</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../zonex/main/index.html">ZoneX</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">ThreadX User Guide</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <div class="title"><a href="../../../filex/main/index.html">FileX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../filex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../guix/main/index.html">GUIX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guix/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../home/main/index.html">Home</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../home/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../levelx/main/index.html">LevelX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../levelx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../netx-duo/main/index.html">NetX Duo User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../netx-duo/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../samplex/main/index.html">SampleX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samplex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../threadx-modules/main/index.html">ThreadX Modules User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../threadx-modules/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">ThreadX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../tracex/main/index.html">TraceX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../tracex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../usbx/main/index.html">USBX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../usbx/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <div class="title"><a href="../../../zonex/main/index.html">ZoneX User Guide</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../zonex/main/index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../home/main/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">ThreadX User Guide</a></li>
+    <li><a href="ghsa-63qc-jcr6-qw6r.html">GHSA-63qc-jcr6-qw6r: Module object allocation size overflow corrupts the manager object pool</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/eclipse-threadx/rtos-docs-asciidoc/edit/6.5.2/rtos-docs/threadx/modules/ROOT/pages/security/ghsa-63qc-jcr6-qw6r.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">GHSA-63qc-jcr6-qw6r: Module object allocation size overflow corrupts the manager object pool</h1>
+<div id="preamble">
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">GHSA ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-63qc-jcr6-qw6r">GHSA‑63qc‑jcr6‑qw6r</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CVE ID</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑95107</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Severity</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">CWE</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://cwe.mitre.org/data/definitions/190.html">CWE-190</a>, <a href="https://cwe.mitre.org/data/definitions/680.html">CWE-680</a>, <a href="https://cwe.mitre.org/data/definitions/787.html">CWE-787</a></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Published</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Last updated</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_affected_packages"><a class="anchor" href="#_affected_packages"></a>Affected packages</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 37.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Package</th>
+<th class="tableblock halign-left valign-top">Vulnerable versions</th>
+<th class="tableblock halign-left valign-top">Patched versions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ThreadX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&gt;= 6.0.1, &#8656; 6.5.1.202602a</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.5.2.202603</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h3>
+<div class="paragraph">
+<p>A ThreadX module chooses <code>object_size</code> when it calls <code>txm_module_object_allocate</code>. The Module Manager adds its own 16-byte private header to that size and asked the object pool for the result <strong>without checking the addition</strong>. A size near the top of a <code>ULONG</code> wrapped, the pool served a block far smaller than the header, and the manager then wrote the header past the end of it and into the neighbouring byte-pool block.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_details"><a class="anchor" href="#_details"></a>Details</h3>
+<div class="paragraph">
+<p><code>_txm_module_manager_object_allocate</code> passed <code>(ULONG) (object_size + sizeof(TXM_MODULE_ALLOCATED_OBJECT))</code> to <code>_txe_byte_allocate</code>. The protected dispatcher, <code>_txm_module_manager_txm_module_object_allocate_dispatch</code>, validates only the output pointer for one pointer-sized write; the size passes through unconstrained.</p>
+</div>
+<div class="paragraph">
+<p>On a 32-bit <code>ULONG</code>, <code>object_size</code> of <code>0xFFFFFFF8</code> wraps the request to 8 bytes. The pool accepts 8 bytes and returns them, and the manager then writes all four header fields — owning module instance, <code>next</code>, <code>previous</code>, and the caller&#8217;s size — 16 bytes into an 8-byte allocation. Every wrapped total from 1 to 15 overruns; after the alignment round-up in <code>_tx_byte_allocate</code> the overruns are 12, 8 and 4 bytes.</p>
+</div>
+<div class="paragraph">
+<p>What those bytes land on is byte-pool metadata. A block header is a <code>next</code> pointer followed by an <code>ALIGN_TYPE</code> field holding either <code>TX_BYTE_BLOCK_FREE</code> or the owning pool pointer. In the 4-byte case the field that lands past the end is <code>txm_module_object_size</code> — <strong>a fully attacker-chosen <code>ULONG</code></strong> — and it lands exactly on the following block&#8217;s <code>next</code> pointer, leaving that block&#8217;s free marker intact. The following block exists there whenever the free block exceeded the request by <code>TX_BYTE_BLOCK_MIN</code> and was split, which is the ordinary case.</p>
+</div>
+<div class="paragraph">
+<p><code>_tx_byte_pool_search</code> then treats an attacker-chosen value as a block boundary:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>available_bytes</code> becomes <code>next_ptr - current_ptr</code>, so an arbitrary value passes the size test, and the block is split by writing a new header at <code>current_ptr + memory_size + sizeof(UCHAR *) + sizeof(ALIGN_TYPE)</code> — which can fall outside the pool.</p>
+</li>
+<li>
+<p>Otherwise the search reads <code>*(next_ptr + sizeof(UCHAR *))</code> to test the neighbour&#8217;s free marker, and if that word equals <code>TX_BYTE_BLOCK_FREE</code> it merges, reading <code>*next_ptr</code> into pool metadata.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Both of those are privileged accesses at an address the module chose.</p>
+</div>
+<div class="paragraph">
+<p>An overflow-checked helper, <code>TXM_MODULE_MANAGER_UTIL_MATH_ADD_ULONG</code>, arrived in the same 2020 commit that introduced this call and has been used on both module load paths ever since. This path never used it.</p>
+</div>
+<div class="paragraph">
+<p>The residual sizes need no separate bound. <code>_txe_byte_allocate</code> refuses a zero size and any size larger than the pool, and the Module Manager calls it by its internal name rather than through the <code>tx_byte_allocate</code> macro, so <code>TX_DISABLE_ERROR_CHECKING</code> does not remap it away. The alignment round-up in <code>_tx_byte_allocate</code>, which would itself wrap a size within <code>sizeof(ALIGN_TYPE)</code> of <code>ULONG_MAX</code> down to zero, is therefore unreachable from this path.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_impact"><a class="anchor" href="#_impact"></a>Impact</h3>
+<div class="paragraph">
+<p>A low-privilege module corrupts the shared Module Manager object pool and its own per-module allocation list. The consequences are privileged faults during later allocate and release, an attacker-chosen 32-bit value installed in the pool&#8217;s block list which leads the privileged allocator to write a block header outside the pool, and denial of service for every module and for the manager itself with no recovery short of reboot.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_affected_configurations"><a class="anchor" href="#_affected_configurations"></a>Affected configurations</h3>
+<div class="paragraph">
+<p>Any ThreadX Modules build with a Module Manager object pool. The defect is portable, not port-specific: the call lives in <code>common_modules</code> and every module port reaches it through the same dispatcher. It requires <code>TXM_MODULE_OBJECT_ALLOCATE_CALL</code>, which is enabled unless explicitly compiled out, and a 32-bit <code>ULONG</code>, which every currently shipped module port has.</p>
+</div>
+<div class="paragraph">
+<p>Introduced with the Modules component itself in commit <code>6f61053f</code> (2020-08-07), and present in every tagged release from <code>v6.0.1_rel</code> through <code>v6.5.1.202602a_rel</code>. <code>v6.0_rel</code> predates Modules and is not affected.</p>
+</div>
+<div class="paragraph">
+<p>No race, ISR context or disabled error checking is required.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_severity"><a class="anchor" href="#_severity"></a>Severity</h3>
+<div class="paragraph">
+<p>CVSS v4.0 base score <strong>7.0 (High)</strong> <code>CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:L/VI:H/VA:H/SC:N/SI:N/SA:N</code></p>
+</div>
+<div class="paragraph">
+<p>Exploit Maturity was not assessed, so EQ5 takes the v4.0 default of <code>E:A</code>.</p>
+</div>
+<div class="paragraph">
+<p>Integrity and availability are unconditional. Confidentiality is scored <strong>low rather than high</strong>: before the corrupted <code>next</code> pointer can be followed for its contents the search must merge, and it merges only when the word at <code>next_ptr + sizeof(UCHAR *)</code> equals <code>TX_BYTE_BLOCK_FREE</code>, a constant the attacker cannot arrange at a target of their choosing. A probe therefore discloses one equality bit about a chosen address rather than its contents. Once a merge does occur the word at the target reaches pool metadata, where a later <code>available_bytes</code> comparison makes it recoverable by binary search over <code>memory_size</code>; that chain is why confidentiality is not <code>VC:N</code> either.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_patches"><a class="anchor" href="#_patches"></a>Patches</h3>
+<div class="paragraph">
+<p>Fixed in ThreadX 6.5.2.202603.</p>
+</div>
+<div class="paragraph">
+<p>The header-inclusive size is computed with <code>TXM_MODULE_MANAGER_UTIL_MATH_ADD_ULONG</code> into a local <code>allocation_size</code>, which is what <code>_txe_byte_allocate</code> is given. The check runs after the output pointer is set to <code>TX_NULL</code> and before the protection mutex is taken, so a refused request returns <code>TXM_MODULE_MATH_OVERFLOW</code> and leaves the object pool, the module&#8217;s allocated object list and its list count exactly as they were.</p>
+</div>
+<div class="paragraph">
+<p>Regression coverage models the byte pool behind the manager, applying the two bounds <code>_txe_byte_allocate</code> applies and handing out a block of precisely the requested length with a guard band immediately after it, so an undersized allocation is caught as the out-of-bounds write it is rather than inferred from arithmetic. Thirty-two expectations fail against the unfixed implementation: two report the 8 and 12 bytes written past the end of the block, the rest report pool and list state a refused request must not have touched. The cases cover the smallest overflowing size, sizes wrapping to 1 and to 8, <code>ULONG_MAX</code>, the largest non-overflowing size — which must reach the pool carrying its full untruncated total and be refused there — a zero-length object, every ThreadX control-block size with a release round trip, pool-size and no-memory refusals, a null destination, and both size classes with no object pool created. Coverage of the changed function is 100% line, branch and call.</p>
+</div>
+<div class="paragraph">
+<p>The documented return values for <code>txm_module_object_allocate</code> gain <code>TXM_MODULE_MATH_OVERFLOW</code>, along with <code>TX_SIZE_ERROR</code> and <code>TXM_MODULE_INVALID_MEMORY</code>, which the service already produced and which were undocumented.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_workarounds"><a class="anchor" href="#_workarounds"></a>Workarounds</h3>
+<div class="paragraph">
+<p>None that preserve the feature. Every path here is reachable only from a module the Module Manager has loaded, so a system that loads only modules it builds itself is not exposed — but that is precisely the assumption module memory protection exists so that you do not have to make.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_credits"><a class="anchor" href="#_credits"></a>Credits</h3>
+<div class="paragraph">
+<p>Found and fixed by Frédéric Desbiens (@fdesbiens). The analysis, fix, regression test and documentation change were produced with AI assistance under human review, in accordance with the Eclipse Foundation&#8217;s Generative AI Usage Guidelines.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

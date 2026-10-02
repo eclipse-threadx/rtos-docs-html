@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>GUIX security advisories :: Eclipse ThreadX Documentation</title>
     <link rel="canonical" href="https://threadx.io/guix/main/security/index.html">
-    <meta name="generator" content="Antora 3.2.0">
+    <meta name="generator" content="Antora 3.2.1">
     <link rel="stylesheet" href="../../../_/css/site.css">
   </head>
   <body class="article">
@@ -356,11 +356,91 @@
 <article class="doc">
 <h1 class="page">GUIX security advisories</h1>
 <div class="paragraph">
-<p>No published security advisories are currently available for GUIX.</p>
+<p>The table below lists published security advisories for GUIX, newest first. Click a GHSA ID for full details.</p>
 </div>
-<div class="paragraph">
-<p>See the <a href="https://github.com/eclipse-threadx/guix/security/advisories">GUIX advisories on GitHub</a> for the latest status.</p>
-</div>
+<table class="tableblock frame-all grid-all stretch datatable">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 42.8571%;">
+<col style="width: 14.2858%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Published</th>
+<th class="tableblock halign-left valign-top">GHSA ID</th>
+<th class="tableblock halign-left valign-top">CVE ID</th>
+<th class="tableblock halign-left valign-top">Summary</th>
+<th class="tableblock halign-left valign-top">Severity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-pppm-h3g4-986x.html" class="xref page">GHSA‑pppm‑h3g4‑986x</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑92454</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JPEG decoder: truncated segments are read past the image buffer, and a zero sampling factor hangs the decode</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-m85v-2ccm-w6gf.html" class="xref page">GHSA‑m85v‑2ccm‑w6gf</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑92449</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Binary resource loader: unbounded map_id from a theme file causes a heap out-of-bounds write in the GUIX-allocated arena</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-m779-jvp3-pmqr.html" class="xref page">GHSA‑m779‑jvp3‑pmqr</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑92446</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GUIX binary resource loader reads past the end of a resource, because no length for it ever reaches the loader</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-m2f3-cv9x-68q7.html" class="xref page">GHSA‑m2f3‑cv9x‑68q7</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑103414</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Binary resource loader: font sizing and load passes desynchronise, causing a heap out-of-bounds write with attacker-controlled content</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-hgcj-22cg-4hfv.html" class="xref page">GHSA‑hgcj‑22cg‑4hfv</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑91189</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GUIX binary resource loader: unvalidated glyph range causes an integer underflow and a heap out-of-bounds write when loading an untrusted font or theme</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-gx8f-4rpc-4fjw.html" class="xref page">GHSA‑gx8f‑4rpc‑4fjw</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑91186</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PNG decoder: a duplicate IHDR chunk after IDAT resizes the image after allocation, causing a heap out-of-bounds write</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-cxf2-pgvg-pcw3.html" class="xref page">GHSA‑cxf2‑pgvg‑pcw3</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑91059</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JPEG decoder: a duplicate SOF0 after SOS publishes a pixelmap that misreports its own allocation size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-4qjc-2g93-36m2.html" class="xref page">GHSA‑4qjc‑2g93‑36m2</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑91057</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Out-of-bounds read when a multi-line text view string ends with a carriage return</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026‑10‑02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="ghsa-372w-c338-xj8p.html" class="xref page">GHSA‑372w‑c338‑xj8p</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVE‑2026‑102729</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GUIX binary resource loader: a theme id past the resource&#8217;s theme count causes a heap out-of-bounds write</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+</tr>
+</tbody>
+</table>
 </article>
   </div>
 </main>
